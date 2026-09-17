@@ -59,11 +59,17 @@ app.use('/api/courses', courseRoutes);
 const errorHandler = require('./middleware/error');
 app.use(errorHandler);
 
-// API Root handler
 app.get('/', (req, res) => {
-    res.json({ status: 'success', message: 'MASAR API is running 🚀', phpFrontendUrl: 'http://localhost/masar/' });
+    res.json({
+        status: 'success',
+        message: 'MASAR API is running 🚀'
+    });
 });
-
-app.listen(port, () => console.log(`🚀 الخادم يعمل على: http://localhost:${port}`));
+// Local development only
+if (!process.env.VERCEL) {
+    app.listen(port, () => {
+        console.log(`🚀 الخادم يعمل على: http://localhost:${port}`);
+    });
+}
 
 module.exports = app;
