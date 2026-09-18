@@ -76,6 +76,7 @@ $router->add('POST', '/api/users/:id/subscribe-course', 'UserController', 'subsc
 $router->add('POST', '/api/users/:id/buy-course', 'UserController', 'buyCourseBalance');
 $router->add('POST', '/api/users/:id/avatar', 'UserController', 'uploadAvatar');
 $router->add('DELETE', '/api/users/:id/devices/:deviceId', 'UserController', 'removeDevice');
+$router->add('GET', '/api/users/:id/attendance', 'UserController', 'studentAttendance');
 
 // Attendance routes
 $router->add('POST', '/api/attendance/scan', 'UserController', 'registerAttendance');

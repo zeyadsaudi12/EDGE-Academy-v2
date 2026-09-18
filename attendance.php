@@ -513,7 +513,7 @@
             
             // ميزة تسهيلية: إذا كتب المساعد الاسم فقط (مثال: ahmed) نقوم تلقائياً بإضافة امتداد البريد
             if (!studentEmail.includes('@')) {
-                studentEmail = studentEmail + '@masar.edu';
+                studentEmail = studentEmail + '@edgeacademy.edu';
             }
 
             // الحصول على بيانات الحصة المختارة (JSON للمساعد العام، index للمدرس)

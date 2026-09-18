@@ -3228,9 +3228,30 @@ function renderSubjects() {
 
     if (!Array.isArray(teachers)) teachers = [];
 
+    // التحقق من الطالب المسجل ومرحلته الدراسية
+    let currentUser = null;
+    try {
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    } catch(e) {}
+
+    const studentGrade = currentUser && currentUser.grade ? currentUser.grade.trim() : null;
+
+    // فلترة المعلمين حسب مرحلة الطالب إذا كان مسجلاً
+    let filteredTeachers = teachers;
+    if (studentGrade) {
+        filteredTeachers = teachers.filter(t => {
+            if (!t.grades || !Array.isArray(t.grades) || t.grades.length === 0) return true; // متاح لكل المراحل
+            return t.grades.some(g => {
+                if (!g) return false;
+                const cleanG = g.trim();
+                return cleanG === studentGrade || studentGrade.includes(cleanG) || cleanG.includes(studentGrade);
+            });
+        });
+    }
+
     const subjectCounts = {};
 
-    teachers.forEach(t => {
+    filteredTeachers.forEach(t => {
 
         if (t.subjectAr) {
 
@@ -3246,7 +3267,11 @@ function renderSubjects() {
 
     if (subjectsList.length === 0) {
 
-        wrapper.innerHTML = '<p style="color: var(--gray); text-align: center; width: 100%;">لا توجد مواد دراسية مضافة حالياً. يرجى إضافة معلم مادة أولاً.</p>';
+        const emptyMsg = studentGrade
+            ? `لا توجد مواد أو معلمون مضافون حالياً لمرحلة (${studentGrade}).<br><a href="subjects.php?grade=all" style="color:var(--primary-red); font-weight:700; text-decoration:underline; display:inline-block; margin-top:10px;">استعراض جميع المواد لجميع المراحل</a>`
+            : 'لا توجد مواد دراسية مضافة حالياً. يرجى إضافة معلم مادة أولاً.';
+
+        wrapper.innerHTML = `<p style="color: var(--gray); text-align: center; width: 100%; padding: 25px 15px; font-size: 1rem;">${emptyMsg}</p>`;
 
         if (dotsContainer) dotsContainer.innerHTML = '';
 
@@ -3257,18 +3282,41 @@ function renderSubjects() {
     const subjectVisuals = {
 
         "الرياضيات": "fa-calculator",
+        "رياضيات": "fa-calculator",
+        "رياضيات وتفاضل": "fa-square-root-variable",
+        "تفاضل وتكامل": "fa-infinity",
 
         "العلوم": "fa-flask",
+        "علوم": "fa-flask",
 
         "اللغة العربية": "fa-book-open",
+        "عربي": "fa-book-open",
 
         "الفيزياء": "fa-atom",
+        "فيزياء": "fa-atom",
 
         "الكيمياء": "fa-vials",
+        "كيمياء": "fa-vials",
 
         "اللغة الإنجليزية": "fa-language",
+        "انجليزي": "fa-language",
 
-        "الأحياء": "fa-dna"
+        "الأحياء": "fa-dna",
+        "أحياء": "fa-dna",
+        "أحياء وجيولوجيا": "fa-dna",
+        "جيولوجيا": "fa-mountain",
+
+        "برمجه": "fa-laptop-code",
+        "برمجة": "fa-laptop-code",
+        "حاسب آلي": "fa-computer",
+        "معلوماتية": "fa-laptop-code",
+
+        "تاريخ": "fa-landmark",
+        "جغرافيا": "fa-earth-africa",
+        "فلسفة": "fa-brain",
+        "منطق": "fa-lightbulb",
+        "علم نفس": "fa-users-line",
+        "فرنساوي": "fa-comments"
 
     };
 
@@ -3276,11 +3324,15 @@ function renderSubjects() {
 
         const count = subjectCounts[subject];
 
+        const countLabel = count === 1 ? 'معلم واحد' : count === 2 ? 'معلمان' : `${count} معلمين`;
+
         const iconClass = subjectVisuals[subject] || "fa-book";
+
+        const subjectUrl = `subjects.php?subject=${encodeURIComponent(subject)}${studentGrade ? `&grade=${encodeURIComponent(studentGrade)}` : ''}`;
 
         return `
 
-            <div class="subject-card">
+            <div class="subject-card" onclick="window.location.href='${subjectUrl}'" style="cursor: pointer;" title="استعراض معلمي ${subject}">
 
                 <div class="subject-icon-container">
 
@@ -3290,7 +3342,12 @@ function renderSubjects() {
 
                 <h3>${subject}</h3>
 
-                <span class="teacher-count">${count} معلمين</span>
+                <span class="teacher-count">${countLabel}</span>
+
+                <a href="${subjectUrl}" class="subject-view-btn" onclick="event.stopPropagation();">
+                    <span>عرض المعلمين</span>
+                    <i class="fas fa-chevron-left" style="font-size: 0.72rem;"></i>
+                </a>
 
             </div>
 
@@ -3350,19 +3407,32 @@ async function loadFullProfile() {
 
     if (!user) { window.location.href = 'login.php'; return; }
 
-    if (user && user.username) {
+    const studentEmail = `${user.username || 'student'}@edgeacademy.edu`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(studentEmail)}&color=111827&bgcolor=ffffff&margin=10`;
 
-        const qrImg = document.getElementById('student-qr-img');
+    const qrImg = document.getElementById('student-qr-img');
+    const qrImgTab = document.getElementById('student-qr-img-tab');
+    const modalQrImg = document.getElementById('modal-qr-img');
+    const qrCodeVal = document.getElementById('student-qr-code-val');
+    const qrCodeValTab = document.getElementById('student-qr-code-val-tab');
+    const modalQrCodeVal = document.getElementById('modal-qr-code-val');
 
-        if (qrImg) {
+    if (qrImg) qrImg.src = qrUrl;
+    if (qrImgTab) qrImgTab.src = qrUrl;
+    if (modalQrImg) modalQrImg.src = qrUrl;
+    if (qrCodeVal) qrCodeVal.textContent = studentEmail;
+    if (qrCodeValTab) qrCodeValTab.textContent = studentEmail;
+    if (modalQrCodeVal) modalQrCodeVal.textContent = studentEmail;
 
-            const studentEmail = `${user.username}@masar.edu`;
+    // Set ID Pass Details
+    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'طالب المنصة';
+    const idName = document.getElementById('id-card-student-name');
+    const idGrade = document.getElementById('id-card-student-grade');
+    const idPhone = document.getElementById('id-card-student-phone');
 
-            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(studentEmail)}&color=13201c&bgcolor=ffffff`;
-
-        }
-
-    }
+    if (idName) idName.textContent = fullName;
+    if (idGrade) idGrade.textContent = user.grade || 'غير محدد';
+    if (idPhone) idPhone.textContent = user.phone || 'غير مسجل';
 
     const sideUserName = document.getElementById('sideUserName');
 
@@ -3380,11 +3450,17 @@ async function loadFullProfile() {
 
     if (sideUserGrade) sideUserGrade.textContent = user.grade || '';
 
-    if (uName) uName.textContent = `${user.firstName || ''} ${user.lastName || ''}`;
+    if (uName) uName.textContent = fullName;
 
     if (uPhone) uPhone.textContent = user.phone || '';
 
-    if (uEmail) uEmail.textContent = (user.username || '') + "@masar.edu";
+    if (uEmail) {
+        if (user.email && !user.email.includes('@masar.edu')) {
+            uEmail.textContent = user.email;
+        } else {
+            uEmail.textContent = studentEmail;
+        }
+    }
 
     if (uGrade) uGrade.textContent = user.grade || '';
 
@@ -3481,6 +3557,74 @@ async function loadFullProfile() {
     runCircularProgress();
 
 }
+
+// ==========================================
+// Student Attendance QR Actions
+// ==========================================
+
+window.downloadStudentQR = async function () {
+    const qrImg = document.getElementById('student-qr-img') || document.getElementById('student-qr-img-tab');
+    if (!qrImg || !qrImg.src) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire('تنبيه', 'رمز QR غير متوفر حالياً، يرجى إعادة تحميل الصفحة.', 'warning');
+        } else {
+            alert('رمز QR غير متوفر حالياً');
+        }
+        return;
+    }
+
+    let user = null;
+    try {
+        user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    } catch(e) {}
+    const studentName = user.username || user.firstName || 'student';
+
+    try {
+        // Fetch image as blob for direct download
+        const response = await fetch(qrImg.src);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        const downloadLink = document.createElement('a');
+        downloadLink.href = blobUrl;
+        downloadLink.download = `EDGE-QR-${studentName}.png`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(blobUrl);
+
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'success',
+                title: 'تم تنزيل كارت الحضور! ✅',
+                text: 'تم حفظ رمز QR بنجاح على جهازك لتسجيل حضورك في الحصص والسنتر.',
+                timer: 2500,
+                showConfirmButton: false
+            });
+        }
+    } catch (err) {
+        // Fallback: Open in new tab for direct save
+        const a = document.createElement('a');
+        a.href = qrImg.src;
+        a.target = '_blank';
+        a.download = `EDGE-QR-${studentName}.png`;
+        a.click();
+    }
+};
+
+window.openQRModal = function () {
+    const modal = document.getElementById('qrEnlargeModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+};
+
+window.closeQRModal = function () {
+    const modal = document.getElementById('qrEnlargeModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+};
 
 function runCircularProgress() {
 

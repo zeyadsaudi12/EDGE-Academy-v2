@@ -27,9 +27,9 @@ if (!isset($page_title)) {
         <!-- المنتصف: روابط التنقل -->
         <div class="header-center">
             <a href="index.php" class="nav-link-item <?php echo (isset($active_tab) && $active_tab == 'index') ? 'active' : ''; ?>">الرئيسية</a>
-            <a href="index.php#teachersGrid" class="nav-link-item">المعلمين</a>
-            <a href="index.php#subjectsWrapper" class="nav-link-item">المواد الدراسية</a>
-            <a href="index.php#latest-videos-section" class="nav-link-item">الكورسات</a>
+            <a href="teachers.php" class="nav-link-item <?php echo (isset($active_tab) && $active_tab == 'teachers') ? 'active' : ''; ?>">المعلمين</a>
+            <a href="subjects.php" class="nav-link-item <?php echo (isset($active_tab) && $active_tab == 'subjects') ? 'active' : ''; ?>">المواد الدراسية</a>
+            <a href="courses.php" class="nav-link-item <?php echo (isset($active_tab) && $active_tab == 'courses') ? 'active' : ''; ?>">الكورسات</a>
             <a href="exams.php" class="nav-link-item <?php echo (isset($active_tab) && $active_tab == 'exams') ? 'active' : ''; ?>">الامتحانات</a>
             <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
             <a href="admin.php" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
@@ -76,9 +76,9 @@ if (!isset($page_title)) {
             👑 صفحة الادمن
         </a>
         <a href="index.php" class="mobile-nav-link <?php echo (isset($active_tab) && $active_tab == 'index') ? 'active' : ''; ?>">🏠 الرئيسية</a>
-        <a href="index.php#teachersGrid" class="mobile-nav-link" onclick="toggleMobileMenu()">👨‍🏫 المعلمين</a>
-        <a href="index.php#subjectsWrapper" class="mobile-nav-link" onclick="toggleMobileMenu()">📚 المواد الدراسية</a>
-        <a href="index.php#latest-videos-section" class="mobile-nav-link" onclick="toggleMobileMenu()">🎥 الكورسات</a>
+        <a href="teachers.php" class="mobile-nav-link <?php echo (isset($active_tab) && $active_tab == 'teachers') ? 'active' : ''; ?>">👨‍🏫 المعلمين</a>
+        <a href="subjects.php" class="mobile-nav-link <?php echo (isset($active_tab) && $active_tab == 'subjects') ? 'active' : ''; ?>">📚 المواد الدراسية</a>
+        <a href="courses.php" class="mobile-nav-link <?php echo (isset($active_tab) && $active_tab == 'courses') ? 'active' : ''; ?>">🎥 الكورسات</a>
         <a href="exams.php" class="mobile-nav-link <?php echo (isset($active_tab) && $active_tab == 'exams') ? 'active' : ''; ?>">📝 الامتحانات</a>
         <div class="mobile-menu-auth" id="mobileAuthGuest">
             <a href="login.php" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>

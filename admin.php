@@ -2183,10 +2183,14 @@
                             <i class="ti ti-clipboard-plus"></i>
                             إضافة امتحانات
                         </button>
-                        <button class="nav-sub-item" id="nav-sub-manage-exams" onclick="showExamSubSection('manage-exams', this)">
+                        <button class="nav-sub-item" id="nav-sub-manage-exams" onclick="showExamSubSection('manage-exams', this); if (typeof switchExamManageTab==='function') switchExamManageTab('list');">
                             <i class="ti ti-clipboard-list"></i>
                             إدارة الامتحانات
                             <span class="nav-badge" id="nav-exams-count">0</span>
+                        </button>
+                        <button class="nav-sub-item" id="nav-sub-exam-results" onclick="showExamSubSection('manage-exams', this); if (typeof switchExamManageTab==='function') switchExamManageTab('results');">
+                            <i class="ti ti-chart-bar"></i>
+                            نتائج الامتحانات
                         </button>
                     </div>
                 </div>
@@ -3596,6 +3600,8 @@
                                             <i class="ti ti-wand"></i> استخراج وتوليد الأسئلة من الملف
                                         </button>
                                     </div>
+                                </div>
+
                                 <div id="exam-questions-container"
                                     style="display:flex; flex-direction:column; gap:12px; max-height:400px; overflow-y:auto; padding:5px; border:1px solid var(--border); border-radius:8px; background:rgba(0,0,0,0.1);">
                                     <p style="color:var(--txt3); font-size:13px; text-align:center; padding:20px;">
@@ -3623,8 +3629,19 @@
 
                 <!-- ===== MANAGE EXAMS SECTION ===== -->
                 <div id="section-manage-exams" class="section">
-                    <!-- EXAMS LIST -->
-                    <div class="table-card" style="height:fit-content;">
+                    <!-- TABS HEADER -->
+                    <div style="display:flex; gap:10px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:12px; flex-wrap:wrap;">
+                        <button id="tab-btn-exams-list" class="btn-ghost active" onclick="switchExamManageTab('list')" style="display:inline-flex; align-items:center; gap:8px; font-weight:700; padding:9px 18px; border-radius:10px; font-size:13px; background:var(--accent); color:#000;">
+                            <i class="ti ti-clipboard-list"></i> الامتحانات المضافة
+                            <span class="badge" id="exams-tab-badge" style="background:rgba(0,0,0,0.15); color:#000; padding:2px 7px; border-radius:6px; font-size:11px; font-weight:800;">0</span>
+                        </button>
+                        <button id="tab-btn-exams-results" class="btn-ghost" onclick="switchExamManageTab('results')" style="display:inline-flex; align-items:center; gap:8px; font-weight:700; padding:9px 18px; border-radius:10px; font-size:13px;">
+                            <i class="ti ti-chart-bar"></i> لوحة نتائج الامتحانات
+                        </button>
+                    </div>
+
+                    <!-- EXAMS LIST CARD -->
+                    <div class="table-card" id="card-exams-list">
                         <div class="table-header">
                             <div>
                                 <h3>الامتحانات المضافة</h3>
@@ -3634,54 +3651,96 @@
                                 <i class="ti ti-refresh"></i> تحديث
                             </button>
                         </div>
+                        <div class="table-toolbar" style="display:flex; gap:12px; flex-wrap:wrap; padding:12px 20px; border-bottom:1px solid var(--border);">
+                            <div class="search-wrapper" style="flex:1; min-width:200px;">
+                                <i class="ti ti-search" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--txt3);"></i>
+                                <input type="text" class="search-input" id="admin-exams-search" placeholder="ابحث باسم الامتحان أو المادة أو المعلم..." oninput="renderAdminExamsList()" style="padding-right:36px; width:100%;">
+                            </div>
+                            <select class="filter-select" id="admin-exams-grade-filter" onchange="renderAdminExamsList()" style="min-width:160px;">
+                                <option value="">كل الصفوف الدراسية</option>
+                                <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                                <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                                <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                                <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                                <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                                <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                            </select>
+                        </div>
                         <div id="admin-exams-list"
                             style="padding:16px; display:flex; flex-direction:column; gap:12px;">
                             <p style="color:var(--txt3); text-align:center; padding:30px;">جاري التحميل...</p>
                         </div>
                     </div>
 
-                    <!-- RESULTS PANEL (مطور بمحرك فلترة ذكي وتصدير ملفات) -->
-                    <div class="table-card" id="exam-results-panel" style="margin-top:20px; display:none;">
-                        <div class="table-header">
-                            <div>
-                                <h3>📊 لوحة نتائج الامتحانات</h3>
-                                <p id="exam-results-title">اختر المدرس والمرحلة لعرض النتائج وتصديرها</p>
+                    <!-- RESULTS PANEL (مع شريط تصفية علوي ثابت) -->
+                    <div class="table-card" id="exam-results-panel" style="display:none;">
+                        <!-- الفلاتر الثابتة بالأعلى Sticky Header -->
+                        <div style="position:sticky; top:0; z-index:25; background:var(--bg2); border-bottom:1px solid var(--border); box-shadow:0 4px 15px rgba(0,0,0,0.07);">
+                            <div class="table-header" style="border-bottom:1px solid var(--border2); padding:14px 22px;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <div style="width:36px; height:36px; border-radius:10px; background:rgba(67,97,238,0.12); color:var(--blue); display:flex; align-items:center; justify-content:center; font-size:18px;">
+                                        <i class="ti ti-chart-bar"></i>
+                                    </div>
+                                    <div>
+                                        <h3 style="margin:0; font-size:15px; font-weight:700;">لوحة نتائج وتصحيح الامتحانات</h3>
+                                        <p id="exam-results-title" style="margin:2px 0 0 0; font-size:12px; color:var(--accent);">حدد المعلم والمرحلة والامتحان لعرض الكشف</p>
+                                    </div>
+                                </div>
+                                <button class="topbar-btn" onclick="switchExamManageTab('list')" style="font-size:12px; display:inline-flex; align-items:center; gap:6px;">
+                                    <i class="ti ti-arrow-right"></i> العودة للامتحانات
+                                </button>
                             </div>
-                            <button class="topbar-btn" onclick="document.getElementById('exam-results-panel').style.display='none'">
-                                <i class="ti ti-x"></i> إغلاق
-                            </button>
-                        </div>
-                        
-                        <!-- شريط تصفية المدرس والمرحلة والامتحان -->
-                        <div class="table-toolbar" style="display:flex; gap:12px; flex-wrap:wrap; padding:12px 22px; border-bottom:1px solid var(--border);">
-                            <select class="filter-select" id="results-filter-teacher" onchange="onResultsFilterChange()">
-                                <option value="">-- اختر المدرس --</option>
-                            </select>
-                            <select class="filter-select" id="results-filter-grade" onchange="onResultsFilterChange()">
-                                <option value="">-- اختر المرحلة --</option>
-                                <option>الصف الأول الإعدادي</option>
-                                <option>الصف الثاني الإعدادي</option>
-                                <option>الصف الثالث الإعدادي</option>
-                                <option>الصف الأول الثانوي</option>
-                                <option>الصف الثاني الثانوي</option>
-                                <option>الصف الثالث الثانوي</option>
-                            </select>
-                            <select class="filter-select" id="results-filter-exam" onchange="loadExamResultsFromFilter()">
-                                <option value="">-- اختر الامتحان --</option>
-                            </select>
+
+                            <!-- شريط اختيار المدرس والمرحلة والامتحان (ثابت في الأعلى) -->
+                            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; padding:14px 22px; background:var(--bg3); border-bottom:1px solid var(--border2);">
+                                <div>
+                                    <label style="display:block; font-size:11px; font-weight:700; color:var(--txt3); margin-bottom:5px;">
+                                        <i class="ti ti-user-check" style="color:var(--accent);"></i> المعلم
+                                    </label>
+                                    <select class="filter-select" id="results-filter-teacher" onchange="onResultsFilterChange(true)" style="width:100%;">
+                                        <option value="">-- كل المعلمين --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display:block; font-size:11px; font-weight:700; color:var(--txt3); margin-bottom:5px;">
+                                        <i class="ti ti-school" style="color:var(--teal);"></i> المرحلة الدراسية
+                                    </label>
+                                    <select class="filter-select" id="results-filter-grade" onchange="onResultsFilterChange(true)" style="width:100%;">
+                                        <option value="">-- كل المراحل --</option>
+                                        <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                                        <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                                        <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                                        <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                                        <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                                        <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display:block; font-size:11px; font-weight:700; color:var(--txt3); margin-bottom:5px;">
+                                        <i class="ti ti-clipboard-check" style="color:var(--blue);"></i> الامتحان *
+                                    </label>
+                                    <select class="filter-select" id="results-filter-exam" onchange="loadExamResultsFromFilter()" style="width:100%; font-weight:700; color:var(--txt);">
+                                        <option value="">-- اختر الامتحان --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- شريط البحث والتحميل الفوري -->
+                            <div class="table-toolbar" style="display:flex; gap:12px; flex-wrap:wrap; padding:10px 22px;">
+                                <div class="search-wrapper" style="flex:1; min-width:220px;">
+                                    <i class="ti ti-search" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--txt3);"></i>
+                                    <input type="text" class="search-input" id="result-search-input" placeholder="ابحث باسم الطالب أو رقم الهاتف..." oninput="filterResultsTable()" style="padding-right:36px; width:100%;">
+                                </div>
+                                <div style="display:flex; gap:8px; align-items:center;">
+                                    <span id="results-count-badge" style="font-size:12px; color:var(--txt2); font-weight:600; padding:6px 12px; background:var(--bg2); border-radius:6px; border:1px solid var(--border2);">0 طالب</span>
+                                    <button class="btn-primary" onclick="exportResultsCSV()" style="background:var(--teal); border:none; padding:8px 16px; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
+                                        <i class="ti ti-file-download"></i> تصدير النتيجة CSV
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- شريط البحث السريع والتحميل الفوري للنتائج -->
-                        <div class="table-toolbar" style="display:flex; gap:12px; flex-wrap:wrap; padding:12px 22px; border-bottom:1px solid var(--border);">
-                            <div class="search-wrapper" style="flex:1;">
-                                <i class="ti ti-search" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--txt3);"></i>
-                                <input type="text" class="search-input" id="result-search-input" placeholder="ابحث باسم الطالب أو رقم الهاتف..." oninput="filterResultsTable()" style="padding-right:36px; width:100%;">
-                            </div>
-                            <button class="btn-primary" onclick="exportResultsCSV()" style="background:var(--teal); border:none; padding:8px 16px; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
-                                <i class="ti ti-file-download"></i> تصدير النتيجة CSV
-                            </button>
-                        </div>
-
+                        <!-- جدول النتائج -->
                         <div style="overflow-x:auto;">
                             <table>
                                 <thead>
@@ -3697,7 +3756,7 @@
                                 </thead>
                                 <tbody id="exam-results-table">
                                     <tr>
-                                        <td colspan="7" style="text-align:center; padding:20px; color:var(--txt3);">يرجى اختيار الفلاتر لعرض الطلاب</td>
+                                        <td colspan="7" style="text-align:center; padding:30px; color:var(--txt3);">يرجى اختيار الامتحان من القائمة بالأعلى لعرض نتائجه</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -3796,6 +3855,214 @@
                         <button type="button" class="btn-ghost" onclick="closeGradeEssayModal()">إلغاء</button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <!-- ===== نافذة إحصائيات وملف الطالب الشامل (Student 360 Profile & Analytics) ===== -->
+        <style>
+            .sp-tab-btn {
+                background: transparent;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 8px;
+                color: var(--txt2);
+                font-family: inherit;
+                font-size: 13px;
+                font-weight: 700;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                transition: all 0.2s ease;
+                white-space: nowrap;
+            }
+            .sp-tab-btn:hover {
+                color: var(--txt);
+                background: rgba(255,255,255,0.05);
+            }
+            .sp-tab-btn.active {
+                background: linear-gradient(135deg, #3b82f6, #2563eb);
+                color: #fff !important;
+                box-shadow: 0 4px 10px rgba(37,99,235,0.3);
+            }
+            .sp-info-box {
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 10px 14px;
+            }
+            .sp-lbl {
+                display: block;
+                font-size: 11px;
+                color: var(--txt3);
+                margin-bottom: 4px;
+            }
+            .sp-val {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--txt);
+            }
+            .sp-act-link {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 26px;
+                height: 26px;
+                border-radius: 6px;
+                background: rgba(255,255,255,0.08);
+                color: var(--txt2);
+                text-decoration: none;
+                font-size: 14px;
+                transition: all 0.2s;
+            }
+            .sp-act-link:hover {
+                background: #3b82f6;
+                color: #fff;
+            }
+        </style>
+
+        <div class="modal-bg" id="studentProfileAnalyticsModal" style="align-items: center; justify-content: center; z-index: 10000;">
+            <div class="modal-box" style="max-width: 980px; width: 95%; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; border-radius: 20px; background: var(--bg-card); border: 1px solid var(--border); box-shadow: 0 25px 60px rgba(0,0,0,0.35); text-align: right; font-family: 'Cairo', sans-serif;">
+                <!-- رأس النافذة -->
+                <div style="background: linear-gradient(135deg, #0f172a, #1e293b); padding: 20px 26px; color: #fff; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div id="sp-avatar" class="avatar-circle" style="width: 52px; height: 52px; font-size: 1.3rem; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; font-weight: 800; border: 2px solid rgba(255,255,255,0.2);">؟</div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <h3 id="sp-fullname" style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #fff;">اسم الطالب</h3>
+                                <span id="sp-grade-badge" class="badge badge-blue" style="font-size: 11px;">الصف الدراسي</span>
+                                <span id="sp-section-badge" class="badge" style="background: rgba(255,255,255,0.15); color: #fff; font-size: 11px;">الشعبة</span>
+                            </div>
+                            <div style="font-size: 12px; color: #94a3b8; margin-top: 4px; display: flex; gap: 14px; flex-wrap: wrap;">
+                                <span><i class="ti ti-user"></i> <span id="sp-username">user</span></span>
+                                <span><i class="ti ti-mail"></i> <span id="sp-email">email@edgeacademy.edu</span></span>
+                                <span><i class="ti ti-calendar"></i> انضمام: <span id="sp-created-at">—</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="closeStudentProfileModal()" style="background: rgba(255,255,255,0.12); border: none; width: 34px; height: 34px; border-radius: 50%; color: #fff; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+                </div>
+
+                <!-- شريط التبويبات -->
+                <div style="display: flex; gap: 8px; padding: 10px 24px; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: thin;">
+                    <button class="sp-tab-btn active" onclick="switchStudentTab('sp-overview', this)"><i class="ti ti-layout-dashboard"></i> نظرة عامة والبيانات</button>
+                    <button class="sp-tab-btn" onclick="switchStudentTab('sp-videos', this)"><i class="ti ti-video"></i> الكورسات والفيديوهات (<span id="sp-videos-count">0</span>)</button>
+                    <button class="sp-tab-btn" onclick="switchStudentTab('sp-exams', this)"><i class="ti ti-file-text"></i> نتائج الامتحانات (<span id="sp-exams-count">0</span>)</button>
+                    <button class="sp-tab-btn" onclick="switchStudentTab('sp-attendance', this)"><i class="ti ti-qrcode"></i> حضور السنتر (<span id="sp-attendance-count">0</span>)</button>
+                    <button class="sp-tab-btn" onclick="switchStudentTab('sp-devices', this)"><i class="ti ti-device-mobile"></i> الأجهزة (<span id="sp-devices-count">0</span>)</button>
+                </div>
+
+                <!-- جسم المحتوى -->
+                <div style="padding: 22px 26px; overflow-y: auto; flex: 1; max-height: calc(90vh - 180px);">
+                    <!-- Tab 1: Overview -->
+                    <div id="sp-overview" class="sp-tab-pane active">
+                        <!-- Stat Highlights Row -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 22px;">
+                            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--txt3); margin-bottom: 4px;">فيديوهات مشتركة</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; color: #3b82f6;" id="sp-stat-videos">0</div>
+                            </div>
+                            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--txt3); margin-bottom: 4px;">امتحانات مكتملة</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; color: #10b981;" id="sp-stat-exams">0</div>
+                            </div>
+                            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--txt3); margin-bottom: 4px;">متوسط الدرجات</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; color: #f59e0b;" id="sp-stat-avg">0%</div>
+                            </div>
+                            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--txt3); margin-bottom: 4px;">رصيد المحفظة</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; color: #ec4899;" id="sp-stat-balance">0 ج.م</div>
+                            </div>
+                            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center;">
+                                <div style="font-size: 11px; color: var(--txt3); margin-bottom: 4px;">مرات حضور السنتر</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; color: #8b5cf6;" id="sp-stat-attend">0</div>
+                            </div>
+                        </div>
+
+                        <!-- Data Fields Grid -->
+                        <h4 style="margin: 0 0 14px; font-size: 0.95rem; font-weight: 700; color: var(--txt); display: flex; align-items: center; gap: 8px;">
+                            <i class="ti ti-id" style="color: #3b82f6;"></i> البيانات الشخصية والتواصل
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 22px;">
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">رقم هاتف الطالب</span>
+                                <div class="sp-val" style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span id="sp-phone" style="direction: ltr; font-family: monospace;">-</span>
+                                    <a id="sp-phone-link" href="#" class="sp-act-link" title="اتصال"><i class="ti ti-phone"></i></a>
+                                </div>
+                            </div>
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">رقم ولي الأمر</span>
+                                <div class="sp-val" style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span id="sp-parent-phone" style="direction: ltr; font-family: monospace;">-</span>
+                                    <div style="display: flex; gap: 6px;">
+                                        <a id="sp-parent-whatsapp" href="#" target="_blank" class="sp-act-link" style="color: #22c55e;" title="محادثة واتساب"><i class="ti ti-brand-whatsapp"></i></a>
+                                        <a id="sp-parent-phone-link" href="#" class="sp-act-link" title="اتصال"><i class="ti ti-phone"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">الرقم القومي (14 رقم)</span>
+                                <div class="sp-val" id="sp-national-id" style="direction: ltr; font-family: monospace;">-</div>
+                            </div>
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">المحافظة</span>
+                                <div class="sp-val" id="sp-gov">-</div>
+                            </div>
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">تاريخ الميلاد</span>
+                                <div class="sp-val" id="sp-birthdate">-</div>
+                            </div>
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">اللغة الثانية</span>
+                                <div class="sp-val" id="sp-lang">-</div>
+                            </div>
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">آخر نشاط على المنصة</span>
+                                <div class="sp-val" id="sp-last-active" style="font-size: 12px;">-</div>
+                            </div>
+                            <div class="sp-info-box">
+                                <span class="sp-lbl">المعلمون المتابعون</span>
+                                <div class="sp-val" id="sp-followed-count">0 معلم</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Videos & Courses -->
+                    <div id="sp-videos" class="sp-tab-pane" style="display:none;">
+                        <div id="sp-videos-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Exams -->
+                    <div id="sp-exams" class="sp-tab-pane" style="display:none;">
+                        <div id="sp-exams-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Attendance -->
+                    <div id="sp-attendance" class="sp-tab-pane" style="display:none;">
+                        <div id="sp-attendance-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Tab 5: Devices -->
+                    <div id="sp-devices" class="sp-tab-pane" style="display:none;">
+                        <div id="sp-devices-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فوتر النافذة -->
+                <div style="padding: 12px 24px; background: var(--bg); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 11px; color: var(--txt3);">معرف الطالب: <code id="sp-userid" style="user-select: all; font-size: 11px; background: rgba(0,0,0,0.06); padding: 2px 6px; border-radius: 4px;">-</code></span>
+                    <button class="btn-ghost" onclick="closeStudentProfileModal()" style="padding: 6px 16px; font-size: 13px;">إغلاق</button>
+                </div>
             </div>
         </div>
 
@@ -4066,7 +4333,12 @@
             // ===== EXAMS DROPDOWN =====
             function toggleExamsDropdown() {
                 const dropdown = document.getElementById('nav-exams-dropdown');
+                if (!dropdown) return;
+                const wasOpen = dropdown.classList.contains('open');
                 dropdown.classList.toggle('open');
+                if (!wasOpen) {
+                    showExamSubSection('manage-exams', document.getElementById('nav-sub-manage-exams'));
+                }
             }
 
             function showExamSubSection(subName, btn) {
@@ -4461,7 +4733,10 @@
                     const q = _userFilter.toLowerCase();
                     list = list.filter(u =>
                         (u.firstName + ' ' + u.lastName).toLowerCase().includes(q) ||
-                        (u.phone || '').includes(q)
+                        (u.phone || '').includes(q) ||
+                        (u.username || '').toLowerCase().includes(q) ||
+                        (u.parentPhone || '').includes(q) ||
+                        (u.nationalId || '').includes(q)
                     );
                 }
                 if (!list.length) {
@@ -4470,18 +4745,21 @@
                 }
                 tb.innerHTML = list.map(u => `
             <tr>
-                <td><div style="display:flex;align-items:center;gap:10px">
-                    <div class="avatar-circle">${(u.firstName || '؟')[0]}</div>
+                <td style="cursor:pointer" onclick="openStudentFullProfile('${u._id}')">
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div class="avatar-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff">${(u.firstName || '؟')[0]}</div>
                     <div>
                         <div style="font-weight:600;color:var(--txt)">${u.firstName || ''} ${u.lastName || ''}</div>
                         <div style="font-size:11px;color:var(--txt3)">${u.username || ''}</div>
                     </div>
-                </div></td>
+                  </div>
+                </td>
                 <td style="direction:ltr;font-family:monospace">${u.phone || '—'}</td>
                 <td><span class="badge badge-blue">${u.grade || '—'}</span></td>
                 <td>${u.governorate || '—'}</td>
                 <td>${u.section || '—'}</td>
                 <td><div class="action-btns">
+                    <button class="action-btn" onclick="openStudentFullProfile('${u._id}')" title="ملف الطالب الشامل" style="background:#2563eb;color:#fff;"><i class="ti ti-chart-bar"></i></button>
                     <button class="action-btn warning" onclick="showUserDevices('${u._id}','${u.firstName} ${u.lastName}')" title="الأجهزة المرتبطة" style="background-color: var(--warning);"><i class="ti ti-device-mobile"></i></button>
                     <button class="action-btn danger" onclick="confirmDeleteUser('${u._id}','${u.firstName}')" title="حذف"><i class="ti ti-trash"></i></button>
                 </div></td>
@@ -5810,109 +6088,206 @@
 
                     const badge = document.getElementById('nav-exams-count');
                     if (badge) badge.textContent = exams.length;
+                    const tabBadge = document.getElementById('exams-tab-badge');
+                    if (tabBadge) tabBadge.textContent = exams.length;
                     const countLabel = document.getElementById('exams-count-label');
                     if (countLabel) countLabel.textContent = `${exams.length} امتحان مضاف`;
 
-                    if (exams.length === 0) {
-                        list.innerHTML = '<p style="color:var(--txt3); text-align:center; padding:30px;"><i class="ti ti-clipboard-x" style="font-size:2rem;display:block;margin-bottom:8px;"></i>لا توجد امتحانات مضافة بعد</p>';
-                        return;
-                    }
-
-                    list.innerHTML = exams.map(exam => {
-                        const qCount = (exam.questions && Array.isArray(exam.questions)) ? exam.questions.length : 0;
-                        const rCount = (exam.results && Array.isArray(exam.results)) ? exam.results.length : 0;
-                        const safeTitle = (exam.title || 'امتحان').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-
-                        return `
-                        <div style="background:var(--bg3); border:1px solid var(--border2); border-radius:12px; padding:16px; transition:all 0.2s ease;">
-                            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-                                <div style="flex:1; min-width:260px;">
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                                        <span class="badge" style="background:rgba(221,168,82,0.15); color:var(--accent); font-weight:700; font-size:11px; padding:3px 8px; border-radius:6px;">
-                                            <i class="ti ti-clipboard-check"></i> امتحان
-                                        </span>
-                                        <div style="font-weight:700; font-size:15px; color:var(--txt);">${exam.title}</div>
-                                    </div>
-                                    <div style="font-size:12px; color:var(--txt3); display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
-                                        <span>👨‍🏫 ${exam.teacherName || '—'}</span>
-                                        <span>📚 ${exam.subject || '—'}</span>
-                                        <span>⏱ ${exam.duration || 30} دقيقة</span>
-                                        <span>❓ ${qCount} سؤال</span>
-                                    </div>
-                                    <div style="font-size:11px; color:var(--txt3); margin-bottom:4px;">
-                                        🎓 ${(exam.grades && exam.grades.length) ? exam.grades.join(' | ') : 'لكل الصفوف'}
-                                    </div>
-                                    <div style="font-size:12px; color:var(--green); font-weight:600;">
-                                        📊 ${rCount} طالب أجرى الامتحان
-                                    </div>
-                                </div>
-                                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                                    <a href="exams.php?examId=${exam._id}" target="_blank" class="topbar-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-size:12px; background:rgba(46,196,182,0.12); color:var(--teal); border:1px solid rgba(46,196,182,0.25);">
-                                        <i class="ti ti-external-link"></i> معاينة
-                                    </a>
-                                    <button class="topbar-btn" onclick="viewExamResults('${exam._id}', '${safeTitle}')" style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:rgba(67,97,238,0.12); color:var(--blue); border:1px solid rgba(67,97,238,0.25);">
-                                        <i class="ti ti-chart-bar"></i> النتائج (${rCount})
-                                    </button>
-                                    <button class="topbar-btn" onclick="deleteExamAdmin('${exam._id}')" style="color:var(--accent2); background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.25); font-size:12px;">
-                                        <i class="ti ti-trash"></i> حذف
-                                    </button>
-                                </div>
-                            </div>
-                        </div>`;
-                    }).join('');
+                    renderAdminExamsList();
                 } catch (e) {
                     console.error("loadExamsAdmin error:", e);
-                    list.innerHTML = '<p style="color:red; text-align:center; padding:20px;">خطأ في الاتصال بالخادم</p>';
+                    list.innerHTML = '<p style="color:red; text-align:center; padding:20px;"><i class="ti ti-alert-triangle" style="font-size:1.5rem;display:block;margin-bottom:8px;"></i>خطأ في الاتصال بالخادم، يرجى المحاولة لاحقاً</p>';
                 }
             }
             window.loadExamsAdmin = loadExamsAdmin;
+
+            function renderAdminExamsList() {
+                const list = document.getElementById('admin-exams-list');
+                if (!list) return;
+
+                const searchVal = (document.getElementById('admin-exams-search')?.value || '').toLowerCase().trim();
+                const gradeVal = document.getElementById('admin-exams-grade-filter')?.value || '';
+
+                let exams = (_allExams && Array.isArray(_allExams)) ? [..._allExams] : [];
+                if (searchVal) {
+                    exams = exams.filter(ex => 
+                        (ex.title && ex.title.toLowerCase().includes(searchVal)) ||
+                        (ex.subject && ex.subject.toLowerCase().includes(searchVal)) ||
+                        (ex.teacherName && ex.teacherName.toLowerCase().includes(searchVal))
+                    );
+                }
+                if (gradeVal) {
+                    exams = exams.filter(ex => ex.grades && Array.isArray(ex.grades) && ex.grades.includes(gradeVal));
+                }
+
+                if (exams.length === 0) {
+                    const emptyMsg = (searchVal || gradeVal) ? 'لا توجد امتحانات تطابق معايير البحث والفلترة' : 'لا توجد امتحانات مضافة بعد';
+                    list.innerHTML = `<p style="color:var(--txt3); text-align:center; padding:30px;"><i class="ti ti-clipboard-x" style="font-size:2rem;display:block;margin-bottom:8px;"></i>${emptyMsg}</p>`;
+                    return;
+                }
+
+                list.innerHTML = exams.map(exam => {
+                    const qCount = (exam.questions && Array.isArray(exam.questions)) ? exam.questions.length : 0;
+                    const rCount = (exam.results && Array.isArray(exam.results)) ? exam.results.length : 0;
+                    const safeTitle = (exam.title || 'امتحان').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const gradesLabel = (exam.grades && Array.isArray(exam.grades) && exam.grades.length > 0)
+                        ? exam.grades.join(' | ')
+                        : 'لكل الصفوف';
+
+                    return `
+                    <div style="background:var(--bg3); border:1px solid var(--border2); border-radius:12px; padding:16px; transition:all 0.2s ease;">
+                        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                            <div style="flex:1; min-width:260px;">
+                                <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                                    <span class="badge" style="background:rgba(221,168,82,0.15); color:var(--accent); font-weight:700; font-size:11px; padding:3px 8px; border-radius:6px;">
+                                        <i class="ti ti-clipboard-check"></i> امتحان
+                                    </span>
+                                    <div style="font-weight:700; font-size:15px; color:var(--txt);">${exam.title || 'امتحان بدون عنوان'}</div>
+                                </div>
+                                <div style="font-size:12px; color:var(--txt3); display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
+                                    <span>👨‍🏫 ${exam.teacherName || '—'}</span>
+                                    <span>📚 ${exam.subject || '—'}</span>
+                                    <span>⏱ ${exam.duration || 30} دقيقة</span>
+                                    <span>❓ ${qCount} سؤال</span>
+                                </div>
+                                <div style="font-size:11px; color:var(--txt3); margin-bottom:4px;">
+                                    🎓 ${gradesLabel}
+                                </div>
+                                <div style="font-size:12px; color:var(--green); font-weight:600;">
+                                    📊 ${rCount} طالب أجرى الامتحان
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                                <a href="exams.php?examId=${exam._id}" target="_blank" class="topbar-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-size:12px; background:rgba(46,196,182,0.12); color:var(--teal); border:1px solid rgba(46,196,182,0.25);">
+                                    <i class="ti ti-external-link"></i> معاينة
+                                </a>
+                                <button class="topbar-btn" onclick="viewExamResults('${exam._id}', '${safeTitle}')" style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:rgba(67,97,238,0.12); color:var(--blue); border:1px solid rgba(67,97,238,0.25);">
+                                    <i class="ti ti-chart-bar"></i> النتائج (${rCount})
+                                </button>
+                                <button class="topbar-btn" onclick="deleteExamAdmin('${exam._id}')" style="color:var(--accent2); background:rgba(255,107,107,0.1); border:1px solid rgba(255,107,107,0.25); font-size:12px;">
+                                    <i class="ti ti-trash"></i> حذف
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+            window.renderAdminExamsList = renderAdminExamsList;
+
+            // التبديل بين تبويب قائمة الامتحانات وتبويب لوحة النتائج
+            function switchExamManageTab(tab) {
+                const listBtn = document.getElementById('tab-btn-exams-list');
+                const resultsBtn = document.getElementById('tab-btn-exams-results');
+                const listCard = document.getElementById('card-exams-list');
+                const resultsPanel = document.getElementById('exam-results-panel');
+
+                if (tab === 'results') {
+                    if (listBtn) {
+                        listBtn.classList.remove('active');
+                        listBtn.style.background = 'transparent';
+                        listBtn.style.color = 'var(--txt2)';
+                    }
+                    if (resultsBtn) {
+                        resultsBtn.classList.add('active');
+                        resultsBtn.style.background = 'var(--accent)';
+                        resultsBtn.style.color = '#000';
+                    }
+                    if (listCard) listCard.style.display = 'none';
+                    if (resultsPanel) resultsPanel.style.display = 'block';
+
+                    // ملء الفلاتر إذا لم تكن ممتلئة
+                    populateResultsFilters();
+
+                    // إذا لم يتم اختيار امتحان بعد، نختار أول امتحان متاح
+                    const examSel = document.getElementById('results-filter-exam');
+                    if (examSel && !examSel.value && examSel.options.length > 1) {
+                        examSel.selectedIndex = 1;
+                        loadExamResultsFromFilter();
+                    }
+                } else {
+                    if (listBtn) {
+                        listBtn.classList.add('active');
+                        listBtn.style.background = 'var(--accent)';
+                        listBtn.style.color = '#000';
+                    }
+                    if (resultsBtn) {
+                        resultsBtn.classList.remove('active');
+                        resultsBtn.style.background = 'transparent';
+                        resultsBtn.style.color = 'var(--txt2)';
+                    }
+                    if (listCard) listCard.style.display = 'block';
+                    if (resultsPanel) resultsPanel.style.display = 'none';
+                }
+            }
+            window.switchExamManageTab = switchExamManageTab;
 
             // تعبئة فلتر المدرسين في لوحة النتائج
             function populateResultsFilters() {
                 const tSel = document.getElementById('results-filter-teacher');
                 if (!tSel) return;
-                tSel.innerHTML = '<option value="">-- اختر المدرس --</option>';
+                const prev = tSel.value;
+                tSel.innerHTML = '<option value="">-- كل المعلمين --</option>';
                 if (_teachers && Array.isArray(_teachers)) {
                     _teachers.forEach(t => {
                         tSel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
                     });
                 }
-                onResultsFilterChange();
+                if (prev) tSel.value = prev;
+                onResultsFilterChange(false);
             }
             window.populateResultsFilters = populateResultsFilters;
 
             // تحديث امتحانات الفلتر بناءً على المدرس والمرحلة
-            function onResultsFilterChange() {
+            function onResultsFilterChange(autoLoadFirst = false) {
                 const tId = document.getElementById('results-filter-teacher')?.value || '';
                 const grade = document.getElementById('results-filter-grade')?.value || '';
                 const examSel = document.getElementById('results-filter-exam');
                 if (!examSel) return;
 
+                const currentVal = examSel.value;
                 examSel.innerHTML = '<option value="">-- اختر الامتحان --</option>';
                 let filtered = (_allExams && Array.isArray(_allExams)) ? [..._allExams] : [];
                 if (tId) filtered = filtered.filter(e => e.teacherId === tId);
-                if (grade) filtered = filtered.filter(e => e.grades && e.grades.includes(grade));
+                if (grade) filtered = filtered.filter(e => e.grades && Array.isArray(e.grades) && e.grades.includes(grade));
 
                 filtered.forEach(e => {
-                    examSel.innerHTML += `<option value="${e._id}">${e.title}</option>`;
+                    examSel.innerHTML += `<option value="${e._id}">${e.title} (${e.teacherName || '—'})</option>`;
                 });
+
+                if (currentVal && filtered.some(e => e._id === currentVal)) {
+                    examSel.value = currentVal;
+                } else if (autoLoadFirst && filtered.length > 0) {
+                    examSel.value = filtered[0]._id;
+                    loadExamResultsFromFilter();
+                } else if (filtered.length === 0) {
+                    loadExamResultsFromFilter();
+                }
             }
             window.onResultsFilterChange = onResultsFilterChange;
 
             // استدعاء فوري لنتائج التصفية
             function loadExamResultsFromFilter() {
                 const examSel = document.getElementById('results-filter-exam');
-                const examId = examSel.value;
-                if (!examId) return;
-                const exam = _allExams.find(e => e._id === examId);
-                if (exam) {
-                    viewExamResults(examId, exam.title);
+                const examId = examSel?.value;
+                if (!examId) {
+                    const tbody = document.getElementById('exam-results-table');
+                    if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--txt3);">يرجى اختيار الامتحان من القائمة بالأعلى لعرض نتائجه</td></tr>';
+                    const titleEl = document.getElementById('exam-results-title');
+                    if (titleEl) titleEl.textContent = 'حدد المعلم والمرحلة والامتحان لعرض الكشف';
+                    _currentResults = [];
+                    filterResultsTable();
+                    return;
                 }
+                const exam = (_allExams && Array.isArray(_allExams)) ? _allExams.find(e => e._id === examId) : null;
+                const examTitle = exam ? exam.title : 'نتائج الامتحان';
+                viewExamResults(examId, examTitle);
             }
+            window.loadExamResultsFromFilter = loadExamResultsFromFilter;
 
             async function deleteExamAdmin(examId) {
                 showModal('حذف الامتحان', 'هل أنت متأكد من حذف هذا الامتحان؟ لا يمكن التراجع عن هذا الإجراء.', async () => {
-                    const res = await fetch(`${API}/api/exams/${examId}`, { method: 'DELETE' });
+                    const apiUrl = (typeof API !== 'undefined' && API) ? API : (window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : ''));
+                    const res = await fetch(`${apiUrl}/api/exams/${examId}`, { method: 'DELETE' });
                     const d = await res.json();
                     if (d.success) { toast('تم حذف الامتحان', 'success'); loadExamsAdmin(); }
                     else toast('خطأ في الحذف', 'error');
@@ -5922,26 +6297,48 @@
             // عرض تفاصيل نتائج الامتحان المختار وإيداعها للفلترة
             async function viewExamResults(examId, examTitle) {
                 _activeExamId = examId; // 🌟 تخزين المعرّف النشط فوراً لمنع الأخطاء
+                switchExamManageTab('results');
+
                 const panel = document.getElementById('exam-results-panel');
                 const tbody = document.getElementById('exam-results-table');
-                document.getElementById('exam-results-title').textContent = examTitle;
-                panel.style.display = 'block';
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--txt3);">جاري التحميل...</td></tr>';
-                panel.scrollIntoView({ behavior: 'smooth' });
+                const titleEl = document.getElementById('exam-results-title');
+                if (titleEl) titleEl.textContent = examTitle || 'نتائج الامتحان';
+
+                // مزامنة فلاتر (المعلم والمرحلة والامتحان) بالأعلى فوراً
+                if (_allExams && Array.isArray(_allExams)) {
+                    const currentExam = _allExams.find(e => e._id === examId);
+                    if (currentExam) {
+                        const tSel = document.getElementById('results-filter-teacher');
+                        const gSel = document.getElementById('results-filter-grade');
+                        const eSel = document.getElementById('results-filter-exam');
+                        if (tSel && currentExam.teacherId) tSel.value = currentExam.teacherId;
+                        if (gSel && currentExam.grades && currentExam.grades.length > 0) {
+                            gSel.value = currentExam.grades[0];
+                        }
+                        onResultsFilterChange(false);
+                        if (eSel) eSel.value = examId;
+                    }
+                }
+
+                if (panel) panel.style.display = 'block';
+                if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--txt3);"><i class="ti ti-loader ti-spin" style="font-size:1.5rem;display:block;margin-bottom:8px;"></i>جاري تحميل النتائج...</td></tr>';
+                
                 try {
-                    const res = await fetch(`${API}/api/exams/${examId}/results`);
+                    const apiUrl = (typeof API !== 'undefined' && API) ? API : (window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : ''));
+                    const res = await fetch(`${apiUrl}/api/exams/${examId}/results`);
                     const d = await res.json();
                     _currentResults = d.results || []; // حفظ النتائج لتصفيتها محلياً وتصديرها
 
                     filterResultsTable(); // رندر فوري للجدول
                 } catch (e) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">خطأ في تحميل النتائج</td></tr>';
+                    if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red; padding:20px;">خطأ في تحميل النتائج</td></tr>';
                 }
             }
+            window.viewExamResults = viewExamResults;
 
             // محرك البحث الفوري وتصفية جدول النتائج بالإدارة
             function filterResultsTable() {
-                const query = document.getElementById('result-search-input').value.toLowerCase().trim();
+                const query = (document.getElementById('result-search-input')?.value || '').toLowerCase().trim();
                 const tbody = document.getElementById('exam-results-table');
                 if (!tbody || !_currentResults) return;
 
@@ -5952,6 +6349,9 @@
                         (r.studentPhone || '').includes(query)
                     );
                 }
+
+                const countBadge = document.getElementById('results-count-badge');
+                if (countBadge) countBadge.textContent = `${filtered.length} طالب`;
 
                 if (filtered.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--txt3);">لا توجد نتائج مطابقة</td></tr>';
@@ -7270,6 +7670,242 @@
             toast('تم تصدير ملف مشتركين المحاضرة بنجاح! 📥', 'success');
         };
             
+
+        // ===== STUDENT 360° PROFILE MODAL =====
+
+        let _currentStudentId = null;
+
+        window.openStudentFullProfile = function(userId) {
+            const user = _users.find(u => u._id === userId);
+            if (!user) { toast('الطالب غير موجود في القائمة المحلية', 'error'); return; }
+            _currentStudentId = userId;
+
+            // --- Header ---
+            const name = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+            document.getElementById('sp-avatar').textContent = (user.firstName || '؟')[0].toUpperCase();
+            document.getElementById('sp-fullname').textContent = name || '—';
+            document.getElementById('sp-username').textContent = user.username ? `@${user.username}` : '—';
+            document.getElementById('sp-email').textContent = user.username ? `${user.username}@edgeacademy.edu` : '—';
+            document.getElementById('sp-grade-badge').textContent = user.grade || '—';
+            document.getElementById('sp-section-badge').textContent = user.section || '—';
+            document.getElementById('sp-created-at').textContent = user.createdAt ? new Date(user.createdAt).toLocaleDateString('ar-EG') : '—';
+            document.getElementById('sp-userid').textContent = userId;
+
+            // --- Overview fields ---
+            const phone = user.phone || '—';
+            const parentPhone = user.parentPhone || '—';
+            document.getElementById('sp-phone').textContent = phone;
+            document.getElementById('sp-phone-link').href = `tel:${user.phone || ''}`;
+            document.getElementById('sp-parent-phone').textContent = parentPhone;
+            document.getElementById('sp-parent-phone-link').href = `tel:${user.parentPhone || ''}`;
+            document.getElementById('sp-parent-whatsapp').href = user.parentPhone ? `https://wa.me/2${user.parentPhone.replace(/^0/,'')}` : '#';
+            document.getElementById('sp-national-id').textContent = user.nationalId || '—';
+            document.getElementById('sp-gov').textContent = user.governorate || '—';
+            document.getElementById('sp-birthdate').textContent = user.birthDate ? new Date(user.birthDate).toLocaleDateString('ar-EG') : '—';
+            document.getElementById('sp-lang').textContent = user.secondLanguage || '—';
+            document.getElementById('sp-last-active').textContent = user.lastActive ? new Date(user.lastActive).toLocaleString('ar-EG') : '—';
+            document.getElementById('sp-followed-count').textContent = (user.followedTeachers || []).length + ' معلم';
+
+            // --- Stat badges ---
+            const subVideos = user.subscribedVideos || [];
+            document.getElementById('sp-stat-videos').textContent = subVideos.length;
+            document.getElementById('sp-stat-balance').textContent = (user.balance || 0) + ' ج.م';
+            document.getElementById('sp-videos-count').textContent = subVideos.length;
+            document.getElementById('sp-devices-count').textContent = (user.devices || []).length;
+
+            // Reset exam/attend stats (loaded async)
+            document.getElementById('sp-stat-exams').textContent = '…';
+            document.getElementById('sp-stat-avg').textContent = '…';
+            document.getElementById('sp-stat-attend').textContent = '…';
+            document.getElementById('sp-exams-count').textContent = '…';
+            document.getElementById('sp-attendance-count').textContent = '…';
+
+            // --- Reset tabs to overview ---
+            document.querySelectorAll('.sp-tab-pane').forEach(p => p.style.display = 'none');
+            document.getElementById('sp-overview').style.display = '';
+            document.querySelectorAll('.sp-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.sp-tab-btn').classList.add('active');
+
+            // --- Render Videos tab eagerly ---
+            renderStudentVideosTab(subVideos);
+
+            // --- Render Devices tab eagerly ---
+            renderStudentDevicesTab(user);
+
+            // --- Load async data ---
+            loadStudentExamsData(userId);
+            loadStudentAttendanceData(userId);
+
+            // --- Show modal ---
+            const modal = document.getElementById('studentProfileAnalyticsModal');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        };
+
+        window.closeStudentProfileModal = function() {
+            document.getElementById('studentProfileAnalyticsModal').style.display = 'none';
+            document.body.style.overflow = '';
+            _currentStudentId = null;
+        };
+
+        // Close on backdrop click
+        document.getElementById('studentProfileAnalyticsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeStudentProfileModal();
+        });
+
+        window.switchStudentTab = function(tabId, btn) {
+            document.querySelectorAll('.sp-tab-pane').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.sp-tab-btn').forEach(b => b.classList.remove('active'));
+            const pane = document.getElementById(tabId);
+            if (pane) pane.style.display = '';
+            if (btn) btn.classList.add('active');
+        };
+
+        function renderStudentVideosTab(subVideoIds) {
+            const container = document.getElementById('sp-videos-container');
+            if (!subVideoIds || subVideoIds.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--txt3)"><i class="ti ti-video-off" style="font-size:2rem;display:block;margin-bottom:10px"></i>لا توجد فيديوهات مشتركة بعد</div>`;
+                return;
+            }
+            // Match video IDs against _videos array
+            const matched = subVideoIds.map(vid => {
+                const idStr = typeof vid === 'object' ? (vid.$oid || vid._id || JSON.stringify(vid)) : String(vid);
+                return _videos.find(v => String(v._id) === idStr || String(v._id?.$oid) === idStr) || { _id: idStr, title: idStr, subject: '—' };
+            });
+            container.innerHTML = `
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">
+                    ${matched.map(v => `
+                        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px">
+                            <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#2563eb);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                <i class="ti ti-video" style="color:#fff;font-size:1.1rem"></i>
+                            </div>
+                            <div style="min-width:0">
+                                <div style="font-size:13px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${v.title || 'فيديو غير معروف'}</div>
+                                <div style="font-size:11px;color:var(--txt3);margin-top:2px">${v.subject || v.grade || '—'}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        async function loadStudentExamsData(userId) {
+            const container = document.getElementById('sp-exams-container');
+            container.innerHTML = `<div style="text-align:center;padding:30px;color:var(--txt3)"><i class="ti ti-loader" style="font-size:1.5rem;display:block;margin-bottom:8px"></i>جاري تحميل نتائج الامتحانات…</div>`;
+            try {
+                const res = await fetch(`${API}/api/exams/student/${userId}/results`);
+                const data = await res.json();
+                const results = data.results || [];
+                document.getElementById('sp-stat-exams').textContent = results.length;
+                document.getElementById('sp-exams-count').textContent = results.length;
+                if (results.length === 0) {
+                    document.getElementById('sp-stat-avg').textContent = '0%';
+                    container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--txt3)"><i class="ti ti-file-off" style="font-size:2rem;display:block;margin-bottom:10px"></i>لم يجرِ الطالب أي امتحانات بعد</div>`;
+                    return;
+                }
+                // Calculate average
+                const scores = results.filter(r => typeof r.score === 'number' && typeof r.total === 'number' && r.total > 0);
+                if (scores.length) {
+                    const avg = scores.reduce((s, r) => s + (r.score / r.total * 100), 0) / scores.length;
+                    document.getElementById('sp-stat-avg').textContent = Math.round(avg) + '%';
+                } else {
+                    document.getElementById('sp-stat-avg').textContent = '—';
+                }
+                container.innerHTML = `
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                        ${results.map(r => {
+                            const pct = (r.total > 0) ? Math.round((r.score || 0) / r.total * 100) : 0;
+                            const color = pct >= 80 ? '#10b981' : pct >= 50 ? '#f59e0b' : '#ef4444';
+                            const dateStr = r.submittedAt ? new Date(r.submittedAt).toLocaleString('ar-EG') : '—';
+                            return `
+                                <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:14px;">
+                                    <div style="width:48px;height:48px;border-radius:10px;background:${color}22;border:2px solid ${color};display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:${color};flex-shrink:0">${pct}%</div>
+                                    <div style="flex:1;min-width:0">
+                                        <div style="font-size:13px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.examTitle || r.examId || 'امتحان'}</div>
+                                        <div style="font-size:11px;color:var(--txt3);margin-top:3px">${r.score || 0} / ${r.total || 0} درجة &nbsp;·&nbsp; ${dateStr}</div>
+                                    </div>
+                                    <div style="font-size:1.2rem;font-weight:900;color:${color};flex-shrink:0">${r.score || 0}<span style="font-size:0.65rem;color:var(--txt3)">/${r.total || 0}</span></div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } catch(e) {
+                document.getElementById('sp-stat-exams').textContent = '!';
+                document.getElementById('sp-stat-avg').textContent = '!';
+                container.innerHTML = `<div style="text-align:center;padding:30px;color:#ef4444">فشل تحميل نتائج الامتحانات</div>`;
+            }
+        }
+
+        async function loadStudentAttendanceData(userId) {
+            const container = document.getElementById('sp-attendance-container');
+            container.innerHTML = `<div style="text-align:center;padding:30px;color:var(--txt3)"><i class="ti ti-loader" style="font-size:1.5rem;display:block;margin-bottom:8px"></i>جاري تحميل سجل الحضور…</div>`;
+            try {
+                const res = await fetch(`${API}/api/users/${userId}/attendance`);
+                const data = await res.json();
+                const records = data.attendance || [];
+                document.getElementById('sp-stat-attend').textContent = records.length;
+                document.getElementById('sp-attendance-count').textContent = records.length;
+                if (records.length === 0) {
+                    container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--txt3)"><i class="ti ti-qrcode-off" style="font-size:2rem;display:block;margin-bottom:10px"></i>لا توجد سجلات حضور في السنتر بعد</div>`;
+                    return;
+                }
+                container.innerHTML = `
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                        ${records.map((rec, i) => {
+                            const dateStr = rec.timestamp || rec.date || rec.createdAt;
+                            const formattedDate = dateStr ? new Date(dateStr).toLocaleString('ar-EG') : '—';
+                            return `
+                                <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px">
+                                    <div style="width:34px;height:34px;border-radius:8px;background:#8b5cf622;border:1px solid #8b5cf6;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.85rem;font-weight:700;color:#8b5cf6">${i + 1}</div>
+                                    <div style="flex:1">
+                                        <div style="font-size:13px;font-weight:600;color:var(--txt)">${formattedDate}</div>
+                                        ${rec.lesson ? `<div style="font-size:11px;color:var(--txt3);margin-top:2px">الحصة: ${rec.lesson}</div>` : ''}
+                                        ${rec.scannedBy ? `<div style="font-size:11px;color:var(--txt3)">سُجّل بواسطة: ${rec.scannedBy}</div>` : ''}
+                                    </div>
+                                    <span style="font-size:11px;background:#10b98122;color:#10b981;padding:3px 8px;border-radius:6px;font-weight:700">حاضر</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } catch(e) {
+                document.getElementById('sp-stat-attend').textContent = '!';
+                container.innerHTML = `<div style="text-align:center;padding:30px;color:#ef4444">فشل تحميل سجل الحضور</div>`;
+            }
+        }
+
+        function renderStudentDevicesTab(user) {
+            const container = document.getElementById('sp-devices-container');
+            const devices = user.devices || [];
+            if (devices.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:40px;color:var(--txt3)"><i class="ti ti-device-mobile-off" style="font-size:2rem;display:block;margin-bottom:10px"></i>لا توجد أجهزة مرتبطة بهذا الحساب</div>`;
+                return;
+            }
+            container.innerHTML = `
+                <div style="margin-bottom:10px;font-size:12px;color:var(--txt3)">الحد الأقصى المسموح به: <b style="color:var(--accent)">جهازين</b> &nbsp;·&nbsp; مرتبط حالياً: <b style="color:var(--txt)">${devices.length}</b></div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                    ${devices.map(dev => {
+                        const lastUsed = dev.lastUsed ? new Date(dev.lastUsed).toLocaleString('ar-EG') : 'غير متوفر';
+                        return `
+                            <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px">
+                                <div style="width:42px;height:42px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                    <i class="ti ti-device-mobile" style="font-size:1.3rem;color:var(--accent)"></i>
+                                </div>
+                                <div style="flex:1;min-width:0">
+                                    <div style="font-size:13px;font-weight:700;color:var(--txt)">${dev.deviceName || 'جهاز غير معروف'}</div>
+                                    <div style="font-size:11px;color:var(--txt3);margin-top:3px">IP: ${dev.ip || '—'} &nbsp;·&nbsp; آخر استخدام: ${lastUsed}</div>
+                                </div>
+                                <button onclick="unlinkDevice('${user._id}','${dev.deviceId}')" style="background:#ef444422;border:1px solid #ef4444;color:#ef4444;font-family:inherit;font-size:11px;padding:6px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.background='#ef4444';this.style.color='#fff'" onmouseout="this.style.background='#ef444422';this.style.color='#ef4444'">
+                                    <i class="ti ti-unlink"></i> إلغاء الربط
+                                </button>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
         </script>
         
     </body>

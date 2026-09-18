@@ -11,7 +11,13 @@ connectDB();
 // Express App
 const app = express();
 const port = process.env.PORT || 3000;
-
+// 🚀 Fix .php extension for XAMPP compatibility
+app.use((req, res, next) => {
+    if (req.path.endsWith('.php')) {
+        res.type('html');
+    }
+    next();
+});
 // Middlewares
 app.use(compression()); // ✅ Gzip compression
 app.use(cors());
@@ -24,7 +30,7 @@ app.use(express.static(path.join(__dirname), {
     etag: true,
     lastModified: true,
     setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.html')) {
+        if (filePath.endsWith('.html') || filePath.endsWith('.php')) {
             res.setHeader('Cache-Control', 'no-cache');
         }
     }

@@ -363,7 +363,7 @@ class UserController extends Controller {
                 'studentId' => $studentId,
                 'studentName' => ($user['firstName'] ?? '') . ' ' . ($user['lastName'] ?? ''),
                 'studentPhone' => $user['phone'] ?? '',
-                'studentEmail' => $username . '@masar.edu',
+                'studentEmail' => $username . '@edgeacademy.edu',
                 'videoId' => $videoId === 'pending' ? 'pending' : new \MongoDB\BSON\ObjectId($videoId),
                 'center' => $center,
                 'day' => $day,
@@ -414,6 +414,39 @@ class UserController extends Controller {
         } catch (\Throwable $e) {
             // اصطياد وتمرير الخطأ بوضوح في حال حدوث أي عطل
             $this->error('خطأ برمجي في السيرفر: ' . $e->getMessage() . ' في السطر ' . $e->getLine(), 500);
+        }
+    }
+
+    // GET /api/users/:id/attendance (جلب سجل حضور الطالب بالسنتر بالكامل)
+    public function studentAttendance($id, $input) {
+        if (strlen($id) !== 24 || !ctype_xdigit($id)) {
+            return $this->error('معرف غير صالح', 400);
+        }
+
+        try {
+            $usersCollection = User::getCollection();
+            $user = $usersCollection->findOne(['_id' => new ObjectId($id)]);
+            if (!$user) {
+                return $this->error('المستخدم غير موجود', 404);
+            }
+
+            $username = $user['username'] ?? '';
+            $phone = $user['phone'] ?? '';
+
+            $attendanceCollection = \App\Models\Attendance::getCollection();
+            $cursor = $attendanceCollection->find([
+                '$or' => [
+                    ['studentId' => $id],
+                    ['studentId' => new ObjectId($id)],
+                    ['studentPhone' => $phone],
+                    ['studentEmail' => ['$regex' => '^' . preg_quote($username, '/') . '@', '$options' => 'i']]
+                ]
+            ], ['sort' => ['scannedAt' => -1]]);
+
+            $records = \App\Models\Attendance::toArrayMultiple($cursor);
+            $this->success(['attendance' => $records]);
+        } catch (\Throwable $e) {
+            $this->error('خطأ: ' . $e->getMessage(), 500);
         }
     }
 

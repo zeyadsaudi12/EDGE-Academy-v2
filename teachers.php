@@ -1,5 +1,6 @@
 <?php
-$page_title = "صفحة المعلم | EDGE Academy";
+$page_title = "المعلمون | EDGE Academy";
+$active_tab = 'teachers';
 $body_class = "royal-dashboard";
 include 'header.php';
 ?>
@@ -76,19 +77,30 @@ include 'header.php';
                         return;
                     }
 
-                    // رندر كروت جميع المعلمين بشكل شبكي منسق (4 بجانب بعضهم على الشاشات الكبيرة)
-                    grid.innerHTML = teachers.map(teacher => `
-                        <div class="teacher-card" style="background: var(--p-bg); border: 1px solid var(--p-border); box-sizing: border-box;">
-                            <div class="teacher-avatar-container" style="width: 120px; height: 120px; margin: 0 auto 15px;">
-                                <div class="teacher-avatar" style="width: 120px; height: 120px;">
-                                    <img src="${teacher.imagePath || 'imges/1.png'}" alt="${teacher.name}" style="width: 100%; height: 100%; border-radius: 50%;">
+                    function resolveTeacherImg(path) {
+                        if (!path) return 'imges/man.png';
+                        if (path.startsWith('http')) return path;
+                        if (path.startsWith('/uploads/')) return API_URL + path;
+                        if (path.startsWith('uploads/')) return API_URL + '/' + path;
+                        return path;
+                    }
+
+                    // رندر كروت جميع المعلمين بشكل شبكي منسق مع مسارات الصور الصحيحة
+                    grid.innerHTML = teachers.map(teacher => {
+                        const avatarUrl = resolveTeacherImg(teacher.imagePath);
+                        return `
+                            <div class="teacher-card" style="background: var(--p-bg); border: 1px solid var(--p-border); box-sizing: border-box;">
+                                <div class="teacher-avatar-container" style="width: 120px; height: 120px; margin: 0 auto 15px;">
+                                    <div class="teacher-avatar" style="width: 120px; height: 120px;">
+                                        <img src="${avatarUrl}" alt="${teacher.name}" onerror="this.src='imges/man.png'" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                    </div>
                                 </div>
+                                <h3 class="teacher-name">${teacher.name}</h3>
+                                <p class="teacher-subject">${teacher.subjectAr || 'معلم'}</p>
+                                <button class="teacher-btn" onclick="window.location.href='teacher-profile.php?id=${teacher._id}'" style="margin-top: 15px; width: 100%;">تصفح الكورسات والبروفايل</button>
                             </div>
-                            <h3 class="teacher-name">${teacher.name}</h3>
-                            <p class="teacher-subject">${teacher.subjectAr}</p>
-                            <button class="teacher-btn" onclick="window.location.href='teacher-profile.php?id=${teacher._id}'" style="margin-top: 15px; width: 100%;">تصفح الكورسات والبروفايل</button>
-                        </div>
-                    `).join('');
+                        `;
+                    }).join('');
 
                 } catch (err) {
                     console.error(err);

@@ -13,6 +13,7 @@
     </div>
     <nav class="sidebar-nav">
         <button class="side-item active" onclick="switchTab('tab-user', this)"><i class="fas fa-user-circle"></i> ملف المستخدم</button>
+        <button class="side-item" onclick="switchTab('tab-qr-card', this)"><i class="fas fa-qrcode"></i> كارت الحضور (QR)</button>
         <button class="side-item" onclick="switchTab('tab-teachers', this)"><i class="fas fa-user-tie"></i> المدرسين</button>
         <button class="side-item" onclick="switchTab('tab-recharge', this)"><i class="fas fa-qrcode"></i> شحن كود سنتر</button>
         <button class="side-item" onclick="switchTab('tab-my-courses', this)"><i class="fas fa-graduation-cap"></i> كورساتي</button>

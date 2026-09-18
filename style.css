@@ -2086,6 +2086,32 @@ header {
     color: var(--gray);
 }
 
+.subject-view-btn {
+    margin-top: 4px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, var(--primary-red), #e63946);
+    color: #fff !important;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(231, 111, 81, 0.25);
+}
+
+.subject-view-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(231, 111, 81, 0.4);
+    opacity: 0.95;
+}
+
+.dark-mode .subject-view-btn {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
 .subjects-controls {
     display: flex;
     align-items: center;
@@ -2979,6 +3005,208 @@ header {
 .info-item b {
     font-size: 1.05rem;
     color: var(--text-dark);
+}
+
+/* Student Attendance QR Card */
+.student-qr-card {
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 35px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    position: relative;
+    overflow: hidden;
+}
+.student-qr-card::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0; width: 6px; height: 100%;
+    background: linear-gradient(180deg, var(--primary-red, #e76f51), #7b1fa2);
+}
+.student-qr-img-wrapper {
+    background: #ffffff;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--border, #e5e7eb);
+    text-align: center;
+    flex-shrink: 0;
+}
+.student-qr-image {
+    width: 170px;
+    height: 170px;
+    display: block;
+    border-radius: 10px;
+}
+.student-qr-info {
+    flex: 1;
+    min-width: 250px;
+}
+.student-qr-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(231, 111, 81, 0.12);
+    color: var(--primary-red, #e76f51);
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 4px 14px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+}
+.student-qr-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-dark, #111827);
+    margin: 0 0 8px;
+}
+.student-qr-desc {
+    color: var(--gray, #6b7280);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+.student-qr-code-box {
+    background: var(--surface-alt, #f8fafc);
+    border: 1px dashed var(--border, #cbd5e1);
+    border-radius: 12px;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+.student-qr-code-box b {
+    color: var(--primary-red, #e76f51);
+    letter-spacing: 0.5px;
+    font-family: monospace;
+    font-size: 0.98rem;
+}
+.student-qr-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.btn-qr-download {
+    background: linear-gradient(135deg, var(--primary-red, #e76f51), #e63946);
+    color: #fff !important;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(231, 111, 81, 0.3);
+    transition: all 0.22s ease;
+    text-decoration: none;
+}
+.btn-qr-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(231, 111, 81, 0.45);
+}
+
+/* ID Pass Card (Tab View) */
+.student-id-pass-card {
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    max-width: 650px;
+    margin: 20px auto;
+}
+.id-pass-header {
+    background: linear-gradient(135deg, #111827, #1f2937, #7b1fa2);
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.id-pass-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary-red, #e76f51), #e63946);
+    color: #fff;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+.id-pass-status {
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #86efac;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.id-pass-body {
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.id-pass-qr-frame {
+    background: #ffffff;
+    padding: 14px;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    border: 2px solid var(--border, #e5e7eb);
+}
+.id-pass-details {
+    flex: 1;
+    min-width: 220px;
+}
+.id-detail-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border, #f1f5f9);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.id-detail-row span {
+    font-size: 0.82rem;
+    color: var(--gray, #6b7280);
+}
+.id-detail-row strong {
+    font-size: 1.05rem;
+    color: var(--text-dark, #111827);
+}
+.id-pass-footer {
+    background: var(--surface-alt, #f8fafc);
+    padding: 18px 28px;
+    border-top: 1px solid var(--border, #e5e7eb);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .student-qr-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .student-qr-buttons {
+        justify-content: center;
+    }
+    .id-pass-body {
+        justify-content: center;
+        text-align: center;
+    }
 }
 
 /* Other Styles */

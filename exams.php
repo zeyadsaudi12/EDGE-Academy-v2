@@ -842,15 +842,26 @@
         </div>
 
         <!-- Filters -->
-        <div class="filter-section">
-            <div class="search-box">
+        <div class="filter-section" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div class="search-box" style="flex: 1; min-width: 240px;">
                 <i class="ti ti-search"></i>
                 <input type="text" class="search-input" id="searchExamInput" placeholder="ابحث عن امتحان باسم المعلم أو المادة..." oninput="filterExams()">
             </div>
-            <select class="filter-select" id="teacherFilter" onchange="filterExams()">
+            <select class="filter-select" id="gradeFilter" onchange="filterExams()" style="min-width: 170px;">
+                <option value="">كل الصفوف الدراسية</option>
+                <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+            </select>
+            <select class="filter-select" id="teacherFilter" onchange="filterExams()" style="min-width: 160px;">
                 <option value="">كل المعلمين</option>
             </select>
         </div>
+
+        <div id="gradeNoticeContainer" style="display: none; margin-bottom: 20px;"></div>
 
         <!-- Exams list -->
         <div class="exam-grid" id="studentExamsGrid">
@@ -930,10 +941,17 @@
         if (!savedUser) {
             window.location.href = 'login.php';
         } else {
-            _student = JSON.parse(savedUser);
+            try {
+                _student = JSON.parse(savedUser) || {};
+            } catch(e) {
+                _student = {};
+            }
             _isAdmin = _student && (_student.role === 'admin' || _student.phone === '01556448880' || _student.phone === '01234567890' || _student.isAdmin === true);
-            document.getElementById('student-name-display').textContent = `${_student.firstName} ${_student.lastName || ''}`;
-            document.getElementById('student-grade-display').textContent = _isAdmin ? '| مسؤول (وصول شامل)' : `| ${_student.grade || ''}`;
+            const dispName = _student.firstName ? `${_student.firstName} ${_student.lastName || ''}` : (_student.name || 'طالب');
+            const nameEl = document.getElementById('student-name-display');
+            if (nameEl) nameEl.textContent = dispName;
+            const gradeEl = document.getElementById('student-grade-display');
+            if (gradeEl) gradeEl.textContent = _isAdmin ? '| مسؤول (وصول شامل)' : `| ${_student.grade || 'طالب'}`;
         }
 
         // Toast helper
@@ -949,24 +967,54 @@
         // Load Teachers and Exams
         async function initPage() {
             try {
-                // Fetch teachers to populate filters
-                const teachersRes = await fetch(`${API}/api/teachers`);
-                const teachers = await teachersRes.json();
-                const sel = document.getElementById('teacherFilter');
-                teachers.forEach(t => {
-                    sel.innerHTML += `<option value="${t._id}">${t.name} - ${t.subjectAr}</option>`;
-                });
+                // 1. Fetch teachers to populate filters
+                try {
+                    const teachersRes = await fetch(`${API}/api/teachers`);
+                    const teachers = await teachersRes.json();
+                    const sel = document.getElementById('teacherFilter');
+                    if (sel && Array.isArray(teachers)) {
+                        sel.innerHTML = '<option value="">كل المعلمين</option>';
+                        teachers.forEach(t => {
+                            sel.innerHTML += `<option value="${t._id}">${t.name} - ${t.subjectAr || t.subject || ''}</option>`;
+                        });
+                    }
+                } catch(e) {
+                    console.warn('Failed to load teachers for filter:', e);
+                }
 
-                // Fetch student exams filtered by grade (المسؤول يرى كافة الامتحانات)
-                const examsUrl = (_isAdmin || !_student.grade)
-                    ? `${API}/api/exams?studentId=${_student._id}`
-                    : `${API}/api/exams?grade=${encodeURIComponent(_student.grade)}&studentId=${_student._id}`;
+                // 2. Fetch all student exams with studentId to obtain attempt status
+                const stId = _student?._id || '';
+                const examsUrl = `${API}/api/exams?studentId=${encodeURIComponent(stId)}`;
                 const examsRes = await fetch(examsUrl);
                 const data = await examsRes.json();
                 
-                if (data.success) {
+                if (data.success && Array.isArray(data.exams)) {
                     _exams = data.exams;
-                    renderExams(_exams);
+
+                    // Set initial grade filter
+                    const gradeSel = document.getElementById('gradeFilter');
+                    const noticeEl = document.getElementById('gradeNoticeContainer');
+                    if (gradeSel && _student && _student.grade && !_isAdmin) {
+                        // Check if any exams match student's grade
+                        const hasMatchingGrade = _exams.some(e => e.grades && Array.isArray(e.grades) && e.grades.includes(_student.grade));
+                        if (hasMatchingGrade) {
+                            gradeSel.value = _student.grade;
+                            if (noticeEl) noticeEl.style.display = 'none';
+                        } else {
+                            gradeSel.value = ""; // Show all if student grade has no specific exams
+                            if (noticeEl) {
+                                noticeEl.innerHTML = `
+                                    <div style="background:rgba(221,168,82,0.1); border:1px solid rgba(221,168,82,0.3); border-radius:10px; padding:12px 16px; font-size:13px; color:var(--accent); display:flex; align-items:center; gap:8px;">
+                                        <i class="ti ti-info-circle" style="font-size:1.2rem;"></i>
+                                        <span>لا توجد امتحانات مخصصة لصف <b>${_student.grade}</b> حالياً. تم عرض جميع الامتحانات المتاحة لتتمكن من تصفحها واختيار ما يناسبك.</span>
+                                    </div>
+                                `;
+                                noticeEl.style.display = 'block';
+                            }
+                        }
+                    }
+
+                    filterExams();
 
                     // إذا تم تمرير معرف الامتحان عبر الرابط لبدئه مباشرة من المحاضرة
                     const urlParams = new URLSearchParams(window.location.search);
@@ -974,7 +1022,7 @@
                     if (targetExamId) {
                         const target = _exams.find(e => e._id === targetExamId);
                         if (target) {
-                            const hasDone = target.results && target.results.find(r => r.studentId === _student._id);
+                            const hasDone = target.results && Array.isArray(target.results) && target.results.find(r => r.studentId === stId);
                             if (hasDone && !_isAdmin) {
                                 viewExamResultDirect(targetExamId);
                             } else {
@@ -983,52 +1031,99 @@
                         }
                     }
                 } else {
-                    document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red);">تعذر تحميل الامتحانات</p>`;
+                    document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-alert-circle" style="font-size:2rem;display:block;margin-bottom:8px;"></i>تعذر تحميل الامتحانات، يرجى المحاولة لاحقاً.</p>`;
                 }
             } catch (err) {
                 console.error(err);
-                document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red);">حدث خطأ في الاتصال بالخادم</p>`;
+                document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-wifi-off" style="font-size:2rem;display:block;margin-bottom:8px;"></i>حدث خطأ في الاتصال بالخادم</p>`;
             }
         }
 
-        function renderExams(list) {
+        window.filterExams = function() {
+            const query = (document.getElementById('searchExamInput')?.value || '').toLowerCase().trim();
+            const teacherId = document.getElementById('teacherFilter')?.value || '';
+            const selectedGrade = document.getElementById('gradeFilter')?.value || '';
+
+            let filtered = [..._exams];
+            if (query) {
+                filtered = filtered.filter(e => 
+                    (e.title && e.title.toLowerCase().includes(query)) || 
+                    (e.teacherName && e.teacherName.toLowerCase().includes(query)) ||
+                    (e.subject && e.subject.toLowerCase().includes(query))
+                );
+            }
+            if (teacherId) {
+                filtered = filtered.filter(e => e.teacherId === teacherId);
+            }
+            if (selectedGrade) {
+                filtered = filtered.filter(e => e.grades && Array.isArray(e.grades) && e.grades.includes(selectedGrade));
+            }
+            renderExams(filtered, selectedGrade);
+        };
+
+        function renderExams(list, activeGradeFilter = '') {
             const grid = document.getElementById('studentExamsGrid');
+            if (!grid) return;
             if (list.length === 0) {
-                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--txt3); padding:40px;">لا توجد امتحانات متاحة لصفك الدراسي حالياً.</p>`;
+                const gradeMsg = activeGradeFilter 
+                    ? `لا توجد امتحانات مخصصة لـ (${activeGradeFilter}) حالياً.` 
+                    : `لا توجد امتحانات تطابق خيارات البحث الحالية.`;
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:50px 20px; color:var(--txt3);">
+                        <i class="ti ti-clipboard-x" style="font-size:3rem; color:var(--accent); display:block; margin-bottom:12px;"></i>
+                        <h3 style="color:var(--txt); margin-bottom:8px; font-weight:700;">${gradeMsg}</h3>
+                        <p style="font-size:14px; margin-bottom:16px;">يمكنك اختيار "كل الصفوف الدراسية" لتصفح كافة الامتحانات المتاحة على المنصة.</p>
+                        <button class="btn secondary" onclick="document.getElementById('gradeFilter').value=''; document.getElementById('searchExamInput').value=''; document.getElementById('teacherFilter').value=''; filterExams();" style="display:inline-flex; align-items:center; gap:6px;">
+                            <i class="ti ti-refresh"></i> عرض جميع الامتحانات
+                        </button>
+                    </div>
+                `;
                 return;
             }
 
+            const stId = _student?._id || '';
+
             grid.innerHTML = list.map(exam => {
                 // Check if student already did the exam
-                const hasDone = exam.results && exam.results.find(r => r.studentId === _student._id);
+                const hasDone = exam.results && Array.isArray(exam.results) && exam.results.find(r => r.studentId === stId);
                 const scoreHTML = hasDone 
-                    ? `<span style="font-size:11px; color:var(--green); font-weight:700;">درجة الامتحان: ${hasDone.score} (${hasDone.percentage}%)</span>` 
-                    : `<span style="font-size:11px; color:var(--txt3);">لم يتم إجراء الامتحان بعد</span>`;
+                    ? `<span style="font-size:12px; color:var(--green); font-weight:700;"><i class="ti ti-check"></i> تم إجراؤه: ${hasDone.score} من ${exam.totalMarks || hasDone.total || '-'} (${hasDone.percentage}%)</span>` 
+                    : `<span style="font-size:12px; color:var(--txt3);"><i class="ti ti-clock"></i> لم يتم إجراء الامتحان بعد</span>`;
                 
                 const btnText = hasDone ? 'عرض النتيجة' : 'ابدأ الامتحان';
                 const btnAction = hasDone ? `viewExamResultDirect('${exam._id}')` : `startExam('${exam._id}')`;
                 const btnClass = hasDone ? 'btn secondary' : 'btn';
 
+                const qCount = (exam.questions && Array.isArray(exam.questions)) ? exam.questions.length : 0;
+                const gradesLabel = (exam.grades && Array.isArray(exam.grades) && exam.grades.length > 0)
+                    ? exam.grades.join(' · ')
+                    : 'لكل الصفوف الدراسية';
+
                 return `
                     <div class="exam-card">
                         <div class="exam-card-header">
-                            <span class="exam-card-subject">${exam.subject || 'مادة دراسية'}</span>
-                            <h3 class="exam-card-title">${exam.title}</h3>
-                            <p class="exam-card-desc">${exam.description || 'امتحان شامل لقياس مستوى الفهم'}</p>
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+                                <span class="exam-card-subject">${exam.subject || 'مادة دراسية'}</span>
+                                <span style="font-size:11px; font-weight:600; color:var(--accent); background:rgba(221,168,82,0.12); padding:2px 8px; border-radius:6px;">
+                                    <i class="ti ti-school"></i> ${gradesLabel}
+                                </span>
+                            </div>
+                            <h3 class="exam-card-title">${exam.title || 'امتحان بدون عنوان'}</h3>
+                            <p class="exam-card-desc">${exam.description || 'امتحان شامل لقياس مستوى الفهم واستيعاب الدروس'}</p>
                         </div>
                         <div>
                             <div class="exam-meta">
-                                <div class="exam-meta-item"><i class="ti ti-hourglass"></i> ${exam.duration} دقيقة</div>
-                                <div class="exam-meta-item"><i class="ti ti-help"></i> ${exam.questions.length} أسئلة</div>
+                                <div class="exam-meta-item"><i class="ti ti-hourglass"></i> ${exam.duration || 30} دقيقة</div>
+                                <div class="exam-meta-item"><i class="ti ti-help"></i> ${qCount} أسئلة</div>
                             </div>
                             <div class="exam-card-footer">
                                 <div class="teacher-info">
                                     <div class="teacher-avatar">👨‍🏫</div>
-                                    <span class="teacher-name">${exam.teacherName}</span>
+                                    <span class="teacher-name">${exam.teacherName || 'معلم المادة'}</span>
                                 </div>
                                 <button class="${btnClass}" onclick="${btnAction}">${btnText}</button>
                             </div>
-                            <div style="margin-top:10px; border-top:1px solid var(--border); padding-top:8px; text-align:right;">
+                            <div style="margin-top:12px; border-top:1px solid var(--border); padding-top:8px; display:flex; justify-content:space-between; align-items:center;">
                                 ${scoreHTML}
                             </div>
                         </div>
@@ -1036,20 +1131,6 @@
                 `;
             }).join('');
         }
-
-        window.filterExams = function() {
-            const query = document.getElementById('searchExamInput').value.toLowerCase();
-            const teacherId = document.getElementById('teacherFilter').value;
-
-            let filtered = [..._exams];
-            if (query) {
-                filtered = filtered.filter(e => e.title.toLowerCase().includes(query) || e.teacherName.toLowerCase().includes(query));
-            }
-            if (teacherId) {
-                filtered = filtered.filter(e => e.teacherId === teacherId);
-            }
-            renderExams(filtered);
-        };
 
         // Native System Exam Taking
         async function startExam(id) {

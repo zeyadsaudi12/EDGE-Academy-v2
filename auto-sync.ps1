@@ -17,11 +17,11 @@ $watcher.Path = $PSScriptRoot
 $watcher.IncludeSubdirectories = $true
 $watcher.EnableRaisingEvents = $true
 
-$ignoredPatterns = @('\.git', 'node_modules', 'scratch', 'dashboard', 'php-bin', '\.log$', 'server\.out\.log')
+$ignoredPatterns = @('\.git', 'node_modules', 'scratch', 'dashboard',  '\.log$' )
 
 $action = {
-    param($source, $event)
-    $path = $event.FullPath
+    param($source, $eventArgs)
+    $path = $eventArgs.FullPath
     
     foreach ($pat in $ignoredPatterns) {
         if ($path -match $pat) { return }
@@ -29,7 +29,7 @@ $action = {
 
     $script:pendingSync = $true
     $script:lastChangeTime = [DateTime]::Now
-    Write-Host "[تعديل تم رصده] $($event.ChangeType): $($event.Name)" -ForegroundColor Yellow
+    Write-Host "[تعديل تم رصده] $($eventArgs.ChangeType): $($eventArgs.Name)" -ForegroundColor Yellow
 }
 
 Register-ObjectEvent $watcher 'Changed' -Action $action | Out-Null
