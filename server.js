@@ -53,6 +53,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     maxAge: '7d',
     etag: true
 }));
+try {
+    const tmpUploads = path.join('/tmp', 'uploads');
+    if (fs.existsSync(tmpUploads)) {
+        app.use('/uploads', express.static(tmpUploads, { maxAge: '7d', etag: true }));
+    }
+} catch (e) {}
 
 // Static assets FIRST — CSS, JS, images served directly with correct Content-Type
 app.use(express.static(path.join(__dirname), {
@@ -65,6 +71,21 @@ app.use(express.static(path.join(__dirname), {
         }
     }
 }));
+
+// Database Connection Middleware for API routes: ensures DB is connected before any query runs
+app.use('/api', async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (err) {
+        console.error('❌ خطأ في الاتصال بقاعدة البيانات قبل تنفيذ الطلب:', err.message);
+        return res.status(503).json({
+            success: false,
+            message: 'تعذر الاتصال بقاعدة البيانات. تأكد من إضافة 0.0.0.0/0 في Network Access في MongoDB Atlas.',
+            error: err.message
+        });
+    }
+});
 
 // Route Definitions
 const authRoutes = require('./routes/auth.routes');
