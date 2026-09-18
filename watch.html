@@ -768,7 +768,7 @@ body.secure-video-page {
     let currentVideoTitle = '';
 
     document.addEventListener('DOMContentLoaded', async () => {
-        const API_URL = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+        const API_URL = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
         // Helper: resolve image paths starting with /uploads/
         function resolveImg(path) {
             if (!path) return '';

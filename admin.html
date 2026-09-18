@@ -4076,7 +4076,8 @@
             if (!currentUserGuard || currentUserGuard.role !== 'admin') {
                 window.location.href = 'admin-login.html';
             }
-            const API = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+            localStorage.removeItem('apiUrl');
+            const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
         let _users = [], _codes = [], _videos = [], _teachers = [], _courses = [], _violations = [];
         let _followerCounts = {}; // { teacherId: followerCount }
             let _activeCodeTab = 'active';

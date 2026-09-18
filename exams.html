@@ -927,7 +927,7 @@
     </footer>
 
     <script>
-        const API = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+        const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
         let _student = null;
         let _isAdmin = false;
         let _exams = [];

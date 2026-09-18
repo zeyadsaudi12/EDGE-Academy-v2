@@ -12,7 +12,8 @@
 
 // ==========================================
 
-const API_URL = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+localStorage.removeItem('apiUrl');
+const API_URL = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
 
 // Helper: fix image paths that come from backend as /uploads/... → prepend API_URL
 function resolveImg(path) {

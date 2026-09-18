@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    const API_URL = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+    const API_URL = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
     const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
     const currentUserId = currentUser.phone || 'unknown';
     const currentVideoId = new URLSearchParams(window.location.search).get('videoId') || 'unknown';

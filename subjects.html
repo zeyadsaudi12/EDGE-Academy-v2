@@ -579,8 +579,7 @@ let activeSubjectFilter = 'all';
 let studentRegisteredGrade = null;
 
 async function initSubjectsDirectoryPage() {
-    const apiBase = localStorage.getItem('apiUrl') ||
-        window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+    const apiBase = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
 
     try {
         const response = await fetch(`${apiBase}/api/teachers`);
@@ -696,8 +695,7 @@ function selectSubjectFilter(subject) {
 function renderDirectory() {
     const loadingElem = document.getElementById('directoryLoading');
     const contentElem = document.getElementById('directoryContent');
-    const apiBase = localStorage.getItem('apiUrl') ||
-        window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+    const apiBase = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
 
     const teachersForGrade = getGradeFilteredTeachers();
 

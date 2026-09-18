@@ -117,7 +117,7 @@
     <script src="script.js" defer></script>
     <script>
        document.addEventListener('DOMContentLoaded', async () => {
-            const API_URL = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+            const API_URL = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
             const urlParams = new URLSearchParams(window.location.search);
             const teacherId = urlParams.get('teacherId');
             
