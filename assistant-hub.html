@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة المساعد — MASAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+    <style>
+        :root {
+            --bg: #0f1117; --bg2: #161b27; --surface: #1c2333;
+            --border: rgba(255,255,255,0.08); --txt: #e8eaf0;
+            --txt2: #a0a8bc; --primary: #4f8ef7; --green: #06d6a0;
+            --gold: #dda852; --purple: #7b5ea7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif; background: var(--bg);
+            color: var(--txt); min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(ellipse at top, #1a2540 0%, #0f1117 70%);
+        }
+        .hub-wrap { width: 100%; max-width: 520px; padding: 24px; }
+        .hub-header { text-align: center; margin-bottom: 36px; }
+        .hub-logo {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            border-radius: 22px; display: flex; align-items: center;
+            justify-content: center; font-size: 2.2rem; margin: 0 auto 18px;
+            box-shadow: 0 12px 40px rgba(79,142,247,0.3);
+        }
+        .hub-header h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+        .hub-header p { color: var(--txt2); font-size: 0.95rem; }
+        .user-chip {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.25);
+            color: var(--primary); padding: 6px 16px; border-radius: 20px;
+            font-size: 0.9rem; font-weight: 700; margin-top: 12px;
+        }
+        .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .hub-card {
+            background: var(--bg2); border: 1px solid var(--border);
+            border-radius: 20px; padding: 28px 20px; text-align: center;
+            cursor: pointer; text-decoration: none; color: var(--txt);
+            transition: all 0.25s ease; display: flex;
+            flex-direction: column; align-items: center; gap: 14px;
+            position: relative; overflow: hidden;
+        }
+        .hub-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+        .hub-card.attendance:hover { border-color: rgba(221,168,82,0.4); }
+        .hub-card.questions:hover { border-color: rgba(79,142,247,0.4); }
+        .card-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .attendance .card-icon { background: rgba(221,168,82,0.12); color: var(--gold); }
+        .questions .card-icon { background: rgba(79,142,247,0.12); color: var(--primary); }
+        .hub-card h3 { font-size: 1.05rem; font-weight: 800; }
+        .hub-card p { font-size: 0.8rem; color: var(--txt2); line-height: 1.6; }
+        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: #0a1a14; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 20px; }
+        .logout-row { text-align: center; }
+        .logout-btn {
+            background: rgba(230,57,70,0.08); border: 1px solid rgba(230,57,70,0.2);
+            color: #ff6b6b; padding: 10px 24px; border-radius: 10px;
+            font-family: 'Cairo', sans-serif; font-size: 0.85rem; cursor: pointer;
+            transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .logout-btn:hover { background: rgba(230,57,70,0.15); }
+        @media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="hub-wrap">
+    <div class="hub-header">
+        <div class="hub-logo">🎓</div>
+        <h1>مرحباً بك في بوابة المساعد</h1>
+        <p>اختر القسم الذي تريد الدخول إليه</p>
+        <div class="user-chip"><i class="ti ti-user-check"></i><span id="userName">جاري التحميل...</span></div>
+    </div>
+    <div class="cards-grid">
+        <a href="attendance.html" class="hub-card attendance">
+            <div class="card-badge">📲 QR</div>
+            <div class="card-icon"><i class="ti ti-scan"></i></div>
+            <h3>بوابة الحضور</h3>
+            <p>تحضير طلاب السنتر عبر مسح QR أو إدخال الكود يدوياً</p>
+        </a>
+        <a href="assistant.html" class="hub-card questions">
+            <div class="card-icon"><i class="ti ti-messages"></i></div>
+            <h3>أسئلة الطلاب</h3>
+            <p>استعراض أسئلة الطلاب والرد عليهم عبر الواتساب</p>
+        </a>
+    </div>
+    <div class="logout-row">
+        <button class="logout-btn" onclick="doLogout()">
+            <i class="ti ti-logout"></i> تسجيل الخروج
+        </button>
+    </div>
+</div>
+<script>
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    const isAssistantSession = sessionStorage.getItem('assistantLoggedIn') === '1';
+    const isTeacher = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
+
+    if (!isAssistantSession && !isTeacher) {
+        alert('تم تسجيل دخولك، جاري التوجيه...');
+        window.location.href = 'login.html';
+    }
+
+    const nameEl = document.getElementById('userName');
+    if (currentUser && currentUser.firstName) {
+        nameEl.textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
+    } else if (currentUser && currentUser.name) {
+        nameEl.textContent = currentUser.name;
+    } else {
+        nameEl.textContent = 'مساعد المنصة';
+    }
+
+    // Ensure localStorage has teacher role so attendance.html auth guard passes
+    if (!currentUser || !currentUser.role) {
+        localStorage.setItem('currentUser', JSON.stringify({
+            _id: 'assistant-session-id', role: 'teacher', teacherId: null,
+            firstName: 'مساعد', lastName: 'المنصة', phone: 'assistant'
+        }));
+    }
+
+    function doLogout() {
+        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('assistantLoggedIn');
+        window.location.href = 'login.html';
+    }
+</script>
+</body>
+</html>

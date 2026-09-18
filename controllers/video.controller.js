@@ -1,4 +1,5 @@
 const Video = require('../models/video.model');
+const User = require('../models/user.model');
 const mongoose = require('mongoose');
 
 exports.toggleVideo = async (req, res, next) => {
@@ -166,6 +167,26 @@ exports.getVideoById = async (req, res, next) => {
         const video = await Video.findById(req.params.id);
         if (!video) return res.status(404).json({ success: false, message: 'الفيديو غير موجود' });
         res.json({ success: true, video });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.getVideoWatchers = async (req, res, next) => {
+    try {
+        const videoId = req.params.id;
+        const query = {
+            $or: [
+                { subscribedVideos: videoId },
+                ...(mongoose.Types.ObjectId.isValid(videoId) ? [{ subscribedVideos: new mongoose.Types.ObjectId(videoId) }] : [])
+            ]
+        };
+
+        const watchers = await User.find(query)
+            .select('_id firstName lastName phone grade parentPhone')
+            .lean();
+
+        res.json({ success: true, watchers });
     } catch (err) {
         next(err);
     }

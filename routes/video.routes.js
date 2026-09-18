@@ -15,6 +15,7 @@ router.post('/', upload.fields([
     { name: 'bookletFiles', maxCount: 10 },
     { name: 'homeworkFiles', maxCount: 5 }
 ]), videoController.createVideo);
+router.get('/:id/watchers', videoController.getVideoWatchers);
 router.get('/:id', videoController.getVideoById);
 
 module.exports = router;

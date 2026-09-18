@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>EDGE Academy</title>
+    <style>
+        /* Hero Banner Slideshow */
+        .hero-banner { position: relative; overflow: hidden; }
+        .hero-slides-track { position: relative; width: 100%; height: 100%; }
+        .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s ease; }
+        .hero-slide.active { opacity: 1; position: relative; }
+        .hero-slide--img {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .hero-banner-caption {
+            position: absolute;
+            bottom: 20px; right: 24px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            backdrop-filter: blur(4px);
+        }
+        .hero-nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(0,0,0,0.35);
+            border: none; color: #fff;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .hero-nav-btn:hover { background: rgba(0,0,0,0.6); }
+        .hero-prev { right: 16px; }
+        .hero-next { left: 16px; }
+    </style>
+</head>
+<body class="home-page">
+<header>
+    <div class="header-inner">
+        <!-- اليسار: أزرار الأوضاع -->
+        <div class="header-left">
+            <div class="header-icons">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام">🌙</button>
+            </div>
+        </div>
+
+        <!-- المنتصف: روابط التنقل -->
+        <div class="header-center">
+            <a href="index.html" class="nav-link-item active">الرئيسية</a>
+            <a href="teachers.html" class="nav-link-item ">المعلمين</a>
+            <a href="subjects.html" class="nav-link-item ">المواد الدراسية</a>
+            <a href="courses.html" class="nav-link-item ">الكورسات</a>
+            <a href="exams.html" class="nav-link-item ">الامتحانات</a>
+            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="admin.html" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
+                <i class="fas fa-crown"></i> صفحة الادمن
+            </a>
+        </div>
+
+        <!-- اليمين: إجراءات المستخدم -->
+        <nav class="header-actions" id="authActions">
+            <a href="login.html" class="btn-outline">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill">حساب جديد</a>
+        </nav>
+
+        <!-- قائمة الطالب عند تسجيل الدخول -->
+        <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
+            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                <span id="navUserName">الطالب</span>
+                <div class="user-icon-circle">👤</div>
+            </button>
+            <div class="user-dropdown-menu" id="userMenu">
+                <!-- خيار صفحة الأدمن داخل القائمة المنسدلة -->
+                <a href="admin.html" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
+                    👑 صفحة الادمن
+                </a>
+                <a href="profile.html" class="menu-item">👤 البروفايل</a>
+                <div class="menu-item balance-item">
+                    <span>💰 الرصيد:</span>
+                    <span id="userPoints">0</span> ج.م
+                </div>
+                <hr>
+                <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+            </div>
+        </div>
+
+        <!-- زر الهامبرغر (يظهر فقط على الموبايل) -->
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="admin.html" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
+            👑 صفحة الادمن
+        </a>
+        <a href="index.html" class="mobile-nav-link active">🏠 الرئيسية</a>
+        <a href="teachers.html" class="mobile-nav-link ">👨‍🏫 المعلمين</a>
+        <a href="subjects.html" class="mobile-nav-link ">📚 المواد الدراسية</a>
+        <a href="courses.html" class="mobile-nav-link ">🎥 الكورسات</a>
+        <a href="exams.html" class="mobile-nav-link ">📝 الامتحانات</a>
+        <div class="mobile-menu-auth" id="mobileAuthGuest">
+            <a href="login.html" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill" style="text-align:center;">حساب جديد</a>
+        </div>
+        <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
+            <a href="profile.html" class="mobile-nav-link">👤 البروفايل</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
+        </div>
+    </div>
+</header>
+
+
+ <section class="main-hero-area">
+    <!-- Hero Slideshow -->
+    <div class="hero-banner" id="heroBanner">
+        <!-- Slides Container -->
+        <div class="hero-slides-track" id="heroSlidesTrack">
+            <!-- الـ Default Slide -->
+            <div class="hero-slide hero-slide--default active" id="defaultSlide">
+                <div class="hero-text-box">
+                    <div id="userGreeting" style="display: none;">
+                        <h2 class="welcome-label"> </h2>
+                        <h1 class="dynamic-name" id="userNamePlaceholder"></h1>
+                    </div>
+                    <div id="guestGreeting">
+                        <h1 class="main-title"> </h1>
+                    </div>
+                    <p class="sub-title">   </p>
+                    <div class="title-separator"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- أزرار التنقل -->
+        <button class="hero-nav-btn hero-prev" id="heroPrev" onclick="heroSlide(-1)" style="display:none;">&#10094;</button>
+        <button class="hero-nav-btn hero-next" id="heroNext" onclick="heroSlide(1)" style="display:none;">&#10095;</button>
+
+        <!-- النقاط السفلية -->
+        <div class="hero-pagination" id="heroPagination">
+            <span class="hp-dot active"></span>
+        </div>
+    </div>
+</section>
+
+<!-- لوحة وصول المسؤول السريعة في الرئيسية -->
+<div id="adminHeroBadge" style="display:none; max-width:1200px; margin: 18px auto 0 auto; padding: 0 20px;">
+    <div style="background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid #3b82f6; border-radius: 14px; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 10px; background: rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 1.3rem;">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div>
+                <h4 style="margin: 0; color: #f8fafc; font-size: 1.05rem; font-weight: 700;">أهلاً بك في لوحة تحكم المسؤول (Admin)</h4>
+                <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">يمكنك إدارة المنصة بكل سهولة، وجميع المحاضرات والامتحانات والكورسات مفتوحة لك بالكامل للمعاينة بدون أي قيود.</p>
+            </div>
+        </div>
+        <a href="admin.html" class="btn-fill" style="background: #2563eb; color: #fff; padding: 10px 22px; border-radius: 10px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.35);">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>صفحة الادمن</span>
+        </a>
+    </div>
+</div>
+    
+
+    <!-- قسم المعلمين -->
+    <section class="teachers-section">
+        <div class="section-container">
+            <div class="teachers-section-header">
+                <div class="teachers-header-text">
+                    <h2 class="section-title" style="text-align:right; margin-bottom:4px;">المُعلمين المتميزين</h2>
+                    <p class="section-subtitle" style="text-align:right; margin:0;">تعلم من أفضل الأساتذة المتخصصين لتصل لأعلى الدرجات</p>
+                </div>
+                <div class="teachers-header-actions">
+                    <div class="teachers-nav-buttons">
+                        <button class="teachers-nav-btn" onclick="scrollTeachers(1)" aria-label="السابق">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <button class="teachers-nav-btn" onclick="scrollTeachers(-1)" aria-label="التالي">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                    <a href="teachers.html" class="btn-fill teachers-all-btn">
+                        <span>تصفح الجميع</span>
+                        <i class="fas fa-arrow-left" style="font-size:0.85rem;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="teachers-carousel-wrap">
+                <div class="teachers-grid" id="teachersGrid"></div>
+            </div>
+
+            <div class="teachers-dots-container" id="teachersDots"></div>
+        </div>
+    </section>
+<section class="subjects-section">
+    <h2 class="section-title">المواد الدراسية</h2>
+    
+    <div class="subjects-container">
+        <div class="subjects-wrapper" id="subjectsWrapper">
+            <!-- الكروت ستظهر هنا بواسطة JS -->
+        </div>
+    </div>
+
+    <!-- شريط التحكم السفلي للمواد الدراسية -->
+<div class="subjects-controls">
+    <button class="nav-btn prev" onclick="scrollSubjects(-1)" aria-label="السابق">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    <div class="pagination-dots" id="paginationDots"></div>
+    <button class="nav-btn next" onclick="scrollSubjects(1)" aria-label="التالي">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+</div>
+</section>
+<section class="courses-section" id="latest-videos-section" style="background-color: var(--surface-alt);">
+    <div class="container">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:10px;">
+            <h2 class="section-main-title" style="margin-bottom:0;">الكورسات التعليمية المتاحة</h2>
+            <a href="courses.html" class="btn-fill" style="font-size:0.9rem; padding:10px 22px;">
+                <i class="fas fa-th-large" style="margin-left:6px;"></i>عرض جميع الكورسات
+            </a>
+        </div>
+        <div class="video-grid" id="latest-videos">
+            <!-- الكورسات ستظهر هنا بواسطة JS -->
+        </div>
+    </div>
+</section>
+
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <!-- الصف العلوي -->
+        <div class="footer-top">
+            <div></div>
+            
+            <div class="footer-social">
+                <span>تابعنا على السوشيال ميديا</span>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/18t8AZbrCD/?mibextid=wwXIfr"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="footer-line">
+
+        <!-- الصف السفلي -->
+        <div class="footer-bottom" style="justify-content: center; text-align: center;">
+            <div class="footer-info">
+                <p>© 2026 EDGE Academy. جميع الحقوق محفوظة. تطوير <a href="https://www.facebook.com/share/19P6ZMcvw1/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style="color: var(--primary-red); text-decoration: none; font-weight: 700;">ENG/Zeyad Mohamed</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js" defer></script>
+<script src="disable-inspect.js" defer></script>
+
+</body>
+</html>

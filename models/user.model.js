@@ -14,7 +14,15 @@ const userSchema = new mongoose.Schema({
     secondLanguage: { type: String }, // Optional for prep school
     password: { type: String, required: true },
     balance: { type: Number, default: 0 },
-    role: { type: String, enum: ['student', 'admin'], default: 'student' },
+    role: { type: String, enum: ['student', 'admin', 'teacher', 'assistant'], default: 'student' },
+    imagePath: { type: String, default: '' },
+    teacherId: { type: mongoose.Schema.Types.Mixed, default: null },
+    devices: [{
+        deviceId: { type: String, required: true },
+        deviceName: { type: String, default: 'متصفح ويب' },
+        ip: { type: String, default: 'unknown' },
+        lastUsed: { type: Date, default: Date.now }
+    }],
     
     // تم إضافة حقول المتابعة والاشتراك لقاعدة البيانات هنا بشكل صحيح
     followedTeachers: { 
@@ -22,7 +30,7 @@ const userSchema = new mongoose.Schema({
         default: [] 
     },
     subscribedVideos: { 
-        type: [String], 
+        type: [mongoose.Schema.Types.Mixed], 
         default: [] 
     },
     subscribedCourses: {

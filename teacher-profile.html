@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>بروفايل المدرس | EDGE Academy</title>
+    <style>
+/* ═══════════════════════════════════════════════════
+   👨‍🏫 TEACHER PROFILE — MODERN BASSTHALK STYLE
+═══════════════════════════════════════════════════ */
+.tp-hero-section {
+    background: linear-gradient(135deg, #152038 0%, #1a2744 50%, #0d1526 100%);
+    padding: 50px 5% 55px;
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.tp-hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 80% 40%, rgba(26, 107, 219, 0.25) 0%, transparent 60%);
+    pointer-events: none;
+}
+.tp-hero-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    position: relative;
+    z-index: 2;
+    flex-wrap: wrap;
+}
+.tp-avatar-box {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+}
+.tp-avatar-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #1a6bdb;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    background: #1a2744;
+}
+.tp-avatar-badge {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background: #00b894;
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    border: 2px solid #152038;
+}
+.tp-hero-details {
+    flex: 1;
+    min-width: 280px;
+}
+.tp-teacher-name {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0 0 8px;
+    color: #ffffff;
+}
+.tp-subject-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(26, 107, 219, 0.25);
+    color: #3d8ef0;
+    border: 1px solid rgba(61, 142, 240, 0.35);
+    padding: 5px 16px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+.tp-bio-text {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    line-height: 1.6;
+    margin: 0 0 18px;
+    max-width: 680px;
+}
+.tp-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.tp-stat-pill {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: #e2e8f0;
+}
+.tp-stat-pill strong {
+    color: #00b894;
+    font-size: 1.15rem;
+}
+
+/* ─── Filter Bar ─── */
+.tp-filter-bar {
+    max-width: 1140px;
+    margin: 30px auto 0;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+.tp-grade-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.tp-chip {
+    padding: 8px 18px;
+    border-radius: 50px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--text-dark);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+.tp-chip:hover {
+    border-color: #1a6bdb;
+    color: #1a6bdb;
+}
+.tp-chip.active {
+    background: #1a6bdb;
+    color: #ffffff;
+    border-color: #1a6bdb;
+    box-shadow: 0 4px 14px rgba(26, 107, 219, 0.3);
+}
+
+.tp-search-box {
+    position: relative;
+    min-width: 220px;
+}
+.tp-search-box i {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    font-size: 0.85rem;
+}
+.tp-search-input {
+    width: 100%;
+    padding: 9px 36px 9px 14px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--text-dark);
+    font-family: inherit;
+    font-size: 0.88rem;
+    outline: none;
+    box-sizing: border-box;
+}
+.tp-search-input:focus {
+    border-color: #1a6bdb;
+}
+
+/* ─── Courses Grid Section ─── */
+.tp-content-section {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 24px 5% 70px;
+}
+.tp-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.tp-section-heading h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.tp-section-heading h2 i {
+    color: #1a6bdb;
+}
+
+.tp-courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 24px;
+}
+
+.tp-empty-box {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--surface);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--gray);
+}
+.tp-empty-box i {
+    font-size: 3rem;
+    opacity: 0.4;
+    margin-bottom: 12px;
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .tp-hero-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .tp-stats-row {
+        justify-content: center;
+    }
+    .tp-teacher-name {
+        font-size: 1.6rem;
+    }
+    .tp-courses-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body class="teacher-profile-page">
+<header>
+    <div class="header-inner">
+        <!-- اليسار: أزرار الأوضاع -->
+        <div class="header-left">
+            <div class="header-icons">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام">🌙</button>
+            </div>
+        </div>
+
+        <!-- المنتصف: روابط التنقل -->
+        <div class="header-center">
+            <a href="index.html" class="nav-link-item ">الرئيسية</a>
+            <a href="teachers.html" class="nav-link-item active">المعلمين</a>
+            <a href="subjects.html" class="nav-link-item ">المواد الدراسية</a>
+            <a href="courses.html" class="nav-link-item ">الكورسات</a>
+            <a href="exams.html" class="nav-link-item ">الامتحانات</a>
+            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="admin.html" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
+                <i class="fas fa-crown"></i> صفحة الادمن
+            </a>
+        </div>
+
+        <!-- اليمين: إجراءات المستخدم -->
+        <nav class="header-actions" id="authActions">
+            <a href="login.html" class="btn-outline">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill">حساب جديد</a>
+        </nav>
+
+        <!-- قائمة الطالب عند تسجيل الدخول -->
+        <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
+            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                <span id="navUserName">الطالب</span>
+                <div class="user-icon-circle">👤</div>
+            </button>
+            <div class="user-dropdown-menu" id="userMenu">
+                <!-- خيار صفحة الأدمن داخل القائمة المنسدلة -->
+                <a href="admin.html" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
+                    👑 صفحة الادمن
+                </a>
+                <a href="profile.html" class="menu-item">👤 البروفايل</a>
+                <div class="menu-item balance-item">
+                    <span>💰 الرصيد:</span>
+                    <span id="userPoints">0</span> ج.م
+                </div>
+                <hr>
+                <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+            </div>
+        </div>
+
+        <!-- زر الهامبرغر (يظهر فقط على الموبايل) -->
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="admin.html" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
+            👑 صفحة الادمن
+        </a>
+        <a href="index.html" class="mobile-nav-link ">🏠 الرئيسية</a>
+        <a href="teachers.html" class="mobile-nav-link active">👨‍🏫 المعلمين</a>
+        <a href="subjects.html" class="mobile-nav-link ">📚 المواد الدراسية</a>
+        <a href="courses.html" class="mobile-nav-link ">🎥 الكورسات</a>
+        <a href="exams.html" class="mobile-nav-link ">📝 الامتحانات</a>
+        <div class="mobile-menu-auth" id="mobileAuthGuest">
+            <a href="login.html" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill" style="text-align:center;">حساب جديد</a>
+        </div>
+        <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
+            <a href="profile.html" class="mobile-nav-link">👤 البروفايل</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
+        </div>
+    </div>
+</header>
+
+
+<!-- ═══ Teacher Hero ═══ -->
+<section class="tp-hero-section" id="tpHeroSection">
+    <div class="tp-hero-container" id="tpHeroContainer">
+        <div class="tp-avatar-box">
+            <div style="width:140px;height:140px;border-radius:50%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#64748b;">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+            </div>
+        </div>
+        <div class="tp-hero-details">
+            <h1 class="tp-teacher-name">جاري تحميل بيانات المدرس...</h1>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ Filters Bar ═══ -->
+<div class="tp-filter-bar" id="tpFilterBar">
+    <div class="tp-grade-chips" id="tpGradeChips">
+        <button class="tp-chip active" data-grade="all" onclick="filterTeacherGrade('all', this)">
+            <i class="fas fa-border-all"></i> جميع المراحل
+        </button>
+    </div>
+    <div class="tp-search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="tpSearchInput" class="tp-search-input" placeholder="ابحث في الكورسات..." oninput="applyTeacherFilter()">
+    </div>
+</div>
+
+<!-- ═══ Courses Grid ═══ -->
+<main class="tp-content-section">
+    <div class="tp-section-heading">
+        <h2><i class="fas fa-layer-group"></i> الكورسات والمحاضرات المتاحة</h2>
+        <span style="font-size:0.88rem; font-weight:700; color:var(--gray);" id="tpCoursesCountText">0 كورس</span>
+    </div>
+    <div class="tp-courses-grid" id="tpCoursesGrid">
+        <div style="grid-column:1/-1; text-align:center; padding:50px; color:var(--gray);">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p style="margin-top:10px;">جاري تحميل الكورسات...</p>
+        </div>
+    </div>
+</main>
+
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <!-- الصف العلوي -->
+        <div class="footer-top">
+            <div></div>
+            
+            <div class="footer-social">
+                <span>تابعنا على السوشيال ميديا</span>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/18t8AZbrCD/?mibextid=wwXIfr"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="footer-line">
+
+        <!-- الصف السفلي -->
+        <div class="footer-bottom" style="justify-content: center; text-align: center;">
+            <div class="footer-info">
+                <p>© 2026 EDGE Academy. جميع الحقوق محفوظة. تطوير <a href="https://www.facebook.com/share/19P6ZMcvw1/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style="color: var(--primary-red); text-decoration: none; font-weight: 700;">ENG/Zeyad Mohamed</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js" defer></script>
+<script src="disable-inspect.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>تفاصيل ومحتوى الكورس | EDGE Academy</title>
+    <style>
+/* ═══════════════════════════════════════════════════
+   🎬 COURSE VIEW PAGE — MODERN BASSTHALK STYLE
+═══════════════════════════════════════════════════ */
+.cv-page-wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 30px 5% 70px;
+}
+
+/* ─── Breadcrumb ─── */
+.cv-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--gray);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+.cv-breadcrumb a {
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.cv-breadcrumb a:hover {
+    color: #1a6bdb;
+}
+.cv-breadcrumb i {
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+.cv-breadcrumb span {
+    color: #1a6bdb;
+}
+
+/* ─── 2-Column Grid Layout ─── */
+.cv-main-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+    align-items: start;
+}
+
+/* ─── Right Column: Course Content ─── */
+.cv-content-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cv-header-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 4px 24px rgba(26, 107, 219, 0.06);
+}
+
+.cv-course-title {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    margin: 0 0 14px;
+    line-height: 1.35;
+}
+
+.cv-teacher-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+.cv-teacher-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2.5px solid #1a6bdb;
+}
+.cv-teacher-info-name {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    text-decoration: none;
+}
+.cv-teacher-info-name:hover {
+    color: #1a6bdb;
+}
+.cv-teacher-info-sub {
+    font-size: 0.84rem;
+    color: var(--gray);
+}
+
+.cv-tags-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.cv-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    background: var(--surface-alt);
+    color: var(--text-dark);
+}
+.cv-badge.badge-enrolled {
+    background: rgba(0, 184, 148, 0.15);
+    color: #00b894;
+    border: 1px solid rgba(0, 184, 148, 0.3);
+}
+
+.cv-desc-box {
+    font-size: 0.95rem;
+    color: var(--gray);
+    line-height: 1.65;
+    margin: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+}
+
+/* ─── Lectures Section ─── */
+.cv-lectures-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 26px 30px;
+    box-shadow: 0 4px 24px rgba(26, 107, 219, 0.06);
+}
+
+.cv-lectures-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.cv-lectures-header h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.cv-lectures-header h2 i {
+    color: #1a6bdb;
+}
+.cv-count-pill {
+    background: rgba(26, 107, 219, 0.1);
+    color: #1a6bdb;
+    padding: 5px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+/* ─── Video Item Card (Interactive Lecture Block) ─── */
+.cv-videos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cv-v-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: var(--surface-alt);
+    border: 1.5px solid transparent;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.cv-v-item:hover {
+    border-color: rgba(26, 107, 219, 0.35);
+    background: var(--surface);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26, 107, 219, 0.09);
+}
+.cv-v-item.unlocked:hover {
+    border-color: rgba(0, 184, 148, 0.5);
+}
+
+.cv-v-num {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+    background: var(--surface);
+    color: var(--text-dark);
+    border: 1.5px solid var(--border);
+}
+.cv-v-item.unlocked .cv-v-num {
+    background: rgba(0, 184, 148, 0.15);
+    color: #00b894;
+    border-color: rgba(0, 184, 148, 0.3);
+}
+
+.cv-v-thumbnail {
+    width: 96px;
+    height: 62px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #e2e8f0;
+}
+
+.cv-v-details {
+    flex: 1;
+    min-width: 0;
+}
+.cv-v-title {
+    font-size: 1.02rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+    line-height: 1.35;
+}
+.cv-v-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 0.82rem;
+    color: var(--gray);
+    flex-wrap: wrap;
+}
+.cv-v-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cv-v-action-btn {
+    flex-shrink: 0;
+}
+.cv-play-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 20px;
+    border-radius: 12px;
+    background: #00b894;
+    color: #ffffff !important;
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(0, 184, 148, 0.25);
+}
+.cv-play-btn:hover {
+    background: #009879;
+    transform: scale(1.04);
+}
+.cv-lock-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 12px;
+    background: rgba(26, 107, 219, 0.08);
+    color: #1a6bdb;
+    font-weight: 800;
+    font-size: 0.86rem;
+    border: 1.5px solid rgba(26, 107, 219, 0.2);
+    cursor: pointer;
+}
+.cv-exam-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #ffffff !important;
+    font-weight: 800;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+}
+.cv-exam-btn:hover {
+    background: linear-gradient(135deg, #d97706, #b45309);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45);
+}
+
+/* ─── Left Column: Sticky Summary Card ─── */
+.cv-sidebar-col {
+    position: sticky;
+    top: 90px;
+}
+
+.cv-summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(26, 107, 219, 0.08);
+}
+
+.cv-summary-thumb-box {
+    position: relative;
+    width: 100%;
+    height: 195px;
+    background: #e8effe;
+}
+.cv-summary-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.cv-summary-price-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(13, 21, 38, 0.85);
+    backdrop-filter: blur(6px);
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 8px;
+}
+
+.cv-summary-body {
+    padding: 24px;
+}
+.cv-summary-price-text {
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: #1a6bdb;
+    margin-bottom: 16px;
+    text-align: right;
+}
+
+.cv-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 0.88rem;
+    color: var(--text-dark);
+}
+.cv-features-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.cv-features-list li i {
+    color: #00b894;
+    font-size: 0.95rem;
+    width: 18px;
+}
+
+.cv-summary-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.cv-btn-subscribe-main {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    background: #1a6bdb;
+    color: #ffffff;
+    border: none;
+    font-weight: 800;
+    font-size: 1.02rem;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(26, 107, 219, 0.3);
+    transition: all 0.25s ease;
+}
+.cv-btn-subscribe-main:hover {
+    background: #1355b5;
+    transform: translateY(-2px);
+}
+
+.cv-enrolled-banner {
+    background: rgba(0, 184, 148, 0.15);
+    border: 1.5px solid #00b894;
+    border-radius: 12px;
+    padding: 13px;
+    color: #00b894;
+    font-weight: 800;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* ─── Activation Modal ─── */
+.cv-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 21, 38, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+.cv-modal-backdrop.active {
+    opacity: 1;
+    pointer-events: all;
+}
+.cv-modal-dialog {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 34px 28px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    transform: scale(0.92);
+    transition: transform 0.25s ease;
+}
+.cv-modal-backdrop.active .cv-modal-dialog {
+    transform: scale(1);
+}
+.cv-modal-dialog h3 {
+    color: var(--text-dark);
+    font-size: 1.3rem;
+    font-weight: 900;
+    margin: 10px 0 6px;
+}
+.cv-modal-dialog p {
+    color: var(--gray);
+    font-size: 0.88rem;
+    margin: 0 0 20px;
+}
+.cv-code-input {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--surface-alt);
+    color: var(--text-dark);
+    font-size: 1.15rem;
+    text-align: center;
+    letter-spacing: 2px;
+    font-family: inherit;
+    outline: none;
+    margin-bottom: 14px;
+    box-sizing: border-box;
+}
+.cv-code-input:focus {
+    border-color: #1a6bdb;
+}
+.cv-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1a6bdb;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+}
+.cv-submit-btn:hover {
+    background: #1355b5;
+}
+.cv-cancel-btn {
+    color: var(--gray);
+    font-size: 0.88rem;
+    cursor: pointer;
+}
+.cv-cancel-btn:hover {
+    color: var(--text-dark);
+}
+
+@media (max-width: 900px) {
+    .cv-main-layout {
+        grid-template-columns: 1fr;
+    }
+    .cv-sidebar-col {
+        position: static;
+        order: -1;
+    }
+}
+</style>
+</head>
+<body class="course-view-page">
+<header>
+    <div class="header-inner">
+        <!-- اليسار: أزرار الأوضاع -->
+        <div class="header-left">
+            <div class="header-icons">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام">🌙</button>
+            </div>
+        </div>
+
+        <!-- المنتصف: روابط التنقل -->
+        <div class="header-center">
+            <a href="index.html" class="nav-link-item ">الرئيسية</a>
+            <a href="teachers.html" class="nav-link-item ">المعلمين</a>
+            <a href="subjects.html" class="nav-link-item ">المواد الدراسية</a>
+            <a href="courses.html" class="nav-link-item active">الكورسات</a>
+            <a href="exams.html" class="nav-link-item ">الامتحانات</a>
+            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="admin.html" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
+                <i class="fas fa-crown"></i> صفحة الادمن
+            </a>
+        </div>
+
+        <!-- اليمين: إجراءات المستخدم -->
+        <nav class="header-actions" id="authActions">
+            <a href="login.html" class="btn-outline">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill">حساب جديد</a>
+        </nav>
+
+        <!-- قائمة الطالب عند تسجيل الدخول -->
+        <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
+            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                <span id="navUserName">الطالب</span>
+                <div class="user-icon-circle">👤</div>
+            </button>
+            <div class="user-dropdown-menu" id="userMenu">
+                <!-- خيار صفحة الأدمن داخل القائمة المنسدلة -->
+                <a href="admin.html" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
+                    👑 صفحة الادمن
+                </a>
+                <a href="profile.html" class="menu-item">👤 البروفايل</a>
+                <div class="menu-item balance-item">
+                    <span>💰 الرصيد:</span>
+                    <span id="userPoints">0</span> ج.م
+                </div>
+                <hr>
+                <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+            </div>
+        </div>
+
+        <!-- زر الهامبرغر (يظهر فقط على الموبايل) -->
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="admin.html" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
+            👑 صفحة الادمن
+        </a>
+        <a href="index.html" class="mobile-nav-link ">🏠 الرئيسية</a>
+        <a href="teachers.html" class="mobile-nav-link ">👨‍🏫 المعلمين</a>
+        <a href="subjects.html" class="mobile-nav-link ">📚 المواد الدراسية</a>
+        <a href="courses.html" class="mobile-nav-link active">🎥 الكورسات</a>
+        <a href="exams.html" class="mobile-nav-link ">📝 الامتحانات</a>
+        <div class="mobile-menu-auth" id="mobileAuthGuest">
+            <a href="login.html" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill" style="text-align:center;">حساب جديد</a>
+        </div>
+        <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
+            <a href="profile.html" class="mobile-nav-link">👤 البروفايل</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
+        </div>
+    </div>
+</header>
+
+
+<div class="cv-page-wrap">
+    <!-- Breadcrumb -->
+    <nav class="cv-breadcrumb" id="cvBreadcrumb">
+        <a href="index.html">الرئيسية</a>
+        <i class="fas fa-chevron-left"></i>
+        <a href="courses.html">الكورسات</a>
+        <i class="fas fa-chevron-left"></i>
+        <span id="cvBreadcrumbCurrent">جاري التحميل...</span>
+    </nav>
+
+    <!-- 2-Column Main Layout -->
+    <div class="cv-main-layout" id="cvMainLayout">
+        <!-- Right: Course Information & Lectures List -->
+        <div class="cv-content-col">
+            <!-- Header Card -->
+            <div class="cv-header-card" id="cvHeaderCard">
+                <div style="text-align:center; padding:30px; color:var(--gray);">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p style="margin-top:10px;">جاري تحميل بيانات الكورس...</p>
+                </div>
+            </div>
+
+            <!-- Lectures Card -->
+            <div class="cv-lectures-card">
+                <div class="cv-lectures-header">
+                    <h2><i class="fas fa-play-circle"></i> محاضرات ومحتوى الكورس</h2>
+                    <div class="cv-count-pill" id="cvLecturesCountBadge">0 محاضرة</div>
+                </div>
+                <div class="cv-videos-list" id="cvVideosList">
+                    <div style="text-align:center; padding:30px; color:var(--gray);">
+                        <i class="fas fa-spinner fa-spin"></i> جاري تحميل المحاضرات...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left: Sticky Course Summary Sidebar -->
+        <div class="cv-sidebar-col" id="cvSidebarCol">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+</div>
+
+<!-- ═══ Activation Modal ═══ -->
+<div class="cv-modal-backdrop" id="cvBuyModal">
+    <div class="cv-modal-dialog">
+        <div style="font-size: 2.5rem; margin-bottom: 6px;">🔑</div>
+        <h3>تفعيل واشتراك في الكورس</h3>
+        <p id="cvModalDesc">أدخل كود الشحن الخاص بالكورس لتفعيل كافة محاضراته فوراً:</p>
+        <input type="text" class="cv-code-input" id="cvModalCodeInput" placeholder="أدخل الكود هنا..." maxlength="40">
+        <button class="cv-submit-btn" id="cvModalSubmitBtn" onclick="handleCourseActivation()">✅ تفعيل الكورس الآن</button>
+        <div id="cvModalFeedback" style="margin-top:8px;font-weight:700;font-size:0.9rem;"></div>
+        <div class="cv-cancel-btn" onclick="closeActivationModal()">إلغاء</div>
+    </div>
+</div>
+
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <!-- الصف العلوي -->
+        <div class="footer-top">
+            <div></div>
+            
+            <div class="footer-social">
+                <span>تابعنا على السوشيال ميديا</span>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/18t8AZbrCD/?mibextid=wwXIfr"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="footer-line">
+
+        <!-- الصف السفلي -->
+        <div class="footer-bottom" style="justify-content: center; text-align: center;">
+            <div class="footer-info">
+                <p>© 2026 EDGE Academy. جميع الحقوق محفوظة. تطوير <a href="https://www.facebook.com/share/19P6ZMcvw1/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style="color: var(--primary-red); text-decoration: none; font-weight: 700;">ENG/Zeyad Mohamed</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js" defer></script>
+<script src="disable-inspect.js" defer></script>
+
+</body>
+</html>

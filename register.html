@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <title>حساب جديد | EDGE Academy</title>
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="header-icons">
+                    <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار">☀</button>
+                    <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام">🌙</button>
+                </div>
+            </div>
+            <nav class="header-actions">
+                <a href="login.html" class="btn-outline">تسجيل الدخول</a>
+                <a href="index.html" class="btn-fill">الرئيسية</a>
+            </nav>
+        </div>
+    </header>
+    <div class="auth-page">
+        <div class="auth-left">
+            <img src="imges/st.jpg" alt="شعار EDGE Academy" class="hero-image">
+            <div class="auth-left-content">
+                <h1>انضم الآن لأكبر مجتمع من أوائل الجمهورية</h1>
+                <p>وتعلَّم مع EDGE Academy بأسلوب ممتع وفعال.</p>
+            </div>
+        </div>
+        <div class="auth-right">
+            <div class="form-panel">
+                <p class="form-subtitle">انشاء حساب جديد</p>
+                
+                <!-- مؤشر الخطوات -->
+                <div class="steps-indicator">
+                    <div class="step active" data-step="1">
+                        <span class="step-number">1</span>
+                        <span class="step-label">شخصي</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="2">
+                        <span class="step-number">2</span>
+                        <span class="step-label">أكاديمي</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="3">
+                        <span class="step-number">3</span>
+                        <span class="step-label">كلمة المرور</span>
+                    </div>
+                </div>
+
+                <form id="registrationForm" onsubmit="return handleRegister(event)">
+                    <!-- الخطوة الأولى: البيانات الشخصية -->
+                    <div class="form-step active" data-step="1">
+                        <p class="form-note">أولاً: أكمل بياناتك الشخصية</p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>الاسم الأول*</label>
+                                <input type="text" name="firstName" placeholder="مثال: زياد" required>
+                            </div>
+                            <div class="form-group">
+                                <label>الاسم الأخير*</label>
+                                <input type="text" name="lastName" placeholder="مثال: أشرف" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>الرقم القومي* (14 رقم)</label>
+                                <input type="text" id="nationalId" name="nationalId" placeholder="ادخل الرقم القومي المكون من 14 رقم" maxlength="14" required>
+                            </div>
+                            <div class="form-group">
+                                <label>تاريخ الميلاد*</label>
+                                <input type="date" id="birthDate" name="birthDate" required style="pointer-events:none; cursor:not-allowed;">
+                            </div>
+                            <div class="form-group">
+                                <label>رقم الهاتف*</label>
+                                <input type="tel" name="phone" placeholder="ادخل رقم الهاتف" maxlength="11" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>رقم هاتف ولي الأمر*</label>
+                                <input type="tel" name="parentPhone" placeholder="ادخل رقم هاتف ولي الأمر" maxlength="11" required>
+                            </div>
+                            <div class="form-group">
+                                <label>المحافظة*</label>
+                                <select name="governorate" required>
+                                    <option value="">اختر محافظتك</option>
+                                    <option value="القاهرة">القاهرة</option>
+                                    <option value="الجيزة">الجيزة</option>
+                                    <option value="الإسكندرية">الإسكندرية</option>
+                                    <option value="الدقهلية">الدقهلية</option>
+                                    <option value="البحيرة">البحيرة</option>
+                                    <option value="الشرقية">الشرقية</option>
+                                    <option value="القليوبية">القليوبية</option>
+                                    <option value="الغربية">الغربية</option>
+                                    <option value="المنوفية">المنوفية</option>
+                                    <option value="كفر الشيخ">كفر الشيخ</option>
+                                    <option value="دمياط">دمياط</option>
+                                    <option value="بورسعيد">بورسعيد</option>
+                                    <option value="الإسماعيلية">الإسماعيلية</option>
+                                    <option value="السويس">السويس</option>
+                                    <option value="شمال سيناء">شمال سيناء</option>
+                                    <option value="جنوب سيناء">جنوب سيناء</option>
+                                    <option value="الفيوم">الفيوم</option>
+                                    <option value="بني سويف">بني سويف</option>
+                                    <option value="المنيا">المنيا</option>
+                                    <option value="أسيوط">أسيوط</option>
+                                    <option value="سوهاج">سوهاج</option>
+                                    <option value="قنا">قنا</option>
+                                    <option value="الأقصر">الأقصر</option>
+                                    <option value="أسوان">أسوان</option>
+                                    <option value="البحر الأحمر">البحر الأحمر</option>
+                                    <option value="الوادي الجديد">الوادي الجديد</option>
+                                    <option value="مطروح">مطروح</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الخطوة الثانية: البيانات الدراسية -->
+                    <div class="form-step" data-step="2">
+                        <p class="form-note">ثانياً: أكمل البيانات الدراسية الخاصة بك</p>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>الصف الدراسي*</label>
+                                <select id="gradeSelect" name="grade" required>
+                                    <option value="">اختر الصف الدراسي</option>
+                                    <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                                    <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                                    <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                                    <option value="الصف الأول الثانوي">الأول الثانوي</option>
+                                    <option value="الصف الثاني الثانوي">الثاني الثانوي</option>
+                                    <option value="الصف الثالث الثانوي">الثالث الثانوي</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group" id="sectionGroup">
+                                <label>الشعبة*</label>
+                                <select name="section" required>
+                                    <option value="">اختر الشعبة</option>
+                                    <option value="علمي علوم">علمي علوم</option>
+                                    <option value="علمي رياضة">علمي رياضة</option>
+                                    <option value="أدبي">أدبي</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>اللغة الثانية*</label>
+                                <select name="secondLanguage" required>
+                                    <option value="">اختر اللغة الثانية</option>
+                                    <option value="إنجليزي">إنجليزي</option>
+                                    <option value="فرنسي">فرنسي</option>
+                                    <option value="ألماني">ألماني</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الخطوة الثالثة: كلمة المرور -->
+                    <div class="form-step" data-step="3">
+                        <p class="form-note">ثالثاً: أنشئ كلمة مرور قوية</p>
+                        <div class="form-group">
+                            <label>اسم المستخدم*</label>
+                            <input type="text" name="username" placeholder="مثال: ziyad.ashraf" required>
+                        </div>
+                        <div class="form-group">
+                            <label>كلمة المرور*</label>
+                            <input type="password" name="password" placeholder="أدخل كلمة المرور قوية" required>
+                        </div>
+                        <div class="form-group">
+                            <label>تأكيد كلمة المرور*</label>
+                            <input type="password" name="confirmPassword" placeholder="أعد إدخال كلمة المرور" required>
+                        </div>
+                    </div>
+
+                    <!-- زر التنقل بين الخطوات -->
+                    <div class="form-navigation">
+                        <button type="button" class="btn-outline" id="prevBtn" style="display:none" onclick="previousStep()">السابق</button>
+                        <button type="button" class="btn-fill" id="nextBtn" onclick="nextStep()">التالي</button>
+                        <button type="submit" class="btn-red" id="submitBtn" style="display:none">إنشاء الحساب</button>
+                    </div>
+                </form>
+                <p class="form-footer">هل لديك حساب بالفعل؟ <a href="login.html">قم بتسجيل الدخول من هنا</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js" defer></script>
+    <script src="disable-inspect.js" defer></script>
+</body>
+</html>

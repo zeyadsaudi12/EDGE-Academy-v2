@@ -212,3 +212,17 @@ exports.subscribeToCourse = async (req, res, next) => {
         next(err);
     }
 };
+
+// GET /api/courses/:id/students  → قائمة الطلاب المشتركين في الكورس
+exports.getCourseStudents = async (req, res, next) => {
+    try {
+        const courseId = req.params.id;
+        const students = await User.find({
+            'subscribedCourses.courseId': courseId
+        }).select('_id firstName lastName phone grade parentPhone').lean();
+
+        res.json({ success: true, students });
+    } catch (err) {
+        next(err);
+    }
+};

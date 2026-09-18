@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 exports.register = async (req, res, next) => {
     try {
@@ -20,7 +21,8 @@ exports.register = async (req, res, next) => {
         }
 
         const newUser = new User({
-            username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password
+            username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password,
+            devices: []
         });
 
         await newUser.save();
@@ -32,11 +34,21 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
     try {
-        const { phone, password } = req.body;
+        const { phone, password, deviceName } = req.body;
+        let { deviceId } = req.body;
 
         // التحقق من حساب الأدمن المخصص
         if (phone === '01556448880' && password === 'masar2027@agency') {
-            return res.json({ success: true, user: { _id: "admin-master-id", role: 'admin', firstName: 'الإدارة', lastName: '', phone: '01556448880' } });
+            return res.json({ 
+                success: true, 
+                user: { 
+                    _id: "admin-master-id", 
+                    role: 'admin', 
+                    firstName: 'الإدارة', 
+                    lastName: '', 
+                    phone: '01556448880' 
+                } 
+            });
         }
 
         const user = await User.findOne({ phone, password });
@@ -44,7 +56,46 @@ exports.login = async (req, res, next) => {
             return res.status(401).json({ success: false, message: 'رقم الهاتف أو كلمة المرور غير صحيحة' });
         }
 
-        res.json({ success: true, user });
+        // فحص أمان الأجهزة للطلاب
+        if (user.role === 'student') {
+            if (!user.devices) user.devices = [];
+            
+            if (!deviceId) {
+                deviceId = 'dev_' + crypto.randomBytes(16).toString('hex');
+            }
+
+            const foundIndex = user.devices.findIndex(d => d.deviceId === deviceId);
+
+            if (foundIndex !== -1) {
+                user.devices[foundIndex].ip = req.ip || 'unknown';
+                user.devices[foundIndex].lastUsed = new Date();
+            } else {
+                if (user.devices.length >= 2) {
+                    return res.status(403).json({
+                        success: false,
+                        message: '❌ لقد تم الوصول للحد الأقصى للأجهزة المسموح بها (جهازين). يرجى تسجيل الخروج من أجهزتك الأخرى أولاً أو التواصل مع الإدارة لإعادة ضبط حسابك.'
+                    });
+                }
+
+                user.devices.push({
+                    deviceId,
+                    deviceName: deviceName || 'متصفح ويب',
+                    ip: req.ip || 'unknown',
+                    lastUsed: new Date()
+                });
+            }
+
+            user.lastActive = new Date();
+            await user.save();
+        }
+
+        const userData = user.toObject();
+        delete userData.password;
+        if (deviceId) {
+            userData.deviceId = deviceId;
+        }
+
+        res.json({ success: true, user: userData, deviceId });
     } catch (err) {
         next(err);
     }
@@ -52,14 +103,36 @@ exports.login = async (req, res, next) => {
 
 exports.ping = async (req, res, next) => {
     try {
-        const { userId } = req.body;
+        const { userId, deviceId } = req.body;
         if (!userId) return res.status(400).json({ success: false, message: 'ID required' });
 
         if (!mongoose.Types.ObjectId.isValid(userId) || userId === 'admin-master-id') {
             return res.json({ success: true, note: 'Skipped invalid student ID' });
         }
 
-        await User.findByIdAndUpdate(userId, { lastActive: new Date() });
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+        if (user.role === 'student' && deviceId) {
+            const devices = user.devices || [];
+            const found = devices.some(d => d.deviceId === deviceId);
+
+            if (!found) {
+                if (devices.length === 0) {
+                    user.devices.push({
+                        deviceId,
+                        deviceName: 'جهاز مسجل تلقائياً',
+                        ip: req.ip || 'unknown',
+                        lastUsed: new Date()
+                    });
+                } else {
+                    return res.status(403).json({ success: false, message: 'device_not_registered' });
+                }
+            }
+        }
+
+        user.lastActive = new Date();
+        await user.save();
         res.json({ success: true });
     } catch (err) {
         next(err);

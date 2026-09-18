@@ -16,6 +16,7 @@ const upload = multer({ storage });
 router.get('/', courseController.getCourses);
 router.get('/:id', courseController.getCourseById);
 router.get('/:id/videos', courseController.getCourseVideosForStudent);
+router.get('/:id/students', courseController.getCourseStudents);
 router.post('/:id/buy', courseController.subscribeToCourse);
 router.post('/', upload.single('image'), courseController.createCourse);
 router.put('/:id', upload.single('image'), courseController.updateCourse);

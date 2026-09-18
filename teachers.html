@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>المعلمون | EDGE Academy</title>
+    
+</head>
+<body class="royal-dashboard">
+<header>
+    <div class="header-inner">
+        <!-- اليسار: أزرار الأوضاع -->
+        <div class="header-left">
+            <div class="header-icons">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام">🌙</button>
+            </div>
+        </div>
+
+        <!-- المنتصف: روابط التنقل -->
+        <div class="header-center">
+            <a href="index.html" class="nav-link-item ">الرئيسية</a>
+            <a href="teachers.html" class="nav-link-item active">المعلمين</a>
+            <a href="subjects.html" class="nav-link-item ">المواد الدراسية</a>
+            <a href="courses.html" class="nav-link-item ">الكورسات</a>
+            <a href="exams.html" class="nav-link-item ">الامتحانات</a>
+            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="admin.html" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
+                <i class="fas fa-crown"></i> صفحة الادمن
+            </a>
+        </div>
+
+        <!-- اليمين: إجراءات المستخدم -->
+        <nav class="header-actions" id="authActions">
+            <a href="login.html" class="btn-outline">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill">حساب جديد</a>
+        </nav>
+
+        <!-- قائمة الطالب عند تسجيل الدخول -->
+        <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
+            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                <span id="navUserName">الطالب</span>
+                <div class="user-icon-circle">👤</div>
+            </button>
+            <div class="user-dropdown-menu" id="userMenu">
+                <!-- خيار صفحة الأدمن داخل القائمة المنسدلة -->
+                <a href="admin.html" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
+                    👑 صفحة الادمن
+                </a>
+                <a href="profile.html" class="menu-item">👤 البروفايل</a>
+                <div class="menu-item balance-item">
+                    <span>💰 الرصيد:</span>
+                    <span id="userPoints">0</span> ج.م
+                </div>
+                <hr>
+                <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+            </div>
+        </div>
+
+        <!-- زر الهامبرغر (يظهر فقط على الموبايل) -->
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="admin.html" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
+            👑 صفحة الادمن
+        </a>
+        <a href="index.html" class="mobile-nav-link ">🏠 الرئيسية</a>
+        <a href="teachers.html" class="mobile-nav-link active">👨‍🏫 المعلمين</a>
+        <a href="subjects.html" class="mobile-nav-link ">📚 المواد الدراسية</a>
+        <a href="courses.html" class="mobile-nav-link ">🎥 الكورسات</a>
+        <a href="exams.html" class="mobile-nav-link ">📝 الامتحانات</a>
+        <div class="mobile-menu-auth" id="mobileAuthGuest">
+            <a href="login.html" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill" style="text-align:center;">حساب جديد</a>
+        </div>
+        <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
+            <a href="profile.html" class="mobile-nav-link">👤 البروفايل</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
+        </div>
+    </div>
+</header>
+
+
+    <div class="royal-wrapper">
+        <!-- كارت تفاصيل المعلم -->
+        <aside class="royal-sidebar" style="text-align: center;">
+            <div class="avatar-container" style="width: 140px; height: 140px; margin-bottom: 20px;">
+                <img src="" id="teacherAvatar" class="sidebar-avatar" style="width: 100%; height: 100%; border-radius: 50%;">
+            </div>
+            <h2 id="teacherName" style="font-size: 1.5rem; font-weight: 800; margin-bottom: 5px;">-</h2>
+            <p id="teacherSubject" style="color: var(--primary-red); font-weight: 700; margin-bottom: 15px;">-</p>
+            <p id="teacherBio" style="color: var(--gray); font-size: 0.95rem; line-height: 1.6;">-</p>
+            <button id="followBtn" onclick="toggleFollow()" class="btn-royal-action" style="margin-top: 15px; width: 100%;">متابعة</button>
+        </aside>
+
+        <!-- منطقة الفيديوهات الخاصة بالمعلم للمرحلة الدراسية للطالب -->
+        <main class="royal-content">
+            <div class="glass-section-title">
+                <h3><i class="fas fa-graduation-cap"></i> المحاضرات المتاحة لك مع هذا المعلم</h3>
+            </div>
+            
+            <!-- شبكة عرض الفيديوهات المفلترة -->
+            <div class="video-grid" id="teacherVideos" style="display: flex; flex-wrap: wrap; gap: 20px; padding: 0;">
+                <p style="color: var(--gray); text-align: center; width: 100%;">جاري تحميل المحاضرات المخصصة لمرحلتك...</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js" defer></script>
+    <script>
+       document.addEventListener('DOMContentLoaded', async () => {
+            const API_URL = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+            const urlParams = new URLSearchParams(window.location.search);
+            const teacherId = urlParams.get('teacherId');
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const studentGrade = currentUser ? currentUser.grade : null;
+
+            let isFollowing = false;
+
+            // ─── السيناريو الأول: إذا فتحت الصفحة العامة (تصفح جميع المعلمين) ───
+            if (!teacherId) {
+                // إخفاء الشريط الجانبي الفردي
+                const sidebar = document.querySelector('.royal-sidebar');
+                if (sidebar) sidebar.style.display = 'none';
+
+                // جعل الحاوية تفرش الصفحة بالكامل (عرض 100%) لحل مشكلة التكدس الجانبي
+                const wrapper = document.querySelector('.royal-wrapper');
+                if (wrapper) wrapper.style.display = 'block';
+
+                const content = document.querySelector('.royal-content');
+                if (content) {
+                    content.style.width = '100%';
+                    content.innerHTML = `
+                        <div class="glass-section-title">
+                            <h3><i class="fas fa-users"></i> جميع معلمي منصة EDGE Academy</h3>
+                        </div>
+                        <div class="teachers-grid" id="allTeachersGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; margin-top: 20px;">
+                            <p style="color: var(--gray); text-align: center; width: 100%;">جاري تحميل المعلمين...</p>
+                        </div>
+                    `;
+                }
+
+                try {
+                    const res = await fetch(`${API_URL}/api/teachers`);
+                    const teachers = await res.json();
+                    const grid = document.getElementById('allTeachersGrid');
+
+                    if (!teachers || teachers.length === 0) {
+                        grid.innerHTML = `<p style="color: var(--gray); text-align: center; width: 100%;">لا يوجد معلمون مضافون حالياً.</p>`;
+                        return;
+                    }
+
+                    function resolveTeacherImg(path) {
+                        if (!path) return 'imges/man.png';
+                        if (path.startsWith('http')) return path;
+                        if (path.startsWith('/uploads/')) return API_URL + path;
+                        if (path.startsWith('uploads/')) return API_URL + '/' + path;
+                        return path;
+                    }
+
+                    // رندر كروت جميع المعلمين بشكل شبكي منسق مع مسارات الصور الصحيحة
+                    grid.innerHTML = teachers.map(teacher => {
+                        const avatarUrl = resolveTeacherImg(teacher.imagePath);
+                        return `
+                            <div class="teacher-card" style="background: var(--p-bg); border: 1px solid var(--p-border); box-sizing: border-box;">
+                                <div class="teacher-avatar-container" style="width: 120px; height: 120px; margin: 0 auto 15px;">
+                                    <div class="teacher-avatar" style="width: 120px; height: 120px;">
+                                        <img src="${avatarUrl}" alt="${teacher.name}" onerror="this.src='imges/man.png'" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                    </div>
+                                </div>
+                                <h3 class="teacher-name">${teacher.name}</h3>
+                                <p class="teacher-subject">${teacher.subjectAr || 'معلم'}</p>
+                                <button class="teacher-btn" onclick="window.location.href="teacher-profile.html?id=${teacher._id}"" style="margin-top: 15px; width: 100%;">تصفح الكورسات والبروفايل</button>
+                            </div>
+                        `;
+                    }).join('');
+
+                } catch (err) {
+                    console.error(err);
+                    const grid = document.getElementById('allTeachersGrid');
+                    if (grid) grid.innerHTML = `<p style="color: red; text-align: center; width: 100%;">حدث خطأ في الاتصال بالخادم.</p>`;
+                }
+                return; // إيقاف تنفيذ السيناريو الفردي
+            }
+
+            // ─── السيناريو الثاني: إذا تم فتح الصفحة لمعلم محدد (الكود القديم يعمل كما هو) ───
+            if (currentUser) {
+                isFollowing = (currentUser.followedTeachers || []).includes(teacherId);
+                updateFollowButton();
+            }
+
+            function updateFollowButton() {
+                const btn = document.getElementById('followBtn');
+                if (!btn) return;
+                if (isFollowing) {
+                    btn.textContent = 'إلغاء المتابعة';
+                    btn.style.background = '#e63946'; 
+                    btn.style.color = '#fff';
+                } else {
+                    btn.textContent = 'متابعة المعلم';
+                    btn.style.background = 'var(--primary-red)';
+                    btn.style.color = '#13201c';
+                }
+            }
+
+            window.toggleFollow = async function() {
+                if (!currentUser) { alert('يجب تسجيل الدخول أولاً لمتابعة المعلم'); window.location.href = 'login.html'; return; }
+                try {
+                    const res = await fetch(`${API_URL}/api/users/${currentUser._id}/follow`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ teacherId })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        isFollowing = data.isFollowing;
+                        currentUser.followedTeachers = data.followedTeachers;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser)); 
+                        updateFollowButton();
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            };
+
+            try {
+                const teacherRes = await fetch(`${API_URL}/api/teachers`);
+                const teachers = await teacherRes.json();
+                const teacher = teachers.find(t => t._id === teacherId);
+
+                if (!teacher) {
+                    alert('المعلم غير موجود');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                document.getElementById('teacherAvatar').src = teacher.imagePath || 'imges/1.png';
+                document.getElementById('teacherName').textContent = teacher.name;
+                document.getElementById('teacherSubject').textContent = teacher.subjectAr;
+                document.getElementById('teacherBio').textContent = teacher.bio;
+
+                const videoRes = await fetch(`${API_URL}/api/videos`);
+                const allVideos = await videoRes.json();
+
+                const filteredVideos = allVideos.filter(video => {
+                    const matchTeacher = video.teacherId === teacherId;
+                    const matchGrade = !studentGrade || !video.grades || video.grades.length === 0 || video.grades.includes(studentGrade);
+                    return matchTeacher && matchGrade;
+                });
+
+                const container = document.getElementById('teacherVideos');
+                if (filteredVideos.length === 0) {
+                    container.innerHTML = `<p style="color: var(--gray); text-align: center; width: 100%; padding: 40px 0;">لا توجد محاضرات متاحة لمرحلتك الدراسية (${studentGrade || 'عام'}) مع هذا المعلم حالياً.</p>`;
+                    return;
+                }
+
+                container.innerHTML = filteredVideos.map(video => {
+                    const isSubscribed = currentUser && (currentUser.subscribedVideos || []).includes(video._id);
+                    const actionButtonHTML = isSubscribed
+                        ? `<button class="btn-join" onclick="watchVideo('${video._id}')" style="width:100%;">مشاهدة المحاضرة !</button>`
+                        : `<button class="btn-enter" onclick="subscribeVideo('${video._id}')" style="width:100%;">اشترك الآن 💰</button>`;
+
+                    return `
+                        <div class="course-card" style="flex: 0 0 320px; box-sizing: border-box;">
+                            <img src="${video.imagePath || 'imges/st.jpg'}" class="course-thumb" alt="${video.title}">
+                            <div class="course-body">
+                                <h3 class="course-title">${video.title}</h3>
+                                <div class="course-price">${video.price || 0} ج.م</div>
+                                <div class="course-btns">
+                                    ${actionButtonHTML}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    </script>
+
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <!-- الصف العلوي -->
+        <div class="footer-top">
+            <div></div>
+            
+            <div class="footer-social">
+                <span>تابعنا على السوشيال ميديا</span>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/18t8AZbrCD/?mibextid=wwXIfr"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="footer-line">
+
+        <!-- الصف السفلي -->
+        <div class="footer-bottom" style="justify-content: center; text-align: center;">
+            <div class="footer-info">
+                <p>© 2026 EDGE Academy. جميع الحقوق محفوظة. تطوير <a href="https://www.facebook.com/share/19P6ZMcvw1/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style="color: var(--primary-red); text-decoration: none; font-weight: 700;">ENG/Zeyad Mohamed</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js" defer></script>
+<script src="disable-inspect.js" defer></script>
+
+</body>
+</html>

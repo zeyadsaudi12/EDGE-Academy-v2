@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الامتحانات - منصة EDGE Academy التعليمية</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap');
+
+        :root {
+            --bg: #0b0c10;
+            --bg2: #12141c;
+            --bg3: #1a1c26;
+            --surface: #222533;
+            --accent: #dda852;
+            --accent-glow: rgba(221, 168, 82, 0.15);
+            --gold: #f4a261;
+            --teal: #2ec4b6;
+            --blue: #4361ee;
+            --green: #06d6a0;
+            --red: #ff6b6b;
+            --txt: #f1f3f9;
+            --txt2: #a2a8c3;
+            --txt3: #626987;
+            --border: rgba(255, 255, 255, 0.05);
+            --border2: rgba(255, 255, 255, 0.1);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ===== LIGHT MODE ===== */
+        body.light-mode {
+            --bg: #f0f4f8;
+            --bg2: #ffffff;
+            --bg3: #eef1f7;
+            --surface: #e4e8f4;
+            --accent: #c08a30;
+            --accent-glow: rgba(192, 138, 48, 0.12);
+            --txt: #1a1d2e;
+            --txt2: #4a5070;
+            --txt3: #8a91b0;
+            --border: rgba(0, 0, 0, 0.06);
+            --border2: rgba(0, 0, 0, 0.1);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--txt);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 5%;
+            background: rgba(18, 20, 28, 0.85);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s ease;
+        }
+
+        /* زر الهامبرغر للموبايل */
+        .exams-hamburger {
+            display: none;
+            background: none;
+            border: 1px solid var(--border2);
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--txt2);
+            font-size: 1.2rem;
+            transition: all 0.25s ease;
+        }
+
+        .exams-hamburger:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* قائمة الموبايل لصفحة الامتحانات */
+        .exams-mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(18, 20, 28, 0.97);
+            backdrop-filter: blur(20px);
+            padding: 16px;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            left: 0;
+            z-index: 99;
+            border-bottom: 1px solid var(--border);
+        }
+
+        body.light-mode .exams-mobile-menu {
+            background: rgba(255, 255, 255, 0.97);
+        }
+
+        .exams-mobile-menu.active {
+            display: flex;
+        }
+
+        .exams-mobile-menu .nav-link {
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            background: var(--bg2);
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none !important; }
+            .exams-hamburger { display: flex !important; }
+            .navbar { position: relative; }
+        }
+
+        body.light-mode .navbar {
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #000;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .brand-text {
+            font-weight: 800;
+            font-size: 1.3rem;
+            background: linear-gradient(to left, var(--txt), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--txt2);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 30px;
+            background: var(--bg2);
+            border: 1px solid var(--border2);
+            color: var(--txt2);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.25s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .theme-track {
+            width: 36px;
+            height: 20px;
+            background: var(--bg3);
+            border-radius: 30px;
+            position: relative;
+            border: 1px solid var(--border2);
+            transition: background 0.3s ease;
+        }
+
+        .theme-track::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: var(--accent);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        body.light-mode .theme-track {
+            background: rgba(192, 138, 48, 0.15);
+        }
+
+        body.light-mode .theme-track::after {
+            transform: translateX(-16px);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 40px auto;
+            flex: 1;
+        }
+
+        .welcome-hero {
+            background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .welcome-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -30%;
+            width: 60%;
+            height: 150%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--txt);
+        }
+
+        .hero-subtitle {
+            color: var(--txt2);
+            font-size: 0.95rem;
+        }
+
+        .student-pill {
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            border-radius: 30px;
+            padding: 10px 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .student-pill i {
+            color: var(--accent);
+        }
+
+        /* ===== FILTERS ===== */
+        .filter-section {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--txt3);
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 42px 12px 16px;
+            color: var(--txt);
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.25s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+
+        .filter-select {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--txt);
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        /* ===== EXAM GRID ===== */
+        .exam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .exam-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 230px;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(221, 168, 82, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-glow);
+        }
+
+        .exam-card-header {
+            margin-bottom: 16px;
+        }
+
+        .exam-card-subject {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-weight: 800;
+            background: var(--accent-glow);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .exam-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--txt);
+            margin-bottom: 8px;
+        }
+
+        .exam-card-desc {
+            color: var(--txt2);
+            font-size: 0.85rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .exam-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            color: var(--txt2);
+            font-size: 0.85rem;
+        }
+
+        .exam-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .exam-meta-item i {
+            color: var(--accent);
+        }
+
+        .exam-card-footer {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .teacher-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--bg3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border: 1px solid var(--border2);
+        }
+
+        .teacher-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--txt);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn.secondary {
+            background: var(--surface);
+            color: var(--txt);
+            border: 1px solid var(--border2);
+        }
+
+        .btn.secondary:hover {
+            background: var(--bg3);
+        }
+
+        /* ===== SYSTEM FULLSCREEN QUIZ OVERLAY ===== */
+        .quiz-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .quiz-header {
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .timer-badge {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            color: var(--red);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: 800;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-badge.warning {
+            animation: pulse-red 1s infinite alternate;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255,107,107,0); }
+            100% { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,107,107,0.4); }
+        }
+
+        .quiz-content {
+            max-width: 800px;
+            width: 90%;
+            margin: 40px auto;
+            padding-bottom: 100px;
+        }
+
+        .q-item-box {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .q-item-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .q-num {
+            background: var(--bg3);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: var(--accent);
+            border: 1px solid var(--border2);
+            flex-shrink: 0;
+        }
+
+        .q-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--txt);
+            padding-top: 4px;
+        }
+
+        .mcq-options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .mcq-option-label {
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .mcq-option-label:hover {
+            border-color: var(--accent);
+            background: rgba(221, 168, 82, 0.05);
+        }
+
+        .mcq-option-label input[type="radio"] {
+            accent-color: var(--accent);
+            width: 18px;
+            height: 18px;
+        }
+
+        .mcq-option-label.selected {
+            background: var(--accent-glow);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .essay-textarea {
+            width: 100%;
+            min-height: 120px;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            padding: 14px;
+            color: var(--txt);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            resize: vertical;
+            transition: border-color 0.25s ease;
+        }
+
+        .essay-textarea:focus {
+            border-color: var(--accent);
+        }
+
+        /* ===== RESULTS VIEW ===== */
+        .results-box {
+            max-width: 600px;
+            margin: 40px auto;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .progress-circle-wrapper {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 30px;
+        }
+
+        .svg-circle {
+            transform: rotate(-90deg);
+            width: 160px;
+            height: 160px;
+        }
+
+        .circle-bg {
+            fill: none;
+            stroke: var(--bg3);
+            stroke-width: 12;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 439.6;
+            stroke-dashoffset: 439.6;
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .circle-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--txt);
+        }
+
+        .score-info {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .results-desc {
+            color: var(--txt2);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        /* Toast notifications styling */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--bg2);
+            color: var(--txt);
+            border: 1px solid var(--border2);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .toast.success { border-color: var(--green); color: var(--green); }
+        .toast.error { border-color: var(--red); color: var(--red); }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .corrected-list {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .corrected-item {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .corrected-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            padding: 24px;
+            text-align: center;
+            color: var(--txt3);
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a class="brand" href="index.html">
+            <div class="brand-logo">E</div>
+            <div class="brand-text">EDGE Academy</div>
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link"><i class="ti ti-smart-home"></i> الرئيسية</a>
+            <!-- <a href="watch.html" class="nav-link"><i class="ti ti-device-tv"></i> محاضراتي</a> -->
+            <a href="exams.html" class="nav-link active"><i class="ti ti-clipboard-list"></i> الامتحانات</a>
+            <a href="profile.html" class="nav-link"><i class="ti ti-user"></i> حسابي</a>
+            <!-- Theme Toggle -->
+            <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleExamsTheme()" title="تبديل الوضع الليلي/النهاري">
+                <span id="themeIcon">🌙</span>
+                <div class="theme-track" id="themeTrack"></div>
+            </button>
+        </div>
+        <button class="exams-hamburger" onclick="toggleExamsMenu()" aria-label="القائمة">
+                &#9776;
+            </button>
+    </nav>
+
+    <!-- قائمة الموبايل لصفحة الامتحانات -->
+    <div class="exams-mobile-menu" id="examsMobileMenu">
+        <a href="index.html" class="nav-link"><i class="ti ti-smart-home"></i> الرئيسية</a>
+        <a href="exams.html" class="nav-link active"><i class="ti ti-clipboard-list"></i> الامتحانات</a>
+        <a href="profile.html" class="nav-link"><i class="ti ti-user"></i> حسابي</a>
+        <button class="theme-toggle-btn" onclick="toggleExamsTheme()" style="width:100%; justify-content:center;">
+            <span id="themeIconMobile">🌙</span> تبديل الوضع
+        </button>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <!-- Hero area -->
+        <div class="welcome-hero">
+            <div>
+                <h2 class="hero-title">📝 الامتحانات المدرسية المتاحة</h2>
+                <p class="hero-subtitle">تختبر فهمك وتمنحك تقييماً فورياً لأدائك الدراسي</p>
+            </div>
+            <div class="student-pill">
+                <i class="ti ti-school"></i>
+                <span id="student-name-display">جاري التحميل...</span>
+                <span id="student-grade-display" style="color: var(--txt3);"></span>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-section" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div class="search-box" style="flex: 1; min-width: 240px;">
+                <i class="ti ti-search"></i>
+                <input type="text" class="search-input" id="searchExamInput" placeholder="ابحث عن امتحان باسم المعلم أو المادة..." oninput="filterExams()">
+            </div>
+            <select class="filter-select" id="gradeFilter" onchange="filterExams()" style="min-width: 170px;">
+                <option value="">كل الصفوف الدراسية</option>
+                <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+            </select>
+            <select class="filter-select" id="teacherFilter" onchange="filterExams()" style="min-width: 160px;">
+                <option value="">كل المعلمين</option>
+            </select>
+        </div>
+
+        <div id="gradeNoticeContainer" style="display: none; margin-bottom: 20px;"></div>
+
+        <!-- Exams list -->
+        <div class="exam-grid" id="studentExamsGrid">
+            <!-- Loading -->
+            <p style="text-align:center; grid-column: 1/-1; padding:40px; color:var(--txt3);">جاري تحميل الامتحانات المتاحة لصفك الدراسي...</p>
+        </div>
+    </div>
+
+    <!-- NATIVE FULLSCREEN QUIZ OVERLAY -->
+    <div class="quiz-overlay" id="quizOverlay">
+        <header class="quiz-header">
+            <div>
+                <h2 style="font-size: 1.25rem; font-weight:800;" id="quizTitle">اسم الامتحان</h2>
+                <p style="font-size: 0.8rem; color:var(--txt2);" id="quizTeacher">المعلم: -</p>
+            </div>
+            <div class="timer-badge" id="quizTimer">
+                <i class="ti ti-alarm"></i>
+                <span id="timerValue">00:00</span>
+            </div>
+        </header>
+        <div class="quiz-content">
+            <div id="quizQuestionsContainer"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:30px;">
+                <button class="btn" style="background:var(--green); color:#000;" onclick="submitExamAnswers()">
+                    <i class="ti ti-checkbox"></i> إنهاء وتقديم الامتحان
+                </button>
+                <button class="btn secondary" onclick="confirmExitExam()">
+                    <i class="ti ti-arrow-right"></i> انسحاب من الامتحان
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS RESULTS BOARD VIEW -->
+    <div class="container" id="resultsContainer" style="display:none;">
+        <div class="results-box" id="resultsBox">
+            <h2 style="margin-bottom: 20px; font-weight: 800;">🎉 تم تقديم الامتحان بنجاح</h2>
+            <div class="progress-circle-wrapper">
+                <svg class="svg-circle">
+                    <circle class="circle-bg" cx="80" cy="80" r="70" />
+                    <circle class="circle-progress" id="progressCircle" cx="80" cy="80" r="70" />
+                </svg>
+                <div class="circle-value" id="percentageDisplay">0%</div>
+            </div>
+            <div class="score-info" id="scoreDisplay">حصلت على 0 من 0</div>
+            <p class="results-desc" id="resultsFeedback">أداء رائع! تم حفظ النتيجة وتصحيحها تلقائياً.</p>
+            <div style="display:flex; gap:12px; justify-content:center;">
+                <button class="btn" onclick="location.reload()"><i class="ti ti-refresh"></i> الرجوع للرئيسية</button>
+            </div>
+
+            <!-- Detailed feedback sheet -->
+            <div class="corrected-list" id="correctedFeedbackList">
+                <h3 style="margin:30px 0 15px; border-bottom:1px solid var(--border); padding-bottom:8px;">📊 ورقة تصحيح الإجابات</h3>
+                <div id="correctedQuestions"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <footer>
+        <p>© 2026 منصة EDGE Academy التعليمية. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        const API = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+        let _student = null;
+        let _isAdmin = false;
+        let _exams = [];
+        let _currentExam = null;
+        let _examTimer = null;
+        let _secondsLeft = 0;
+        let _answers = [];
+
+        // Auth Protection Check
+        const savedUser = localStorage.getItem('currentUser');
+        if (!savedUser) {
+            window.location.href = 'login.html';
+        } else {
+            try {
+                _student = JSON.parse(savedUser) || {};
+            } catch(e) {
+                _student = {};
+            }
+            _isAdmin = _student && (_student.role === 'admin' || _student.phone === '01556448880' || _student.phone === '01234567890' || _student.isAdmin === true);
+            const dispName = _student.firstName ? `${_student.firstName} ${_student.lastName || ''}` : (_student.name || 'طالب');
+            const nameEl = document.getElementById('student-name-display');
+            if (nameEl) nameEl.textContent = dispName;
+            const gradeEl = document.getElementById('student-grade-display');
+            if (gradeEl) gradeEl.textContent = _isAdmin ? '| مسؤول (وصول شامل)' : `| ${_student.grade || 'طالب'}`;
+        }
+
+        // Toast helper
+        function toast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            el.innerHTML = `<i class="ti ti-info-circle"></i> ${msg}`;
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        // Load Teachers and Exams
+        async function initPage() {
+            try {
+                // 1. Fetch teachers to populate filters
+                try {
+                    const teachersRes = await fetch(`${API}/api/teachers`);
+                    const teachers = await teachersRes.json();
+                    const sel = document.getElementById('teacherFilter');
+                    if (sel && Array.isArray(teachers)) {
+                        sel.innerHTML = '<option value="">كل المعلمين</option>';
+                        teachers.forEach(t => {
+                            sel.innerHTML += `<option value="${t._id}">${t.name} - ${t.subjectAr || t.subject || ''}</option>`;
+                        });
+                    }
+                } catch(e) {
+                    console.warn('Failed to load teachers for filter:', e);
+                }
+
+                // 2. Fetch all student exams with studentId to obtain attempt status
+                const stId = _student?._id || '';
+                const examsUrl = `${API}/api/exams?studentId=${encodeURIComponent(stId)}`;
+                const examsRes = await fetch(examsUrl);
+                const data = await examsRes.json();
+                
+                if (data.success && Array.isArray(data.exams)) {
+                    _exams = data.exams;
+
+                    // Set initial grade filter
+                    const gradeSel = document.getElementById('gradeFilter');
+                    const noticeEl = document.getElementById('gradeNoticeContainer');
+                    if (gradeSel && _student && _student.grade && !_isAdmin) {
+                        // Check if any exams match student's grade
+                        const hasMatchingGrade = _exams.some(e => e.grades && Array.isArray(e.grades) && e.grades.includes(_student.grade));
+                        if (hasMatchingGrade) {
+                            gradeSel.value = _student.grade;
+                            if (noticeEl) noticeEl.style.display = 'none';
+                        } else {
+                            gradeSel.value = ""; // Show all if student grade has no specific exams
+                            if (noticeEl) {
+                                noticeEl.innerHTML = `
+                                    <div style="background:rgba(221,168,82,0.1); border:1px solid rgba(221,168,82,0.3); border-radius:10px; padding:12px 16px; font-size:13px; color:var(--accent); display:flex; align-items:center; gap:8px;">
+                                        <i class="ti ti-info-circle" style="font-size:1.2rem;"></i>
+                                        <span>لا توجد امتحانات مخصصة لصف <b>${_student.grade}</b> حالياً. تم عرض جميع الامتحانات المتاحة لتتمكن من تصفحها واختيار ما يناسبك.</span>
+                                    </div>
+                                `;
+                                noticeEl.style.display = 'block';
+                            }
+                        }
+                    }
+
+                    filterExams();
+
+                    // إذا تم تمرير معرف الامتحان عبر الرابط لبدئه مباشرة من المحاضرة
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const targetExamId = urlParams.get('examId');
+                    if (targetExamId) {
+                        const target = _exams.find(e => e._id === targetExamId);
+                        if (target) {
+                            const hasDone = target.results && Array.isArray(target.results) && target.results.find(r => r.studentId === stId);
+                            if (hasDone && !_isAdmin) {
+                                viewExamResultDirect(targetExamId);
+                            } else {
+                                startExam(targetExamId);
+                            }
+                        }
+                    }
+                } else {
+                    document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-alert-circle" style="font-size:2rem;display:block;margin-bottom:8px;"></i>تعذر تحميل الامتحانات، يرجى المحاولة لاحقاً.</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-wifi-off" style="font-size:2rem;display:block;margin-bottom:8px;"></i>حدث خطأ في الاتصال بالخادم</p>`;
+            }
+        }
+
+        window.filterExams = function() {
+            const query = (document.getElementById('searchExamInput')?.value || '').toLowerCase().trim();
+            const teacherId = document.getElementById('teacherFilter')?.value || '';
+            const selectedGrade = document.getElementById('gradeFilter')?.value || '';
+
+            let filtered = [..._exams];
+            if (query) {
+                filtered = filtered.filter(e => 
+                    (e.title && e.title.toLowerCase().includes(query)) || 
+                    (e.teacherName && e.teacherName.toLowerCase().includes(query)) ||
+                    (e.subject && e.subject.toLowerCase().includes(query))
+                );
+            }
+            if (teacherId) {
+                filtered = filtered.filter(e => e.teacherId === teacherId);
+            }
+            if (selectedGrade) {
+                filtered = filtered.filter(e => e.grades && Array.isArray(e.grades) && e.grades.includes(selectedGrade));
+            }
+            renderExams(filtered, selectedGrade);
+        };
+
+        function renderExams(list, activeGradeFilter = '') {
+            const grid = document.getElementById('studentExamsGrid');
+            if (!grid) return;
+            if (list.length === 0) {
+                const gradeMsg = activeGradeFilter 
+                    ? `لا توجد امتحانات مخصصة لـ (${activeGradeFilter}) حالياً.` 
+                    : `لا توجد امتحانات تطابق خيارات البحث الحالية.`;
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:50px 20px; color:var(--txt3);">
+                        <i class="ti ti-clipboard-x" style="font-size:3rem; color:var(--accent); display:block; margin-bottom:12px;"></i>
+                        <h3 style="color:var(--txt); margin-bottom:8px; font-weight:700;">${gradeMsg}</h3>
+                        <p style="font-size:14px; margin-bottom:16px;">يمكنك اختيار "كل الصفوف الدراسية" لتصفح كافة الامتحانات المتاحة على المنصة.</p>
+                        <button class="btn secondary" onclick="document.getElementById('gradeFilter').value=''; document.getElementById('searchExamInput').value=''; document.getElementById('teacherFilter').value=''; filterExams();" style="display:inline-flex; align-items:center; gap:6px;">
+                            <i class="ti ti-refresh"></i> عرض جميع الامتحانات
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const stId = _student?._id || '';
+
+            grid.innerHTML = list.map(exam => {
+                // Check if student already did the exam
+                const hasDone = exam.results && Array.isArray(exam.results) && exam.results.find(r => r.studentId === stId);
+                const scoreHTML = hasDone 
+                    ? `<span style="font-size:12px; color:var(--green); font-weight:700;"><i class="ti ti-check"></i> تم إجراؤه: ${hasDone.score} من ${exam.totalMarks || hasDone.total || '-'} (${hasDone.percentage}%)</span>` 
+                    : `<span style="font-size:12px; color:var(--txt3);"><i class="ti ti-clock"></i> لم يتم إجراء الامتحان بعد</span>`;
+                
+                const btnText = hasDone ? 'عرض النتيجة' : 'ابدأ الامتحان';
+                const btnAction = hasDone ? `viewExamResultDirect('${exam._id}')` : `startExam('${exam._id}')`;
+                const btnClass = hasDone ? 'btn secondary' : 'btn';
+
+                const qCount = (exam.questions && Array.isArray(exam.questions)) ? exam.questions.length : 0;
+                const gradesLabel = (exam.grades && Array.isArray(exam.grades) && exam.grades.length > 0)
+                    ? exam.grades.join(' · ')
+                    : 'لكل الصفوف الدراسية';
+
+                return `
+                    <div class="exam-card">
+                        <div class="exam-card-header">
+                            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+                                <span class="exam-card-subject">${exam.subject || 'مادة دراسية'}</span>
+                                <span style="font-size:11px; font-weight:600; color:var(--accent); background:rgba(221,168,82,0.12); padding:2px 8px; border-radius:6px;">
+                                    <i class="ti ti-school"></i> ${gradesLabel}
+                                </span>
+                            </div>
+                            <h3 class="exam-card-title">${exam.title || 'امتحان بدون عنوان'}</h3>
+                            <p class="exam-card-desc">${exam.description || 'امتحان شامل لقياس مستوى الفهم واستيعاب الدروس'}</p>
+                        </div>
+                        <div>
+                            <div class="exam-meta">
+                                <div class="exam-meta-item"><i class="ti ti-hourglass"></i> ${exam.duration || 30} دقيقة</div>
+                                <div class="exam-meta-item"><i class="ti ti-help"></i> ${qCount} أسئلة</div>
+                            </div>
+                            <div class="exam-card-footer">
+                                <div class="teacher-info">
+                                    <div class="teacher-avatar">👨‍🏫</div>
+                                    <span class="teacher-name">${exam.teacherName || 'معلم المادة'}</span>
+                                </div>
+                                <button class="${btnClass}" onclick="${btnAction}">${btnText}</button>
+                            </div>
+                            <div style="margin-top:12px; border-top:1px solid var(--border); padding-top:8px; display:flex; justify-content:space-between; align-items:center;">
+                                ${scoreHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Native System Exam Taking
+        async function startExam(id) {
+            // التحقق أمنياً من وجود محاولة سابقة وحظر الدخول للمحاولة مجدداً
+            const localExam = _exams.find(e => e._id === id);
+            if (localExam && localExam.results && localExam.results.some(r => r.studentId === _student._id)) {
+                alert('⚠️ لقد أتممت هذا الامتحان بالفعل ولا يمكن إعادة دخوله!');
+                return;
+            }
+
+            toast('جاري تحضير الامتحان وتأمين الشاشة...', 'info');
+            try {
+                const res = await fetch(`${API}/api/exams/${id}?studentId=${encodeURIComponent(_student._id)}&studentName=${encodeURIComponent(_student.firstName + ' ' + (_student.lastName || ''))}&studentPhone=${encodeURIComponent(_student.phone)}`);
+                const data = await res.json();
+                if (!data.success) { toast('فشل تحميل الأسئلة', 'error'); return; }
+
+                _currentExam = data.exam;
+                _answers = Array(_currentExam.questions.length).fill('');
+                
+                // Show Quiz Page
+                document.getElementById('mainContainer').style.display = 'none';
+                document.getElementById('quizOverlay').style.display = 'flex';
+                
+                document.getElementById('quizTitle').textContent = _currentExam.title;
+                document.getElementById('quizTeacher').textContent = `المعلم: ${_currentExam.teacherName}`;
+                
+                // Build Questions HTML
+                const container = document.getElementById('quizQuestionsContainer');
+                container.innerHTML = _currentExam.questions.map((q, i) => {
+                    let answersHTML = '';
+                    if (q.type === 'mcq') {
+                        answersHTML = `<div class="mcq-options-grid">
+                            ${q.options.map((opt, oIdx) => `
+                                <label class="mcq-option-label" id="lbl-q-${i}-o-${oIdx}">
+                                    <input type="radio" name="q-${i}" value="${oIdx}" onchange="selectOption(${i}, ${oIdx})">
+                                    <span>${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>`;
+                    } else if (q.type === 'truefalse') {
+                        answersHTML = `<div class="mcq-options-grid" style="grid-template-columns:1fr 1fr; gap:16px;">
+                            <label class="mcq-option-label" id="lbl-q-${i}-o-true">
+                                <input type="radio" name="q-${i}" value="true" onchange="selectOption(${i}, 'true')">
+                                <span>صح ✓</span>
+                            </label>
+                            <label class="mcq-option-label" id="lbl-q-${i}-o-false">
+                                <input type="radio" name="q-${i}" value="false" onchange="selectOption(${i}, 'false')">
+                                <span>خطأ ✗</span>
+                            </label>
+                        </div>`;
+                    } else { // essay
+                        answersHTML = `
+                            <textarea class="essay-textarea" placeholder="اكتب إجابتك النموذجية بالتفصيل هنا..." oninput="recordEssay(${i}, this.value)"></textarea>
+                        `;
+                    }
+
+                    return `
+                        <div class="q-item-box">
+                            <div class="q-item-header">
+                                <div class="q-num">${i + 1}</div>
+                                <div class="q-text">${q.text}</div>
+                            </div>
+                            ${answersHTML}
+                        </div>
+                    `;
+                }).join('');
+
+                // Start Timer
+                _secondsLeft = _currentExam.duration * 60;
+                startTimerCountdown();
+
+                // تفعيل الحماية والتقديم التلقائي فور مغادرة الصفحة
+                initActiveExamSecurity();
+
+            } catch (err) {
+                toast('خطأ في الاتصال بالخادم', 'error');
+            }
+        }
+
+        // تفعيل نظام قفل وتقديم الامتحان التلقائي عند مغادرة الصفحة أو فقدان التركيز
+        function initActiveExamSecurity() {
+            // 1. قفل الامتحان التلقائي عند تبديل التبويب (Tab Change)
+            document.onvisibilitychange = function () {
+                if (document.hidden && _currentExam) {
+                    autoLockAndSubmitExam("محاولة مغادرة التبويب أو تبديل الصفحة");
+                }
+            };
+
+            // 2. قفل الامتحان عند الخروج من المتصفح أو فتح تطبيق آخر (Blur)
+            window.onblur = function () {
+                if (_currentExam) {
+                    autoLockAndSubmitExam("الخروج من الشاشة النشطة للامتحان (فقدان التركيز)");
+                }
+            };
+
+            // 3. منع الأزرار المشبوهة ولقطات الشاشة
+            document.onkeydown = function (e) {
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+                    (e.ctrlKey && e.key.toLowerCase() === 'u') ||
+                    e.key === 'PrintScreen' || 
+                    (e.ctrlKey && e.key.toLowerCase() === 'p')) {
+                    e.preventDefault();
+                    toast('⚠️ غير مسموح بهذه الإجراءات لحماية خصوصية الامتحان!', 'error');
+                    return false;
+                }
+            };
+        }
+
+        // إنهاء الامتحان فورياً وحفظ النتيجة عند المخالفة
+        async function autoLockAndSubmitExam(reason) {
+            if (!_currentExam) return;
+            
+            // إلغاء المراقبة لمنع التكرار اللانهائي
+            document.onvisibilitychange = null;
+            window.onblur = null;
+            document.onkeydown = null;
+            
+            alert(`🔒 تم قفل الامتحان وتقديمه تلقائياً بسبب: ${reason}`);
+            await submitExamAnswers();
+        }
+
+        function selectOption(qIdx, optVal) {
+            _answers[qIdx] = optVal;
+            
+            // Toggle highlight styling
+            if (_currentExam.questions[qIdx].type === 'mcq') {
+                for (let o = 0; o < 4; o++) {
+                    const label = document.getElementById(`lbl-q-${qIdx}-o-${o}`);
+                    if (label) {
+                        label.classList.toggle('selected', o.toString() === optVal.toString());
+                    }
+                }
+            } else {
+                ['true', 'false'].forEach(o => {
+                    const label = document.getElementById(`lbl-q-${qIdx}-o-${o}`);
+                    if (label) {
+                        label.classList.toggle('selected', o === optVal);
+                    }
+                });
+            }
+        }
+
+        function recordEssay(qIdx, val) {
+            _answers[qIdx] = val;
+        }
+
+        function startTimerCountdown() {
+            if (_examTimer) clearInterval(_examTimer);
+            
+            const timerVal = document.getElementById('timerValue');
+            const timerBadge = document.getElementById('quizTimer');
+            
+            _examTimer = setInterval(() => {
+                _secondsLeft--;
+                
+                if (_secondsLeft <= 0) {
+                    clearInterval(_examTimer);
+                    toast('انتهى وقت الامتحان! جاري تقديم إجاباتك تلقائياً...', 'success');
+                    submitExamAnswers();
+                    return;
+                }
+
+                if (_secondsLeft < 60) {
+                    timerBadge.classList.add('warning');
+                }
+
+                const mins = Math.floor(_secondsLeft / 60);
+                const secs = _secondsLeft % 60;
+                timerVal.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        async function submitExamAnswers() {
+            clearInterval(_examTimer);
+            window.onblur = null;
+            document.onvisibilitychange = null;
+            document.onkeydown = null;
+            toast('جاري تسجيل الإجابات وحساب النتيجة...', 'info');
+
+            try {
+                const res = await fetch(`${API}/api/exams/${_currentExam._id}/submit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        studentId: _student._id,
+                        studentName: `${_student.firstName} ${_student.lastName || ''}`,
+                        studentPhone: _student.phone,
+                        answers: _answers
+                    })
+                });
+                const d = await res.json();
+                if (d.success) {
+                    toast('تم تقديم الامتحان بنجاح!', 'success');
+                    displayExamResult(d);
+                } else {
+                    toast('حدث خطأ: ' + d.message, 'error');
+                    setTimeout(() => location.reload(), 3000);
+                }
+            } catch (err) {
+                toast('حدث خطأ في الاتصال بالشبكة', 'error');
+            }
+        }
+
+        function displayExamResult(data) {
+            document.getElementById('quizOverlay').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('resultsContainer').style.display = 'block';
+            document.getElementById('resultsBox').style.display = 'block'; // تعديل لإظهار صندوق النتائج وحل مشكلة التداخل في التنسيق
+
+            // Circular progress fill
+            const circle = document.getElementById('progressCircle');
+            const percentage = data.percentage || 0;
+            const offset = 439.6 - (439.6 * percentage) / 100;
+            circle.style.strokeDashoffset = offset;
+            
+            document.getElementById('percentageDisplay').textContent = `${percentage}%`;
+            document.getElementById('scoreDisplay').textContent = `حصلت على ${data.score} درجة من ${data.totalMarks}`;
+
+            if (percentage >= 50) {
+                circle.style.stroke = 'var(--green)';
+                document.getElementById('resultsFeedback').textContent = data.isGraded 
+                    ? 'ممتاز! لقد اجتزت الامتحان بنجاح.' 
+                    : 'رائع! لقد اجتزت الأسئلة الاختيارية بنجاح، وبانتظار تصحيح المشرف للأسئلة المقالية.';
+            } else {
+                circle.style.stroke = 'var(--red)';
+                document.getElementById('resultsFeedback').textContent = data.isGraded
+                    ? 'حظاً أفضل في المرة القادمة، يرجى مراجعة المادة جيداً.'
+                    : 'لقد قدمت الامتحان بنجاح، بانتظار مراجعة المشرف للأسئلة المقالية لتحديث درجتك الكلية.';
+            }
+
+            // Render feedback sheet
+            const correctedBox = document.getElementById('correctedQuestions');
+            correctedBox.innerHTML = data.corrected.map((q, i) => {
+                let statusHTML = '';
+                let borderStyle = '';
+                
+                if (q.isEssay) {
+                    statusHTML = `<span style="color:var(--gold); font-weight:700;">📝 سؤال مقالي (تحت مراجعة المعلم)</span>`;
+                    borderStyle = 'border-right: 4px solid var(--gold);';
+                } else if (q.isCorrect) {
+                    statusHTML = `<span style="color:var(--green); font-weight:700;">✓ إجابة صحيحة</span>`;
+                    borderStyle = 'border-right: 4px solid var(--green);';
+                } else {
+                    statusHTML = `<span style="color:var(--red); font-weight:700;">✗ إجابة خاطئة</span>`;
+                    borderStyle = 'border-right: 4px solid var(--red);';
+                }
+
+                return `
+                    <div class="corrected-item" style="${borderStyle}">
+                        <div class="corrected-item-header">
+                            <span>س${i+1}: ${q.question}</span>
+                            ${statusHTML}
+                        </div>
+                        <div style="font-size:12px; color:var(--txt2); margin-top:5px;">
+                            <strong>إجابتك:</strong> ${q.isEssay ? q.studentAnswer : (q.options[q.studentAnswer] || q.studentAnswer || 'لا توجد إجابة')}
+                        </div>
+                        ${!q.isEssay && !q.isCorrect ? `
+                        <div style="font-size:12px; color:var(--green); margin-top:2px;">
+                            <strong>الإجابة الصحيحة:</strong> ${q.options[q.correctAnswer] || q.correctAnswer}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function viewExamResultDirect(examId) {
+            toast('جاري جلب النتيجة وتفريغ ورقة الإجابة...', 'info');
+            try {
+                const res = await fetch(`${API}/api/exams/${examId}`);
+                const data = await res.json();
+                if (!data.success) { toast('فشل التحميل', 'error'); return; }
+
+                const exam = data.exam;
+                const result = exam.results.find(r => r.studentId === _student._id);
+
+                // Build a result payload mock to reuse the display method
+                const corrected = exam.questions.map((q, i) => {
+                    const studentAns = result.answers[i] || '';
+                    let isCorrect = false;
+                    let isEssay = q.type === 'essay';
+                    if (!isEssay) {
+                        isCorrect = studentAns.toString().trim() === q.correctAnswer.toString().trim();
+                    }
+                    return {
+                        question: q.text,
+                        options: q.options,
+                        studentAnswer: studentAns,
+                        correctAnswer: q.correctAnswer,
+                        isCorrect,
+                        isEssay
+                    };
+                });
+
+                displayExamResult({
+                    percentage: result.percentage,
+                    score: result.score,
+                    totalMarks: exam.totalMarks,
+                    corrected,
+                    isGraded: result.isGraded
+                });
+
+            } catch (err) {
+                toast('حدث خطأ في الاتصال بالخادم', 'error');
+            }
+        }
+
+        function confirmExitExam() {
+            if (confirm('هل أنت متأكد من الانسحاب من الامتحان؟ سيتم حفظ إجاباتك الحالية وتقديمها.')) {
+                submitExamAnswers();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply saved theme
+            const savedTheme = localStorage.getItem('examsTheme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            applyExamsTheme(savedTheme);
+            initPage();
+        });
+
+        // ===== THEME FUNCTIONS =====
+        function applyExamsTheme(theme) {
+            document.body.classList.toggle('light-mode', theme === 'light');
+            document.getElementById('themeIcon').textContent = theme === 'light' ? '☀️' : '🌙';
+            localStorage.setItem('examsTheme', theme);
+        }
+
+        function toggleExamsTheme() {
+            const isLight = document.body.classList.contains('light-mode');
+            applyExamsTheme(isLight ? 'dark' : 'light');
+        }
+
+        function toggleExamsMenu() {
+            const menu = document.getElementById('examsMobileMenu');
+            if (menu) menu.classList.toggle('active');
+        }
+
+        // إغلاق قائمة الموبايل عند الضغط خارجها
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.exams-hamburger') && !e.target.closest('#examsMobileMenu')) {
+                const menu = document.getElementById('examsMobileMenu');
+                if (menu) menu.classList.remove('active');
+            }
+        });
+    </script>
+    <script src="disable-inspect.js" defer></script>
+</body>
+
+</html>

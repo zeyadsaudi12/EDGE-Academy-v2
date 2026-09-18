@@ -1,12 +1,11 @@
 {
-  "name": "masar",
+  "name": "edge-academy",
   "version": "1.0.0",
-  "description": "",
-  "main": "disable-inspect.js",
+  "description": "EDGE Academy Educational Platform (Full Stack Node.js)",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "php": "C:\\xampp\\php\\php.exe -S localhost:3000 backend/public/index.php",
+    "dev": "node server.js",
     "sync": "cmd /c push.bat",
     "auto-sync": "cmd /c start-auto-sync.bat"
   },

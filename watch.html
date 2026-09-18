@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=1.1">
+    <link rel="stylesheet" href="video-security.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>مشاهدة المحاضرة | EDGE Academy</title>
+    <style>
+/* ============================================================
+   WATCH PAGE - EDGE Academy (Premium Modern Redesign)
+   ============================================================ */
+
+:root {
+    --watch-sidebar-w: 360px;
+}
+
+body.secure-video-page {
+    background: var(--bg);
+    margin: 0; padding: 0;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease;
+}
+
+/* ── Topbar ── */
+.watch-topbar {
+    position: sticky; top: 0; z-index: 500;
+    background: var(--header-inner);
+    border-bottom: 1px solid var(--border);
+    padding: 0 4%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.watch-topbar-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 800; font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.watch-topbar-logo img { width: 34px; height: 34px; object-fit: contain; }
+
+.watch-topbar-title {
+    flex: 1;
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--gray);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    text-align: center;
+    max-width: 500px;
+}
+
+.watch-topbar-actions {
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+
+.watch-back-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.watch-back-btn:hover {
+    background: var(--text-dark);
+    color: var(--bg);
+    border-color: var(--text-dark);
+    transform: translateX(-3px);
+}
+
+/* ── Page Root ── */
+.watch-page-root {
+    display: grid;
+    grid-template-columns: 1fr var(--watch-sidebar-w);
+    min-height: calc(100vh - 64px);
+    gap: 28px;
+    padding: 28px 4%;
+    box-sizing: border-box;
+    background: var(--bg);
+}
+
+/* ── Left Col ── */
+.watch-left-col {
+    display: flex; flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+/* ── Video Theater ── */
+.video-theater {
+    background: #000;
+    width: 100%;
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.16);
+}
+
+.video-theater .video-secure-container {
+    max-width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+/* ── Details Area ── */
+.watch-details-area {
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+/* ── Info Cards Row ── */
+.watch-info-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.info-card {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.25s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.info-card .ic-icon {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; flex-shrink: 0;
+}
+
+.ic-views .ic-icon  { background: rgba(221,168,82,0.12); color: #dda852; }
+.ic-rules .ic-icon  { background: rgba(231,76,60,0.08); color: #e74c3c; }
+.ic-secure .ic-icon { background: rgba(44,167,114,0.08); color: #2ca772; }
+
+.info-card .ic-text h5 {
+    margin: 0 0 2px; font-size: 0.78rem;
+    color: var(--gray); font-weight: 600;
+}
+
+.info-card .ic-text strong {
+    font-size: 0.95rem; font-weight: 800;
+    color: var(--text-dark);
+}
+
+/* ── Title Block ── */
+.watch-title-block {
+    display: flex; flex-direction: column; gap: 14px;
+}
+
+.watch-video-title {
+    font-size: 1.35rem; font-weight: 800;
+    color: var(--text-dark);
+    margin: 0; line-height: 1.45;
+}
+
+.part-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface-alt);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.part-tab:hover { border-color: var(--primary); color: var(--primary); }
+.part-tab.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(var(--primary-rgb, 79,142,247), 0.35);
+}
+
+.watch-meta-bar {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+/* ── Teacher Info ── */
+.watch-teacher-info {
+    display: flex; align-items: center; gap: 12px;
+}
+
+.watch-teacher-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--border); flex-shrink: 0;
+}
+
+.watch-teacher-text h4 {
+    margin: 0 0 3px; font-size: 0.95rem;
+    font-weight: 800; color: var(--text-dark);
+}
+
+.watch-teacher-text span {
+    font-size: 0.78rem; color: var(--gray);
+}
+
+.watch-follow-btn {
+    padding: 8px 18px; font-size: 0.82rem; font-weight: 700;
+    background: var(--primary-red); color: #13201c;
+    border: none; border-radius: 50px; cursor: pointer;
+    transition: all 0.25s ease; white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(221, 168, 82, 0.2);
+}
+
+.watch-follow-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(221, 168, 82, 0.35);
+}
+
+.watch-follow-btn.following {
+    background: var(--surface-alt); color: var(--text-dark);
+    border: 1px solid var(--border);
+    box-shadow: none;
+}
+.watch-follow-btn.following:hover { transform: none; box-shadow: none; }
+
+/* ── Action Buttons ── */
+.watch-action-btns {
+    display: flex; align-items: center; gap: 8px;
+}
+
+.watch-like-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    color: var(--text-dark);
+    padding: 8px 18px;
+    border-radius: 50px; font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; transition: all 0.25s ease;
+}
+
+.watch-like-btn:hover {
+    background: rgba(221,168,82,0.1);
+    border-color: var(--primary-red);
+    transform: translateY(-2px);
+}
+.watch-like-btn.liked {
+    background: var(--primary-red); color: #13201c; border-color: var(--primary-red);
+    box-shadow: 0 4px 15px rgba(221, 168, 82, 0.2);
+}
+
+/* ── Security Rules Banner ── */
+.watch-rules-banner {
+    background: linear-gradient(135deg, rgba(231,76,60,0.04), rgba(221,168,82,0.04));
+    border: 1px solid rgba(231,76,60,0.1);
+    border-radius: 16px;
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+}
+
+.watch-rules-banner .rules-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; font-weight: 700; color: var(--gray);
+    flex-shrink: 0;
+}
+
+.watch-rules-banner .rules-label i { color: #c0392b; }
+
+.rules-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.rule-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(231,76,60,0.06);
+    border: 1px solid rgba(231,76,60,0.12);
+    padding: 5px 12px; border-radius: 50px;
+    color: #c0392b; font-weight: 700; font-size: 0.78rem;
+}
+
+/* ============================================================
+   Right Column - Playlist (Rounded Modern Rectangle Container)
+   ============================================================ */
+.watch-right-col {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 24px;
+    display: flex; flex-direction: column;
+    position: sticky; top: 92px; /* 64px topbar + 28px padding */
+    height: calc(100vh - 120px); /* Adjust based on topbar and page padding */
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.right-col-header {
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-alt);
+    flex-shrink: 0;
+}
+
+.right-col-header h3 {
+    margin: 0 0 5px; font-size: 1rem; font-weight: 800;
+    color: var(--text-dark);
+    display: flex; align-items: center; gap: 10px;
+}
+
+.right-col-header .col-subtitle {
+    font-size: 0.8rem; color: var(--gray);
+}
+
+.playlist-scroll-area {
+    flex: 1; overflow-y: auto;
+}
+
+/* ── Playlist Items ── */
+.playlist-item-new {
+    display: flex; gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.2s ease;
+    align-items: center;
+}
+
+.playlist-item-new:hover {
+    background: var(--surface-alt);
+}
+
+.playlist-item-new.active {
+    background: rgba(221,168,82,0.07);
+    border-right: 4px solid #dda852;
+}
+
+.playlist-item-num {
+    font-size: 0.78rem; font-weight: 800;
+    color: var(--gray); min-width: 18px;
+    text-align: center;
+}
+
+.playlist-item-new.active .playlist-item-num { color: #dda852; }
+
+.playlist-thumb-wrap { position: relative; flex-shrink: 0; }
+
+.playlist-item-img-new {
+    width: 86px; height: 50px;
+    border-radius: 8px; object-fit: cover; display: block;
+    transition: transform 0.2s ease;
+}
+
+.playlist-item-new:hover .playlist-item-img-new {
+    transform: scale(1.03);
+}
+
+.playlist-item-new.active .playlist-item-img-new { opacity: 0.75; }
+
+.playlist-playing-icon {
+    display: none; position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.playlist-item-new.active .playlist-playing-icon { display: block; }
+
+.playlist-item-info-new { flex: 1; min-width: 0; }
+
+.playlist-item-title-new {
+    font-size: 0.82rem; font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 3px; line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.playlist-item-new.active .playlist-item-title-new { color: #dda852; }
+.playlist-item-lbl { font-size: 0.72rem; color: #dda852; font-weight: 700; }
+
+/* ── Empty Col ── */
+.watch-empty-col {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 50px 20px; color: var(--gray);
+    text-align: center; gap: 12px; opacity: 0.6;
+}
+
+.watch-empty-col i { font-size: 2.5rem; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1100px) {
+    :root { --watch-sidebar-w: 320px; }
+}
+
+@media (max-width: 900px) {
+    .watch-page-root {
+        grid-template-columns: 1fr;
+        padding: 16px 3%;
+        gap: 20px;
+    }
+    .watch-right-col {
+        position: static;
+        height: auto;
+        max-height: 450px;
+    }
+    .watch-info-cards { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .watch-topbar-title { display: none; }
+    .watch-details-area { padding: 18px; }
+    .watch-video-title { font-size: 1.15rem; }
+    .watch-meta-bar { flex-direction: column; align-items: flex-start; }
+    .watch-info-cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .watch-info-cards { grid-template-columns: 1fr; }
+}
+    </style>
+</head>
+<body class="secure-video-page">
+
+<!-- ── Topbar ── -->
+<nav class="watch-topbar">
+    <div class="watch-topbar-title" id="topbarTitle">جاري التحميل...</div>
+    <div class="watch-topbar-actions">
+        <button class="icon-btn theme-switcher" data-theme="light"
+            style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;width:33px;height:33px;cursor:pointer;font-size:1rem;">☀</button>
+        <button class="icon-btn theme-switcher" data-theme="dark"
+            style="background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;width:33px;height:33px;cursor:pointer;font-size:1rem;">🌙</button>
+        <a href="javascript:history.back()" class="watch-back-btn">
+            <i class="fas fa-arrow-right"></i> رجوع
+        </a>
+    </div>
+</nav>
+
+<!-- ── Page Root ── -->
+<div class="watch-page-root">
+
+    <!-- ══ Left Col ══ -->
+    <div class="watch-left-col">
+
+        <!-- مشغل الفيديو -->
+        <div class="video-theater">
+            <div class="video-secure-container" id="videoContainer">
+                <video id="secureVideo" preload="metadata" playsinline
+                    x-webkit-airplay="deny"
+                    disablePictureInPicture
+                    disableRemotePlayback
+                    controlsList="nodownload nofullscreen noremoteplayback">
+                </video>
+                <!-- طبقة حماية Screen Recording للموبايل -->
+                <div class="mobile-record-shield" id="mobileRecordShield" aria-hidden="true"></div>
+                <div class="video-watermark" id="videoWatermark"></div>
+
+                <!-- شاشة حجب المحاضرة لعدم اجتياز الامتحان القبلي بنسبة 50% -->
+                <div id="examPrerequisiteOverlay" style="
+                    display: none;
+                    position: absolute;
+                    inset: 0;
+                    z-index: 9999;
+                    background: rgba(11, 12, 16, 0.97);
+                    backdrop-filter: blur(12px);
+                    border-radius: inherit;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    padding: 30px 24px;
+                    color: #fff;
+                ">
+                    <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(221, 168, 82, 0.15); border: 2px solid #dda852; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 16px; color: #dda852;">
+                        🔒
+                    </div>
+                    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; color: #fff;">المحاضرة مقفولة باشتراط امتحان قبلي</h2>
+                    <p style="font-size: 0.95rem; color: #a2a8c3; max-width: 480px; margin-bottom: 16px; line-height: 1.6;">
+                        لا يمكنك مشاهدة هذه المحاضرة إلا بعد اجتياز الامتحان القبلي أولاً بنسبة <strong>50% على الأقل</strong> لضمان استيعابك للمحتوى.
+                    </p>
+                    <div id="examPrerequisiteStatus" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 20px; margin-bottom: 22px; font-size: 0.9rem; color: #f1f3f9;">
+                        جاري فحص حالة الامتحان...
+                    </div>
+                    <a id="examPrerequisiteBtn" href="exams.html" style="
+                        background: linear-gradient(135deg, #dda852, #f4a261);
+                        color: #0b0c10;
+                        font-weight: 800;
+                        padding: 14px 32px;
+                        border-radius: 50px;
+                        text-decoration: none;
+                        font-size: 1rem;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 10px;
+                        box-shadow: 0 8px 24px rgba(221, 168, 82, 0.35);
+                        transition: transform 0.2s;
+                    ">
+                        <span>ابدأ الامتحان الآن</span>
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+
+                <div class="video-loading-overlay" id="loadingOverlay">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">جاري تحميل المحاضرة...</p>
+                </div>
+                <!-- كونترولز مخصصة -->
+                <div class="custom-video-controls">
+                    <div class="video-progress-wrapper">
+                        <div class="video-progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="controls-row">
+                        <div class="controls-left">
+                            <button class="ctrl-btn play-btn" id="playBtn">▶</button>
+                            <div class="volume-wrapper">
+                                <button class="ctrl-btn" id="volumeBtn">🔊</button>
+                                <input type="range" class="volume-slider" id="volumeSlider"
+                                    min="0" max="1" step="0.05" value="1">
+                            </div>
+                            <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+                        </div>
+                        <div class="controls-right">
+                            <!-- Speed -->
+                            <div style="position:relative;">
+                                <button class="quality-badge" id="speedBtn">1x</button>
+                                <div class="quality-menu" id="speedMenu">
+                                    <button class="quality-option" data-speed="0.75">0.75x</button>
+                                    <button class="quality-option active" data-speed="1">1x عادي</button>
+                                    <button class="quality-option" data-speed="1.25">1.25x</button>
+                                    <button class="quality-option" data-speed="1.5">1.5x</button>
+                                    <button class="quality-option" data-speed="2">2x</button>
+                                </div>
+                            </div>
+                            <button class="ctrl-btn" id="fullscreenBtn" title="ملء الشاشة">⛶</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تفاصيل الفيديو -->
+        <div class="watch-details-area">
+
+            <!-- بطاقات المعلومات السريعة -->
+            <div class="watch-info-cards">
+                <div class="info-card ic-views">
+                    <div class="ic-icon">👁</div>
+                    <div class="ic-text">
+                        <h5>المشاهدات المتبقية</h5>
+                        <strong id="remainingViews">3</strong> مشاهدة
+                    </div>
+                </div>
+                <div class="info-card ic-rules">
+                    <div class="ic-icon">🚫</div>
+                    <div class="ic-text">
+                        <h5>قيود</h5>
+                        <strong>تصوير  • حفظ</strong>
+                    </div>
+                </div>
+                <div class="info-card ic-secure">
+                    <div class="ic-icon">🛡</div>
+                    <div class="ic-text">
+                        <h5>الحماية</h5>
+                        <strong>مفعّلة - v3</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- عنوان الفيديو -->
+            <div class="watch-title-block">
+                <h1 class="watch-video-title" id="videoTitle">جاري التحميل...</h1>
+
+                <div class="watch-meta-bar">
+                    <div class="watch-teacher-info">
+                        <img src="imges/1.png" id="teacherAvatar" class="watch-teacher-avatar" alt="المدرس">
+                        <div class="watch-teacher-text">
+                            <h4 id="teacherName">-</h4>
+                            <span id="teacherSubject">-</span>
+                        </div>
+                        <button id="followBtn" onclick="toggleFollow()" class="watch-follow-btn">متابعة</button>
+                    </div>
+
+                    <div class="watch-action-btns">
+                        <button id="likeBtn" onclick="toggleLike()" class="watch-like-btn">
+                            <i class="far fa-thumbs-up" id="likeIcon"></i>
+                            <span id="likesCount">0</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- زر طرح سؤال على المدرس -->
+            <div class="watch-ask-question-block" style="
+                margin-top: 25px;
+                background: var(--surface-alt);
+                padding: 20px;
+                border-radius: 16px;
+                border: 1px solid var(--border);
+            ">
+                <h3 style="font-size: 1.15rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-question-circle" style="color: var(--primary);"></i>
+                    هل لديك سؤال حول هذه المحاضرة؟
+                </h3>
+                <p style="font-size: 0.9rem; color: var(--gray); margin-bottom: 15px;">
+                    اكتب سؤالك وسيتم إرساله للمنصة، وسيقوم المدرس بالرد عليك عبر الواتساب لاحقاً بشكل خاص.
+                </p>
+                <textarea id="studentQuestionText" rows="3" placeholder="اكتب سؤالك هنا بوضوح..." style="
+                    width: 100%;
+                    padding: 12px 16px;
+                    border: 1px solid var(--border);
+                    border-radius: 12px;
+                    background: var(--surface);
+                    color: var(--text-dark);
+                    font-family: inherit;
+                    font-size: 0.95rem;
+                    resize: vertical;
+                    margin-bottom: 15px;
+                    outline: none;
+                "></textarea>
+                <button onclick="submitVideoQuestion()" id="submitQuestionBtn" style="
+                    background: var(--primary);
+                    color: #fff;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 10px;
+                    font-size: 0.95rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    transition: all 0.3s;
+                ">
+                    <i class="fas fa-paper-plane"></i> إرسال السؤال للمدرس
+                </button>
+            </div>
+
+            <!-- قسم تحميل ملفات ومرفقات المحاضرة (المذكرة والواجب) -->
+            <div class="watch-attachments-block" id="watchAttachmentsBlock" style="
+                margin-top: 25px;
+                background: var(--surface-alt);
+                padding: 22px;
+                border-radius: 18px;
+                border: 1.5px solid var(--border);
+                display: none;
+            ">
+                <h3 style="font-size: 1.15rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; color: var(--text-dark);">
+                    <i class="fas fa-folder-open" style="color: #dda852;"></i>
+                    مرفقات ومصادر المحاضرة للتحميل
+                </h3>
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <!-- ملفات المذكرة -->
+                    <div id="bookletFilesContainer" style="display:none;">
+                        <h5 style="font-size: 0.92rem; color: #2ec4b6; margin-bottom: 8px; font-weight: 700; display:flex; align-items:center; gap:6px;">
+                            <i class="fas fa-book"></i> المذكرة والشروحات:
+                        </h5>
+                        <div id="bookletFilesList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
+
+                    <!-- ملفات الواجب -->
+                    <div id="homeworkFilesContainer" style="display:none;">
+                        <h5 style="font-size: 0.92rem; color: #f4a261; margin-bottom: 8px; font-weight: 700; display:flex; align-items:center; gap:6px;">
+                            <i class="fas fa-tasks"></i> الواجب والتدريبات:
+                        </h5>
+                        <div id="homeworkFilesList" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <!-- زر دخول الامتحان المؤمن -->
+            <div id="examBtnContainer" style="display: none; margin-bottom: 20px;">
+                <button onclick="goToSecureExam()" class="secure-exam-btn" style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                    width: 100%;
+                    padding: 16px;
+                    background: linear-gradient(135deg, #dda852, #ffd700);
+                    color: #000;
+                    border: none;
+                    border-radius: 14px;
+                    font-size: 1.1rem;
+                    font-weight: 800;
+                    cursor: pointer;
+                    box-shadow: 0 8px 24px rgba(221, 168, 82, 0.35);
+                    transition: all 0.3s ease;
+                    font-family: inherit;
+                ">
+                    <span style="font-size: 1.3rem;">📝</span> دخول الامتحان المؤمن للمحاضرة
+                </button>
+            </div>
+
+            <!-- لافتة قواعد المشاهدة -->
+            <div class="watch-rules-banner">
+                <div class="rules-label">
+                    <i class="fas fa-shield-alt"></i>
+                    قواعد المشاهدة:
+                </div>
+                <div class="rules-tags">
+                    <span class="rule-tag"><i class="fas fa-ban"></i> ممنوع التصوير</span>
+                    <span class="rule-tag"><i class="fas fa-download"></i> ممنوع التحميل</span>
+                    <span class="rule-tag"><i class="fas fa-share-square"></i> ممنوع المشاركة</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ══ Right Col (Playlist) ══ -->
+    <div class="watch-right-col" id="rightColumn">
+        <div class="right-col-header">
+            <h3>
+                <i class="fas fa-list" style="color:#dda852;"></i>
+                <span id="playlistTitle">قائمة التشغيل</span>
+            </h3>
+            <div class="col-subtitle" id="playlistCount">جاري التحميل...</div>
+        </div>
+        <div class="playlist-scroll-area" id="playlistVideos">
+            <div class="watch-empty-col">
+                <div class="loading-spinner" style="width:34px;height:34px;border-width:3px;"></div>
+                <span>جاري التحميل...</span>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /watch-page-root -->
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js" defer></script>
+<script src="video-security.js" defer></script>
+<script>
+    let isFollowing = false;
+    let isLiked = false;
+    let currentTeacherId = '';
+    let currentVideoId = '';
+    let currentVideoTitle = '';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const API_URL = localStorage.getItem('apiUrl') || window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+        // Helper: resolve image paths starting with /uploads/
+        function resolveImg(path) {
+            if (!path) return '';
+            if (path.startsWith('http')) return path;
+            if (path.startsWith('/uploads/')) return API_URL + path;
+            return path;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        currentVideoId = urlParams.get('videoId');
+        const codeStr   = urlParams.get('code') || 'ALREADY_SUBSCRIBED';
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+        if (!currentUser) {
+            alert('عذراً، يجب تسجيل الدخول لمشاهدة المحاضرة.');
+            window.location.href = 'login.html';
+            return;
+        }
+        if (!currentVideoId) {
+            alert('لم يتم تحديد محاضرة صالحة.');
+            window.location.href = 'courses.html';
+            return;
+        }
+
+        const isAdmin = currentUser && (currentUser.role === 'admin' || currentUser.phone === '01556448880' || currentUser.phone === '01234567890' || currentUser.isAdmin === true);
+
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        try {
+            let verifyData = { success: true, remainingViews: isAdmin ? '∞' : '3' };
+
+            // ── الفيديوهات المجانية أو المسؤول: تخطي التحقق بالكود ──
+            if (!isAdmin && codeStr !== 'FREE_ACCESS') {
+                // 1. التحقق من الكود
+                const verifyRes = await fetch(`${API_URL}/api/codes/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        codeStr: codeStr === 'ALREADY_SUBSCRIBED' ? '' : codeStr.trim().toUpperCase(),
+                        videoId: currentVideoId,
+                        studentId: currentUser._id
+                    })
+                });
+                verifyData = await verifyRes.json();
+                if (!verifyRes.ok || !verifyData.success) {
+                    alert(verifyData.message || 'فشل التحقق من الكود');
+                    window.location.href = 'index.html';
+                    return;
+                }
+            }
+
+            // 2. جلب بيانات الفيديو
+            const videoRes  = await fetch(`${API_URL}/api/videos/${currentVideoId}`);
+            const videoData = await videoRes.json();
+
+            if (!videoRes.ok || !videoData.success) {
+                alert('خطأ في جلب بيانات الفيديو');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // تأكيد إن الفيديو مجاني فعلاً لو كود FREE_ACCESS (المسؤول مستثنى دائماً)
+            const video = videoData.video;
+            if (!isAdmin && codeStr === 'FREE_ACCESS') {
+                const priceVal = video.price;
+                if (priceVal !== null && priceVal !== undefined && priceVal !== '') {
+                    alert('هذه المحاضرة ليست مجانية.');
+                    window.location.href = 'index.html';
+                    return;
+                }
+            }
+
+            currentTeacherId = video.teacherId;
+
+            // ── فحص الامتحان القبلي المشروط لفتح المحاضرة (اجتياز 50% كحد أدنى) ──
+            // المسؤول (Admin) يتم فتح جميع المحاضرات له مباشرة بدون أي شروط
+            if (!isAdmin && video.requiredExamId) {
+                try {
+                    const examCheckRes = await fetch(`${API_URL}/api/exams/${video.requiredExamId}?studentId=${currentUser._id}`);
+                    const examCheckData = await examCheckRes.json();
+                    
+                    let passedExam = false;
+                    let studentScoreText = 'لم تؤدِ الامتحان بعد';
+
+                    if (examCheckData.success && examCheckData.exam) {
+                        const ex = examCheckData.exam;
+                        const userResults = (ex.results || []).filter(r => r.studentId === currentUser._id);
+                        if (userResults.length > 0) {
+                            const bestResult = userResults.reduce((max, r) => (r.percentage > (max.percentage || 0) ? r : max), userResults[0]);
+                            studentScoreText = `درجتك الحالية: ${bestResult.percentage}% (${bestResult.score}/${bestResult.totalMarks || ex.totalMarks})`;
+                            if (bestResult.percentage >= 50) {
+                                passedExam = true;
+                            }
+                        }
+                    }
+
+                    if (!passedExam) {
+                        const overlay = document.getElementById('examPrerequisiteOverlay');
+                        if (overlay) {
+                            overlay.style.display = 'flex';
+                            document.getElementById('examPrerequisiteStatus').innerHTML = `
+                                <div style="font-weight:700; color:#dda852; margin-bottom:4px;">${examCheckData.exam?.title || 'الامتحان القبلي'}</div>
+                                <div style="color:var(--txt2); font-size:12px;">شرط الفتح: اجتياز الامتحان بنسبة 50% أو أكثر</div>
+                                <div style="color:${studentScoreText.includes('لم') ? 'var(--txt3)' : '#ff6b6b'}; font-size:12px; margin-top:4px; font-weight:700;">${studentScoreText}</div>
+                            `;
+                            document.getElementById('examPrerequisiteBtn').href = `exams.html?examId=${video.requiredExamId}`;
+                        }
+                        // منع تشغيل المحاضرة
+                        const loadingOverlay = document.getElementById('loadingOverlay');
+                        if (loadingOverlay) loadingOverlay.style.display = 'none';
+                        return;
+                    }
+                } catch (e) {
+                    console.error('Error checking required exam:', e);
+                }
+            }
+
+            // ── عرض ملفات ومرفقات المحاضرة (المذكرة والواجب) ──
+            const bookletFiles = video.bookletFiles || [];
+            const homeworkFiles = video.homeworkFiles || [];
+
+            if (bookletFiles.length > 0 || homeworkFiles.length > 0) {
+                const attachBlock = document.getElementById('watchAttachmentsBlock');
+                if (attachBlock) attachBlock.style.display = 'block';
+
+                if (bookletFiles.length > 0) {
+                    const bContainer = document.getElementById('bookletFilesContainer');
+                    const bList = document.getElementById('bookletFilesList');
+                    if (bContainer && bList) {
+                        bContainer.style.display = 'block';
+                        bList.innerHTML = bookletFiles.map((f, i) => `
+                            <a href="${resolveImg(f.url)}" download="${f.name || 'المذكرة'}" target="_blank" class="attachment-dl-btn" style="
+                                display: inline-flex; align-items: center; gap: 8px;
+                                padding: 10px 16px; background: rgba(46, 196, 182, 0.12);
+                                border: 1px solid rgba(46, 196, 182, 0.35); border-radius: 12px;
+                                color: #2ec4b6; font-weight: 700; text-decoration: none; font-size: 0.88rem;
+                                transition: all 0.2s ease;
+                            ">
+                                <i class="fas fa-file-pdf" style="font-size: 1.1rem;"></i>
+                                <span>${f.name || `مذكرة المحاضرة (${i + 1})`}</span>
+                                <span style="font-size: 0.75rem; opacity: 0.75; margin-right: 4px;">(${f.size || 'تحميل'})</span>
+                                <i class="fas fa-download" style="font-size: 0.85rem; margin-right: 6px;"></i>
+                            </a>
+                        `).join('');
+                    }
+                }
+
+                if (homeworkFiles.length > 0) {
+                    const hContainer = document.getElementById('homeworkFilesContainer');
+                    const hList = document.getElementById('homeworkFilesList');
+                    if (hContainer && hList) {
+                        hContainer.style.display = 'block';
+                        hList.innerHTML = homeworkFiles.map((f, i) => `
+                            <a href="${resolveImg(f.url)}" download="${f.name || 'الواجب'}" target="_blank" class="attachment-dl-btn" style="
+                                display: inline-flex; align-items: center; gap: 8px;
+                                padding: 10px 16px; background: rgba(244, 162, 97, 0.12);
+                                border: 1px solid rgba(244, 162, 97, 0.35); border-radius: 12px;
+                                color: #f4a261; font-weight: 700; text-decoration: none; font-size: 0.88rem;
+                                transition: all 0.2s ease;
+                            ">
+                                <i class="fas fa-tasks" style="font-size: 1.1rem;"></i>
+                                <span>${f.name || `واجب المحاضرة (${i + 1})`}</span>
+                                <span style="font-size: 0.75rem; opacity: 0.75; margin-right: 4px;">(${f.size || 'تحميل'})</span>
+                                <i class="fas fa-download" style="font-size: 0.85rem; margin-right: 6px;"></i>
+                            </a>
+                        `).join('');
+                    }
+                }
+            }
+
+            // ── تحميل الفيديو بشكل مؤمّن (Blob URL) ──
+            // نستخدم loadVideoSecurely لإخفاء الرابط الحقيقي
+            const rawVideoUrl = video.videoPath
+                ? `${API_URL}${video.videoPath}`
+                : (video.link || '');
+
+            if (rawVideoUrl) {
+                // انتظر حتى يتهيأ MasarSecurity من video-security.js
+                // نستخدم polling لأن defer scripts قد تشتغل بعد DOMContentLoaded
+                const waitForSecurity = (url, maxWait = 3000) => {
+                    const start = Date.now();
+                    const tryLoad = () => {
+                        if (window.MasarSecurity && window.MasarSecurity.loadVideoSecurely) {
+                            window.MasarSecurity.loadVideoSecurely(url);
+                        } else if (Date.now() - start < maxWait) {
+                            // لسه ما اتحمّلش - نحاول تاني بعد 50ms
+                            setTimeout(tryLoad, 50);
+                        } else {
+                            // timeout: نحمّل بشكل مباشر كـ fallback
+                            const ve = document.getElementById('secureVideo');
+                            if (ve) { ve.src = url; ve.load(); }
+                        }
+                    };
+                    tryLoad();
+                };
+                waitForSecurity(rawVideoUrl);
+            }
+
+            // ── أجزاء الفيديو محفوظة في parts للاستخدام في الـ Sidebar أدناه ──
+            const parts = video.parts || [];
+
+            // تحديث العناوين
+            document.getElementById('videoTitle').textContent = video.title;
+            document.getElementById('topbarTitle').textContent = video.title;
+            currentVideoTitle = video.title;
+            document.getElementById('remainingViews').textContent = codeStr === 'FREE_ACCESS' ? '∞' : (verifyData.remainingViews ?? 3);
+
+            // إظهار زر دخول الامتحان إذا كان متوفراً
+            if (video.examLink) {
+                document.getElementById('examBtnContainer').style.display = 'block';
+            }
+
+            // اللايك
+            const likesArr = video.likes || [];
+            document.getElementById('likesCount').textContent = likesArr.length;
+            isLiked = likesArr.includes(currentUser._id);
+            updateLikeButton();
+
+            // 3. جلب بيانات المعلم
+            if (currentTeacherId) {
+                const teacherRes = await fetch(`${API_URL}/api/teachers`);
+                const teachers   = await teacherRes.json();
+                const teacher    = teachers.find(t => t._id === currentTeacherId);
+                if (teacher) {
+                    document.getElementById('teacherAvatar').src = resolveImg(teacher.imagePath) || 'imges/1.png';
+                    document.getElementById('teacherName').textContent    = teacher.name;
+                    document.getElementById('teacherSubject').textContent = teacher.subjectAr;
+                    isFollowing = (currentUser.followedTeachers || []).includes(currentTeacherId);
+                    updateFollowButton();
+                }
+            }
+
+            // 4. تحميل البلاي ليست
+            const playlistContainer = document.getElementById('playlistVideos');
+
+            if (video.playlistName) {
+                const allRes    = await fetch(`${API_URL}/api/videos`);
+                const allVideos = await allRes.json();
+                const grade     = currentUser.grade;
+                const plVideos  = allVideos.filter(v =>
+                    v.playlistName === video.playlistName &&
+                    (!grade || !v.grades || v.grades.length === 0 || v.grades.includes(grade))
+                );
+
+                if (plVideos.length > 1) {
+                    document.getElementById('playlistTitle').textContent = video.playlistName;
+                    document.getElementById('playlistCount').textContent = `${plVideos.length} محاضرة في السلسلة`;
+
+                    playlistContainer.innerHTML = plVideos.map((v, idx) => {
+                        const active = v._id === currentVideoId;
+                        return `
+                        <div class="playlist-item-new ${active ? 'active' : ''}"
+                             onclick="${active ? '' : `goToVideo('${v._id}')`}"
+                             style="${active ? 'cursor:default;' : ''}">
+                            <div class="playlist-item-num">${idx + 1}</div>
+                            <div class="playlist-thumb-wrap">
+                                <img src="${resolveImg(v.imagePath) || 'imges/st.jpg'}" class="playlist-item-img-new" alt="${v.title}">
+                                <span class="playlist-playing-icon">▶</span>
+                            </div>
+                            <div class="playlist-item-info-new">
+                                <h4 class="playlist-item-title-new">${v.title}</h4>
+                                ${active ? '<span class="playlist-item-lbl">▶ جاري التشغيل</span>' : ''}
+                            </div>
+                        </div>`;
+                    }).join('');
+
+                    setTimeout(() => {
+                        const activeItem = playlistContainer.querySelector('.playlist-item-new.active');
+                        if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+
+                } else {
+                    document.getElementById('playlistTitle').textContent = 'محاضرة مستقلة';
+                    document.getElementById('playlistCount').textContent = '';
+                    playlistContainer.innerHTML = `
+                        <div class="watch-empty-col">
+                            <i class="fas fa-film"></i>
+                            <p>هذه المحاضرة لا تنتمي لسلسلة</p>
+                        </div>`;
+                }
+            } else if (parts && parts.length > 0) {
+                // ── فيديو فيه أجزاء: عرضهم في الـ Sidebar ──
+                const allParts = [
+                    { title: 'شرح الحصة', url: rawVideoUrl, imagePath: video.imagePath },
+                    ...parts.map(p => ({ title: p.label, url: p.url, imagePath: video.imagePath }))
+                ];
+                document.getElementById('playlistTitle').textContent = video.title;
+                document.getElementById('playlistCount').textContent = allParts.length + ' أجزاء';
+                let activeSidebarBtn = null;
+                playlistContainer.innerHTML = allParts.map((p, idx) => {
+                    const isActive = idx === 0;
+                    // تشفير الـ URL لتجنب كسر الـ HTML attribute
+                    const safeUrl = p.url.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+                    return `
+                    <div class="playlist-item-new ${isActive ? 'active' : ''}" data-part-url="${safeUrl}" onclick="switchVideoPartFromSidebar(this)" style="cursor:pointer;">
+                        <div class="playlist-item-num">${idx + 1}</div>
+                        <div class="playlist-thumb-wrap">
+                            <img src="${resolveImg(p.imagePath) || 'imges/st.jpg'}" class="playlist-item-img-new" alt="${p.title}">
+                            <span class="playlist-playing-icon">${isActive ? '▶' : ''}</span>
+                        </div>
+                        <div class="playlist-item-info-new">
+                            <h4 class="playlist-item-title-new">${p.title}</h4>
+                            ${isActive ? '<span class="playlist-item-lbl">▶ جاري التشغيل</span>' : ''}
+                        </div>
+                    </div>`;
+                }).join('');
+            } else {
+                // ── محاضرة مستقلة: لا توجد سلسلة ──
+                document.getElementById('playlistTitle').textContent = 'محاضرة مستقلة';
+                document.getElementById('playlistCount').textContent = '';
+                playlistContainer.innerHTML = `
+                    <div class="watch-empty-col">
+                        <i class="fas fa-film"></i>
+                        <p>هذه المحاضرة مستقلة ولا تنتمي لسلسلة</p>
+                    </div>`;
+            }
+
+            if (loadingOverlay) loadingOverlay.style.display = 'none';
+
+        } catch (err) {
+            console.error(err);
+            alert('حدث خطأ أثناء تحميل المحاضرة');
+            window.location.href = 'index.html';
+        }
+    });
+
+    window.goToVideo = function(videoId) {
+        window.location.href = `watch.html?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
+    };
+
+    window.goToSecureExam = function() {
+        window.location.href = `exams.html?videoId=${currentVideoId}`;
+    };
+
+    // ── اللايك ──
+    window.toggleLike = async function() {
+        const u = JSON.parse(localStorage.getItem('currentUser'));
+        if (!u) return;
+        try {
+            const res  = await fetch(`${API_URL}/api/videos/${currentVideoId}/like`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ studentId: u._id })
+            });
+            const data = await res.json();
+            if (data.success) {
+                isLiked = data.liked;
+                document.getElementById('likesCount').textContent = data.likesCount;
+                updateLikeButton();
+            }
+        } catch (e) { console.error(e); }
+    };
+
+    function updateLikeButton() {
+        const btn  = document.getElementById('likeBtn');
+        const icon = document.getElementById('likeIcon');
+        if (!btn || !icon) return;
+        if (isLiked) { btn.classList.add('liked'); icon.className = 'fas fa-thumbs-up'; }
+        else         { btn.classList.remove('liked'); icon.className = 'far fa-thumbs-up'; }
+    }
+    // ── التبديل بين أجزاء الفيديو من الـ Sidebar ──
+    window.switchVideoPartFromSidebar = function(el) {
+        const url = el.getAttribute('data-part-url');
+        if (!url) return;
+        // تحديث حالة الـ active في الـ Sidebar (الـ ID الصحيح هو playlistVideos)
+        document.querySelectorAll('#playlistVideos .playlist-item-new').forEach(item => {
+            item.classList.remove('active');
+            const icon = item.querySelector('.playlist-playing-icon');
+            const lbl  = item.querySelector('.playlist-item-lbl');
+            if (icon) icon.textContent = '';
+            if (lbl)  lbl.remove();
+        });
+        el.classList.add('active');
+        const icon = el.querySelector('.playlist-playing-icon');
+        const info = el.querySelector('.playlist-item-info-new');
+        if (icon) icon.textContent = '▶';
+        if (info && !info.querySelector('.playlist-item-lbl')) {
+            const lbl = document.createElement('span');
+            lbl.className = 'playlist-item-lbl';
+            lbl.textContent = '▶ جاري التشغيل';
+            info.appendChild(lbl);
+        }
+        // تحميل الفيديو
+        window.switchVideoPart(url, null);
+    };
+
+    // ── التبديل بين أجزاء الفيديو ──
+    window.switchVideoPart = function(url, btn) {
+        if (!url) return;
+
+        // 1. إيقاف الفيديو الحالي
+        const ve = document.getElementById('secureVideo');
+        if (ve) { try { ve.pause(); } catch(_){} }
+
+        // 2. تحميل الـ URL الجديد عبر MasarSecurity
+        if (window.MasarSecurity && window.MasarSecurity.loadVideoSecurely) {
+            window.MasarSecurity.loadVideoSecurely(url);
+        } else if (ve) {
+            ve.src = url;
+            ve.load();
+        }
+
+        // 3. scroll للبلاير
+        document.querySelector('.watch-player-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    // ── إرسال سؤال للمدرس ──
+    window.submitVideoQuestion = async function() {
+        const questionInput = document.getElementById('studentQuestionText');
+        const text = questionInput ? questionInput.value.trim() : '';
+        if (!text) {
+            alert('يرجى كتابة السؤال أولاً');
+            return;
+        }
+
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            alert('يرجى تسجيل الدخول أولاً');
+            return;
+        }
+
+        const btn = document.getElementById('submitQuestionBtn');
+        const originalHTML = btn ? btn.innerHTML : '';
+        if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...'; btn.disabled = true; }
+
+        try {
+            const baseURL = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+            const payload = {
+                videoId: currentVideoId,
+                videoTitle: currentVideoTitle || 'فيديو غير معروف',
+                question: text,
+                studentId: currentUser._id,
+                studentName: currentUser.username || currentUser.name || 'طالب',
+                studentPhone: currentUser.phone || ''
+            };
+            const res = await fetch(`${baseURL}/api/video-questions`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.success) {
+                if (questionInput) questionInput.value = '';
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({ icon: 'success', title: 'تم الإرسال ✅', text: 'تم إرسال سؤالك للمدرس بنجاح، سيتم الرد عليك عبر الواتساب قريباً.' });
+                } else {
+                    alert('✅ تم إرسال سؤالك بنجاح! سيتم الرد عليك قريباً.');
+                }
+            } else {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({ icon: 'error', title: 'خطأ', text: data.message || 'حدث خطأ أثناء الإرسال' });
+                } else {
+                    alert('خطأ: ' + (data.message || 'حدث خطأ أثناء الإرسال'));
+                }
+            }
+        } catch (error) {
+            console.error('submitVideoQuestion error:', error);
+            alert('❌ حدث خطأ في الاتصال بالخادم: ' + error.message);
+        } finally {
+            if (btn) { btn.innerHTML = originalHTML; btn.disabled = false; }
+        }
+    };
+
+    // ── المتابعة ──
+    window.toggleFollow = async function() {
+        const u = JSON.parse(localStorage.getItem('currentUser'));
+        if (!u) return;
+        try {
+            const res  = await fetch(`${API_URL}/api/users/${u._id}/follow`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ teacherId: currentTeacherId })
+            });
+            const data = await res.json();
+            if (data.success) {
+                isFollowing = data.isFollowing;
+                u.followedTeachers = data.followedTeachers;
+                localStorage.setItem('currentUser', JSON.stringify(u));
+                updateFollowButton();
+            }
+        } catch (e) { console.error(e); }
+    };
+
+    function updateFollowButton() {
+        const btn = document.getElementById('followBtn');
+        if (!btn) return;
+        if (isFollowing) { btn.textContent = 'متابع ✔'; btn.classList.add('following'); }
+        else             { btn.textContent = 'متابعة';   btn.classList.remove('following'); }
+    }
+</script>
+<script src="disable-inspect.js" defer></script>
+</body>
+</html>

@@ -88,7 +88,7 @@
                     if (res.status === 403) {
                         alert('❌ تم إلغاء ربط هذا الجهاز أو تم تسجيل الدخول من جهاز آخر. سيتم تسجيل خروجك الآن.');
                         localStorage.removeItem('currentUser');
-                        window.location.href = 'login.php';
+                        window.location.href = 'login.html';
                     }
                 })
                 .catch(() => {});
@@ -152,7 +152,7 @@
                 <p style="color: #ff8080; font-size: 0.82rem; font-weight: 700; margin-bottom: 20px; line-height: 1.5;">
                     تم إرسال هذا البلاغ تلقائياً مصحوباً ببيانات حسابك والجهاز المستخدم إلى لوحة تحكم الإدارة لمراجعته يدوياً مع المشرفين.
                 </p>
-                <button onclick="window.location.href='index.php'" style="
+                <button onclick="window.location.href='index.html'" style="
                     background: linear-gradient(135deg, #e74c3c, #c0392b);
                     color: #fff;
                     border: none;

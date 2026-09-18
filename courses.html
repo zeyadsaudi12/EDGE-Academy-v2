@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>مكتبة الكورسات | EDGE Academy</title>
+    <style>
+/* ═══════════════════════════════════════════
+   COURSES LIBRARY PAGE
+═══════════════════════════════════════════ */
+
+.courses-library-hero {
+    background: linear-gradient(135deg, var(--primary-red) 0%, #c0392b 100%);
+    padding: 60px 5% 40px;
+    text-align: center;
+    color: #fff;
+}
+.courses-library-hero h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+.courses-library-hero p {
+    font-size: 1.05rem;
+    opacity: 0.88;
+}
+
+/* ─── Filter Bar ─── */
+.courses-filter-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 5%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 64px;
+    z-index: 200;
+    backdrop-filter: blur(12px);
+}
+
+.filter-label {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.filter-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 50px;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    color: var(--text-dark);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s;
+    white-space: nowrap;
+}
+.filter-chip:hover {
+    border-color: var(--primary-red);
+    color: var(--primary-red);
+    transform: translateY(-1px);
+}
+.filter-chip.active {
+    background: var(--primary-red);
+    border-color: var(--primary-red);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(231, 76, 60, 0.35);
+}
+.filter-chip img {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #eee;
+}
+
+/* ─── Search box ─── */
+.courses-search-wrap {
+    position: relative;
+    min-width: 200px;
+}
+.courses-search-wrap i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+.courses-search-input {
+    width: 100%;
+    padding: 9px 36px 9px 14px;
+    border: 2px solid var(--border);
+    border-radius: 50px;
+    background: var(--bg);
+    color: var(--text-dark);
+    font-size: 0.88rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    outline: none;
+}
+.courses-search-input:focus {
+    border-color: var(--primary-red);
+}
+
+/* ─── Results Info ─── */
+.courses-results-info {
+    padding: 20px 5% 10px;
+    color: var(--gray);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.courses-results-info span {
+    color: var(--primary-red);
+    font-weight: 800;
+}
+
+/* ─── Grid ─── */
+.courses-library-grid {
+    padding: 10px 5% 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 24px;
+}
+
+/* Course card — override to full-width grid style */
+.courses-library-grid .course-card {
+    flex: unset !important;
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+}
+.courses-library-grid .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+.course-card-teacher-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gray);
+}
+.course-card-teacher-badge img {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #eee;
+}
+
+/* ─── Empty state ─── */
+.courses-empty {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--gray);
+    grid-column: 1 / -1;
+}
+.courses-empty i {
+    font-size: 3.5rem;
+    display: block;
+    margin-bottom: 16px;
+    opacity: 0.4;
+}
+.courses-empty h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+
+/* ─── Skeleton ─── */
+.course-skeleton {
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+.course-skeleton .sk-thumb {
+    width: 100%; height: 170px;
+    background: var(--border);
+}
+.course-skeleton .sk-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.course-skeleton .sk-line {
+    height: 14px;
+    border-radius: 8px;
+    background: var(--border);
+}
+.course-skeleton .sk-line.short { width: 50%; }
+@keyframes skeleton-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@media (max-width: 600px) {
+    .courses-library-hero h1 { font-size: 1.5rem; }
+    .courses-filter-bar { top: 0; }
+    .courses-library-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body class="courses-library-page">
+<header>
+    <div class="header-inner">
+        <!-- اليسار: أزرار الأوضاع -->
+        <div class="header-left">
+            <div class="header-icons">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام">🌙</button>
+            </div>
+        </div>
+
+        <!-- المنتصف: روابط التنقل -->
+        <div class="header-center">
+            <a href="index.html" class="nav-link-item ">الرئيسية</a>
+            <a href="teachers.html" class="nav-link-item ">المعلمين</a>
+            <a href="subjects.html" class="nav-link-item ">المواد الدراسية</a>
+            <a href="courses.html" class="nav-link-item active">الكورسات</a>
+            <a href="exams.html" class="nav-link-item ">الامتحانات</a>
+            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="admin.html" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
+                <i class="fas fa-crown"></i> صفحة الادمن
+            </a>
+        </div>
+
+        <!-- اليمين: إجراءات المستخدم -->
+        <nav class="header-actions" id="authActions">
+            <a href="login.html" class="btn-outline">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill">حساب جديد</a>
+        </nav>
+
+        <!-- قائمة الطالب عند تسجيل الدخول -->
+        <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
+            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                <span id="navUserName">الطالب</span>
+                <div class="user-icon-circle">👤</div>
+            </button>
+            <div class="user-dropdown-menu" id="userMenu">
+                <!-- خيار صفحة الأدمن داخل القائمة المنسدلة -->
+                <a href="admin.html" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
+                    👑 صفحة الادمن
+                </a>
+                <a href="profile.html" class="menu-item">👤 البروفايل</a>
+                <div class="menu-item balance-item">
+                    <span>💰 الرصيد:</span>
+                    <span id="userPoints">0</span> ج.م
+                </div>
+                <hr>
+                <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+            </div>
+        </div>
+
+        <!-- زر الهامبرغر (يظهر فقط على الموبايل) -->
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="admin.html" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
+            👑 صفحة الادمن
+        </a>
+        <a href="index.html" class="mobile-nav-link ">🏠 الرئيسية</a>
+        <a href="teachers.html" class="mobile-nav-link ">👨‍🏫 المعلمين</a>
+        <a href="subjects.html" class="mobile-nav-link ">📚 المواد الدراسية</a>
+        <a href="courses.html" class="mobile-nav-link active">🎥 الكورسات</a>
+        <a href="exams.html" class="mobile-nav-link ">📝 الامتحانات</a>
+        <div class="mobile-menu-auth" id="mobileAuthGuest">
+            <a href="login.html" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
+            <a href="register.html" class="btn-fill" style="text-align:center;">حساب جديد</a>
+        </div>
+        <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
+            <a href="profile.html" class="mobile-nav-link">👤 البروفايل</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
+        </div>
+    </div>
+</header>
+
+
+<!-- Hero -->
+<section class="courses-library-hero">
+    <h1><i class="fas fa-layer-group" style="margin-left:10px;"></i>مكتبة الكورسات</h1>
+    <p id="courses-grade-subtitle">اختر كورسك وابدأ رحلة التعلم</p>
+</section>
+
+<!-- Filter Bar -->
+<div class="courses-filter-bar" id="coursesFilterBar">
+    <span class="filter-label"><i class="fas fa-chalkboard-teacher" style="margin-left:5px;"></i>فلتر المدرس:</span>
+    <div class="filter-chips" id="teacherChips">
+        <button class="filter-chip active" data-teacher-id="all" onclick="filterByTeacher('all', this)">
+            <i class="fas fa-border-all"></i> الكل
+        </button>
+        <!-- Teacher chips injected by JS -->
+    </div>
+    <div class="courses-search-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" id="coursesSearchInput" class="courses-search-input"
+               placeholder="ابحث عن كورس..." oninput="applyCoursesFilter()">
+    </div>
+</div>
+
+<!-- Results info -->
+<p class="courses-results-info" id="coursesResultsInfo">&nbsp;</p>
+
+<!-- Grid -->
+<div class="courses-library-grid" id="coursesGrid">
+    <!-- Skeletons while loading -->
+    
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+            <div class="course-card-skel">
+                <div class="skel-thumb"></div>
+                <div class="skel-body">
+                    <div class="skel-line w80"></div>
+                    <div class="skel-line w50"></div>
+                    <div class="skel-line w60 mt-auto"></div>
+                </div>
+            </div>
+</div>
+
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <!-- الصف العلوي -->
+        <div class="footer-top">
+            <div></div>
+            
+            <div class="footer-social">
+                <span>تابعنا على السوشيال ميديا</span>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/share/18t8AZbrCD/?mibextid=wwXIfr"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <hr class="footer-line">
+
+        <!-- الصف السفلي -->
+        <div class="footer-bottom" style="justify-content: center; text-align: center;">
+            <div class="footer-info">
+                <p>© 2026 EDGE Academy. جميع الحقوق محفوظة. تطوير <a href="https://www.facebook.com/share/19P6ZMcvw1/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" style="color: var(--primary-red); text-decoration: none; font-weight: 700;">ENG/Zeyad Mohamed</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js" defer></script>
+<script src="disable-inspect.js" defer></script>
+
+</body>
+</html>

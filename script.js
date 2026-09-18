@@ -649,7 +649,7 @@ function updateNavbarAuth(currentUser) {
 
 function initSmartNavbar() {
 
-    const isIndexPage = window.location.pathname.endsWith('index.php') || window.location.pathname === '/' || window.location.pathname.endsWith('/');
+    const isIndexPage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('/');
 
     const sections = [
 
@@ -661,7 +661,7 @@ function initSmartNavbar() {
 
     ];
 
-    document.querySelectorAll('a[href*="index.php#"], a[href^="#"]').forEach(link => {
+    document.querySelectorAll('a[href*="index.html#"], a[href^="#"]').forEach(link => {
 
         link.addEventListener('click', function (e) {
 
@@ -695,7 +695,7 @@ function initSmartNavbar() {
 
                 e.preventDefault();
 
-                window.location.href = 'index.php';
+                window.location.href = 'index.html';
 
             }
 
@@ -755,7 +755,7 @@ function initSmartNavbar() {
 
                     const href = link.getAttribute('href') || '';
 
-                    if (href === 'index.php' || href === '/' || href === './') {
+                    if (href === 'index.html' || href === '/' || href === './') {
 
                         setNavActive(link);
 
@@ -825,7 +825,7 @@ function initHeartbeat(userId) {
             if (res.status === 403) {
                 alert('❌ تم إلغاء ربط هذا الجهاز أو تم تسجيل الدخول من جهاز آخر. سيتم تسجيل خروجك الآن.');
                 localStorage.removeItem('currentUser');
-                window.location.href = 'login.php';
+                window.location.href = 'login.html';
             }
         })
         .catch(() => {});
@@ -874,7 +874,7 @@ function initRealtimeSync(currentUser) {
 
                     sessionStorage.clear();
 
-                    window.location.href = 'login.php';
+                    window.location.href = 'login.html';
 
                     return;
 
@@ -964,7 +964,7 @@ function handleLogin(event) {
 
         }));
 
-        window.location.href = 'assistant-hub.php';
+        window.location.href = 'assistant-hub.html';
 
         return false;
 
@@ -976,7 +976,7 @@ function handleLogin(event) {
 
         localStorage.setItem('currentUser', JSON.stringify({ role: 'admin', name: 'Admin' }));
 
-        window.location.href = 'admin.php';
+        window.location.href = 'admin.html';
 
         return false;
 
@@ -1024,12 +1024,12 @@ function handleLogin(event) {
 
                 if (data.user.role === 'admin') {
                     alert('👑 مرحباً بك يا مدير المنصة، جاري تحويلك للوحة التحكم...');
-                    window.location.href = 'admin.php';
+                    window.location.href = 'admin.html';
                 } else if (data.user.role === 'teacher') {
-                    window.location.href = 'assistant-hub.php';
+                    window.location.href = 'assistant-hub.html';
                 } else {
                     alert('✅ تم الدخول بنجاح، دراسة ممتعة وموفقة!');
-                    window.location.href = 'index.php';
+                    window.location.href = 'index.html';
                 }
             } else {
                 alert('❌ ' + (data.message || 'بيانات الدخول غير صحيحة'));
@@ -1050,7 +1050,7 @@ function handleLogout() {
 
     sessionStorage.clear();
 
-    window.location.href = 'index.php';
+    window.location.href = 'index.html';
 
 }
 
@@ -1288,7 +1288,7 @@ function handleRegister(event) {
 
                 localStorage.setItem('currentUser', JSON.stringify(data.user));
 
-                window.location.href = 'index.php';
+                window.location.href = 'index.html';
 
             } else {
 
@@ -1438,7 +1438,7 @@ function initMasarChatbot(currentUser) {
 
     const path = window.location.pathname.toLowerCase();
 
-    const isAllowed = path.endsWith('index.php') || path.endsWith('/') || path.includes('teachers.php') || path.includes('profile.php');
+    const isAllowed = path.endsWith('index.html') || path.endsWith('/') || path.includes('teachers.html') || path.includes('profile.html');
 
     if (!isAllowed) return;
 
@@ -2604,8 +2604,8 @@ function renderVideos() {
         const itemId = String(item._id);
         const isSubscribed = enrolledCourseIds.includes(itemId) || enrolledVideoIds.includes(itemId);
         const isFreeOpen = (item.price === null || item.price === undefined);
-        const destUrl = `course-view.php?id=${itemId}`;
-        const subscribeUrl = isSubscribed ? destUrl : `course-view.php?id=${itemId}&activate=1`;
+        const destUrl = `course-view.html?id=${itemId}`;
+        const subscribeUrl = isSubscribed ? destUrl : `course-view.html?id=${itemId}&activate=1`;
 
         const priceLabelText = isFreeOpen
             ? 'مجاني'
@@ -2666,7 +2666,7 @@ async function watchVideo(videoId) {
 
         alert('يرجى تسجيل الدخول أولاً');
 
-        window.location.href = 'login.php';
+        window.location.href = 'login.html';
 
         return;
 
@@ -2679,7 +2679,7 @@ async function watchVideo(videoId) {
     const videoObj = (window._allVideos || []).find(v => v._id === videoId);
     const isFreeOpen = videoObj && (videoObj.price === null || videoObj.price === undefined);
     if (isFreeOpen) {
-        window.location.href = `watch.php?videoId=${videoId}&code=FREE_ACCESS`;
+        window.location.href = `watch.html?videoId=${videoId}&code=FREE_ACCESS`;
         return;
     }
 
@@ -2689,7 +2689,7 @@ async function watchVideo(videoId) {
 
     if (isSubscribed || isAdmin) {
 
-        window.location.href = `watch.php?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
+        window.location.href = `watch.html?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
 
         return;
 
@@ -2723,7 +2723,7 @@ async function watchVideo(videoId) {
 
             }
 
-            window.location.href = `watch.php?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
+            window.location.href = `watch.html?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
 
             return;
 
@@ -2821,7 +2821,7 @@ async function watchVideo(videoId) {
 
                     const codeParam = data.code ? data.code.code : 'ALREADY_SUBSCRIBED';
 
-                    window.location.href = `watch.php?videoId=${videoId}&code=${codeParam}`;
+                    window.location.href = `watch.html?videoId=${videoId}&code=${codeParam}`;
 
                 });
 
@@ -2893,7 +2893,7 @@ window.subscribeVideo = async function (videoId) {
 
             if (result.isConfirmed) {
 
-                window.location.href = 'login.php';
+                window.location.href = 'login.html';
 
             }
 
@@ -3048,7 +3048,7 @@ function renderTeachers() {
 
     const cardsHTML = teachersList.map(teacher => {
         const isFollowing = currentUser && currentUser.followedTeachers && currentUser.followedTeachers.includes(teacher._id);
-        const profileUrl = `teacher-profile.php?id=${teacher._id}`;
+        const profileUrl = `teacher-profile.html?id=${teacher._id}`;
         const teacherImg = resolveImg(teacher.imagePath || teacher.image) || 'imges/man.png';
         const bioText = teacher.bio || 'معلم متميز على منصة EDGE Academy، يقدم أفضل الشروحات والمتابعات المستمرة.';
 
@@ -3209,7 +3209,7 @@ function deleteTeacher(id) {
 }
 
 window.goToTeacherPage = function (teacherId) {
-    window.location.href = `teacher-profile.php?id=${teacherId}`;
+    window.location.href = `teacher-profile.html?id=${teacherId}`;
 };
 
 // ==========================================
@@ -3268,7 +3268,7 @@ function renderSubjects() {
     if (subjectsList.length === 0) {
 
         const emptyMsg = studentGrade
-            ? `لا توجد مواد أو معلمون مضافون حالياً لمرحلة (${studentGrade}).<br><a href="subjects.php?grade=all" style="color:var(--primary-red); font-weight:700; text-decoration:underline; display:inline-block; margin-top:10px;">استعراض جميع المواد لجميع المراحل</a>`
+            ? `لا توجد مواد أو معلمون مضافون حالياً لمرحلة (${studentGrade}).<br><a href="subjects.html?grade=all" style="color:var(--primary-red); font-weight:700; text-decoration:underline; display:inline-block; margin-top:10px;">استعراض جميع المواد لجميع المراحل</a>`
             : 'لا توجد مواد دراسية مضافة حالياً. يرجى إضافة معلم مادة أولاً.';
 
         wrapper.innerHTML = `<p style="color: var(--gray); text-align: center; width: 100%; padding: 25px 15px; font-size: 1rem;">${emptyMsg}</p>`;
@@ -3328,7 +3328,7 @@ function renderSubjects() {
 
         const iconClass = subjectVisuals[subject] || "fa-book";
 
-        const subjectUrl = `subjects.php?subject=${encodeURIComponent(subject)}${studentGrade ? `&grade=${encodeURIComponent(studentGrade)}` : ''}`;
+        const subjectUrl = `subjects.html?subject=${encodeURIComponent(subject)}${studentGrade ? `&grade=${encodeURIComponent(studentGrade)}` : ''}`;
 
         return `
 
@@ -3405,7 +3405,7 @@ async function loadFullProfile() {
 
     const user = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (!user) { window.location.href = 'login.php'; return; }
+    if (!user) { window.location.href = 'login.html'; return; }
 
     const studentEmail = `${user.username || 'student'}@edgeacademy.edu`;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(studentEmail)}&color=111827&bgcolor=ffffff&margin=10`;
@@ -4420,7 +4420,7 @@ function checkCenterCode() {
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (!currentUser) { alert('❌ يجب تسجيل الدخول أولاً'); window.location.href = 'login.php'; window.location.href = 'login.php'; return; }
+    if (!currentUser) { alert('❌ يجب تسجيل الدخول أولاً'); window.location.href = 'login.html'; window.location.href = 'login.html'; return; }
 
     fetch(`${API_URL}/api/codes/verify`, {
 
@@ -4454,7 +4454,7 @@ function checkCenterCode() {
 
                     <p><strong>القيمة:</strong> ${code.value || 0} ج.م</p>
 
-                    <button onclick="window.location.href='watch.php?videoId=${code.videoId}&code=${code.code}'" 
+                    <button onclick="window.location.href='watch.html?videoId=${code.videoId}&code=${code.code}'" 
 
                             class="btn-fill" style="margin-top: 12px; width: 100%;">
 
