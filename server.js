@@ -79,10 +79,28 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/video-questions', videoQuestionRoutes);
 app.use('/api/attendance', attendanceRoutes);
 
+// Static assets FIRST — CSS, JS, images served directly with correct Content-Type
+app.use(express.static(path.join(__dirname), {
+    maxAge: '1d',
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-cache');
+        }
+    }
+}));
+
 // Smart Page Router: Supports Clean URLs, .html, and legacy .php requests
 app.use((req, res, next) => {
     // Skip API routes
     if (req.path.startsWith('/api')) {
+        return next();
+    }
+
+    // Skip requests for static file extensions — already handled above
+    const staticExts = /\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot|mp4|webm|pdf|json|map)$/i;
+    if (staticExts.test(req.path)) {
         return next();
     }
 
@@ -109,26 +127,8 @@ app.use((req, res, next) => {
         return res.sendFile(candidateHtml);
     }
 
-    // 3. If exact file exists (e.g. .html, .css, .js, images)
-    const exactFile = path.join(__dirname, cleanPath);
-    if (fs.existsSync(exactFile) && fs.statSync(exactFile).isFile()) {
-        return res.sendFile(exactFile);
-    }
-
     next();
 });
-
-// Static assets (CSS, JS, images, icons)
-app.use(express.static(path.join(__dirname), {
-    maxAge: '1d',
-    etag: true,
-    lastModified: true,
-    setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.html')) {
-            res.setHeader('Cache-Control', 'no-cache');
-        }
-    }
-}));
 
 // Fallback for 404 on frontend: send index.html or 404 json
 app.use((req, res) => {
