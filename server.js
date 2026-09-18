@@ -54,6 +54,18 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     etag: true
 }));
 
+// Static assets FIRST — CSS, JS, images served directly with correct Content-Type
+app.use(express.static(path.join(__dirname), {
+    maxAge: '1d',
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.html')) {
+            res.setHeader('Cache-Control', 'no-cache');
+        }
+    }
+}));
+
 // Route Definitions
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
@@ -78,18 +90,6 @@ app.use('/api/banners', bannerRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/video-questions', videoQuestionRoutes);
 app.use('/api/attendance', attendanceRoutes);
-
-// Static assets FIRST — CSS, JS, images served directly with correct Content-Type
-app.use(express.static(path.join(__dirname), {
-    maxAge: '1d',
-    etag: true,
-    lastModified: true,
-    setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.html')) {
-            res.setHeader('Cache-Control', 'no-cache');
-        }
-    }
-}));
 
 // Smart Page Router: Supports Clean URLs, .html, and legacy .php requests
 app.use((req, res, next) => {

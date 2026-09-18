@@ -28,52 +28,6 @@
   ],
   "routes": [
     {
-      "src": "/style\\.css",
-      "dest": "/style.css",
-      "headers": { "content-type": "text/css; charset=utf-8" }
-    },
-    {
-      "src": "/script\\.js",
-      "dest": "/script.js",
-      "headers": { "content-type": "application/javascript; charset=utf-8" }
-    },
-    {
-      "src": "/video-security\\.css",
-      "dest": "/video-security.css",
-      "headers": { "content-type": "text/css; charset=utf-8" }
-    },
-    {
-      "src": "/video-security\\.js",
-      "dest": "/video-security.js",
-      "headers": { "content-type": "application/javascript; charset=utf-8" }
-    },
-    {
-      "src": "/exam-security\\.js",
-      "dest": "/exam-security.js",
-      "headers": { "content-type": "application/javascript; charset=utf-8" }
-    },
-    {
-      "src": "/disable-inspect\\.js",
-      "dest": "/disable-inspect.js",
-      "headers": { "content-type": "application/javascript; charset=utf-8" }
-    },
-    {
-      "src": "/img/(.*)",
-      "dest": "/img/$1"
-    },
-    {
-      "src": "/imges/(.*)",
-      "dest": "/imges/$1"
-    },
-    {
-      "src": "/uploads/(.*)",
-      "dest": "/uploads/$1"
-    },
-    {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot|mp4|webm|pdf))",
-      "dest": "/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "server.js"
     }
