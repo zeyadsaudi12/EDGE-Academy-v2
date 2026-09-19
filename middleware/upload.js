@@ -1,34 +1,37 @@
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 
-// Ensure uploads directory exists (use /tmp on Vercel or read-only environments)
-const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
-const uploadsDir = isVercel
-    ? path.join('/tmp', 'uploads')
-    : path.join(__dirname, '..', 'uploads');
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-try {
-    if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-} catch (e) {
-    console.warn('Could not create uploads directory:', e.message);
-}
+// Cloudinary storage engine for multer
+// Handles images and general files
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: async (req, file) => {
+        const isRaw = file.mimetype === 'application/pdf' || 
+                      file.mimetype.includes('word') || 
+                      file.mimetype.includes('officedocument') ||
+                      file.originalname.endsWith('.pdf') ||
+                      file.originalname.endsWith('.docx');
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadsDir);
+        return {
+            folder: 'edge-academy',
+            resource_type: isRaw ? 'raw' : 'auto',
+            public_id: Date.now() + '-' + Math.round(Math.random() * 1E9),
+        };
     },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
 });
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 25 * 1024 * 1024 }
+    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
 });
 
 module.exports = upload;
+module.exports.cloudinary = cloudinary;

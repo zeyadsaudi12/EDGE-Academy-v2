@@ -91,9 +91,9 @@ exports.createVideo = async (req, res, next) => {
         const imageFile = req.files && req.files['image'] ? req.files['image'][0] : null;
         const videoFile = req.files && req.files['video'] ? req.files['video'][0] : null;
 
-        const imagePath = imageFile ? `/uploads/${imageFile.filename}` : req.body.image;
+        const imagePath = imageFile ? imageFile.path : req.body.image;
         const gradesArray = grades ? (Array.isArray(grades) ? grades : grades.split(",").map(g => g.trim())) : [];
-        const videoPath = videoFile ? `/uploads/${videoFile.filename}` : '';
+        const videoPath = videoFile ? videoFile.path : '';
 
         // Process booklet files
         const bookletFiles = [];
@@ -104,7 +104,7 @@ exports.createVideo = async (req, res, next) => {
                     : (f.size / 1024).toFixed(1) + ' KB';
                 bookletFiles.push({
                     name: f.originalname,
-                    url: `/uploads/${f.filename}`,
+                    url: f.path,
                     size: sizeStr
                 });
             });
@@ -119,7 +119,7 @@ exports.createVideo = async (req, res, next) => {
                     : (f.size / 1024).toFixed(1) + ' KB';
                 homeworkFiles.push({
                     name: f.originalname,
-                    url: `/uploads/${f.filename}`,
+                    url: f.path,
                     size: sizeStr
                 });
             });

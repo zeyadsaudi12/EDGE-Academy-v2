@@ -53,7 +53,7 @@ exports.createTeacher = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'الاسم والمادة مطلوبان' });
         }
 
-        const imagePath = req.file ? `/uploads/${req.file.filename}` : '';
+        const imagePath = req.file ? req.file.path : '';
         let gradesArray = [];
         if (grades) {
             gradesArray = Array.isArray(grades) ? grades : grades.split(',').map(g => g.trim());
@@ -141,13 +141,7 @@ exports.updateTeacher = async (req, res, next) => {
         }
 
         if (req.file) {
-            if (teacher.imagePath && teacher.imagePath.startsWith('/uploads/')) {
-                const oldPath = path.join(__dirname, '..', teacher.imagePath);
-                if (fs.existsSync(oldPath)) {
-                    try { fs.unlinkSync(oldPath); } catch (e) { console.error('Error deleting old image:', e); }
-                }
-            }
-            teacher.imagePath = `/uploads/${req.file.filename}`;
+            teacher.imagePath = req.file.path;
         }
 
         await teacher.save();

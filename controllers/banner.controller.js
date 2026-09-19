@@ -14,7 +14,7 @@ exports.getAllBanners = async (req, res, next) => {
 exports.createBanner = async (req, res, next) => {
     try {
         const { title, link, order } = req.body;
-        const imagePath = req.file ? `/uploads/${req.file.filename}` : req.body.imagePath;
+        const imagePath = req.file ? req.file.path : req.body.imagePath;
         if (!imagePath) return res.status(400).json({ success: false, message: 'الصورة مطلوبة' });
         
         const banner = new Banner({ 

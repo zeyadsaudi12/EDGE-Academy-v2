@@ -54,7 +54,7 @@ exports.getCourseById = async (req, res, next) => {
 exports.createCourse = async (req, res, next) => {
     try {
         const { title, description, price, teacherId, grades, hidden } = req.body;
-        const imagePath = req.file ? `/uploads/${req.file.filename}` : '';
+        const imagePath = req.file ? req.file.path : '';
         const gradesArr = Array.isArray(grades) ? grades : (grades ? grades.split(',').map(s => s.trim()) : []);
 
         const course = new Course({
@@ -85,7 +85,7 @@ exports.updateCourse = async (req, res, next) => {
         if (teacherId !== undefined) updateData.teacherId = teacherId;
         if (grades !== undefined) updateData.grades = Array.isArray(grades) ? grades : grades.split(',').map(s => s.trim());
         if (hidden !== undefined) updateData.hidden = hidden === 'true' || hidden === true;
-        if (req.file) updateData.imagePath = `/uploads/${req.file.filename}`;
+        if (req.file) updateData.imagePath = req.file.path;
 
         const updated = await Course.findByIdAndUpdate(req.params.id, updateData, { new: true });
         res.json({ success: true, message: 'تم تحديث الكورس بنجاح', course: updated });

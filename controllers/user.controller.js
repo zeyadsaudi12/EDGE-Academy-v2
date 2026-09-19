@@ -234,7 +234,7 @@ exports.uploadAvatar = async (req, res, next) => {
             }
         }
 
-        user.imagePath = `/uploads/${req.file.filename}`;
+        user.imagePath = req.file.path;
         await user.save();
 
         const userData = user.toObject();
