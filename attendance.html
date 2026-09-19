@@ -261,7 +261,7 @@
     <h1><i class="ti ti-scan"></i> بوابة الحضور — MASAR</h1>
     <div style="display:flex;align-items:center;gap:10px;">
         <span id="teacher-name-lbl" style="color:var(--txt2);font-size:0.85rem;">جاري التحميل...</span>
-        <a href="assistant-hub.html" style="background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.25);color:var(--primary);padding:8px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:flex;align-items:center;gap:5px;">
+        <a href="assistant-hub" style="background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.25);color:var(--primary);padding:8px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:flex;align-items:center;gap:5px;">
             <i class="ti ti-home"></i> الرئيسية
         </a>
         <button class="logout-btn" onclick="doLogout()">
@@ -340,7 +340,7 @@
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
             alert('🚫 غير مصرح بالدخول: هذه البوابة مخصصة للمعلمين والمساعدين المعتمدين فقط.');
-            window.location.href = 'login.html';
+            window.location.href = 'login';
         }
 
         const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
@@ -654,7 +654,7 @@
 
         function doLogout() {
             localStorage.removeItem('currentUser');
-            window.location.href = 'login.html';
+            window.location.href = 'login';
         }
     </script>
     

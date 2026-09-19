@@ -60,16 +60,45 @@ try {
     }
 } catch (e) {}
 
-// Static assets FIRST — CSS, JS, images served directly with correct Content-Type
+// ============================================================
+// CLEAN URLs: Redirect *.html, *.php, /index to clean extensionless URLs
+// e.g. /courses.html -> /courses, /admin.html -> /admin, /index.html -> /
+// ============================================================
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+
+    // 1. If path is /index, /index.html, /index.php -> 301 redirect to /
+    if (req.path === '/index' || req.path === '/index.html' || req.path === '/index.php') {
+        const queryIdx = req.url.indexOf('?');
+        const query = queryIdx !== -1 ? req.url.slice(queryIdx) : '';
+        return res.redirect(301, '/' + query);
+    }
+
+    // 2. If path ends with .html or .php -> 301 redirect to clean path
+    if (req.path.endsWith('.html') || req.path.endsWith('.php')) {
+        const cleanPath = req.path.replace(/\.(html|php)$/i, '');
+        const queryIdx = req.url.indexOf('?');
+        const query = queryIdx !== -1 ? req.url.slice(queryIdx) : '';
+        return res.redirect(301, cleanPath + query);
+    }
+
+    // 3. Remove trailing slashes (except root /)
+    if (req.path.length > 1 && req.path.endsWith('/')) {
+        const cleanPath = req.path.slice(0, -1);
+        const queryIdx = req.url.indexOf('?');
+        const query = queryIdx !== -1 ? req.url.slice(queryIdx) : '';
+        return res.redirect(301, cleanPath + query);
+    }
+
+    next();
+});
+
+// Static assets — CSS, JS, images served directly with correct Content-Type
 app.use(express.static(path.join(__dirname), {
     maxAge: '1d',
     etag: true,
     lastModified: true,
-    setHeaders: (res, filePath) => {
-        if (filePath.endsWith('.html')) {
-            res.setHeader('Cache-Control', 'no-cache');
-        }
-    }
+    index: false
 }));
 
 // Database Connection Middleware for API routes: ensures DB is connected before any query runs
@@ -127,6 +156,7 @@ app.use((req, res, next) => {
 
     let reqPath = req.path;
     if (reqPath === '/' || reqPath === '') {
+        res.setHeader('Cache-Control', 'no-cache');
         return res.sendFile(path.join(__dirname, 'index.html'));
     }
 
@@ -138,6 +168,7 @@ app.use((req, res, next) => {
         const htmlEquivalent = cleanPath.replace(/\.php$/, '.html');
         const fullHtmlPath = path.join(__dirname, htmlEquivalent);
         if (fs.existsSync(fullHtmlPath) && fs.statSync(fullHtmlPath).isFile()) {
+            res.setHeader('Cache-Control', 'no-cache');
             return res.sendFile(fullHtmlPath);
         }
     }
@@ -145,6 +176,7 @@ app.use((req, res, next) => {
     // 2. If path is extensionless (e.g. /courses or /admin), check if .html exists
     const candidateHtml = path.join(__dirname, cleanPath + '.html');
     if (fs.existsSync(candidateHtml) && fs.statSync(candidateHtml).isFile()) {
+        res.setHeader('Cache-Control', 'no-cache');
         return res.sendFile(candidateHtml);
     }
 

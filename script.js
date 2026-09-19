@@ -696,7 +696,7 @@ function initSmartNavbar() {
 
                 e.preventDefault();
 
-                window.location.href = 'index.html';
+                window.location.href = '/';
 
             }
 
@@ -826,7 +826,7 @@ function initHeartbeat(userId) {
             if (res.status === 403) {
                 alert('❌ تم إلغاء ربط هذا الجهاز أو تم تسجيل الدخول من جهاز آخر. سيتم تسجيل خروجك الآن.');
                 localStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
+                window.location.href = 'login';
             }
         })
         .catch(() => {});
@@ -875,7 +875,7 @@ function initRealtimeSync(currentUser) {
 
                     sessionStorage.clear();
 
-                    window.location.href = 'login.html';
+                    window.location.href = 'login';
 
                     return;
 
@@ -965,7 +965,7 @@ function handleLogin(event) {
 
         }));
 
-        window.location.href = 'assistant-hub.html';
+        window.location.href = 'assistant-hub';
 
         return false;
 
@@ -977,7 +977,7 @@ function handleLogin(event) {
 
         localStorage.setItem('currentUser', JSON.stringify({ role: 'admin', name: 'Admin' }));
 
-        window.location.href = 'admin.html';
+        window.location.href = 'admin';
 
         return false;
 
@@ -1025,12 +1025,12 @@ function handleLogin(event) {
 
                 if (data.user.role === 'admin') {
                     alert('👑 مرحباً بك يا مدير المنصة، جاري تحويلك للوحة التحكم...');
-                    window.location.href = 'admin.html';
+                    window.location.href = 'admin';
                 } else if (data.user.role === 'teacher') {
-                    window.location.href = 'assistant-hub.html';
+                    window.location.href = 'assistant-hub';
                 } else {
                     alert('✅ تم الدخول بنجاح، دراسة ممتعة وموفقة!');
-                    window.location.href = 'index.html';
+                    window.location.href = '/';
                 }
             } else {
                 alert('❌ ' + (data.message || 'بيانات الدخول غير صحيحة'));
@@ -1051,7 +1051,7 @@ function handleLogout() {
 
     sessionStorage.clear();
 
-    window.location.href = 'index.html';
+    window.location.href = '/';
 
 }
 
@@ -1289,7 +1289,7 @@ function handleRegister(event) {
 
                 localStorage.setItem('currentUser', JSON.stringify(data.user));
 
-                window.location.href = 'index.html';
+                window.location.href = '/';
 
             } else {
 
@@ -1439,7 +1439,7 @@ function initMasarChatbot(currentUser) {
 
     const path = window.location.pathname.toLowerCase();
 
-    const isAllowed = path.endsWith('index.html') || path.endsWith('/') || path.includes('teachers.html') || path.includes('profile.html');
+    const isAllowed = path.endsWith('index.html') || path.endsWith('/') || path.includes('teachers') || path.includes('profile');
 
     if (!isAllowed) return;
 
@@ -2606,8 +2606,8 @@ function renderVideos() {
         const itemId = String(item._id);
         const isSubscribed = enrolledCourseIds.includes(itemId) || enrolledVideoIds.includes(itemId);
         const isFreeOpen = (item.price === null || item.price === undefined);
-        const destUrl = `course-view.html?id=${itemId}`;
-        const subscribeUrl = isSubscribed ? destUrl : `course-view.html?id=${itemId}&activate=1`;
+        const destUrl = `course-view?id=${itemId}`;
+        const subscribeUrl = isSubscribed ? destUrl : `course-view?id=${itemId}&activate=1`;
 
         const priceLabelText = isFreeOpen
             ? 'مجاني'
@@ -2668,7 +2668,7 @@ async function watchVideo(videoId) {
 
         alert('يرجى تسجيل الدخول أولاً');
 
-        window.location.href = 'login.html';
+        window.location.href = 'login';
 
         return;
 
@@ -2681,7 +2681,7 @@ async function watchVideo(videoId) {
     const videoObj = (window._allVideos || []).find(v => v._id === videoId);
     const isFreeOpen = videoObj && (videoObj.price === null || videoObj.price === undefined);
     if (isFreeOpen) {
-        window.location.href = `watch.html?videoId=${videoId}&code=FREE_ACCESS`;
+        window.location.href = `watch?videoId=${videoId}&code=FREE_ACCESS`;
         return;
     }
 
@@ -2691,7 +2691,7 @@ async function watchVideo(videoId) {
 
     if (isSubscribed || isAdmin) {
 
-        window.location.href = `watch.html?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
+        window.location.href = `watch?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
 
         return;
 
@@ -2725,7 +2725,7 @@ async function watchVideo(videoId) {
 
             }
 
-            window.location.href = `watch.html?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
+            window.location.href = `watch?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
 
             return;
 
@@ -2823,7 +2823,7 @@ async function watchVideo(videoId) {
 
                     const codeParam = data.code ? data.code.code : 'ALREADY_SUBSCRIBED';
 
-                    window.location.href = `watch.html?videoId=${videoId}&code=${codeParam}`;
+                    window.location.href = `watch?videoId=${videoId}&code=${codeParam}`;
 
                 });
 
@@ -2895,7 +2895,7 @@ window.subscribeVideo = async function (videoId) {
 
             if (result.isConfirmed) {
 
-                window.location.href = 'login.html';
+                window.location.href = 'login';
 
             }
 
@@ -3050,7 +3050,7 @@ function renderTeachers() {
 
     const cardsHTML = teachersList.map(teacher => {
         const isFollowing = currentUser && currentUser.followedTeachers && currentUser.followedTeachers.includes(teacher._id);
-        const profileUrl = `teacher-profile.html?id=${teacher._id}`;
+        const profileUrl = `teacher-profile?id=${teacher._id}`;
         const teacherImg = resolveImg(teacher.imagePath || teacher.image) || 'imges/man.png';
         const bioText = teacher.bio || 'معلم متميز على منصة EDGE Academy، يقدم أفضل الشروحات والمتابعات المستمرة.';
 
@@ -3211,7 +3211,7 @@ function deleteTeacher(id) {
 }
 
 window.goToTeacherPage = function (teacherId) {
-    window.location.href = `teacher-profile.html?id=${teacherId}`;
+    window.location.href = `teacher-profile?id=${teacherId}`;
 };
 
 // ==========================================
@@ -3330,7 +3330,7 @@ function renderSubjects() {
 
         const iconClass = subjectVisuals[subject] || "fa-book";
 
-        const subjectUrl = `subjects.html?subject=${encodeURIComponent(subject)}${studentGrade ? `&grade=${encodeURIComponent(studentGrade)}` : ''}`;
+        const subjectUrl = `subjects?subject=${encodeURIComponent(subject)}${studentGrade ? `&grade=${encodeURIComponent(studentGrade)}` : ''}`;
 
         return `
 
@@ -3407,7 +3407,7 @@ async function loadFullProfile() {
 
     const user = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (!user) { window.location.href = 'login.html'; return; }
+    if (!user) { window.location.href = 'login'; return; }
 
     const studentEmail = `${user.username || 'student'}@edgeacademy.edu`;
     const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(studentEmail)}&color=111827&bgcolor=ffffff&margin=10`;
@@ -4422,7 +4422,7 @@ function checkCenterCode() {
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (!currentUser) { alert('❌ يجب تسجيل الدخول أولاً'); window.location.href = 'login.html'; window.location.href = 'login.html'; return; }
+    if (!currentUser) { alert('❌ يجب تسجيل الدخول أولاً'); window.location.href = 'login'; window.location.href = 'login'; return; }
 
     fetch(`${API_URL}/api/codes/verify`, {
 
@@ -4456,7 +4456,7 @@ function checkCenterCode() {
 
                     <p><strong>القيمة:</strong> ${code.value || 0} ج.م</p>
 
-                    <button onclick="window.location.href='watch.html?videoId=${code.videoId}&code=${code.code}'" 
+                    <button onclick="window.location.href = 'watch?videoId=${code.videoId}&code=${code.code}'" 
 
                             class="btn-fill" style="margin-top: 12px; width: 100%;">
 

@@ -260,21 +260,21 @@
 
         <!-- المنتصف: روابط التنقل -->
         <div class="header-center">
-            <a href="index.html" class="nav-link-item ">الرئيسية</a>
-            <a href="teachers.html" class="nav-link-item active">المعلمين</a>
-            <a href="subjects.html" class="nav-link-item ">المواد الدراسية</a>
-            <a href="courses.html" class="nav-link-item ">الكورسات</a>
-            <a href="exams.html" class="nav-link-item ">الامتحانات</a>
+            <a href="/" class="nav-link-item ">الرئيسية</a>
+            <a href="teachers" class="nav-link-item active">المعلمين</a>
+            <a href="subjects" class="nav-link-item ">المواد الدراسية</a>
+            <a href="courses" class="nav-link-item ">الكورسات</a>
+            <a href="exams" class="nav-link-item ">الامتحانات</a>
             <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
-            <a href="admin.html" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
+            <a href="admin" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none; background: linear-gradient(135deg, #f4a261, #e76f51); color: #fff !important; padding: 6px 14px; border-radius: 999px; font-weight: 800; box-shadow: 0 4px 12px rgba(231,111,81,0.35); text-decoration: none;">
                 <i class="fas fa-crown"></i> صفحة الادمن
             </a>
         </div>
 
         <!-- اليمين: إجراءات المستخدم -->
         <nav class="header-actions" id="authActions">
-            <a href="login.html" class="btn-outline">تسجيل الدخول</a>
-            <a href="register.html" class="btn-fill">حساب جديد</a>
+            <a href="login" class="btn-outline">تسجيل الدخول</a>
+            <a href="register" class="btn-fill">حساب جديد</a>
         </nav>
 
         <!-- قائمة الطالب عند تسجيل الدخول -->
@@ -285,10 +285,10 @@
             </button>
             <div class="user-dropdown-menu" id="userMenu">
                 <!-- خيار صفحة الأدمن داخل القائمة المنسدلة -->
-                <a href="admin.html" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
+                <a href="admin" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
                     👑 صفحة الادمن
                 </a>
-                <a href="profile.html" class="menu-item">👤 البروفايل</a>
+                <a href="profile" class="menu-item">👤 البروفايل</a>
                 <div class="menu-item balance-item">
                     <span>💰 الرصيد:</span>
                     <span id="userPoints">0</span> ج.م
@@ -306,20 +306,20 @@
 
     <!-- قائمة الموبايل المنسدلة -->
     <div class="mobile-nav-menu" id="mobileNavMenu">
-        <a href="admin.html" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
+        <a href="admin" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
             👑 صفحة الادمن
         </a>
-        <a href="index.html" class="mobile-nav-link ">🏠 الرئيسية</a>
-        <a href="teachers.html" class="mobile-nav-link active">👨‍🏫 المعلمين</a>
-        <a href="subjects.html" class="mobile-nav-link ">📚 المواد الدراسية</a>
-        <a href="courses.html" class="mobile-nav-link ">🎥 الكورسات</a>
-        <a href="exams.html" class="mobile-nav-link ">📝 الامتحانات</a>
+        <a href="/" class="mobile-nav-link ">🏠 الرئيسية</a>
+        <a href="teachers" class="mobile-nav-link active">👨‍🏫 المعلمين</a>
+        <a href="subjects" class="mobile-nav-link ">📚 المواد الدراسية</a>
+        <a href="courses" class="mobile-nav-link ">🎥 الكورسات</a>
+        <a href="exams" class="mobile-nav-link ">📝 الامتحانات</a>
         <div class="mobile-menu-auth" id="mobileAuthGuest">
-            <a href="login.html" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
-            <a href="register.html" class="btn-fill" style="text-align:center;">حساب جديد</a>
+            <a href="login" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
+            <a href="register" class="btn-fill" style="text-align:center;">حساب جديد</a>
         </div>
         <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
-            <a href="profile.html" class="mobile-nav-link">👤 البروفايل</a>
+            <a href="profile" class="mobile-nav-link">👤 البروفايل</a>
             <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
         </div>
     </div>

@@ -75,13 +75,13 @@
         <div class="user-chip"><i class="ti ti-user-check"></i><span id="userName">جاري التحميل...</span></div>
     </div>
     <div class="cards-grid">
-        <a href="attendance.html" class="hub-card attendance">
+        <a href="attendance" class="hub-card attendance">
             <div class="card-badge">📲 QR</div>
             <div class="card-icon"><i class="ti ti-scan"></i></div>
             <h3>بوابة الحضور</h3>
             <p>تحضير طلاب السنتر عبر مسح QR أو إدخال الكود يدوياً</p>
         </a>
-        <a href="assistant.html" class="hub-card questions">
+        <a href="assistant" class="hub-card questions">
             <div class="card-icon"><i class="ti ti-messages"></i></div>
             <h3>أسئلة الطلاب</h3>
             <p>استعراض أسئلة الطلاب والرد عليهم عبر الواتساب</p>
@@ -100,7 +100,7 @@
 
     if (!isAssistantSession && !isTeacher) {
         alert('تم تسجيل دخولك، جاري التوجيه...');
-        window.location.href = 'login.html';
+        window.location.href = 'login';
     }
 
     const nameEl = document.getElementById('userName');
@@ -123,7 +123,7 @@
     function doLogout() {
         localStorage.removeItem('currentUser');
         sessionStorage.removeItem('assistantLoggedIn');
-        window.location.href = 'login.html';
+        window.location.href = 'login';
     }
 </script>
 </body>

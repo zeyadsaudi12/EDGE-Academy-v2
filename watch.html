@@ -510,7 +510,7 @@ body.secure-video-page {
                     <div id="examPrerequisiteStatus" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px 20px; margin-bottom: 22px; font-size: 0.9rem; color: #f1f3f9;">
                         جاري فحص حالة الامتحان...
                     </div>
-                    <a id="examPrerequisiteBtn" href="exams.html" style="
+                    <a id="examPrerequisiteBtn" href="exams" style="
                         background: linear-gradient(135deg, #dda852, #f4a261);
                         color: #0b0c10;
                         font-weight: 800;
@@ -783,12 +783,12 @@ body.secure-video-page {
 
         if (!currentUser) {
             alert('عذراً، يجب تسجيل الدخول لمشاهدة المحاضرة.');
-            window.location.href = 'login.html';
+            window.location.href = 'login';
             return;
         }
         if (!currentVideoId) {
             alert('لم يتم تحديد محاضرة صالحة.');
-            window.location.href = 'courses.html';
+            window.location.href = 'courses';
             return;
         }
 
@@ -814,7 +814,7 @@ body.secure-video-page {
                 verifyData = await verifyRes.json();
                 if (!verifyRes.ok || !verifyData.success) {
                     alert(verifyData.message || 'فشل التحقق من الكود');
-                    window.location.href = 'index.html';
+                    window.location.href = '/';
                     return;
                 }
             }
@@ -825,7 +825,7 @@ body.secure-video-page {
 
             if (!videoRes.ok || !videoData.success) {
                 alert('خطأ في جلب بيانات الفيديو');
-                window.location.href = 'index.html';
+                window.location.href = '/';
                 return;
             }
 
@@ -835,7 +835,7 @@ body.secure-video-page {
                 const priceVal = video.price;
                 if (priceVal !== null && priceVal !== undefined && priceVal !== '') {
                     alert('هذه المحاضرة ليست مجانية.');
-                    window.location.href = 'index.html';
+                    window.location.href = '/';
                     return;
                 }
             }
@@ -1090,7 +1090,7 @@ body.secure-video-page {
         } catch (err) {
             console.error(err);
             alert('حدث خطأ أثناء تحميل المحاضرة');
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
     });
 

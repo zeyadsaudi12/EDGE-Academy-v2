@@ -16,7 +16,7 @@
                 </div>
             </div>
             <nav class="header-actions">
-                <a href="index.html" class="btn-outline">الرئيسية</a>
+                <a href="/" class="btn-outline">الرئيسية</a>
             </nav>
         </div>
     </header>
@@ -74,7 +74,7 @@
                 // التأكد من نجاح الدخول وأن رول المستخدم هو أدمن في الداتابيز
                 if (data.success && data.user.role === 'admin') {
                     localStorage.setItem('currentUser', JSON.stringify(data.user));
-                    window.location.href = 'admin.html';
+                    window.location.href = 'admin';
                 } else {
                     alert('❌ خطأ: الحساب ليس مشرفاً أو البيانات غير صحيحة');
                 }
@@ -82,7 +82,7 @@
                 // تراجع تلقائي لوضع الأوفلاين/الاختبار لدخول الأدمن الافتراضي
                 if (phone === '01234567890' && password === 'admin') {
                     localStorage.setItem('currentUser', JSON.stringify({ role: 'admin', name: 'Admin' }));
-                    window.location.href = 'admin.html';
+                    window.location.href = 'admin';
                 } else {
                     alert('❌ خطأ في الاتصال بقاعدة البيانات');
                 }

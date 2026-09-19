@@ -2035,10 +2035,10 @@
 
                 <!-- Center Links -->
                 <div class="masar-nav-links">
-                    <a href="index.html" class="masar-link" target="_blank">
+                    <a href="/" class="masar-link" target="_blank">
                         <i class="ti ti-home"></i> الرئيسية
                     </a>
-                    <a href="teachers.html" class="masar-link" target="_blank">
+                    <a href="teachers" class="masar-link" target="_blank">
                         <i class="ti ti-users"></i> المعلمين
                     </a>
                 </div>
@@ -2061,7 +2061,7 @@
                     </div>
 
                     <!-- Logout -->
-                    <button class="masar-logout-btn" onclick="window.location.href='index.html'">
+                    <button class="masar-logout-btn" onclick="window.location.href='/'">
                         <i class="ti ti-logout"></i> خروج
                     </button>
                 </div>
@@ -2203,7 +2203,7 @@
             </nav>
 
             <div class="sidebar-footer">
-                <button class="logout-btn" onclick="window.location.href='index.html'">
+                <button class="logout-btn" onclick="window.location.href='/'">
                     <i class="ti ti-logout"></i>
                     خروج من لوحة التحكم
                 </button>
@@ -4074,7 +4074,7 @@
             // ===== SECURITY GUARD (الحاجز الأمني لحماية لوحة الإدارة) =====
             const currentUserGuard = JSON.parse(localStorage.getItem('currentUser'));
             if (!currentUserGuard || currentUserGuard.role !== 'admin') {
-                window.location.href = 'admin-login.html';
+                window.location.href = 'admin-login';
             }
             localStorage.removeItem('apiUrl');
             const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
@@ -6159,7 +6159,7 @@
                                 </div>
                             </div>
                             <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                                <a href="exams.html?examId=${exam._id}" target="_blank" class="topbar-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-size:12px; background:rgba(46,196,182,0.12); color:var(--teal); border:1px solid rgba(46,196,182,0.25);">
+                                <a href="exams?examId=${exam._id}" target="_blank" class="topbar-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px; font-size:12px; background:rgba(46,196,182,0.12); color:var(--teal); border:1px solid rgba(46,196,182,0.25);">
                                     <i class="ti ti-external-link"></i> معاينة
                                 </a>
                                 <button class="topbar-btn" onclick="viewExamResults('${exam._id}', '${safeTitle}')" style="display:inline-flex; align-items:center; gap:4px; font-size:12px; background:rgba(67,97,238,0.12); color:var(--blue); border:1px solid rgba(67,97,238,0.25);">
