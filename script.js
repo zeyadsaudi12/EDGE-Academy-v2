@@ -126,6 +126,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     renderVideos();
 
+    // Render courses library page (courses.html)
+
+    renderCoursesLibrary();
+
     // Registration Form setup
 
     const registrationForm = document.getElementById('registrationForm');
@@ -2657,6 +2661,148 @@ function renderVideos() {
                 </div>
             </div>
         `;
+    }).join('');
+}
+
+// ==========================================
+// COURSES LIBRARY PAGE (courses.html)
+// ==========================================
+let _coursesLibraryData = [];
+let _coursesLibraryTeacherFilter = 'all';
+
+function renderCoursesLibrary() {
+    const grid = document.getElementById('coursesGrid');
+    if (!grid) return; // not on courses page
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const studentGrade = currentUser && currentUser.grade ? currentUser.grade : null;
+
+    // Filter visible courses by grade
+    _coursesLibraryData = (courses || []).filter(c => {
+        if (c.hidden) return false;
+        if (studentGrade && c.grades && c.grades.length > 0) {
+            return c.grades.includes(studentGrade);
+        }
+        return true;
+    });
+
+    // Build teacher filter chips
+    _buildTeacherChips();
+    applyCoursesFilter();
+}
+
+function _buildTeacherChips() {
+    const chipsContainer = document.getElementById('teacherChips');
+    if (!chipsContainer) return;
+
+    const seenTeachers = new Map();
+    _coursesLibraryData.forEach(c => {
+        if (c.teacherId && !seenTeachers.has(c.teacherId)) {
+            seenTeachers.set(c.teacherId, {
+                id: c.teacherId,
+                name: c.teacherName || (teachers.find(t => t._id === c.teacherId)?.name) || 'معلم',
+                image: c.teacherImage || (teachers.find(t => t._id === c.teacherId)?.imagePath) || ''
+            });
+        }
+    });
+
+    // Keep "الكل" chip and inject teacher chips
+    const allChipHTML = `<button class="filter-chip active" data-teacher-id="all" onclick="filterByTeacher('all', this)"><i class="fas fa-border-all"></i> الكل</button>`;
+    const teacherChipsHTML = [...seenTeachers.values()].map(t => {
+        const img = t.image ? `<img src="${resolveImg(t.image)}" onerror="this.style.display='none'">` : '';
+        return `<button class="filter-chip" data-teacher-id="${t.id}" onclick="filterByTeacher('${t.id}', this)">${img} ${t.name}</button>`;
+    }).join('');
+
+    chipsContainer.innerHTML = allChipHTML + teacherChipsHTML;
+}
+
+function filterByTeacher(teacherId, btn) {
+    _coursesLibraryTeacherFilter = teacherId;
+    document.querySelectorAll('#teacherChips .filter-chip').forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    applyCoursesFilter();
+}
+
+function applyCoursesFilter() {
+    const grid = document.getElementById('coursesGrid');
+    const resultsInfo = document.getElementById('coursesResultsInfo');
+    const searchInput = document.getElementById('coursesSearchInput');
+    if (!grid) return;
+
+    const searchTerm = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const enrolledCourseIds = currentUser ? (currentUser.subscribedCourses || []).map(e => String(e.courseId || e._id || '')).filter(Boolean) : [];
+
+    let filtered = _coursesLibraryData;
+
+    // Filter by teacher
+    if (_coursesLibraryTeacherFilter !== 'all') {
+        filtered = filtered.filter(c => c.teacherId === _coursesLibraryTeacherFilter);
+    }
+
+    // Filter by search
+    if (searchTerm) {
+        filtered = filtered.filter(c =>
+            (c.title || '').toLowerCase().includes(searchTerm) ||
+            (c.teacherName || '').toLowerCase().includes(searchTerm) ||
+            (c.description || '').toLowerCase().includes(searchTerm)
+        );
+    }
+
+    if (resultsInfo) {
+        resultsInfo.innerHTML = filtered.length > 0
+            ? `عدد الكورسات: <span>${filtered.length}</span>`
+            : '&nbsp;';
+    }
+
+    if (filtered.length === 0) {
+        grid.innerHTML = `<div class="courses-empty"><i class="fas fa-search"></i><h3>لا توجد نتائج</h3><p>جرب البحث بكلمة مختلفة أو غيّر الفلتر</p></div>`;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(course => {
+        const courseId = String(course._id);
+        const isSubscribed = enrolledCourseIds.includes(courseId);
+        const isFreeOpen = (course.price === null || course.price === undefined);
+        const destUrl = `course-view?id=${courseId}`;
+        const subscribeUrl = isSubscribed ? destUrl : `course-view?id=${courseId}&activate=1`;
+
+        const priceLabelText = isFreeOpen ? 'مجاني' : (course.price > 0 ? `${course.price} جنية` : 'مجاني بكود');
+        const priceBadgeClass = isFreeOpen ? 'course-price-badge-overlay free' : 'course-price-badge-overlay';
+
+        const tName = course.teacherName || (teachers.find(t => t._id === course.teacherId)?.name) || '';
+        const tImg = course.teacherImage || (teachers.find(t => t._id === course.teacherId)?.imagePath) || '';
+        const teacherBadge = tName ? `<div class="course-card-teacher-badge">${tImg ? `<img src="${resolveImg(tImg)}" onerror="this.style.display='none'">` : ''}<span>${tName}</span></div>` : '';
+        const lecturesMeta = course.videoCount ? `<span style="font-size:0.8rem;color:var(--gray);background:var(--surface-alt,#f3f4f6);padding:2px 8px;border-radius:6px;"><i class="fas fa-video" style="margin-left:4px;"></i>${course.videoCount} محاضرة</span>` : '';
+
+        let actionBtn;
+        if (isFreeOpen) {
+            actionBtn = `<a href="${destUrl}" class="btn-join" onclick="event.stopPropagation()"><i class="fas fa-play"></i> مشاهدة مجاناً</a>`;
+        } else if (isSubscribed) {
+            actionBtn = `<a href="${destUrl}" class="btn-join btn-enrolled-green" onclick="event.stopPropagation()"><i class="fas fa-check-circle"></i> أنت مشترك</a>`;
+        } else {
+            actionBtn = `<a href="${subscribeUrl}" class="btn-join" onclick="event.stopPropagation()">الاشتراك في الكورس</a>`;
+        }
+
+        return `
+        <div class="course-card" style="cursor:pointer;" onclick="location.href='${destUrl}'">
+            <div class="course-thumb-wrap">
+                <span class="${priceBadgeClass}">${priceLabelText}</span>
+                <img src="${resolveImg(course.imagePath || course.image) || 'imges/st.jpg'}" class="course-thumb" alt="${course.title}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
+            </div>
+            ${teacherBadge}
+            <div class="course-body">
+                <h3 class="course-title">${course.title}</h3>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                    <div class="course-price" style="margin:0;">${priceLabelText}</div>
+                    ${lecturesMeta}
+                </div>
+                <div class="course-btns">
+                    <a href="${destUrl}" class="btn-enter" onclick="event.stopPropagation()">الدخول</a>
+                    ${actionBtn}
+                </div>
+            </div>
+        </div>`;
     }).join('');
 }
 
