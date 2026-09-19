@@ -3,8 +3,22 @@ const Code = require('../models/code.model');
 const Course = require('../models/course.model');
 const Attendance = require('../models/attendance.model');
 const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
+const { cloudinary } = require('../middleware/upload');
+
+function extractCloudinaryPublicId(url) {
+    if (!url || !url.includes('cloudinary.com')) return null;
+    try {
+        const parts = url.split('/');
+        const uploadIndex = parts.indexOf('upload');
+        if (uploadIndex === -1) return null;
+        let startIdx = uploadIndex + 1;
+        if (parts[startIdx] && /^v\d+$/.test(parts[startIdx])) startIdx++;
+        const fileWithExt = parts.slice(startIdx).join('/');
+        return fileWithExt.replace(/\.[^/.]+$/, '');
+    } catch (e) {
+        return null;
+    }
+}
 
 exports.follow = async (req, res, next) => {
     try {
@@ -195,6 +209,15 @@ exports.getUserById = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
     try {
+        const user = await User.findById(req.params.id);
+        if (user && user.imagePath) {
+            try {
+                const publicId = extractCloudinaryPublicId(user.imagePath);
+                if (publicId) await cloudinary.uploader.destroy(publicId);
+            } catch (e) {
+                console.error('Error deleting user avatar from Cloudinary:', e);
+            }
+        }
         await User.findByIdAndDelete(req.params.id);
         res.json({ success: true });
     } catch (err) {
@@ -227,10 +250,12 @@ exports.uploadAvatar = async (req, res, next) => {
             return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
         }
 
-        if (user.imagePath && user.imagePath.startsWith('/uploads/')) {
-            const oldPath = path.join(__dirname, '..', user.imagePath);
-            if (fs.existsSync(oldPath)) {
-                try { fs.unlinkSync(oldPath); } catch (e) { console.error('Error deleting old avatar:', e); }
+        if (user.imagePath) {
+            try {
+                const publicId = extractCloudinaryPublicId(user.imagePath);
+                if (publicId) await cloudinary.uploader.destroy(publicId);
+            } catch (e) {
+                console.error('Error deleting old avatar from Cloudinary:', e);
             }
         }
 

@@ -1,17 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user.controller');
-const multer = require('multer');
-const path = require('path');
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, path.join(__dirname, '../uploads')),
-    filename: (req, file, cb) => {
-        const unique = Math.round(Math.random() * 1E9);
-        cb(null, `avatar-${Date.now()}-${unique}${path.extname(file.originalname)}`);
-    }
-});
-const upload = multer({ storage });
+const upload = require('../middleware/upload');
 
 router.get('/', userController.getAllUsers);
 router.get('/:id', userController.getUserById);

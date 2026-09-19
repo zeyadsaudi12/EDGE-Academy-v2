@@ -2,6 +2,22 @@ const Course = require('../models/course.model');
 const Video = require('../models/video.model');
 const User = require('../models/user.model');
 const Teacher = require('../models/teacher.model');
+const { cloudinary } = require('../middleware/upload');
+
+function extractCloudinaryPublicId(url) {
+    if (!url || !url.includes('cloudinary.com')) return null;
+    try {
+        const parts = url.split('/');
+        const uploadIndex = parts.indexOf('upload');
+        if (uploadIndex === -1) return null;
+        let startIdx = uploadIndex + 1;
+        if (parts[startIdx] && /^v\d+$/.test(parts[startIdx])) startIdx++;
+        const fileWithExt = parts.slice(startIdx).join('/');
+        return fileWithExt.replace(/\.[^/.]+$/, '');
+    } catch (e) {
+        return null;
+    }
+}
 
 // GET /api/courses
 exports.getCourses = async (req, res, next) => {
@@ -85,7 +101,19 @@ exports.updateCourse = async (req, res, next) => {
         if (teacherId !== undefined) updateData.teacherId = teacherId;
         if (grades !== undefined) updateData.grades = Array.isArray(grades) ? grades : grades.split(',').map(s => s.trim());
         if (hidden !== undefined) updateData.hidden = hidden === 'true' || hidden === true;
-        if (req.file) updateData.imagePath = req.file.path;
+
+        if (req.file) {
+            updateData.imagePath = req.file.path;
+            try {
+                const oldCourse = await Course.findById(req.params.id);
+                if (oldCourse && oldCourse.imagePath) {
+                    const publicId = extractCloudinaryPublicId(oldCourse.imagePath);
+                    if (publicId) await cloudinary.uploader.destroy(publicId);
+                }
+            } catch (err) {
+                console.error('Error deleting old course image from Cloudinary:', err);
+            }
+        }
 
         const updated = await Course.findByIdAndUpdate(req.params.id, updateData, { new: true });
         res.json({ success: true, message: 'تم تحديث الكورس بنجاح', course: updated });
@@ -97,6 +125,16 @@ exports.updateCourse = async (req, res, next) => {
 // DELETE /api/courses/:id
 exports.deleteCourse = async (req, res, next) => {
     try {
+        const course = await Course.findById(req.params.id);
+        if (course && course.imagePath) {
+            try {
+                const publicId = extractCloudinaryPublicId(course.imagePath);
+                if (publicId) await cloudinary.uploader.destroy(publicId);
+            } catch (err) {
+                console.error('Error deleting course image from Cloudinary:', err);
+            }
+        }
+
         await Course.findByIdAndDelete(req.params.id);
         await Video.updateMany({ courseId: req.params.id }, { $set: { courseId: '' } });
         res.json({ success: true, message: 'تم حذف الكورس بنجاح' });

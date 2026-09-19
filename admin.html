@@ -6674,7 +6674,7 @@
                         return;
                     }
                     container.innerHTML = d.banners.map(b => {
-                        const bImg = (b.imagePath && (b.imagePath.startsWith('http') || b.imagePath.startsWith('data:'))) ? b.imagePath : (API + (b.imagePath.startsWith('/') ? '' : '/') + b.imagePath);
+                        const bImg = (b.imagePath && (b.imagePath.startsWith('http') || b.imagePath.startsWith('data:'))) ? b.imagePath : (b.imagePath ? (API + (b.imagePath.startsWith('/') ? '' : '/') + b.imagePath) : 'imges/man.png');
                         return `
                         <div style="display:flex; align-items:center; gap:12px; background:var(--bg3); border:1px solid var(--border2); border-radius:10px; padding:10px; overflow:hidden;">
                             <img src="${bImg}" alt="" style="width:90px; height:60px; object-fit:cover; border-radius:7px; flex-shrink:0; background:#222;" onerror="this.src='imges/man.png'">
@@ -6687,7 +6687,8 @@
                                 <i class="ti ti-trash"></i>
                             </button>
                         </div>
-                    `).join('');
+                        `;
+                    }).join('');
                 } catch (err) {
                     container.innerHTML = '<p style="color:red; text-align:center;">خطأ في تحميل الإعلانات</p>';
                 }

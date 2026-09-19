@@ -15,6 +15,8 @@ server.out.log
 
 # Temporary & local scratch folders
 scratch/
+uploads/
+security-reports.json
 php-bin/
 .temp/
 .cache/
