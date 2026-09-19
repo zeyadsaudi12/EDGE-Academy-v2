@@ -1,0 +1,36 @@
+# Backend & Server files
+server.js
+middleware/
+models/
+controllers/
+routes/
+config/
+
+# Dependencies - too large for Cloudflare Workers
+node_modules/
+
+# Environment & secrets
+.env
+.env.local
+.env.production
+
+# Large binary uploads
+uploads/
+
+# Dev & system files
+.git/
+scratch/
+*.log
+*.bat
+*.ps1
+auto-sync.ps1
+push.bat
+push_done.txt
+start-auto-sync.bat
+
+# Config files not needed on CDN
+package.json
+package-lock.json
+vercel.json
+README.md
+security-reports.json
