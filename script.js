@@ -2169,9 +2169,10 @@ async function loadHomeBanners() {
 
                 const clickAttr = b.link ? `style="cursor: pointer;" onclick="window.open('${b.link}', '_blank')"` : '';
 
+                const bannerImgUrl = resolveImg(b.imagePath);
                 slidesHTML += `
 
-                    <div class="hero-slide hero-slide--img ${activeClass}" ${clickAttr} style="background-image: url('${API_URL}${b.imagePath}'); position: absolute; inset: 0; transition: opacity 0.7s ease; opacity: ${idx === 0 ? '1' : '0'}; background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important; width: 100% !important; height: 100% !important;">
+                    <div class="hero-slide hero-slide--img ${activeClass}" ${clickAttr} style="background-image: url('${bannerImgUrl}'); position: absolute; inset: 0; transition: opacity 0.7s ease; opacity: ${idx === 0 ? '1' : '0'}; background-size: cover !important; background-position: center center !important; background-repeat: no-repeat !important; width: 100% !important; height: 100% !important;">
 
                         ${b.title ? `<div class="hero-banner-caption">${b.title}</div>` : ''}
 

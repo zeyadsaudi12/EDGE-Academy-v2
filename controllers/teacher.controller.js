@@ -1,9 +1,25 @@
 const Teacher = require('../models/teacher.model');
 const User = require('../models/user.model');
 const mongoose = require('mongoose');
-const fs = require('fs');
-const path = require('path');
 const crypto = require('crypto');
+const { cloudinary } = require('../middleware/upload');
+
+// استخراج public_id من Cloudinary URL لحذف الصورة
+function extractCloudinaryPublicId(url) {
+    if (!url || !url.includes('cloudinary.com')) return null;
+    try {
+        const parts = url.split('/');
+        const uploadIndex = parts.indexOf('upload');
+        if (uploadIndex === -1) return null;
+        // تخطي version (v1234567)
+        let startIdx = uploadIndex + 1;
+        if (parts[startIdx] && /^v\d+$/.test(parts[startIdx])) startIdx++;
+        const fileWithExt = parts.slice(startIdx).join('/');
+        return fileWithExt.replace(/\.[^/.]+$/, ''); // إزالة الامتداد
+    } catch (e) {
+        return null;
+    }
+}
 
 exports.getFollowerCounts = async (req, res, next) => {
     try {
@@ -53,6 +69,7 @@ exports.createTeacher = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'الاسم والمادة مطلوبان' });
         }
 
+        // req.file.path = Cloudinary URL بعد الرفع
         const imagePath = req.file ? req.file.path : '';
         let gradesArray = [];
         if (grades) {
@@ -141,7 +158,12 @@ exports.updateTeacher = async (req, res, next) => {
         }
 
         if (req.file) {
-            teacher.imagePath = req.file.path;
+            // حذف الصورة القديمة من Cloudinary
+            const oldPublicId = extractCloudinaryPublicId(teacher.imagePath);
+            if (oldPublicId) {
+                cloudinary.uploader.destroy(oldPublicId).catch(e => console.error('خطأ في حذف الصورة القديمة من Cloudinary:', e));
+            }
+            teacher.imagePath = req.file.path; // Cloudinary URL الجديد
         }
 
         await teacher.save();
@@ -162,11 +184,10 @@ exports.deleteTeacher = async (req, res, next) => {
             return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
         }
 
-        if (teacher.imagePath && teacher.imagePath.startsWith('/uploads/')) {
-            const imgPath = path.join(__dirname, '..', teacher.imagePath);
-            if (fs.existsSync(imgPath)) {
-                try { fs.unlinkSync(imgPath); } catch (e) { console.error('خطأ في حذف صورة المعلم:', e); }
-            }
+        // حذف الصورة من Cloudinary
+        const publicId = extractCloudinaryPublicId(teacher.imagePath);
+        if (publicId) {
+            cloudinary.uploader.destroy(publicId).catch(e => console.error('خطأ في حذف صورة المعلم من Cloudinary:', e));
         }
 
         await User.deleteMany({ teacherId: req.params.id });

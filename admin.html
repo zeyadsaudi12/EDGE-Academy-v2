@@ -1,4 +1,4 @@
-﻿
+
     <!DOCTYPE html>
     <html lang="ar" dir="rtl">
 
@@ -6673,9 +6673,11 @@
                         container.innerHTML = '<p style="color:var(--txt3); text-align:center; padding: 30px 0;">لا توجد إعلانات حالياً</p>';
                         return;
                     }
-                    container.innerHTML = d.banners.map(b => `
+                    container.innerHTML = d.banners.map(b => {
+                        const bImg = (b.imagePath && (b.imagePath.startsWith('http') || b.imagePath.startsWith('data:'))) ? b.imagePath : (API + (b.imagePath.startsWith('/') ? '' : '/') + b.imagePath);
+                        return `
                         <div style="display:flex; align-items:center; gap:12px; background:var(--bg3); border:1px solid var(--border2); border-radius:10px; padding:10px; overflow:hidden;">
-                            <img src="${b.imagePath}" alt="" style="width:90px; height:60px; object-fit:cover; border-radius:7px; flex-shrink:0; background:#222;">
+                            <img src="${bImg}" alt="" style="width:90px; height:60px; object-fit:cover; border-radius:7px; flex-shrink:0; background:#222;" onerror="this.src='imges/man.png'">
                             <div style="flex:1; min-width:0;">
                                 <div style="font-weight:700; font-size:13px; color:var(--txt); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${b.title || '(بدون عنوان)'}</div>
                                 ${b.link ? `<div style="font-size:11px; color:var(--teal); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${b.link}</div>` : ''}
