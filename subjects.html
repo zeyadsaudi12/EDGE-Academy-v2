@@ -796,7 +796,7 @@ function renderDirectory() {
                     ${teachersInSubj.map(teacher => {
                         const avatarUrl = resolveCardImg(teacher.imagePath, apiBase);
                         const gradesPills = (teacher.grades && Array.isArray(teacher.grades) && teacher.grades.length > 0)
-                            ? teacher.grades.slice(0, 3).map(g => `<span class="grade-pill-tag">${g}</span>`).join('')
+                            ? teacher.grades.map(g => `<span class="grade-pill-tag">${g}</span>`).join('')
                             : `<span class="grade-pill-tag">جميع المراحل</span>`;
 
                         return `
