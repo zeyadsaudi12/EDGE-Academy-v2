@@ -799,8 +799,14 @@ body.secure-video-page {
         try {
             let verifyData = { success: true, remainingViews: isAdmin ? '∞' : '3' };
 
-            // ── الفيديوهات المجانية أو المسؤول: تخطي التحقق بالكود ──
-            if (!isAdmin && codeStr !== 'FREE_ACCESS') {
+            // Free lectures must be enrolled through the subscribe button;
+            // FREE_ACCESS is no longer a valid bypass for student accounts.
+            if (!isAdmin && codeStr === 'FREE_ACCESS') {
+                alert('يرجى الاشتراك في المحاضرة أولاً قبل المشاهدة.');
+                window.location.href = 'courses';
+                return;
+            }
+            if (!isAdmin) {
                 // 1. التحقق من الكود
                 const verifyRes = await fetch(`${API_URL}/api/codes/verify`, {
                     method: 'POST',
@@ -829,16 +835,7 @@ body.secure-video-page {
                 return;
             }
 
-            // تأكيد إن الفيديو مجاني فعلاً لو كود FREE_ACCESS (المسؤول مستثنى دائماً)
             const video = videoData.video;
-            if (!isAdmin && codeStr === 'FREE_ACCESS') {
-                const priceVal = video.price;
-                if (priceVal !== null && priceVal !== undefined && priceVal !== '') {
-                    alert('هذه المحاضرة ليست مجانية.');
-                    window.location.href = '/';
-                    return;
-                }
-            }
 
             currentTeacherId = video.teacherId;
 

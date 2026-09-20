@@ -2622,13 +2622,13 @@ function renderVideos() {
         const priceBadgeClass = isFreeOpen ? 'course-price-badge-overlay free' : 'course-price-badge-overlay';
 
         const enterBtn = isStandaloneVideo
-            ? `<a href="javascript:watchVideo('${itemId}')" class="btn-enter" onclick="event.stopPropagation()">مشاهدة المحاضرة</a>`
+            ? `<a href="javascript:watchVideo('${itemId}')" class="btn-enter" onclick="event.stopPropagation()">${isSubscribed ? 'مشاهدة المحاضرة' : 'الاشتراك في المحاضرة'}</a>`
             : `<a href="${destUrl}" class="btn-enter" onclick="event.stopPropagation()">الدخول للكورس</a>`;
 
         let actionButtonHTML;
         if (isFreeOpen) {
             actionButtonHTML = `<a href="${isStandaloneVideo ? `javascript:watchVideo('${itemId}')` : destUrl}" class="btn-join" onclick="event.stopPropagation()">
-                <i class="fas fa-play"></i> ${isStandaloneVideo ? 'مشاهدة المحاضرة مجاناً' : 'مشاهدة الكورس مجاناً !'}
+                <i class="fas fa-play"></i> ${isStandaloneVideo ? (isSubscribed ? 'مشاهدة المحاضرة' : 'الاشتراك مجاناً') : 'مشاهدة الكورس مجاناً !'}
             </a>`;
         } else if (isSubscribed) {
             actionButtonHTML = `<a href="${isStandaloneVideo ? `javascript:watchVideo('${itemId}')` : destUrl}" class="btn-join btn-enrolled-green" onclick="event.stopPropagation()">
@@ -2649,7 +2649,7 @@ function renderVideos() {
             : (item.videoCount ? `<span style="font-size:0.8rem; color:var(--gray); background:var(--surface-alt); padding:2px 8px; border-radius:6px;"><i class="fas fa-video" style="margin-left:4px;"></i>${item.videoCount} محاضرة</span>` : '');
 
         return `
-            <div class="course-card" style="flex: 0 0 320px; cursor:pointer;" onclick="${isStandaloneVideo ? `watchVideo('${itemId}')` : `location.href='${destUrl}'`}">
+            <div class="course-card" style="flex: 0 0 320px; cursor:pointer;" onclick="${isStandaloneVideo ? '' : `location.href='${destUrl}'`}">
                 <div class="course-thumb-wrap">
                     <span class="${priceBadgeClass}">${priceLabelText}</span>
                     <img src="${resolveImg(item.imagePath || item.image) || 'imges/st.jpg'}" class="course-thumb" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
@@ -2827,17 +2827,9 @@ async function watchVideo(videoId) {
 
     }
 
-    // Check if video is free-for-all (price=null) or free-with-code (price=0)
-    // price=null  → مفتوح للجميع بدون كود
-    // price=0     → مجاني لكن يحتاج كود (أو اشتراك سابق)
-    // price>0     → مدفوع يحتاج كود شحن
+    // Free lectures require a one-click subscription too, so the teacher can
+    // see every enrolled student in the watcher list.
     const videoObj = (window._allVideos || []).find(v => v._id === videoId);
-    const isFreeOpen = videoObj && (videoObj.price === null || videoObj.price === undefined);
-    if (isFreeOpen) {
-        window.location.href = `watch?videoId=${videoId}&code=FREE_ACCESS`;
-        return;
-    }
-
     const isSubscribed = (currentUser.subscribedVideos || []).includes(videoId);
 
     const isAdmin = currentUser.role === 'admin' || currentUser.phone === '01556448880' || currentUser.phone === '01234567890';
@@ -2848,6 +2840,34 @@ async function watchVideo(videoId) {
 
         return;
 
+    }
+
+    const mayBeFree = videoObj && (videoObj.price === null || videoObj.price === undefined || Number(videoObj.price) === 0);
+    if (mayBeFree) {
+        try {
+            const freeRes = await fetch(`${API_URL}/api/users/${currentUser._id}/subscribe-free`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ videoId })
+            });
+            const freeData = await freeRes.json();
+            if (freeRes.ok && freeData.success) {
+                currentUser.subscribedVideos = currentUser.subscribedVideos || [];
+                if (!currentUser.subscribedVideos.includes(videoId)) currentUser.subscribedVideos.push(videoId);
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                await Swal.fire({ title: 'تم الاشتراك بنجاح!', text: 'تمت إضافة المحاضرة إلى حسابك ويمكنك مشاهدتها الآن.', icon: 'success', confirmButtonText: 'ابدأ المشاهدة', confirmButtonColor: '#2ca772' });
+                window.location.href = `watch?videoId=${videoId}&code=ALREADY_SUBSCRIBED`;
+                return;
+            }
+            if (!freeData.requiresCode) {
+                await Swal.fire({ title: 'تعذّر الاشتراك', text: freeData.message || 'حدث خطأ أثناء الاشتراك المجاني.', icon: 'error' });
+                return;
+            }
+        } catch (err) {
+            console.error('Free subscription error:', err);
+            await Swal.fire({ title: 'تعذّر الاتصال', text: 'تعذّر تسجيل الاشتراك المجاني الآن.', icon: 'error' });
+            return;
+        }
     }
 
     // Double check on backend for device compatibility / sync

@@ -14,7 +14,8 @@ exports.verifyCode = async (req, res, next) => {
             return res.status(403).json({ success: false, message: 'هذه المحاضرة مغلقة حالياً بواسطة الإدارة' });
         }
 
-        // 1. إذا كان أدمن أو طالب مشترك أو المحاضرة مجانية
+        // 1. الأدمن والطلاب المشتركون فقط يمرون مباشرة. المحاضرة المجانية
+        // تحتاج اشتراكاً مجانياً صريحاً حتى تظهر في قائمة المشاهدين.
         if (studentId === 'admin-master-id') {
             return res.json({ success: true, remainingViews: 'مفتوحة دائماً', alreadySubscribed: true });
         }
@@ -24,20 +25,10 @@ exports.verifyCode = async (req, res, next) => {
             if (user) {
                 const isAdmin = user.role === 'admin' || user.phone === '01556448880' || user.phone === '01234567890';
                 const isSubscribed = user.subscribedVideos && user.subscribedVideos.map(id => id.toString()).includes(videoId.toString());
-                const isFree = video.price === 0;
-
-                if (isAdmin || isSubscribed || isFree) {
-                    // إذا كانت المحاضرة مجانية ولم تضف بعد لقائمة اشتراكاته، نضيفها لتظهر في كورساته
-                    if (isFree && !isSubscribed && user.role !== 'admin') {
-                        if (!user.subscribedVideos) user.subscribedVideos = [];
-                        user.subscribedVideos.push(videoId.toString());
-                        await user.save();
-                    }
+                if (isAdmin || isSubscribed) {
                     return res.json({ success: true, remainingViews: 'مفتوحة دائماً', alreadySubscribed: true });
                 }
             }
-        } else if (video.price === 0) {
-            return res.json({ success: true, remainingViews: 'مفتوحة دائماً', alreadySubscribed: true });
         }
 
         // 2. إذا لم يكن مشتركاً، نطالبه بالتحقق من كود الشحن

@@ -436,7 +436,9 @@
         }).join('');
         const videoCards = filteredVideos.map(video => {
             const price = video.price === null || video.price === undefined ? 'مجاني' : (Number(video.price) > 0 ? `${video.price} جنيه` : 'الاشتراك بكود');
-            return `<article class="course-card" style="cursor:pointer;" onclick="watchVideo('${video._id}')"><div class="course-thumb-wrap"><span class="course-price-badge-overlay">${price}</span><img src="${escapeHtml(imageUrl(video.imagePath))}" class="course-thumb" alt="${escapeHtml(video.title)}" onerror="this.onerror=null;this.src='imges/st.jpg'"></div><div class="course-body"><h3 class="course-title">${escapeHtml(video.title)}</h3><p style="color:var(--gray);font-size:.87rem;min-height:42px;margin:6px 0 12px;">محاضرة منفصلة</p><a class="btn-enter" href="javascript:watchVideo('${video._id}')" onclick="event.stopPropagation()">مشاهدة المحاضرة</a></div></article>`;
+            const user = (() => { try { return JSON.parse(localStorage.getItem('currentUser') || 'null'); } catch (_) { return null; } })();
+            const subscribed = user && (user.subscribedVideos || []).map(String).includes(String(video._id));
+            return `<article class="course-card"><div class="course-thumb-wrap"><span class="course-price-badge-overlay">${price}</span><img src="${escapeHtml(imageUrl(video.imagePath))}" class="course-thumb" alt="${escapeHtml(video.title)}" onerror="this.onerror=null;this.src='imges/st.jpg'"></div><div class="course-body"><h3 class="course-title">${escapeHtml(video.title)}</h3><p style="color:var(--gray);font-size:.87rem;min-height:42px;margin:6px 0 12px;">محاضرة منفصلة</p><a class="btn-enter" href="javascript:watchVideo('${video._id}')">${subscribed ? 'مشاهدة المحاضرة' : 'الاشتراك في المحاضرة'}</a></div></article>`;
         }).join('');
         grid.innerHTML = courseCards + videoCards;
     }

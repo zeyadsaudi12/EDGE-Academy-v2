@@ -10,6 +10,7 @@ router.put('/:id', userController.updateUser);
 
 router.post('/:id/follow', userController.follow);
 router.post('/:id/subscribe', userController.subscribe);
+router.post('/:id/subscribe-free', userController.subscribeFree);
 router.post('/:id/subscribe-course', userController.subscribeCourse);
 router.post('/:id/buy-course', userController.buyCourseBalance);
 router.post('/:id/avatar', upload.single('avatar'), userController.uploadAvatar);

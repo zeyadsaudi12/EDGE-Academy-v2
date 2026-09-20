@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const Code = require('../models/code.model');
 const Course = require('../models/course.model');
+const Video = require('../models/video.model');
 const Attendance = require('../models/attendance.model');
 const mongoose = require('mongoose');
 const { cloudinary } = require('../middleware/upload');
@@ -83,6 +84,44 @@ exports.subscribe = async (req, res, next) => {
 
         await Promise.all([user.save(), code.save()]);
         res.json({ success: true, remainingViews: 1 - code.views, user });
+    } catch (err) {
+        next(err);
+    }
+};
+
+// Free lectures still require a one-click subscription.  This gives teachers
+// an accurate watcher list without requiring a recharge code from students.
+exports.subscribeFree = async (req, res, next) => {
+    try {
+        const { videoId } = req.body;
+        const studentId = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(studentId)) {
+            return res.status(400).json({ success: false, message: 'معرف المستخدم غير صالح' });
+        }
+        if (!mongoose.Types.ObjectId.isValid(videoId)) {
+            return res.status(400).json({ success: false, message: 'معرف المحاضرة غير صالح' });
+        }
+
+        const [user, video, codeCount] = await Promise.all([
+            User.findById(studentId),
+            Video.findById(videoId),
+            Code.countDocuments({ videoId })
+        ]);
+        if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+        if (!video) return res.status(404).json({ success: false, message: 'المحاضرة غير موجودة' });
+        if (video.closed) return res.status(403).json({ success: false, message: 'هذه المحاضرة مغلقة حالياً' });
+
+        // A zero/blank price with no generated codes is a free lecture.
+        if (Number(video.price || 0) !== 0 || codeCount > 0) {
+            return res.status(400).json({ success: false, requiresCode: true, message: 'هذه المحاضرة تحتاج كود اشتراك' });
+        }
+
+        if (!user.subscribedVideos) user.subscribedVideos = [];
+        if (!user.subscribedVideos.map(String).includes(String(videoId))) {
+            user.subscribedVideos.push(videoId);
+            await user.save();
+        }
+        res.json({ success: true, message: 'تم الاشتراك المجاني في المحاضرة بنجاح', subscribedVideos: user.subscribedVideos });
     } catch (err) {
         next(err);
     }
