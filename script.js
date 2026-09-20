@@ -2568,25 +2568,27 @@ function renderVideos() {
 
     const studentGrade = currentUser && currentUser.grade ? currentUser.grade : null;
 
-    // Use courses list; if no courses exist in DB, fallback to standalone videos
-    let itemsToDisplay = [];
-    if (courses && courses.length > 0) {
-        itemsToDisplay = courses.filter(course => {
+    // Courses and standalone lectures may coexist.  Do not hide a teacher's
+    // standalone lecture merely because another course exists on the platform.
+    const visibleCourses = (courses || []).filter(course => {
             if (course.hidden) return false;
             if (studentGrade && course.grades && course.grades.length > 0) {
                 return course.grades.includes(studentGrade);
             }
             return true;
         });
-    } else if (videos && videos.length > 0) {
-        itemsToDisplay = videos.filter(video => {
+    const visibleStandaloneVideos = (videos || []).filter(video => {
+            if (video.courseId) return false;
             if (video.hidden === true || video.hidden === 'true') return false;
             if (studentGrade && video.grades && video.grades.length > 0) {
                 return video.grades.includes(studentGrade);
             }
             return true;
         });
-    }
+    const itemsToDisplay = [
+        ...visibleCourses.map(course => ({ ...course, _isStandaloneVideo: false })),
+        ...visibleStandaloneVideos.map(video => ({ ...video, _isStandaloneVideo: true }))
+    ];
 
     if (itemsToDisplay.length === 0) {
 
@@ -2608,30 +2610,33 @@ function renderVideos() {
 
     container.innerHTML = itemsToDisplay.map(item => {
         const itemId = String(item._id);
-        const isSubscribed = enrolledCourseIds.includes(itemId) || enrolledVideoIds.includes(itemId);
+        const isStandaloneVideo = item._isStandaloneVideo === true;
+        const isSubscribed = isStandaloneVideo ? enrolledVideoIds.includes(itemId) : enrolledCourseIds.includes(itemId);
         const isFreeOpen = (item.price === null || item.price === undefined);
-        const destUrl = `course-view?id=${itemId}`;
-        const subscribeUrl = isSubscribed ? destUrl : `course-view?id=${itemId}&activate=1`;
+        const destUrl = isStandaloneVideo ? `watch?videoId=${itemId}&code=ALREADY_SUBSCRIBED` : `course-view?id=${itemId}`;
+        const subscribeUrl = isStandaloneVideo ? `javascript:watchVideo('${itemId}')` : (isSubscribed ? destUrl : `course-view?id=${itemId}&activate=1`);
 
         const priceLabelText = isFreeOpen
             ? 'مجاني'
             : (item.price > 0 ? `${item.price} جنية` : 'مجاني بكود');
         const priceBadgeClass = isFreeOpen ? 'course-price-badge-overlay free' : 'course-price-badge-overlay';
 
-        const enterBtn = `<a href="${destUrl}" class="btn-enter" onclick="event.stopPropagation()">الدخول للكورس</a>`;
+        const enterBtn = isStandaloneVideo
+            ? `<a href="javascript:watchVideo('${itemId}')" class="btn-enter" onclick="event.stopPropagation()">مشاهدة المحاضرة</a>`
+            : `<a href="${destUrl}" class="btn-enter" onclick="event.stopPropagation()">الدخول للكورس</a>`;
 
         let actionButtonHTML;
         if (isFreeOpen) {
-            actionButtonHTML = `<a href="${destUrl}" class="btn-join" onclick="event.stopPropagation()">
-                <i class="fas fa-play"></i> مشاهدة الكورس مجاناً !
+            actionButtonHTML = `<a href="${isStandaloneVideo ? `javascript:watchVideo('${itemId}')` : destUrl}" class="btn-join" onclick="event.stopPropagation()">
+                <i class="fas fa-play"></i> ${isStandaloneVideo ? 'مشاهدة المحاضرة مجاناً' : 'مشاهدة الكورس مجاناً !'}
             </a>`;
         } else if (isSubscribed) {
-            actionButtonHTML = `<a href="${destUrl}" class="btn-join btn-enrolled-green" onclick="event.stopPropagation()">
+            actionButtonHTML = `<a href="${isStandaloneVideo ? `javascript:watchVideo('${itemId}')` : destUrl}" class="btn-join btn-enrolled-green" onclick="event.stopPropagation()">
                 <i class="fas fa-check-circle"></i> أنت مشترك بالفعل
             </a>`;
         } else {
             actionButtonHTML = `<a href="${subscribeUrl}" class="btn-join" onclick="event.stopPropagation()">
-                الإشتراك في الكورس !
+                ${isStandaloneVideo ? 'الاشتراك في المحاضرة !' : 'الإشتراك في الكورس !'}
             </a>`;
         }
 
@@ -2639,10 +2644,12 @@ function renderVideos() {
         const tName = item.teacherName || (teachers.find(t => t._id === item.teacherId)?.name) || '';
         const tSubject = item.teacherSubject || (teachers.find(t => t._id === item.teacherId)?.subjectAr) || '';
         const teacherMeta = tName ? `<div style="font-size:0.82rem; color:var(--primary); font-weight:700; margin-bottom:6px;"><i class="fas fa-chalkboard-teacher" style="margin-left:4px;"></i>${tName}${tSubject ? ' (' + tSubject + ')' : ''}</div>` : '';
-        const lecturesMeta = item.videoCount ? `<span style="font-size:0.8rem; color:var(--gray); background:var(--surface-alt); padding:2px 8px; border-radius:6px;"><i class="fas fa-video" style="margin-left:4px;"></i>${item.videoCount} محاضرة</span>` : '';
+        const lecturesMeta = isStandaloneVideo
+            ? '<span style="font-size:0.8rem; color:var(--gray); background:var(--surface-alt); padding:2px 8px; border-radius:6px;"><i class="fas fa-play-circle" style="margin-left:4px;"></i>محاضرة منفصلة</span>'
+            : (item.videoCount ? `<span style="font-size:0.8rem; color:var(--gray); background:var(--surface-alt); padding:2px 8px; border-radius:6px;"><i class="fas fa-video" style="margin-left:4px;"></i>${item.videoCount} محاضرة</span>` : '');
 
         return `
-            <div class="course-card" style="flex: 0 0 320px; cursor:pointer;" onclick="location.href='${destUrl}'">
+            <div class="course-card" style="flex: 0 0 320px; cursor:pointer;" onclick="${isStandaloneVideo ? `watchVideo('${itemId}')` : `location.href='${destUrl}'`}">
                 <div class="course-thumb-wrap">
                     <span class="${priceBadgeClass}">${priceLabelText}</span>
                     <img src="${resolveImg(item.imagePath || item.image) || 'imges/st.jpg'}" class="course-thumb" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
