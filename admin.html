@@ -6974,10 +6974,10 @@
 
             tbody.innerHTML = filtered.map(w => `
                 <tr>
-                    <td style="font-weight:700; color:var(--accent); padding:10px;">${w.name}</td>
-                    <td style="direction:ltr; padding:10px;">${w.phone}</td>
-                    <td style="padding:10px;"><span class="badge badge-blue" style="font-size:10px;">${w.grade.replace('الصف ', '')}</span></td>
-                    <td style="padding:10px;">${w.governorate}</td>
+                    <td style="font-weight:700; color:var(--accent); padding:10px;">${w.name || `${w.firstName || ''} ${w.lastName || ''}`.trim() || '—'}</td>
+                    <td style="direction:ltr; padding:10px;">${w.phone || '—'}</td>
+                    <td style="padding:10px;"><span class="badge badge-blue" style="font-size:10px;">${(w.grade || '—').replace('الصف ', '')}</span></td>
+                    <td style="padding:10px;">${w.governorate || '—'}</td>
                 </tr>
             `).join('');
         };

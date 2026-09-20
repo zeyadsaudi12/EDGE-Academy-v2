@@ -190,10 +190,15 @@ exports.getVideoWatchers = async (req, res, next) => {
         };
 
         const watchers = await User.find(query)
-            .select('_id firstName lastName phone grade parentPhone')
+            .select('_id firstName lastName phone grade governorate')
             .lean();
 
-        res.json({ success: true, watchers });
+        const watcherRows = watchers.map(student => ({
+            ...student,
+            name: `${student.firstName || ''} ${student.lastName || ''}`.trim() || '—',
+            governorate: student.governorate || '—'
+        }));
+        res.json({ success: true, watchers: watcherRows });
     } catch (err) {
         next(err);
     }
