@@ -98,7 +98,13 @@ app.use(express.static(path.join(__dirname), {
     maxAge: '1d',
     etag: true,
     lastModified: true,
-    index: false
+    index: false,
+    // Application code must update immediately after a deployment.  Images
+    // can remain cached, but stale JavaScript can keep an old broken page
+    // alive in the user's browser for a full day.
+    setHeaders: (res, filePath) => {
+        if (/\.(html|js)$/i.test(filePath)) res.setHeader('Cache-Control', 'no-cache');
+    }
 }));
 
 // Database Connection Middleware for API routes: ensures DB is connected before any query runs

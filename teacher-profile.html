@@ -395,8 +395,80 @@
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="script.js" defer></script>
+<script src="script.js?v=1.3" defer></script>
 <script src="disable-inspect.js" defer></script>
+<script>
+(() => {
+    const apiUrl = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+    const teacherId = new URLSearchParams(window.location.search).get('id');
+    let teacherCourses = [];
+    let activeGrade = 'all';
+
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    })[char]);
+    const imageUrl = value => value && String(value).startsWith('/uploads/') ? apiUrl + value : (value || 'imges/st.jpg');
+    const isForGrade = (item, grade) => grade === 'all' || !Array.isArray(item.grades) || !item.grades.length || item.grades.includes(grade);
+
+    function showError(message) {
+        document.getElementById('tpHeroContainer').innerHTML = `<div class="tp-hero-details"><h1 class="tp-teacher-name">تعذّر تحميل صفحة المدرس</h1><p class="tp-bio-text">${escapeHtml(message)}</p><a class="cv-play-btn" href="teachers">العودة إلى المعلمين</a></div>`;
+        document.getElementById('tpCoursesGrid').innerHTML = `<div class="tp-empty-box"><i class="fas fa-triangle-exclamation"></i><h3>تعذّر تحميل الكورسات</h3><p>${escapeHtml(message)}</p><button class="tp-chip active" onclick="location.reload()">إعادة المحاولة</button></div>`;
+    }
+
+    function renderCourses() {
+        const grid = document.getElementById('tpCoursesGrid');
+        const search = document.getElementById('tpSearchInput').value.trim().toLowerCase();
+        const filtered = teacherCourses.filter(course => isForGrade(course, activeGrade) && (!search || `${course.title || ''} ${course.description || ''}`.toLowerCase().includes(search)));
+        document.getElementById('tpCoursesCountText').textContent = `${filtered.length} كورس`;
+        if (!filtered.length) {
+            grid.innerHTML = '<div class="tp-empty-box"><i class="fas fa-folder-open"></i><h3>لا توجد كورسات متاحة حاليًا</h3><p>جرّب تغيير المرحلة أو البحث باسم مختلف.</p></div>';
+            return;
+        }
+        grid.innerHTML = filtered.map(course => {
+            const price = Number(course.price) > 0 ? `${course.price} جنيه` : 'الاشتراك بكود';
+            const lectures = Number(course.videoCount) || 0;
+            return `<article class="course-card" style="cursor:pointer;" onclick="location.href='course-view?id=${encodeURIComponent(course._id)}'">
+                <div class="course-thumb-wrap"><span class="course-price-badge-overlay">${price}</span><img src="${escapeHtml(imageUrl(course.imagePath))}" class="course-thumb" alt="${escapeHtml(course.title)}" onerror="this.onerror=null;this.src='imges/st.jpg'"></div>
+                <div class="course-body"><h3 class="course-title">${escapeHtml(course.title)}</h3><p style="color:var(--gray);font-size:.87rem;min-height:42px;margin:6px 0 12px;">${escapeHtml(course.description || 'كورس تعليمي شامل')}</p><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><span class="course-price" style="margin:0;">${price}</span><span style="font-size:.82rem;color:var(--gray);"><i class="fas fa-video"></i> ${lectures} محاضرة</span></div><a class="btn-enter" href="course-view?id=${encodeURIComponent(course._id)}" onclick="event.stopPropagation()">عرض الكورس</a></div>
+            </article>`;
+        }).join('');
+    }
+
+    window.filterTeacherGrade = (grade, button) => {
+        activeGrade = grade;
+        document.querySelectorAll('#tpGradeChips .tp-chip').forEach(chip => chip.classList.remove('active'));
+        if (button) button.classList.add('active');
+        renderCourses();
+    };
+    window.applyTeacherFilter = renderCourses;
+
+    async function loadTeacherProfile() {
+        if (!teacherId || !/^[a-f\d]{24}$/i.test(teacherId)) return showError('رابط المدرس غير صالح.');
+        try {
+            const [teacherResponse, coursesResponse] = await Promise.all([
+                fetch(`${apiUrl}/api/teachers/${encodeURIComponent(teacherId)}`),
+                fetch(`${apiUrl}/api/courses`)
+            ]);
+            const teacherData = await teacherResponse.json();
+            const coursesData = await coursesResponse.json();
+            if (!teacherResponse.ok) throw new Error(teacherData.message || 'المدرس غير موجود.');
+            if (!coursesResponse.ok || !Array.isArray(coursesData)) throw new Error(coursesData.message || 'تعذّر تحميل الكورسات.');
+            const teacher = teacherData;
+            teacherCourses = coursesData.filter(course => String(course.teacherId) === String(teacherId) && !course.hidden);
+            document.title = `${teacher.name} | EDGE Academy`;
+            document.getElementById('tpHeroContainer').innerHTML = `<div class="tp-avatar-box"><img class="tp-avatar-img" src="${escapeHtml(imageUrl(teacher.imagePath || 'imges/man.png'))}" alt="${escapeHtml(teacher.name)}" onerror="this.onerror=null;this.src='imges/man.png'"><span class="tp-avatar-badge"><i class="fas fa-check"></i></span></div><div class="tp-hero-details"><h1 class="tp-teacher-name">${escapeHtml(teacher.name)}</h1><span class="tp-subject-tag"><i class="fas fa-book"></i> ${escapeHtml(teacher.subjectAr || 'مدرس')}</span><p class="tp-bio-text">${escapeHtml(teacher.bio || 'مدرس متميز على منصة EDGE Academy.')}</p><div class="tp-stats-row"><div class="tp-stat-pill"><i class="fas fa-layer-group"></i><strong>${teacherCourses.length}</strong> كورس متاح</div><div class="tp-stat-pill"><i class="fas fa-star"></i><strong>${teacher.rating || 5}</strong> تقييم المدرس</div></div></div>`;
+            const grades = [...new Set(teacherCourses.flatMap(course => Array.isArray(course.grades) ? course.grades : []).filter(Boolean))];
+            const chips = document.getElementById('tpGradeChips');
+            chips.innerHTML = '<button class="tp-chip active" data-grade="all" onclick="filterTeacherGrade(this.dataset.grade, this)"><i class="fas fa-border-all"></i> جميع المراحل</button>' + grades.map(grade => `<button class="tp-chip" data-grade="${escapeHtml(grade)}" onclick="filterTeacherGrade(this.dataset.grade, this)">${escapeHtml(grade)}</button>`).join('');
+            renderCourses();
+        } catch (error) {
+            console.error('Teacher profile load error:', error);
+            showError(error.message || 'تعذّر الاتصال بالخادم.');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', loadTeacherProfile);
+})();
+</script>
 
 </body>
 </html>

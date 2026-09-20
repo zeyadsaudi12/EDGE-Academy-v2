@@ -2,6 +2,8 @@ const Video = require('../models/video.model');
 const User = require('../models/user.model');
 const mongoose = require('mongoose');
 
+const isTrue = value => value === true || value === 1 || value === '1' || value === 'true';
+
 exports.toggleVideo = async (req, res, next) => {
     try {
         const video = await Video.findById(req.params.id);
@@ -29,7 +31,10 @@ exports.toggleVisibility = async (req, res, next) => {
 exports.updateVideo = async (req, res, next) => {
     try {
         const { title, price, link, examLink, requiredExamId, bookletFiles, homeworkFiles, startDate, endDate, hidden, courseId, releaseAfterDays } = req.body;
-        const updateData = { title, price, link, examLink, startDate, endDate, hidden };
+        const updateData = { title, link, examLink, startDate, endDate, hidden };
+        if (price !== undefined) {
+            updateData.price = price === '' || price === null ? null : Number(price);
+        }
         if (requiredExamId !== undefined) updateData.requiredExamId = requiredExamId;
         if (bookletFiles !== undefined) updateData.bookletFiles = bookletFiles;
         if (homeworkFiles !== undefined) updateData.homeworkFiles = homeworkFiles;
@@ -87,12 +92,14 @@ exports.getAllVideos = async (req, res, next) => {
 
 exports.createVideo = async (req, res, next) => {
     try {
-        const { title, link, price, grades, teacherId, playlistName, examLink, requiredExamId, startDate, endDate, hidden, scheduleGroup, courseId, releaseAfterDays } = req.body;
+        const { title, link, price, teacherId, playlistName, examLink, requiredExamId, startDate, endDate, hidden, scheduleGroup, courseId, releaseAfterDays } = req.body;
+        // Handle both 'grades' and 'grades[]' sent by FormData
+        const rawGrades = req.body['grades[]'] || req.body['grades'];
         const imageFile = req.files && req.files['image'] ? req.files['image'][0] : null;
         const videoFile = req.files && req.files['video'] ? req.files['video'][0] : null;
 
         const imagePath = imageFile ? imageFile.path : req.body.image;
-        const gradesArray = grades ? (Array.isArray(grades) ? grades : grades.split(",").map(g => g.trim())) : [];
+        const gradesArray = rawGrades ? (Array.isArray(rawGrades) ? rawGrades : rawGrades.split(",").map(g => g.trim())) : [];
         const videoPath = videoFile ? videoFile.path : '';
 
         // Process booklet files
@@ -137,7 +144,7 @@ exports.createVideo = async (req, res, next) => {
         const newVideo = new Video({
             title,
             link,
-            price: Number(price) || 0,
+            price: price === '' || price === null || price === undefined ? null : Number(price),
             imagePath,
             videoPath,
             grades: gradesArray,
@@ -151,7 +158,7 @@ exports.createVideo = async (req, res, next) => {
             releaseAfterDays: Number(releaseAfterDays) || 0,
             startDate: startDate || "",
             endDate: endDate || "",
-            hidden: hidden === 'true' || hidden === true,
+            hidden: isTrue(hidden),
             scheduleGroup: parsedScheduleGroup
         });
 

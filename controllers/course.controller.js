@@ -2,7 +2,11 @@ const Course = require('../models/course.model');
 const Video = require('../models/video.model');
 const User = require('../models/user.model');
 const Teacher = require('../models/teacher.model');
+const mongoose = require('mongoose');
 const { cloudinary } = require('../middleware/upload');
+
+const isTrue = value => value === true || value === 1 || value === '1' || value === 'true';
+const hasValidCourseId = id => mongoose.Types.ObjectId.isValid(id);
 
 function extractCloudinaryPublicId(url) {
     if (!url || !url.includes('cloudinary.com')) return null;
@@ -26,7 +30,7 @@ exports.getCourses = async (req, res, next) => {
         for (let course of courses) {
             const count = await Video.countDocuments({ courseId: course._id.toString() });
             course.videoCount = count;
-            if (course.teacherId) {
+            if (course.teacherId && mongoose.Types.ObjectId.isValid(course.teacherId)) {
                 const teacher = await Teacher.findById(course.teacherId).lean();
                 if (teacher) {
                     course.teacherName = teacher.name;
@@ -44,10 +48,13 @@ exports.getCourses = async (req, res, next) => {
 // GET /api/courses/:id
 exports.getCourseById = async (req, res, next) => {
     try {
+        if (!hasValidCourseId(req.params.id)) {
+            return res.status(400).json({ success: false, message: 'معرف الكورس غير صالح' });
+        }
         const course = await Course.findById(req.params.id).lean();
         if (!course) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
 
-        if (course.teacherId) {
+        if (course.teacherId && mongoose.Types.ObjectId.isValid(course.teacherId)) {
             const teacher = await Teacher.findById(course.teacherId).lean();
             if (teacher) {
                 course.teacherName = teacher.name;
@@ -71,7 +78,8 @@ exports.createCourse = async (req, res, next) => {
     try {
         const { title, description, price, teacherId, grades, hidden } = req.body;
         const imagePath = req.file ? req.file.path : '';
-        const gradesArr = Array.isArray(grades) ? grades : (grades ? grades.split(',').map(s => s.trim()) : []);
+        const rawGrades = req.body['grades[]'] || grades;
+        const gradesArr = Array.isArray(rawGrades) ? rawGrades : (rawGrades ? rawGrades.split(',').map(s => s.trim()) : []);
 
         const course = new Course({
             title,
@@ -80,7 +88,7 @@ exports.createCourse = async (req, res, next) => {
             teacherId: teacherId || null,
             grades: gradesArr,
             imagePath,
-            hidden: hidden === 'true' || hidden === true
+            hidden: isTrue(hidden)
         });
 
         await course.save();
@@ -93,14 +101,18 @@ exports.createCourse = async (req, res, next) => {
 // PUT /api/courses/:id
 exports.updateCourse = async (req, res, next) => {
     try {
+        if (!hasValidCourseId(req.params.id)) {
+            return res.status(400).json({ success: false, message: 'معرف الكورس غير صالح' });
+        }
         const { title, description, price, teacherId, grades, hidden } = req.body;
         const updateData = {};
         if (title !== undefined) updateData.title = title;
         if (description !== undefined) updateData.description = description;
         if (price !== undefined) updateData.price = Number(price);
         if (teacherId !== undefined) updateData.teacherId = teacherId;
-        if (grades !== undefined) updateData.grades = Array.isArray(grades) ? grades : grades.split(',').map(s => s.trim());
-        if (hidden !== undefined) updateData.hidden = hidden === 'true' || hidden === true;
+        const rawGrades = req.body['grades[]'] || grades;
+        if (rawGrades !== undefined) updateData.grades = Array.isArray(rawGrades) ? rawGrades : rawGrades.split(',').map(s => s.trim());
+        if (hidden !== undefined) updateData.hidden = isTrue(hidden);
 
         if (req.file) {
             updateData.imagePath = req.file.path;
@@ -125,6 +137,9 @@ exports.updateCourse = async (req, res, next) => {
 // DELETE /api/courses/:id
 exports.deleteCourse = async (req, res, next) => {
     try {
+        if (!hasValidCourseId(req.params.id)) {
+            return res.status(400).json({ success: false, message: 'معرف الكورس غير صالح' });
+        }
         const course = await Course.findById(req.params.id);
         if (course && course.imagePath) {
             try {
@@ -146,19 +161,30 @@ exports.deleteCourse = async (req, res, next) => {
 // GET /api/courses/:id/videos?userId=xxx  → فيديوهات الكورس مع حالة الفتح لطالب معين
 exports.getCourseVideosForStudent = async (req, res, next) => {
     try {
+        if (!hasValidCourseId(req.params.id)) {
+            return res.status(400).json({ success: false, message: 'معرف الكورس غير صالح' });
+        }
         const course = await Course.findById(req.params.id).lean();
         if (!course) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
 
-        const videos = await Video.find({ courseId: req.params.id }).sort({ releaseAfterDays: 1, createdAt: 1 }).lean();
+        // Hidden lectures are management-only and must never be sent to the
+        // student course page.  Previously they were returned by this endpoint
+        // and could be displayed by anyone who knew the course URL.
+        const videos = await Video.find({ courseId: req.params.id, hidden: { $ne: true } })
+            .sort({ releaseAfterDays: 1, createdAt: 1 })
+            .lean();
 
         const { userId } = req.query;
         let purchasedAt = null;
         let isEnrolled = false;
 
-        if (userId) {
+        // Some local admin sessions use a display identifier (for example
+        // "admin-master-id") rather than a MongoDB ObjectId.  Do not pass
+        // those values to findById, which would otherwise throw a CastError.
+        if (userId && mongoose.Types.ObjectId.isValid(userId)) {
             const user = await User.findById(userId).lean();
             if (user && user.subscribedCourses) {
-                const enrollment = user.subscribedCourses.find(e => e.courseId === req.params.id);
+                const enrollment = user.subscribedCourses.find(e => String(e.courseId) === String(req.params.id));
                 if (enrollment) {
                     purchasedAt = new Date(enrollment.purchasedAt);
                     isEnrolled = true;
@@ -211,6 +237,9 @@ exports.subscribeToCourse = async (req, res, next) => {
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ success: false, message: 'معرف مستخدم غير صالح' });
+        }
+        if (!hasValidCourseId(courseId)) {
+            return res.status(400).json({ success: false, message: 'معرف الكورس غير صالح' });
         }
 
         const course = await Course.findById(courseId);

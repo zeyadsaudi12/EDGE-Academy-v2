@@ -3858,7 +3858,8 @@ window.switchTab = function (tabId, element) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    if (document.querySelector('.royal-dashboard')) {
+    // Only initialise the protected profile when its own panes exist.
+    if (document.querySelector('.profile-pane')) {
 
         loadFullProfile();
 

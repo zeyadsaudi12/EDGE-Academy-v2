@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 
 const videoSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    price: { type: Number, required: true },
+    // A blank price means that this lecture is included/free.  Keeping it as
+    // null lets the client distinguish it from a paid lecture priced at zero.
+    price: { type: Number, default: null },
     link: { type: String, default: "" },
     imagePath: { type: String, required: true },
     videoPath: { type: String, default: "" },

@@ -674,8 +674,129 @@
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="script.js" defer></script>
+<script src="script.js?v=1.3" defer></script>
 <script src="disable-inspect.js" defer></script>
+<script>
+/* Course details page: kept here so this page can load independently of the
+   home-page catalogue and always requests the student's current access state. */
+(() => {
+    const apiUrl = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+    const params = new URLSearchParams(window.location.search);
+    const courseId = params.get('id');
+    let courseData = null;
+    let isEnrolled = false;
+
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    })[char]);
+    const imageUrl = value => value && String(value).startsWith('/uploads/') ? apiUrl + value : (value || 'imges/st.jpg');
+    const currentUser = () => {
+        try { return JSON.parse(localStorage.getItem('currentUser')); } catch (_) { return null; }
+    };
+    const showError = message => {
+        document.getElementById('cvHeaderCard').innerHTML = `<div style="text-align:center;padding:30px;color:#d63031;"><i class="fas fa-circle-exclamation fa-2x"></i><p style="margin-top:12px;">${escapeHtml(message)}</p><a href="courses" class="cv-play-btn">العودة إلى الكورسات</a></div>`;
+        document.getElementById('cvVideosList').innerHTML = '';
+        document.getElementById('cvSidebarCol').innerHTML = '';
+    };
+
+    function renderCourse(course, videos) {
+        const user = currentUser();
+        const isAdmin = user && user.role === 'admin';
+        isEnrolled = isEnrolled || isAdmin;
+        const grades = Array.isArray(course.grades) ? course.grades : [];
+        const priceText = Number(course.price) > 0 ? `${course.price} جنيه` : 'الاشتراك بكود';
+        const teacher = course.teacherName ? `
+            <div class="cv-teacher-row">
+                <img class="cv-teacher-avatar" src="${escapeHtml(imageUrl(course.teacherImage))}" alt="${escapeHtml(course.teacherName)}" onerror="this.src='imges/st.jpg'">
+                <div><a class="cv-teacher-info-name" href="teachers">${escapeHtml(course.teacherName)}</a>${course.teacherSubject ? `<div class="cv-teacher-info-sub">${escapeHtml(course.teacherSubject)}</div>` : ''}</div>
+            </div>` : '';
+        document.title = `${course.title} | EDGE Academy`;
+        document.getElementById('cvBreadcrumbCurrent').textContent = course.title;
+        document.getElementById('cvHeaderCard').innerHTML = `
+            <h1 class="cv-course-title">${escapeHtml(course.title)}</h1>${teacher}
+            <div class="cv-tags-bar"><span class="cv-badge"><i class="fas fa-video"></i> ${videos.length} محاضرة</span>${grades.map(grade => `<span class="cv-badge"><i class="fas fa-graduation-cap"></i> ${escapeHtml(grade)}</span>`).join('')}${isEnrolled ? '<span class="cv-badge badge-enrolled"><i class="fas fa-check-circle"></i> مشترك في الكورس</span>' : ''}</div>
+            ${course.description ? `<p class="cv-desc-box">${escapeHtml(course.description)}</p>` : ''}`;
+        document.getElementById('cvLecturesCountBadge').textContent = `${videos.length} محاضرة`;
+        document.getElementById('cvSidebarCol').innerHTML = `
+            <aside class="cv-summary-card">
+                <div class="cv-summary-thumb-box"><img class="cv-summary-thumb" src="${escapeHtml(imageUrl(course.imagePath))}" alt="${escapeHtml(course.title)}" onerror="this.src='imges/st.jpg'"><span class="cv-summary-price-badge">${priceText}</span></div>
+                <div class="cv-summary-body"><div class="cv-summary-price-text">${priceText}</div>
+                    <ul class="cv-features-list"><li><i class="fas fa-check-circle"></i> ${videos.length} محاضرة داخل الكورس</li><li><i class="fas fa-check-circle"></i> متابعة المحتوى حسب موعد الإتاحة</li><li><i class="fas fa-check-circle"></i> مشاهدة من المنصة في أي وقت</li></ul>
+                    <div class="cv-summary-actions">${isEnrolled ? '<div class="cv-enrolled-banner"><i class="fas fa-check-circle"></i> الكورس مفعّل بحسابك</div>' : '<button class="cv-btn-subscribe-main" onclick="openActivationModal()"><i class="fas fa-key"></i> تفعيل الكورس</button>'}</div>
+                </div>
+            </aside>`;
+
+        const list = document.getElementById('cvVideosList');
+        if (!videos.length) {
+            list.innerHTML = '<div style="text-align:center;padding:28px;color:var(--gray);">لا توجد محاضرات متاحة في هذا الكورس حاليًا.</div>';
+            return;
+        }
+        list.innerHTML = videos.map((video, index) => {
+            const unlocked = Boolean(video.isUnlocked || isAdmin);
+            const meta = video.releaseAfterDays > 0 ? `<span><i class="fas fa-calendar"></i> بعد ${video.releaseAfterDays} يوم</span>` : '<span><i class="fas fa-clock"></i> متاح فور التفعيل</span>';
+            const remaining = !unlocked && video.daysRemaining ? `<span><i class="fas fa-hourglass-half"></i> متاح بعد ${video.daysRemaining} يوم</span>` : '';
+            const action = unlocked
+                ? `<a class="cv-play-btn" href="watch?videoId=${encodeURIComponent(video._id)}&code=ALREADY_SUBSCRIBED"><i class="fas fa-play"></i> مشاهدة</a>`
+                : `<button class="cv-lock-pill" onclick="openActivationModal()"><i class="fas fa-lock"></i> ${isEnrolled ? 'غير متاح بعد' : 'فعّل الكورس'}</button>`;
+            return `<article class="cv-v-item ${unlocked ? 'unlocked' : ''}"><div class="cv-v-num">${index + 1}</div><img class="cv-v-thumbnail" src="${escapeHtml(imageUrl(video.imagePath || course.imagePath))}" alt="" onerror="this.src='imges/st.jpg'"><div class="cv-v-details"><div class="cv-v-title">${escapeHtml(video.title)}</div><div class="cv-v-meta">${meta}${remaining}</div></div><div class="cv-v-action-btn">${action}</div></article>`;
+        }).join('');
+    }
+
+    async function loadCourse() {
+        if (!courseId) return showError('لم يتم تحديد كورس صالح.');
+        const user = currentUser();
+        // The built-in local admin account has a non-Mongo identifier. It can
+        // view the course as admin without asking the API to look that value up.
+        const isDatabaseUser = user && user._id && /^[a-f\d]{24}$/i.test(String(user._id));
+        const query = isDatabaseUser ? `?userId=${encodeURIComponent(user._id)}` : '';
+        try {
+            const response = await fetch(`${apiUrl}/api/courses/${encodeURIComponent(courseId)}/videos${query}`);
+            const data = await response.json();
+            if (!response.ok || !data.success) throw new Error(data.message || 'تعذّر تحميل الكورس.');
+            courseData = data.course;
+            isEnrolled = Boolean(data.isEnrolled);
+            renderCourse(courseData, data.videos || []);
+            if (params.get('activate') === '1' && !isEnrolled) window.openActivationModal();
+        } catch (error) {
+            console.error('Course load error:', error);
+            showError(error.message || 'تعذّر الاتصال بالخادم.');
+        }
+    }
+
+    window.openActivationModal = function () {
+        const user = currentUser();
+        if (!user || !user._id) { window.location.href = 'login'; return; }
+        if (isEnrolled) return;
+        document.getElementById('cvModalFeedback').textContent = '';
+        document.getElementById('cvBuyModal').classList.add('active');
+        setTimeout(() => document.getElementById('cvModalCodeInput').focus(), 100);
+    };
+    window.closeActivationModal = function () { document.getElementById('cvBuyModal').classList.remove('active'); };
+    window.handleCourseActivation = async function () {
+        const user = currentUser();
+        const codeInput = document.getElementById('cvModalCodeInput');
+        const feedback = document.getElementById('cvModalFeedback');
+        const codeStr = codeInput.value.trim();
+        if (!codeStr) { feedback.style.color = '#d63031'; feedback.textContent = 'من فضلك أدخل كود الاشتراك.'; return; }
+        const button = document.getElementById('cvModalSubmitBtn');
+        button.disabled = true;
+        try {
+            const response = await fetch(`${apiUrl}/api/courses/${encodeURIComponent(courseId)}/buy`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codeStr, userId: user._id }) });
+            const data = await response.json();
+            if (!response.ok || !data.success) throw new Error(data.message || 'تعذّر تفعيل الكورس.');
+            user.subscribedCourses = [...(user.subscribedCourses || []), { courseId, purchasedAt: new Date().toISOString(), codeUsed: codeStr }];
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            isEnrolled = true;
+            closeActivationModal();
+            await loadCourse();
+        } catch (error) {
+            feedback.style.color = '#d63031';
+            feedback.textContent = error.message;
+        } finally { button.disabled = false; }
+    };
+    document.addEventListener('DOMContentLoaded', loadCourse);
+})();
+</script>
 
 </body>
 </html>
