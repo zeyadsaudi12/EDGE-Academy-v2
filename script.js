@@ -1,6 +1,6 @@
 /**
 
- * MASAR Platform - Core Client Script
+ * EDGE Academy - Core Client Script
 
  * Optimized & Refactored version
 
@@ -960,6 +960,9 @@ function handleLogin(event) {
             role: 'teacher',
 
             teacherId: '6a22f0b4eabc192b0462fdb9',
+
+            // الحساب التجريبي قديم ومعرف المعلم يمكن أن يتغير عند إعادة إنشاء السجل.
+            teacherNameHint: 'وائل لاشين',
 
             firstName: 'مساعد مستر وائل',
 

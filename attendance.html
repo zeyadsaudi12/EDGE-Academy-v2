@@ -25,6 +25,20 @@
             --border2: rgba(255, 255, 255, 0.13);
         }
 
+        body.light-theme {
+            --bg: #f3f7fc;
+            --bg2: #ffffff;
+            --bg3: #edf2f8;
+            --accent: #b7791f;
+            --primary: #2563eb;
+            --green: #059669;
+            --red: #dc2626;
+            --txt: #162033;
+            --txt2: #52627a;
+            --border: rgba(22, 32, 51, 0.11);
+            --border2: rgba(22, 32, 51, 0.18);
+        }
+
         body {
              
             font-family: 'Cairo', sans-serif;
@@ -250,6 +264,11 @@
             transition: all 0.2s;
         }
         .logout-btn:hover { background: rgba(230,57,70,0.18); }
+        .theme-btn {
+            background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.3);
+            color: var(--primary); padding: 8px 12px; border-radius: 8px; font-family: inherit;
+            font-size: 0.82rem; font-weight: 700; cursor: pointer;
+        }
 
     </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -258,12 +277,13 @@
 
 <!-- ════════════ TOPBAR ════════════ -->
 <div class="topbar">
-    <h1><i class="ti ti-scan"></i> بوابة الحضور — MASAR</h1>
+    <h1><i class="ti ti-scan"></i> بوابة الحضور</h1>
     <div style="display:flex;align-items:center;gap:10px;">
         <span id="teacher-name-lbl" style="color:var(--txt2);font-size:0.85rem;">جاري التحميل...</span>
         <a href="assistant-hub" style="background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.25);color:var(--primary);padding:8px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:flex;align-items:center;gap:5px;">
             <i class="ti ti-home"></i> الرئيسية
         </a>
+        <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()"><i class="ti ti-sun"></i> وضع فاتح</button>
         <button class="logout-btn" onclick="doLogout()">
             <i class="ti ti-logout"></i> خروج
         </button>
@@ -345,11 +365,28 @@
 
         const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
 
+        function applyTheme(theme) {
+            const light = theme === 'light';
+            document.body.classList.toggle('light-theme', light);
+            const btn = document.getElementById('theme-toggle');
+            if (btn) btn.innerHTML = light ? '<i class="ti ti-moon"></i> وضع داكن' : '<i class="ti ti-sun"></i> وضع فاتح';
+        }
+        function toggleTheme() {
+            const next = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+            localStorage.setItem('attendance_theme', next);
+            applyTheme(next);
+        }
+        applyTheme(localStorage.getItem('attendance_theme') || 'dark');
+
         let isSessionActive = false;
         let scannerInstance = null;
         let attendedCount = 0;
         let _teacherSchedule = []; // مصفوفة لحفظ جدول الحصص الفعلي للمدرس
         let _allVideos = [];
+        let _activeTeacherId = null;
+
+        const normalizeArabic = value => String(value || '')
+            .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
 
         document.getElementById('teacher-name-lbl').textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
 
@@ -371,7 +408,7 @@
                             hasSchedules = true;
                             teacher.schedule.forEach((sch) => {
                                 const opt = document.createElement('option');
-                                opt.value = JSON.stringify(sch);
+                            opt.value = JSON.stringify({ ...sch, teacherId: String(teacher._id) });
                                 opt.textContent = `🏫 ${teacher.name} | ${sch.center} | 📅 ${sch.day} | 🎓 ${sch.grade} (${sch.time})`;
                                 schedSelect.appendChild(opt);
                             });
@@ -382,8 +419,17 @@
                     }
                     window._isGeneralAssistant = true;
                 } else {
-                    const activeTeacher = teachers.find(t => t._id === currentUser.teacherId);
+                    let activeTeacher = teachers.find(t => String(t._id) === String(currentUser.teacherId));
+                    // دعم حساب المساعد القديم المرتبط بالاسم عند اختلاف المعرف المخزن.
+                    if (!activeTeacher && currentUser.teacherNameHint) {
+                        const hint = normalizeArabic(currentUser.teacherNameHint);
+                        activeTeacher = teachers.find(t => {
+                            const teacherName = normalizeArabic(t.name);
+                            return teacherName.includes(hint) || hint.includes(teacherName);
+                        });
+                    }
                     if (activeTeacher && activeTeacher.schedule && activeTeacher.schedule.length > 0) {
+                        _activeTeacherId = String(activeTeacher._id);
                         _teacherSchedule = activeTeacher.schedule;
                         activeTeacher.schedule.forEach((sch, idx) => {
                             schedSelect.innerHTML += `<option value="${idx}">🏫 ${sch.center} | 📅 ${sch.day} | 🎓 ${sch.grade} (${sch.time})</option>`;
@@ -422,9 +468,13 @@
 
             if (!activeSched) return;
 
-            // فلترة الفيديوهات لتطابق مرحلة هذه الحصة
+            const scheduleTeacherId = String(activeSched.teacherId || _activeTeacherId || currentUser.teacherId || '');
+
+            // لا نعرض إلا محتوى المدرس المختار. لا نعتمد على السعر إطلاقاً حتى تظهر
+            // المحاضرات المجانية والمدفوعة معاً، ونقبل المحاضرات القديمة بلا صف محدد.
             const matchedVideos = _allVideos.filter(v => 
-                v.grades && v.grades.includes(activeSched.grade)
+                String(v.teacherId || '') === scheduleTeacherId &&
+                (!Array.isArray(v.grades) || v.grades.length === 0 || v.grades.includes(activeSched.grade))
             );
 
             videoSelect.innerHTML = '';
@@ -434,7 +484,8 @@
 
             if (matchedVideos.length > 0) {
                 matchedVideos.forEach(v => {
-                    videoSelect.innerHTML += `<option value="${v._id}">🎬 ${v.title}</option>`;
+                    const access = v.price === null || v.price === undefined ? 'مجاني' : (Number(v.price) > 0 ? 'مدفوع' : 'بكود');
+                    videoSelect.innerHTML += `<option value="${v._id}">🎬 ${v.title} — ${access}</option>`;
                 });
             }
         }
@@ -449,6 +500,12 @@
                 showAlert('⚠️ يرجى اختيار الحصة الفعالة أولاً!', 'orange');
                 return;
             }
+
+            if (!videoId) {
+                showAlert('⚠️ اختر المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
+                return;
+            }
+
 
             if (!isSessionActive) {
                 isSessionActive = true;

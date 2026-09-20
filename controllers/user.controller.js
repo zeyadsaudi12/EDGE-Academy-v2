@@ -372,11 +372,13 @@ exports.registerAttendance = async (req, res, next) => {
         }
 
         // استخراج اسم المستخدم (username) من البريد الإلكتروني أو كود الطالب
-        const username = scannedData.includes('@') ? scannedData.split('@')[0] : scannedData;
+        // يقبل QR أو البريد الأكاديمي (username@...) أو اسم المستخدم أو رقم الهاتف.
+        const normalizedScannedData = String(scannedData).trim().toLowerCase();
+        const username = normalizedScannedData.includes('@') ? normalizedScannedData.split('@')[0] : normalizedScannedData;
 
         const user = await User.findOne({
             $or: [
-                { username: username },
+                { username: new RegExp('^' + username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') },
                 { phone: username },
                 ...(mongoose.Types.ObjectId.isValid(username) ? [{ _id: username }] : [])
             ]
@@ -409,7 +411,7 @@ exports.registerAttendance = async (req, res, next) => {
 
         res.json({
             success: true,
-            message: 'تم تسجيل الحضور وتفعيل الكورس بنجاح ✅',
+            message: 'تم تسجيل الحضور وفتح المحاضرة للطالب بنجاح ✅',
             studentName: attendance.studentName
         });
     } catch (err) {
