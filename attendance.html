@@ -417,8 +417,11 @@
                 } else {
                     let activeTeacher = teachers.find(t => String(t._id) === String(currentUser.teacherId));
                     // دعم حساب المساعد القديم المرتبط بالاسم عند اختلاف المعرف المخزن.
-                    if (!activeTeacher && currentUser.teacherNameHint) {
-                        const hint = normalizeArabic(currentUser.teacherNameHint);
+                    // يصلح جلسات المساعد القديمة المخزنة في المتصفح قبل تحديث معرف المدرس.
+                    const teacherNameHint = currentUser.teacherNameHint ||
+                        (currentUser.phone === '050068792049' ? 'وائل لاشين' : '');
+                    if (!activeTeacher && teacherNameHint) {
+                        const hint = normalizeArabic(teacherNameHint);
                         activeTeacher = teachers.find(t => {
                             const teacherName = normalizeArabic(t.name);
                             return teacherName.includes(hint) || hint.includes(teacherName);
@@ -427,6 +430,12 @@
                     if (activeTeacher && activeTeacher.schedule && activeTeacher.schedule.length > 0) {
                         _activeTeacherId = String(activeTeacher._id);
                         _teacherSchedule = activeTeacher.schedule.map(sch => ({ ...sch, teacherId: _activeTeacherId }));
+                        // تحديث الجلسة مرة واحدة حتى تعتمد الزيارات التالية على المعرف الصحيح مباشرة.
+                        if (String(currentUser.teacherId) !== _activeTeacherId) {
+                            currentUser.teacherId = _activeTeacherId;
+                            currentUser.teacherNameHint = teacherNameHint || activeTeacher.name;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        }
                     }
                 }
 
