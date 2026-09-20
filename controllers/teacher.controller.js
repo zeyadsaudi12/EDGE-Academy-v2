@@ -1,8 +1,5 @@
 const Teacher = require('../models/teacher.model');
 const User = require('../models/user.model');
-const Video = require('../models/video.model');
-const Course = require('../models/course.model');
-const Exam = require('../models/exam.model');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const { cloudinary } = require('../middleware/upload');
@@ -63,55 +60,6 @@ exports.getTeacherById = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-};
-
-exports.registerTeacherAccount = async (req, res, next) => {
-    try {
-        const { name, phone, password, subjectAr, bio, grades } = req.body;
-        if (!name || !phone || !password || !subjectAr || !Array.isArray(grades) || !grades.length) {
-            return res.status(400).json({ success: false, message: 'أكمل الاسم والهاتف وكلمة المرور والمادة والصفوف الدراسية' });
-        }
-        if (!/^01[0125]\d{8}$/.test(phone)) return res.status(400).json({ success: false, message: 'رقم الهاتف غير صحيح' });
-        if (await User.findOne({ phone })) return res.status(400).json({ success: false, message: 'رقم الهاتف مسجل بالفعل' });
-
-        const teacher = await Teacher.create({ name: String(name).trim(), subjectAr: String(subjectAr).trim(), bio: String(bio || '').trim(), grades });
-        const safePhone = String(phone).trim();
-        const user = await User.create({
-            phone: safePhone, password, role: 'teacher', teacherId: teacher._id,
-            firstName: teacher.name, lastName: 'معلم', username: `teacher_${safePhone}`,
-            nationalId: `teacher_${safePhone}`, grade: 'All', governorate: 'الكل', parentPhone: safePhone,
-            birthDate: new Date(), devices: []
-        });
-        const userData = user.toObject(); delete userData.password;
-        res.status(201).json({ success: true, teacher, user: userData, message: 'تم إنشاء حساب المعلم بنجاح' });
-    } catch (err) { next(err); }
-};
-
-exports.getTeacherDashboard = async (req, res, next) => {
-    try {
-        const teacherId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(teacherId)) return res.status(400).json({ success: false, message: 'معرف المعلم غير صالح' });
-        const teacher = await Teacher.findById(teacherId).lean();
-        if (!teacher) return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
-        const [videos, courses, exams, followers] = await Promise.all([
-            Video.find({ teacherId }).sort({ createdAt: -1 }).lean(),
-            Course.find({ teacherId }).sort({ createdAt: -1 }).lean(),
-            Exam.find({ teacherId }).sort({ createdAt: -1 }).lean(),
-            User.countDocuments({ role: 'student', followedTeachers: teacherId })
-        ]);
-        const ids = videos.map(v => String(v._id));
-        const subscribers = ids.length ? await User.find({ role: 'student', subscribedVideos: { $in: ids } }).select('subscribedVideos').lean() : [];
-        const viewsByVideo = Object.fromEntries(ids.map(id => [id, 0]));
-        subscribers.forEach(student => (student.subscribedVideos || []).map(String).forEach(id => { if (id in viewsByVideo) viewsByVideo[id]++; }));
-        const videoRows = videos.map(video => ({ ...video, views: viewsByVideo[String(video._id)] || 0 }));
-        const examRows = exams.map(exam => ({
-            _id: exam._id, title: exam.title, subject: exam.subject, grades: exam.grades, totalMarks: exam.totalMarks,
-            resultsCount: (exam.results || []).length,
-            average: (exam.results || []).length ? Math.round((exam.results || []).reduce((sum, r) => sum + (Number(r.percentage) || 0), 0) / exam.results.length) : null,
-            recentResults: (exam.results || []).sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt)).slice(0, 5)
-        }));
-        res.json({ success: true, teacher, stats: { videos: videoRows.length, videoViews: videoRows.reduce((sum, v) => sum + v.views, 0), courses: courses.length, exams: examRows.length, examSubmissions: examRows.reduce((sum, e) => sum + e.resultsCount, 0), followers }, videos: videoRows, courses, exams: examRows });
-    } catch (err) { next(err); }
 };
 
 exports.createTeacher = async (req, res, next) => {

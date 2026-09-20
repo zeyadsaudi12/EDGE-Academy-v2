@@ -1031,7 +1031,7 @@ function handleLogin(event) {
                     alert('👑 مرحباً بك يا مدير المنصة، جاري تحويلك للوحة التحكم...');
                     window.location.href = 'admin';
                 } else if (data.user.role === 'teacher') {
-                    window.location.href = 'teacher-dashboard';
+                    window.location.href = 'assistant-hub';
                 } else {
                     alert('✅ تم الدخول بنجاح، دراسة ممتعة وموفقة!');
                     window.location.href = '/';
