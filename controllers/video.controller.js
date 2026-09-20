@@ -1,5 +1,6 @@
 const Video = require('../models/video.model');
 const User = require('../models/user.model');
+const Teacher = require('../models/teacher.model');
 const mongoose = require('mongoose');
 
 const isTrue = value => value === true || value === 1 || value === '1' || value === 'true';
@@ -84,7 +85,9 @@ exports.likeVideo = async (req, res, next) => {
 exports.getAllVideos = async (req, res, next) => {
     try {
         const videos = await Video.find().sort({ createdAt: -1 }).lean();
-        res.json(videos);
+        if (req.query.includeHidden === 'true') return res.json(videos);
+        const visibleTeacherIds = new Set((await Teacher.find({ hidden: { $ne: true } }).select('_id').lean()).map(t => String(t._id)));
+        res.json(videos.filter(video => !video.teacherId || visibleTeacherIds.has(String(video.teacherId))));
     } catch (err) {
         next(err);
     }
@@ -173,6 +176,10 @@ exports.getVideoById = async (req, res, next) => {
     try {
         const video = await Video.findById(req.params.id);
         if (!video) return res.status(404).json({ success: false, message: 'الفيديو غير موجود' });
+        if (video.teacherId && mongoose.Types.ObjectId.isValid(video.teacherId) && req.query.includeHidden !== 'true') {
+            const teacher = await Teacher.findById(video.teacherId).select('hidden').lean();
+            if (teacher && teacher.hidden) return res.status(404).json({ success: false, message: 'الفيديو غير موجود' });
+        }
         res.json({ success: true, video });
     } catch (err) {
         next(err);

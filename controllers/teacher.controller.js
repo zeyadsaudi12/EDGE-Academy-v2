@@ -38,7 +38,8 @@ exports.getFollowerCounts = async (req, res, next) => {
 
 exports.getAllTeachers = async (req, res, next) => {
     try {
-        const teachers = await Teacher.find().lean();
+        const includeHidden = req.query.includeHidden === 'true';
+        const teachers = await Teacher.find(includeHidden ? {} : { hidden: { $ne: true } }).lean();
         res.json(teachers);
     } catch (err) {
         next(err);
@@ -52,7 +53,7 @@ exports.getTeacherById = async (req, res, next) => {
         }
 
         const teacher = await Teacher.findById(req.params.id);
-        if (!teacher) {
+        if (!teacher || (teacher.hidden && req.query.includeHidden !== 'true')) {
             return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
         }
 
@@ -60,6 +61,19 @@ exports.getTeacherById = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+};
+
+exports.toggleTeacherVisibility = async (req, res, next) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ success: false, message: 'معرف المعلم غير صالح' });
+        }
+        const teacher = await Teacher.findById(req.params.id);
+        if (!teacher) return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
+        teacher.hidden = !teacher.hidden;
+        await teacher.save();
+        res.json({ success: true, hidden: teacher.hidden, message: teacher.hidden ? 'تم إخفاء المعلم ومحتواه عن الطلاب' : 'تم إظهار المعلم ومحتواه للطلاب' });
+    } catch (err) { next(err); }
 };
 
 exports.createTeacher = async (req, res, next) => {

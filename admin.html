@@ -4334,9 +4334,9 @@
         try {
             const [uR, cR, vR, tR, fcR, crsR, violR] = await Promise.all([
                 fetch(`${API}/api/users`), fetch(`${API}/api/codes`),
-                fetch(`${API}/api/videos`), fetch(`${API}/api/teachers`),
+                fetch(`${API}/api/videos?includeHidden=true`), fetch(`${API}/api/teachers?includeHidden=true`),
                 fetch(`${API}/api/teachers/follower-counts`),
-                fetch(`${API}/api/courses`).catch(() => null),
+                fetch(`${API}/api/courses?includeHidden=true`).catch(() => null),
                 fetch(`${API}/api/security/reports`).catch(() => null)
             ]);
             _users = await uR.json();
@@ -5111,6 +5111,7 @@
                         <div class="teacher-avatar-placeholder">${initials}</div>
                         <div class="teacher-info">
                             <div class="teacher-name-text">${t.name}</div>
+                            ${t.hidden ? '<span class="badge" style="background:rgba(239,68,68,.15);color:#ef4444;margin-top:5px;display:inline-flex;">مخفي عن الطلاب</span>' : '<span class="badge" style="background:rgba(16,185,129,.15);color:#10b981;margin-top:5px;display:inline-flex;">ظاهر للطلاب</span>'}
                             <div class="teacher-meta">${t.subjectAr || ''} · ${t.bio || ''}</div>
                             <div class="teacher-grades" style="margin-top:6px">${grades}</div>
                             ${scheduleCount > 0 ? `<div style="font-size:11px; color:var(--teal); margin-top:4px;"><i class="ti ti-calendar"></i> ${scheduleCount} ميعاد بالسنتر</div>` : ''}
@@ -5121,11 +5122,23 @@
                         </div>
                         <div class="action-btns">
                             <button class="action-btn" onclick="openEditTeacherModal('${t._id}')" title="تعديل"><i class="ti ti-edit"></i></button>
+                            <button class="action-btn" onclick="toggleTeacherVisibility('${t._id}', ${!!t.hidden})" title="${t.hidden ? 'إظهار للطلاب' : 'إخفاء عن الطلاب'}"><i class="ti ${t.hidden ? 'ti-eye' : 'ti-eye-off'}"></i></button>
                             <button class="action-btn danger" onclick="confirmDeleteTeacher('${t._id}','${t.name}')" title="حذف"><i class="ti ti-trash"></i></button>
                         </div>
                     </div>`;
                 }).join('');
             }
+
+            window.toggleTeacherVisibility = function(id, isHidden) {
+                const action = isHidden ? 'إظهار' : 'إخفاء';
+                showModal(`${action} المعلم`, `هل تريد ${action} المعلم؟ ${isHidden ? 'سيظهر محتواه للطلاب مرة أخرى.' : 'سيختفي المدرس وكل كورساته ومحاضراته من الطلاب دون حذف أي بيانات.'}`, () => {
+                    fetch(`${API}/api/teachers/${id}/toggle-visibility`, { method: 'PUT' })
+                        .then(r => r.json()).then(d => {
+                            if (d.success) { toast(d.message, 'success'); loadAll(); }
+                            else toast(d.message || 'تعذر تحديث حالة المعلم', 'error');
+                        }).catch(() => toast('تعذر الاتصال بالخادم', 'error'));
+                });
+            };
 
             // 1. الدالة المحدثة لإضافة المعلم واستقبال حساب الحضور التلقائي
             function handleAdminAddTeacher(event) {

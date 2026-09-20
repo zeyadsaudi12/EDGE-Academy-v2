@@ -7,6 +7,8 @@ const teacherSchema = new mongoose.Schema({
     studentsCount: { type: Number, default: 0 },
     rating: { type: Number, default: 5 },
     imagePath: { type: String, default: '' },
+    // الإخفاء يعطّل ظهور المدرس وكل محتواه للطلاب دون حذف البيانات.
+    hidden: { type: Boolean, default: false },
     grades: [{ type: String }],
     schedule: [{
         center: { type: String },

@@ -26,7 +26,12 @@ function extractCloudinaryPublicId(url) {
 // GET /api/courses
 exports.getCourses = async (req, res, next) => {
     try {
-        const courses = await Course.find().sort({ createdAt: -1 }).lean();
+        let courses = await Course.find().sort({ createdAt: -1 }).lean();
+        const includeHidden = req.query.includeHidden === 'true';
+        if (!includeHidden) {
+            const visibleTeacherIds = new Set((await Teacher.find({ hidden: { $ne: true } }).select('_id').lean()).map(t => String(t._id)));
+            courses = courses.filter(course => !course.teacherId || visibleTeacherIds.has(String(course.teacherId)));
+        }
         for (let course of courses) {
             const count = await Video.countDocuments({ courseId: course._id.toString() });
             course.videoCount = count;
@@ -56,6 +61,9 @@ exports.getCourseById = async (req, res, next) => {
 
         if (course.teacherId && mongoose.Types.ObjectId.isValid(course.teacherId)) {
             const teacher = await Teacher.findById(course.teacherId).lean();
+            if (teacher && teacher.hidden && req.query.includeHidden !== 'true') {
+                return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
+            }
             if (teacher) {
                 course.teacherName = teacher.name;
                 course.teacherImage = teacher.imagePath;
@@ -166,6 +174,10 @@ exports.getCourseVideosForStudent = async (req, res, next) => {
         }
         const course = await Course.findById(req.params.id).lean();
         if (!course) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
+        if (course.teacherId && mongoose.Types.ObjectId.isValid(course.teacherId)) {
+            const teacher = await Teacher.findById(course.teacherId).select('hidden').lean();
+            if (teacher && teacher.hidden) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
+        }
 
         // Hidden lectures are management-only and must never be sent to the
         // student course page.  Previously they were returned by this endpoint
