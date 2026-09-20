@@ -397,6 +397,12 @@
         const normalizeArabic = value => String(value || '')
             .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
 
+        // مطابقة حساب المساعد الذي تُنشئه الإدارة (مثال: "مساعد/ وائل لاشين التعليمي")
+        // بسجل المدرس حتى لو تغيّر معرف المدرس لاحقاً.
+        const meaningfulNameWords = value => normalizeArabic(value)
+            .replace(/[^ء-يa-z0-9\s]/g, ' ').split(' ')
+            .filter(word => word.length >= 3 && !['مساعد', 'التعليمي', 'استاذ', 'الاستاذ'].includes(word));
+
         document.getElementById('teacher-name-lbl').textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
 
         // تحميل جدول حصص المدرس والفيديوهات تلقائياً عند فتح الصفحة
@@ -425,6 +431,13 @@
                         activeTeacher = teachers.find(t => {
                             const teacherName = normalizeArabic(t.name);
                             return teacherName.includes(hint) || hint.includes(teacherName);
+                        });
+                    }
+                    if (!activeTeacher) {
+                        const assistantWords = meaningfulNameWords(`${currentUser.firstName || ''} ${currentUser.lastName || ''}`);
+                        activeTeacher = teachers.find(teacher => {
+                            const teacherWords = meaningfulNameWords(teacher.name);
+                            return teacherWords.filter(word => assistantWords.includes(word)).length >= 2;
                         });
                     }
                     if (activeTeacher && activeTeacher.schedule && activeTeacher.schedule.length > 0) {
