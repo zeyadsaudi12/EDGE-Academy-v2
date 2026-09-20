@@ -1325,17 +1325,21 @@ function updateSectionVisibility() {
 
     if (!gradeSelect || !sectionGroup || !sectionSelect) return;
 
-    const preparatoryGrades = [
+    // The scientific/literary track starts from second secondary; it is not
+    // applicable to preparatory grades or first secondary.
+    const gradesWithoutSection = [
 
         'الصف الأول الإعدادي',
 
         'الصف الثاني الإعدادي',
 
-        'الصف الثالث الإعدادي'
+        'الصف الثالث الإعدادي',
+
+        'الصف الأول الثانوي'
 
     ];
 
-    const isPreparatory = preparatoryGrades.includes(gradeSelect.value);
+    const isPreparatory = gradesWithoutSection.includes(gradeSelect.value);
 
     if (isPreparatory) {
 

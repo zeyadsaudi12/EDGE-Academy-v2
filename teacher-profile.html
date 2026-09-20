@@ -404,6 +404,7 @@
     let teacherCourses = [];
     let teacherStandaloneVideos = [];
     let activeGrade = 'all';
+    let studentGrade = '';
 
     const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
@@ -466,13 +467,24 @@
             if (!coursesResponse.ok || !Array.isArray(coursesData)) throw new Error(coursesData.message || 'تعذّر تحميل الكورسات.');
             if (!videosResponse.ok || !Array.isArray(videosData)) throw new Error(videosData.message || 'تعذّر تحميل المحاضرات.');
             const teacher = teacherData;
-            teacherCourses = coursesData.filter(course => String(course.teacherId) === String(teacherId) && !course.hidden);
-            teacherStandaloneVideos = videosData.filter(video => String(video.teacherId) === String(teacherId) && !video.courseId && !video.hidden);
+            const currentUser = (() => { try { return JSON.parse(localStorage.getItem('currentUser') || 'null'); } catch (_) { return null; } })();
+            const isAdmin = currentUser && currentUser.role === 'admin';
+            studentGrade = !isAdmin && currentUser && currentUser.grade ? String(currentUser.grade).trim() : '';
+            const canStudentSee = item => !studentGrade || isForGrade(item, studentGrade);
+            teacherCourses = coursesData.filter(course => String(course.teacherId) === String(teacherId) && !course.hidden && canStudentSee(course));
+            teacherStandaloneVideos = videosData.filter(video => String(video.teacherId) === String(teacherId) && !video.courseId && !video.hidden && canStudentSee(video));
             document.title = `${teacher.name} | EDGE Academy`;
             document.getElementById('tpHeroContainer').innerHTML = `<div class="tp-avatar-box"><img class="tp-avatar-img" src="${escapeHtml(imageUrl(teacher.imagePath || 'imges/man.png'))}" alt="${escapeHtml(teacher.name)}" onerror="this.onerror=null;this.src='imges/man.png'"><span class="tp-avatar-badge"><i class="fas fa-check"></i></span></div><div class="tp-hero-details"><h1 class="tp-teacher-name">${escapeHtml(teacher.name)}</h1><span class="tp-subject-tag"><i class="fas fa-book"></i> ${escapeHtml(teacher.subjectAr || 'مدرس')}</span><p class="tp-bio-text">${escapeHtml(teacher.bio || 'مدرس متميز على منصة EDGE Academy.')}</p><div class="tp-stats-row"><div class="tp-stat-pill"><i class="fas fa-layer-group"></i><strong>${teacherCourses.length + teacherStandaloneVideos.length}</strong> محتوى متاح</div><div class="tp-stat-pill"><i class="fas fa-star"></i><strong>${teacher.rating || 5}</strong> تقييم المدرس</div></div></div>`;
             const grades = [...new Set([...teacherCourses, ...teacherStandaloneVideos].flatMap(item => Array.isArray(item.grades) ? item.grades : []).filter(Boolean))];
             const chips = document.getElementById('tpGradeChips');
-            chips.innerHTML = '<button class="tp-chip active" data-grade="all" onclick="filterTeacherGrade(this.dataset.grade, this)"><i class="fas fa-border-all"></i> جميع المراحل</button>' + grades.map(grade => `<button class="tp-chip" data-grade="${escapeHtml(grade)}" onclick="filterTeacherGrade(this.dataset.grade, this)">${escapeHtml(grade)}</button>`).join('');
+            // Students only see their registered grade, while admins and guests
+            // retain the all-grades filter.
+            if (studentGrade) {
+                activeGrade = studentGrade;
+                chips.innerHTML = `<button class="tp-chip active" data-grade="${escapeHtml(studentGrade)}"><i class="fas fa-graduation-cap"></i> مرحلتك: ${escapeHtml(studentGrade)}</button>`;
+            } else {
+                chips.innerHTML = '<button class="tp-chip active" data-grade="all" onclick="filterTeacherGrade(this.dataset.grade, this)"><i class="fas fa-border-all"></i> جميع المراحل</button>' + grades.map(grade => `<button class="tp-chip" data-grade="${escapeHtml(grade)}" onclick="filterTeacherGrade(this.dataset.grade, this)">${escapeHtml(grade)}</button>`).join('');
+            }
             renderCourses();
         } catch (error) {
             console.error('Teacher profile load error:', error);

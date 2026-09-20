@@ -183,6 +183,9 @@ exports.getCourseVideosForStudent = async (req, res, next) => {
         // those values to findById, which would otherwise throw a CastError.
         if (userId && mongoose.Types.ObjectId.isValid(userId)) {
             const user = await User.findById(userId).lean();
+            if (user && user.role === 'student' && user.grade && Array.isArray(course.grades) && course.grades.length > 0 && !course.grades.includes(user.grade)) {
+                return res.status(403).json({ success: false, message: 'هذا الكورس غير متاح لصفك الدراسي.' });
+            }
             if (user && user.subscribedCourses) {
                 const enrollment = user.subscribedCourses.find(e => String(e.courseId) === String(req.params.id));
                 if (enrollment) {
