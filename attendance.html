@@ -269,6 +269,8 @@
             color: var(--primary); padding: 8px 12px; border-radius: 8px; font-family: inherit;
             font-size: 0.82rem; font-weight: 700; cursor: pointer;
         }
+        .schedule-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        @media (max-width:480px) { .schedule-grid { grid-template-columns:1fr; } }
 
     </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -298,16 +300,19 @@
         <div class="panel-card">
             
             <div class="form-field" style="margin-bottom: 12px;">
-                <label>اختر الحصة الفعالية بالسنتر الآن *</label>
-                <select id="setup-schedule" onchange="onScheduleChange()">
-                    <option value="">-- اختر الحصة لفتح التحضير --</option>
-                </select>
+                <label>بيانات حصة السنتر *</label>
+                <div class="schedule-grid">
+                    <select id="setup-center" onchange="onCenterChange()"><option value="">-- اختر السنتر --</option></select>
+                    <select id="setup-grade" onchange="onGradeChange()" disabled><option value="">-- اختر الصف --</option></select>
+                    <select id="setup-day" onchange="onDayChange()" disabled><option value="">-- اختر اليوم --</option></select>
+                    <select id="setup-time" onchange="onTimeChange()" disabled><option value="">-- اختر الساعة --</option></select>
+                </div>
             </div>
 
             <div class="form-field" style="margin-bottom: 15px;">
                 <label>المحاضرة الأونلاين المراد تفعيلها لهم *</label>
                 <select id="setup-video">
-                    <option value="">-- حدد الحصة أولاً --</option>
+                    <option value="">-- أكمل بيانات حصة السنتر أولاً --</option>
                 </select>
             </div>
 
@@ -397,26 +402,13 @@
                 const tRes = await fetch(`${API}/api/teachers`);
                 const teachers = await tRes.json();
                 
-                const schedSelect = document.getElementById('setup-schedule');
-                schedSelect.innerHTML = '<option value="">-- اختر الحصة لبدء التحضير --</option>';
-
                 // إذا كان المستخدم مساعداً عاماً (teacherId=null) نعرض حصص كل المدرسين
                 if (!currentUser.teacherId) {
-                    let hasSchedules = false;
                     teachers.forEach(teacher => {
                         if (teacher.schedule && teacher.schedule.length > 0) {
-                            hasSchedules = true;
-                            teacher.schedule.forEach((sch) => {
-                                const opt = document.createElement('option');
-                            opt.value = JSON.stringify({ ...sch, teacherId: String(teacher._id) });
-                                opt.textContent = `🏫 ${teacher.name} | ${sch.center} | 📅 ${sch.day} | 🎓 ${sch.grade} (${sch.time})`;
-                                schedSelect.appendChild(opt);
-                            });
+                            _teacherSchedule.push(...teacher.schedule.map(sch => ({ ...sch, teacherId: String(teacher._id) })));
                         }
                     });
-                    if (!hasSchedules) {
-                        schedSelect.innerHTML = '<option value="">⚠️ لا توجد حصص مسجلة بعد</option>';
-                    }
                     window._isGeneralAssistant = true;
                 } else {
                     let activeTeacher = teachers.find(t => String(t._id) === String(currentUser.teacherId));
@@ -430,14 +422,11 @@
                     }
                     if (activeTeacher && activeTeacher.schedule && activeTeacher.schedule.length > 0) {
                         _activeTeacherId = String(activeTeacher._id);
-                        _teacherSchedule = activeTeacher.schedule;
-                        activeTeacher.schedule.forEach((sch, idx) => {
-                            schedSelect.innerHTML += `<option value="${idx}">🏫 ${sch.center} | 📅 ${sch.day} | 🎓 ${sch.grade} (${sch.time})</option>`;
-                        });
-                    } else {
-                        schedSelect.innerHTML = '<option value="">⚠️ لا توجد سناتر مسجلة لجدولك حالياً</option>';
+                        _teacherSchedule = activeTeacher.schedule.map(sch => ({ ...sch, teacherId: _activeTeacherId }));
                     }
                 }
+
+                populateScheduleFilters();
 
                 // 2. جلب الفيديوهات وتخزينها لفلترتها لاحقاً حسب الحصة المختارة
                 const vRes = await fetch(`${API}/api/videos`);
@@ -448,56 +437,90 @@
             }
         });
 
-        // عند تغيير الحصة المختارة -> نقوم بفلترة الفيديوهات لتظهر الفيديوهات المطابقة لمرحلة الحصة فقط
-        function onScheduleChange() {
-            const schedVal = document.getElementById('setup-schedule').value;
+        function uniqueValues(rows, key) {
+            return [...new Set(rows.map(row => String(row[key] || '').trim()).filter(Boolean))];
+        }
+        function fillSelect(id, placeholder, values, disabled = false) {
+            const select = document.getElementById(id);
+            select.innerHTML = `<option value="">${placeholder}</option>`;
+            values.forEach(value => select.innerHTML += `<option value="${value}">${value}</option>`);
+            select.disabled = disabled || values.length === 0;
+        }
+        function selectedSchedule() {
+            const center = document.getElementById('setup-center').value;
+            const grade = document.getElementById('setup-grade').value;
+            const day = document.getElementById('setup-day').value;
+            const time = document.getElementById('setup-time').value;
+            return _teacherSchedule.find(s => String(s.center || '').trim() === center && String(s.grade || '').trim() === grade && String(s.day || '').trim() === day && String(s.time || '').trim() === time) || null;
+        }
+        function resetVideos(message) {
             const videoSelect = document.getElementById('setup-video');
-            
-            if (schedVal === "") {
-                videoSelect.innerHTML = '<option value="">-- حدد الحصة أولاً --</option>';
-                return;
-            }
-
-            // للمساعد العام: الـ value يكون JSON، للمدرس: يكون index رقمي
-            let activeSched;
-            try {
-                activeSched = JSON.parse(schedVal); // مساعد عام
-            } catch(e) {
-                activeSched = _teacherSchedule[parseInt(schedVal)]; // مدرس
-            }
-
-            if (!activeSched) return;
-
+            videoSelect.innerHTML = `<option value="">${message}</option>`;
+        }
+        function populateScheduleFilters() {
+            fillSelect('setup-center', '-- اختر السنتر --', uniqueValues(_teacherSchedule, 'center'), false);
+            fillSelect('setup-grade', '-- اختر الصف --', [], true);
+            fillSelect('setup-day', '-- اختر اليوم --', [], true);
+            fillSelect('setup-time', '-- اختر الساعة --', [], true);
+            resetVideos('-- أكمل بيانات حصة السنتر أولاً --');
+        }
+        function onCenterChange() {
+            const center = document.getElementById('setup-center').value;
+            const rows = _teacherSchedule.filter(s => String(s.center || '').trim() === center);
+            fillSelect('setup-grade', '-- اختر الصف --', uniqueValues(rows, 'grade'), !center);
+            fillSelect('setup-day', '-- اختر اليوم --', [], true);
+            fillSelect('setup-time', '-- اختر الساعة --', [], true);
+            resetVideos('-- اختر الصف ثم اليوم والساعة --');
+        }
+        function onGradeChange() {
+            const center = document.getElementById('setup-center').value;
+            const grade = document.getElementById('setup-grade').value;
+            const rows = _teacherSchedule.filter(s => String(s.center || '').trim() === center && String(s.grade || '').trim() === grade);
+            fillSelect('setup-day', '-- اختر اليوم --', uniqueValues(rows, 'day'), !grade);
+            fillSelect('setup-time', '-- اختر الساعة --', [], true);
+            resetVideos('-- اختر اليوم والساعة --');
+        }
+        function onDayChange() {
+            const center = document.getElementById('setup-center').value;
+            const grade = document.getElementById('setup-grade').value;
+            const day = document.getElementById('setup-day').value;
+            const rows = _teacherSchedule.filter(s => String(s.center || '').trim() === center && String(s.grade || '').trim() === grade && String(s.day || '').trim() === day);
+            fillSelect('setup-time', '-- اختر الساعة --', uniqueValues(rows, 'time'), !day);
+            resetVideos('-- اختر الساعة أولاً --');
+        }
+        function onTimeChange() {
+            const activeSched = selectedSchedule();
+            if (!activeSched) { resetVideos('-- بيانات الحصة غير مكتملة --'); return; }
             const scheduleTeacherId = String(activeSched.teacherId || _activeTeacherId || currentUser.teacherId || '');
 
-            // لا نعرض إلا محتوى المدرس المختار. لا نعتمد على السعر إطلاقاً حتى تظهر
-            // المحاضرات المجانية والمدفوعة معاً، ونقبل المحاضرات القديمة بلا صف محدد.
+            // المحاضرات ذات السعر null متاحة للجميع؛ هنا نعرض فقط المقفلة بكود/سعر.
             const matchedVideos = _allVideos.filter(v => 
                 String(v.teacherId || '') === scheduleTeacherId &&
+                v.price !== null && v.price !== undefined &&
                 (!Array.isArray(v.grades) || v.grades.length === 0 || v.grades.includes(activeSched.grade))
             );
 
-            videoSelect.innerHTML = '';
-            
-            // خيار التفعيل التلقائي المؤجل (إذا كان الفيديو لم يتم رفعه بعد)
-            videoSelect.innerHTML += '<option value="pending_upload">تحضير فقط (الفيديو غير مرفوع حالياً)</option>';
+            const videoSelect = document.getElementById('setup-video');
+            videoSelect.innerHTML = '<option value="">-- اختر المحاضرة المقفلة --</option>';
 
             if (matchedVideos.length > 0) {
                 matchedVideos.forEach(v => {
-                    const access = v.price === null || v.price === undefined ? 'مجاني' : (Number(v.price) > 0 ? 'مدفوع' : 'بكود');
+                    const access = Number(v.price) > 0 ? `${v.price} جنيه` : 'بكود';
                     videoSelect.innerHTML += `<option value="${v._id}">🎬 ${v.title} — ${access}</option>`;
                 });
+            } else {
+                videoSelect.innerHTML = '<option value="">لا توجد محاضرات مقفلة لهذا المدرس والصف</option>';
             }
         }
 
         // تشغيل / إيقاف جلسة مسح الحضور
         function toggleSession() {
             const btn = document.getElementById('action-btn');
-            const schedIdx = document.getElementById('setup-schedule').value;
             const videoId = document.getElementById('setup-video').value;
+            const activeSched = selectedSchedule();
 
-            if (schedIdx === "") {
-                showAlert('⚠️ يرجى اختيار الحصة الفعالة أولاً!', 'orange');
+            if (!activeSched) {
+                showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
                 return;
             }
 
@@ -528,7 +551,7 @@
 
        // تفعيل وإلغاء تفعيل الحقول لضمان عدم حدوث أخطاء بشرية قبل بدء الجلسة
         function toggleInputs(disabled) {
-            document.getElementById('setup-schedule').disabled = disabled;
+            ['setup-center', 'setup-grade', 'setup-day', 'setup-time'].forEach(id => document.getElementById(id).disabled = disabled);
             document.getElementById('setup-video').disabled = disabled;
         }
 
@@ -556,13 +579,14 @@
         function submitManualAttendance() {
             const studentIdInput = document.getElementById('manual-student-id');
             let studentEmail = studentIdInput.value.trim().toLowerCase();
-            const schedVal = document.getElementById('setup-schedule').value;
             const videoVal = document.getElementById('setup-video').value;
+            const activeSched = selectedSchedule();
 
-            if (schedVal === "") {
-                showAlert('⚠️ يرجى اختيار الحصة الفعالة أولاً!', 'orange');
+            if (!activeSched) {
+                showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
                 return;
             }
+            if (!videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
             if (!studentEmail) {
                 showAlert('⚠️ يرجى إدخال بريد الطالب أولاً!', 'orange');
                 return;
@@ -573,14 +597,9 @@
                 studentEmail = studentEmail + '@edgeacademy.edu';
             }
 
-            // الحصول على بيانات الحصة المختارة (JSON للمساعد العام، index للمدرس)
-            let activeSched;
-            try { activeSched = JSON.parse(schedVal); } catch(e) { activeSched = _teacherSchedule[parseInt(schedVal)]; }
-            if (!activeSched) { showAlert('⚠️ يرجى اختيار الحصة الفعالة أولاً!', 'orange'); return; }
-
             const payload = {
                 studentId: studentEmail,
-                videoId: videoVal === "pending_upload" ? "pending" : videoVal,
+                videoId: videoVal,
                 center: activeSched.center,
                 day: activeSched.day,
                 grade: activeSched.grade,
@@ -622,15 +641,14 @@
         function onScanSuccess(studentId) {
             if (scannerInstance) scannerInstance.pause();
 
-            const schedVal = document.getElementById('setup-schedule').value;
-            let activeSched;
-            try { activeSched = JSON.parse(schedVal); } catch(e) { activeSched = _teacherSchedule[parseInt(schedVal)]; }
-            if (!activeSched) return;
+            const activeSched = selectedSchedule();
+            if (!activeSched) { showAlert('⚠️ أكمل بيانات حصة السنتر أولاً!', 'orange'); return; }
             const videoVal = document.getElementById('setup-video').value;
+            if (!videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
 
             const payload = {
                 studentId: studentId.trim(),
-                videoId: videoVal === "pending_upload" ? "pending" : videoVal, // نرسل كلمة pending لو الفيديو غير مرفوع بعد
+                videoId: videoVal,
                 center: activeSched.center,
                 day: activeSched.day,
                 grade: activeSched.grade,
