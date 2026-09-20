@@ -1230,6 +1230,12 @@
                 margin-bottom: 24px;
             }
 
+            .edit-video-dialog { width: min(94vw, 780px); }
+            .edit-video-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+            .edit-section-title { display:flex; align-items:center; gap:8px; color:var(--accent); font-size:13px; font-weight:800; margin:20px 0 12px; padding-bottom:8px; border-bottom:1px dashed var(--border2); }
+            .edit-section-title i { font-size:17px; }
+            @media (max-width:600px) { .edit-video-grid { grid-template-columns:1fr; } .edit-video-dialog { width:96vw; } }
+
             .modal-actions {
                 display: flex;
                 gap: 10px;
@@ -3189,33 +3195,25 @@
 
                 <!-- ===== EDIT VIDEO MODAL ===== -->
                 <div class="modal-bg" id="editVideoModal">
-                    <div class="modal-box" style="max-width: 500px; text-align: right;">
-                        <div
-                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid var(--border2); padding-bottom:10px;">
-                            <h3 style="margin:0;">📝 تعديل بيانات المحاضرة</h3>
+                    <div class="modal-box edit-video-dialog" style="max-width: 780px; text-align: right; padding:0; overflow:hidden;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:20px 24px; background:linear-gradient(135deg,#172a4d,#202d51); border-bottom:1px solid var(--border2);">
+                            <div><h3 style="margin:0;">📝 تعديل بيانات المحاضرة</h3><p style="margin:5px 0 0;color:#b9c7e5;font-size:12px;">عدّل البيانات ثم احفظ التغييرات</p></div>
                             <button onclick="closeEditModal()"
-                                style="background:none; border:none; color:var(--txt2); cursor:pointer; font-size:1.2rem;">✕</button>
+                                style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);width:34px;height:34px;border-radius:9px;color:#fff;cursor:pointer;font-size:1.2rem;">✕</button>
                         </div>
-                        <form onsubmit="handleSaveEditVideo(event)">
+                        <form onsubmit="handleSaveEditVideo(event)" style="padding:22px 24px;max-height:72vh;overflow-y:auto;">
                             <input type="hidden" id="edit-video-id">
+                            <div class="edit-section-title"><i class="ti ti-file-text"></i> البيانات الأساسية</div>
                             <div class="form-field" style="margin-bottom:15px;">
                                 <label>عنوان المحاضرة *</label>
                                 <input type="text" id="edit-video-title" required>
                             </div>
-                            <div class="form-field" style="margin-bottom:15px;">
-                                <label>السعر (جنيه) *</label>
-                                <input type="number" id="edit-video-price" required min="0">
+                            <div class="edit-video-grid">
+                                <div class="form-field"><label>السعر (جنيه) *</label><input type="number" id="edit-video-price" required min="0"></div>
+                                <div class="form-field"><label>يُفتح بعد كم يوم من شراء الكورس؟</label><input type="number" id="edit-video-release-days" placeholder="0" min="0" value="0"></div>
                             </div>
-                            <div class="form-field" style="margin-bottom:15px;">
-                                <label>الكورس التابع له (اختياري)</label>
-                                <select id="edit-video-course-select">
-                                    <option value="">-- بدون كورس (محاضرة منفردة) --</option>
-                                </select>
-                            </div>
-                            <div class="form-field" style="margin-bottom:15px;">
-                                <label>يُفتح بعد كم يوم من شراء الكورس؟</label>
-                                <input type="number" id="edit-video-release-days" placeholder="0" min="0" value="0">
-                            </div>
+                            <div class="form-field" style="margin-top:15px;"><label>الكورس التابع له (اختياري)</label><select id="edit-video-course-select"><option value="">-- بدون كورس (محاضرة منفردة) --</option></select></div>
+                            <div class="edit-section-title"><i class="ti ti-player-play"></i> روابط ومحتوى المحاضرة</div>
                             <div class="form-field" style="margin-bottom:15px;">
                                 <label>رابط الفيديو الخارجي</label>
                                 <input type="text" id="edit-video-link">
@@ -3224,19 +3222,16 @@
                                 <label>رابط امتحان المحاضرة (اختياري)</label>
                                 <input type="text" id="edit-video-exam-link" placeholder="مثال: رابط Google Form أو Quiz">
                             </div>
+                            <div class="edit-section-title"><i class="ti ti-calendar-event"></i> الإتاحة والامتحانات</div>
                             <div class="form-field" style="margin-bottom:15px;">
                                 <label style="color:var(--accent); font-weight:700;"><i class="ti ti-lock"></i> الامتحان القبلي المطلوب لفتح المحاضرة (50% كحد أدنى)</label>
                                 <select id="edit-video-required-exam" style="background:var(--bg2); border-color:var(--accent);">
                                     <option value="">-- بدون امتحان قبلي (المحاضرة تفتح مباشرة) --</option>
                                 </select>
                             </div>
-                            <div class="form-field" style="margin-bottom:15px;">
-                                <label>تاريخ بداية العرض</label>
-                                <input type="datetime-local" id="edit-video-start-date">
-                            </div>
-                            <div class="form-field" style="margin-bottom:15px;">
-                                <label>تاريخ نهاية العرض</label>
-                                <input type="datetime-local" id="edit-video-end-date">
+                            <div class="edit-video-grid" style="margin-bottom:15px;">
+                                <div class="form-field"><label>تاريخ بداية العرض</label><input type="datetime-local" id="edit-video-start-date"></div>
+                                <div class="form-field"><label>تاريخ نهاية العرض</label><input type="datetime-local" id="edit-video-end-date"></div>
                             </div>
                             <div class="form-field" style="margin-bottom:20px; display:flex; align-items:center;">
                                 <label class="grade-pill" style="height:fit-content; padding: 10px 14px; margin:0;">
@@ -3244,7 +3239,7 @@
                                     <span class="dot"></span> إخفاء المحاضرة عن الطلاب
                                 </label>
                             </div>
-                            <div style="display:flex; gap:10px; justify-content:flex-end;">
+                            <div style="display:flex; gap:10px; justify-content:flex-end; border-top:1px solid var(--border);padding-top:18px;">
                                 <button type="submit" class="btn-primary">حفظ التغييرات</button>
                                 <button type="button" class="btn-ghost" onclick="closeEditModal()">إلغاء</button>
                             </div>
@@ -7743,14 +7738,18 @@
                 container.innerHTML = `
                     <div style="display:flex;flex-direction:column;gap:8px">
                         ${records.map((rec, i) => {
-                            const dateStr = rec.timestamp || rec.date || rec.createdAt;
+                            const dateStr = rec.scannedAt || rec.timestamp || rec.date || rec.createdAt;
                             const formattedDate = dateStr ? new Date(dateStr).toLocaleString('ar-EG') : '—';
+                            const center = rec.center || 'سنتر غير محدد';
+                            const lesson = rec.lesson || rec.videoTitle || '';
                             return `
                                 <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px">
                                     <div style="width:34px;height:34px;border-radius:8px;background:#8b5cf622;border:1px solid #8b5cf6;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.85rem;font-weight:700;color:#8b5cf6">${i + 1}</div>
                                     <div style="flex:1">
                                         <div style="font-size:13px;font-weight:600;color:var(--txt)">${formattedDate}</div>
-                                        ${rec.lesson ? `<div style="font-size:11px;color:var(--txt3);margin-top:2px">الحصة: ${rec.lesson}</div>` : ''}
+                                        <div style="font-size:11px;color:var(--teal);margin-top:4px"><i class="ti ti-building-community"></i> السنتر: ${center}</div>
+                                        ${lesson ? `<div style="font-size:11px;color:var(--txt3);margin-top:2px">المحاضرة: ${lesson}</div>` : ''}
+                                        ${rec.day || rec.time ? `<div style="font-size:11px;color:var(--txt3);margin-top:2px">${rec.day || ''}${rec.day && rec.time ? ' · ' : ''}${rec.time || ''}</div>` : ''}
                                         ${rec.scannedBy ? `<div style="font-size:11px;color:var(--txt3)">سُجّل بواسطة: ${rec.scannedBy}</div>` : ''}
                                     </div>
                                     <span style="font-size:11px;background:#10b98122;color:#10b981;padding:3px 8px;border-radius:6px;font-weight:700">حاضر</span>
