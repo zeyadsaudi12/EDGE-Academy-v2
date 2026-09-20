@@ -122,6 +122,7 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+        .form-field select option { background: var(--bg2); color: var(--txt); }
 
         #qr-reader-container {
             display: none;
@@ -270,6 +271,8 @@
             font-size: 0.82rem; font-weight: 700; cursor: pointer;
         }
         .schedule-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .schedule-choice { display:flex; flex-direction:column; gap:6px; }
+        .schedule-choice label { color:var(--txt2); font-size:0.78rem; font-weight:700; }
         @media (max-width:480px) { .schedule-grid { grid-template-columns:1fr; } }
 
     </style>
@@ -302,11 +305,12 @@
             <div class="form-field" style="margin-bottom: 12px;">
                 <label>بيانات حصة السنتر *</label>
                 <div class="schedule-grid">
-                    <select id="setup-center" onchange="onCenterChange()"><option value="">-- اختر السنتر --</option></select>
-                    <select id="setup-grade" onchange="onGradeChange()" disabled><option value="">-- اختر الصف --</option></select>
-                    <select id="setup-day" onchange="onDayChange()" disabled><option value="">-- اختر اليوم --</option></select>
-                    <select id="setup-time" onchange="onTimeChange()" disabled><option value="">-- اختر الساعة --</option></select>
+                    <div class="schedule-choice"><label for="setup-center">السنتر</label><select id="setup-center" onchange="onCenterChange()"><option value="">-- اختر السنتر --</option></select></div>
+                    <div class="schedule-choice"><label for="setup-grade">الصف</label><select id="setup-grade" onchange="onGradeChange()" disabled><option value="">-- اختر الصف --</option></select></div>
+                    <div class="schedule-choice"><label for="setup-day">اليوم</label><select id="setup-day" onchange="onDayChange()" disabled><option value="">-- اختر اليوم --</option></select></div>
+                    <div class="schedule-choice"><label for="setup-time">الساعة</label><select id="setup-time" onchange="onTimeChange()" disabled><option value="">-- اختر الساعة --</option></select></div>
                 </div>
+                <small id="schedule-help" style="margin-top:8px;color:var(--txt2);display:block;">اختر السنتر أولاً، ثم أكمل باقي البيانات بالترتيب.</small>
             </div>
 
             <div class="form-field" style="margin-bottom: 15px;">
@@ -458,11 +462,14 @@
             videoSelect.innerHTML = `<option value="">${message}</option>`;
         }
         function populateScheduleFilters() {
-            fillSelect('setup-center', '-- اختر السنتر --', uniqueValues(_teacherSchedule, 'center'), false);
+            const centers = uniqueValues(_teacherSchedule, 'center');
+            fillSelect('setup-center', centers.length ? '-- اختر السنتر --' : '-- لا توجد سناتر مسجلة لهذا المساعد --', centers, false);
             fillSelect('setup-grade', '-- اختر الصف --', [], true);
             fillSelect('setup-day', '-- اختر اليوم --', [], true);
             fillSelect('setup-time', '-- اختر الساعة --', [], true);
             resetVideos('-- أكمل بيانات حصة السنتر أولاً --');
+            const help = document.getElementById('schedule-help');
+            if (help) help.textContent = centers.length ? 'اختر السنتر أولاً، ثم أكمل باقي البيانات بالترتيب.' : 'لا توجد مواعيد مرتبطة بهذا المدرس بعد. أضفها من صفحة تعديل المدرّس.';
         }
         function onCenterChange() {
             const center = document.getElementById('setup-center').value;
