@@ -4,6 +4,20 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const { cloudinary } = require('../middleware/upload');
 
+// المواد المعتمدة فقط؛ تمنع أخطاء الكتابة من إنشاء مادة جديدة في المنصة.
+const ALLOWED_SUBJECTS = new Set([
+    'اللغة العربية', 'اللغة الإنجليزية', 'الرياضيات', 'العلوم', 'الفيزياء',
+    'الكيمياء', 'الأحياء', 'الجيولوجيا', 'التاريخ', 'الجغرافيا',
+    'الفلسفة والمنطق', 'علم النفس والاجتماع', 'اللغة الفرنسية',
+    'اللغة الألمانية', 'اللغة الإيطالية', 'البرمجة'
+]);
+
+function normalizeTeacherSubjects(value) {
+    const subjects = String(value || '').split('|').map(subject => subject.trim()).filter(Boolean);
+    if (!subjects.length || subjects.some(subject => !ALLOWED_SUBJECTS.has(subject))) return null;
+    return [...new Set(subjects)].join(' | ');
+}
+
 // استخراج public_id من Cloudinary URL لحذف الصورة
 function extractCloudinaryPublicId(url) {
     if (!url || !url.includes('cloudinary.com')) return null;
@@ -82,6 +96,10 @@ exports.createTeacher = async (req, res, next) => {
         if (!name || !subjectAr) {
             return res.status(400).json({ success: false, message: 'الاسم والمادة مطلوبان' });
         }
+        const normalizedSubjects = normalizeTeacherSubjects(subjectAr);
+        if (!normalizedSubjects) {
+            return res.status(400).json({ success: false, message: 'يرجى اختيار مادة دراسية معتمدة واحدة على الأقل' });
+        }
 
         // req.file.path = Cloudinary URL بعد الرفع
         const imagePath = req.file ? req.file.path : '';
@@ -92,7 +110,7 @@ exports.createTeacher = async (req, res, next) => {
 
         const newTeacher = new Teacher({
             name,
-            subjectAr,
+            subjectAr: normalizedSubjects,
             bio: bio || '',
             imagePath,
             grades: gradesArray
@@ -156,7 +174,13 @@ exports.updateTeacher = async (req, res, next) => {
         const { name, subjectAr, bio, grades, schedule } = req.body;
 
         if (name) teacher.name = name;
-        if (subjectAr) teacher.subjectAr = subjectAr;
+        if (subjectAr) {
+            const normalizedSubjects = normalizeTeacherSubjects(subjectAr);
+            if (!normalizedSubjects) {
+                return res.status(400).json({ success: false, message: 'يرجى اختيار مواد دراسية معتمدة فقط' });
+            }
+            teacher.subjectAr = normalizedSubjects;
+        }
         if (bio !== undefined) teacher.bio = bio;
 
         if (grades !== undefined) {

@@ -3434,15 +3434,10 @@ function renderSubjects() {
     const subjectCounts = {};
 
     filteredTeachers.forEach(t => {
-
-        if (t.subjectAr) {
-
-            const sub = t.subjectAr.trim();
-
+        // المادة يمكن أن تحتوي على أكثر من اختيار محفوظ بالفاصل |.
+        String(t.subjectAr || '').split('|').map(sub => sub.trim()).filter(Boolean).forEach(sub => {
             subjectCounts[sub] = (subjectCounts[sub] || 0) + 1;
-
-        }
-
+        });
     });
 
     const subjectsList = Object.keys(subjectCounts);
@@ -3482,6 +3477,9 @@ function renderSubjects() {
 
         "اللغة الإنجليزية": "fa-language",
         "انجليزي": "fa-language",
+        "اللغة الفرنسية": "fa-comments",
+        "اللغة الألمانية": "fa-language",
+        "اللغة الإيطالية": "fa-language",
 
         "الأحياء": "fa-dna",
         "أحياء": "fa-dna",
@@ -3494,10 +3492,14 @@ function renderSubjects() {
         "معلوماتية": "fa-laptop-code",
 
         "تاريخ": "fa-landmark",
+        "التاريخ": "fa-landmark",
         "جغرافيا": "fa-earth-africa",
+        "الجغرافيا": "fa-earth-africa",
         "فلسفة": "fa-brain",
+        "الفلسفة والمنطق": "fa-brain",
         "منطق": "fa-lightbulb",
         "علم نفس": "fa-users-line",
+        "علم النفس والاجتماع": "fa-users-line",
         "فرنساوي": "fa-comments"
 
     };
@@ -3547,6 +3549,29 @@ function renderSubjects() {
 
     }
 
+    // الاحتفاظ بالمؤشر الحالي منفصلاً عن scrollLeft لأن سلوكه يختلف بين المتصفحات في RTL.
+    wrapper.dataset.activeSubjectIndex = '0';
+    let scrollFrame;
+    wrapper.onscroll = () => {
+        cancelAnimationFrame(scrollFrame);
+        scrollFrame = requestAnimationFrame(() => {
+            const wrapperCenter = wrapper.getBoundingClientRect().left + (wrapper.clientWidth / 2);
+            const cards = Array.from(wrapper.querySelectorAll('.subject-card'));
+            let nearestIndex = 0;
+            let nearestDistance = Infinity;
+            cards.forEach((card, index) => {
+                const rect = card.getBoundingClientRect();
+                const distance = Math.abs((rect.left + rect.width / 2) - wrapperCenter);
+                if (distance < nearestDistance) {
+                    nearestDistance = distance;
+                    nearestIndex = index;
+                }
+            });
+            wrapper.dataset.activeSubjectIndex = String(nearestIndex);
+            document.querySelectorAll('#paginationDots .dot').forEach((dot, index) => dot.classList.toggle('active', index === nearestIndex));
+        });
+    };
+
 }
 
 window.scrollSubjects = function (direction) {
@@ -3555,9 +3580,11 @@ window.scrollSubjects = function (direction) {
 
     if (!wrapper) return;
 
-    const scrollAmount = wrapper.clientWidth / 2;
-
-    wrapper.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    const cards = Array.from(wrapper.querySelectorAll('.subject-card'));
+    if (!cards.length) return;
+    const current = Number(wrapper.dataset.activeSubjectIndex || 0);
+    const next = Math.max(0, Math.min(cards.length - 1, current + Number(direction || 0)));
+    window.scrollToIndex(next);
 
 };
 
@@ -3567,13 +3594,18 @@ window.scrollToIndex = function (index) {
 
     if (!wrapper) return;
 
-    const card = wrapper.querySelector('.subject-card');
-
+    const cards = Array.from(wrapper.querySelectorAll('.subject-card'));
+    const targetIndex = Math.max(0, Math.min(cards.length - 1, Number(index) || 0));
+    const card = cards[targetIndex];
     if (!card) return;
 
-    const cardWidth = card.clientWidth + 20;
-
-    wrapper.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
+    wrapper.dataset.activeSubjectIndex = String(targetIndex);
+    document.querySelectorAll('#paginationDots .dot').forEach((dot, dotIndex) => {
+        dot.classList.toggle('active', dotIndex === targetIndex);
+        dot.setAttribute('aria-current', dotIndex === targetIndex ? 'true' : 'false');
+    });
+    // scrollIntoView يعمل بصورة سليمة مع الاتجاه العربي ولا يعتمد على قيمة scrollLeft السالبة.
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
 };
 

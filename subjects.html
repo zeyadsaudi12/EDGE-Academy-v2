@@ -647,8 +647,10 @@ function buildSubjectChips() {
     // Count teachers per subject
     const subjectCounts = {};
     availableTeachers.forEach(t => {
-        const s = (t.subjectAr && t.subjectAr.trim()) ? t.subjectAr.trim() : 'أخرى';
-        subjectCounts[s] = (subjectCounts[s] || 0) + 1;
+        const teacherSubjects = String(t.subjectAr || '').split('|').map(s => s.trim()).filter(Boolean);
+        (teacherSubjects.length ? teacherSubjects : ['أخرى']).forEach(s => {
+            subjectCounts[s] = (subjectCounts[s] || 0) + 1;
+        });
     });
 
     const subjects = Object.keys(subjectCounts);
@@ -714,10 +716,9 @@ function renderDirectory() {
     // Filter by active subject if a specific subject is chosen
     let displayedTeachers = teachersForGrade;
     if (activeSubjectFilter !== 'all') {
-        displayedTeachers = teachersForGrade.filter(t => {
-            const s = (t.subjectAr && t.subjectAr.trim()) ? t.subjectAr.trim().toLowerCase() : '';
-            return s.includes(activeSubjectFilter.toLowerCase()) || activeSubjectFilter.toLowerCase().includes(s);
-        });
+        displayedTeachers = teachersForGrade.filter(t =>
+            String(t.subjectAr || '').split('|').map(s => s.trim().toLowerCase()).includes(activeSubjectFilter.toLowerCase())
+        );
     }
 
     if (displayedTeachers.length === 0) {
@@ -736,12 +737,14 @@ function renderDirectory() {
         return;
     }
 
-    // Group teachers by subjectAr
+    // يظهر المعلم متعدد المواد تحت كل مادة يدرسها.
     const subjectGroups = {};
     displayedTeachers.forEach(t => {
-        const subj = (t.subjectAr && t.subjectAr.trim()) ? t.subjectAr.trim() : 'مواد أخرى';
-        if (!subjectGroups[subj]) subjectGroups[subj] = [];
-        subjectGroups[subj].push(t);
+        const teacherSubjects = String(t.subjectAr || '').split('|').map(s => s.trim()).filter(Boolean);
+        (teacherSubjects.length ? teacherSubjects : ['مواد أخرى']).forEach(subj => {
+            if (!subjectGroups[subj]) subjectGroups[subj] = [];
+            subjectGroups[subj].push(t);
+        });
     });
 
     const entries = Object.entries(subjectGroups);

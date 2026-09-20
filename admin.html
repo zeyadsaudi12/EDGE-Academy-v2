@@ -2808,8 +2808,25 @@
                                 </div>
                                 <div class="form-row full">
                                     <div class="form-field">
-                                        <label>المادة الدراسية *</label>
-                                        <input type="text" id="teacher-subject" placeholder="مثال: الرياضيات" required>
+                                        <label>المواد الدراسية * <small style="font-weight:400; color:var(--txt2);">(يمكن اختيار أكثر من مادة)</small></label>
+                                        <div class="grades-grid" id="teacher-subjects-pills">
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="اللغة العربية"><span class="dot"></span> اللغة العربية</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="اللغة الإنجليزية"><span class="dot"></span> اللغة الإنجليزية</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="الرياضيات"><span class="dot"></span> الرياضيات</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="العلوم"><span class="dot"></span> العلوم</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="الفيزياء"><span class="dot"></span> الفيزياء</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="الكيمياء"><span class="dot"></span> الكيمياء</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="الأحياء"><span class="dot"></span> الأحياء</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="الجيولوجيا"><span class="dot"></span> الجيولوجيا</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="التاريخ"><span class="dot"></span> التاريخ</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="الجغرافيا"><span class="dot"></span> الجغرافيا</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="الفلسفة والمنطق"><span class="dot"></span> الفلسفة والمنطق</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="علم النفس والاجتماع"><span class="dot"></span> علم النفس والاجتماع</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="اللغة الفرنسية"><span class="dot"></span> اللغة الفرنسية</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="اللغة الألمانية"><span class="dot"></span> اللغة الألمانية</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="اللغة الإيطالية"><span class="dot"></span> اللغة الإيطالية</label>
+                                            <label class="grade-pill"><input type="checkbox" name="teacher-subject-check" value="البرمجة"><span class="dot"></span> البرمجة</label>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row full">
@@ -2840,7 +2857,7 @@
                             </div>
                             <div class="form-footer">
                                 <button type="submit" class="btn-primary"><i class="ti ti-plus"></i> إضافة معلم</button>
-                                <button type="reset" class="btn-ghost" onclick="resetPills('teacher-grades-pills')"><i class="ti ti-x"></i> إعادة تعيين</button>
+                                <button type="reset" class="btn-ghost" onclick="resetPills('teacher-grades-pills'); resetPills('teacher-subjects-pills')"><i class="ti ti-x"></i> إعادة تعيين</button>
                             </div>
                         </form>
                     </div>
@@ -3268,8 +3285,10 @@
                     </div>
                     
                     <div class="form-field">
-                        <label style="font-weight:700; color:var(--txt2); margin-bottom:8px; display:block;">المادة الدراسية *</label>
-                        <input type="text" id="edit-teacher-subject" required style="width:100%; padding:12px; border-radius:8px; border:1px solid var(--border2); background:var(--bg3); color:var(--txt);">
+                        <label style="font-weight:700; color:var(--txt2); margin-bottom:8px; display:block;">المواد الدراسية *</label>
+                        <div class="grades-grid" id="edit-teacher-subjects-pills" style="grid-template-columns:repeat(2, minmax(130px, 1fr));">
+                            <label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="اللغة العربية"><span class="dot"></span> اللغة العربية</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="اللغة الإنجليزية"><span class="dot"></span> اللغة الإنجليزية</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="الرياضيات"><span class="dot"></span> الرياضيات</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="العلوم"><span class="dot"></span> العلوم</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="الفيزياء"><span class="dot"></span> الفيزياء</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="الكيمياء"><span class="dot"></span> الكيمياء</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="الأحياء"><span class="dot"></span> الأحياء</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="الجيولوجيا"><span class="dot"></span> الجيولوجيا</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="التاريخ"><span class="dot"></span> التاريخ</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="الجغرافيا"><span class="dot"></span> الجغرافيا</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="الفلسفة والمنطق"><span class="dot"></span> الفلسفة والمنطق</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="علم النفس والاجتماع"><span class="dot"></span> علم النفس والاجتماع</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="اللغة الفرنسية"><span class="dot"></span> اللغة الفرنسية</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="اللغة الألمانية"><span class="dot"></span> اللغة الألمانية</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="اللغة الإيطالية"><span class="dot"></span> اللغة الإيطالية</label><label class="grade-pill"><input type="checkbox" name="edit-teacher-subject-check" value="البرمجة"><span class="dot"></span> البرمجة</label>
+                        </div>
                     </div>
                 </div>
                 
@@ -4982,7 +5001,12 @@
                 
                 document.getElementById('edit-teacher-id').value = teacher._id;
                 document.getElementById('edit-teacher-name').value = teacher.name;
-                document.getElementById('edit-teacher-subject').value = teacher.subjectAr || '';
+                const teacherSubjects = String(teacher.subjectAr || '').split('|').map(s => s.trim()).filter(Boolean);
+                document.querySelectorAll('#edit-teacher-subjects-pills input[name="edit-teacher-subject-check"]').forEach(cb => {
+                    const isChecked = teacherSubjects.includes(cb.value);
+                    cb.checked = isChecked;
+                    cb.closest('.grade-pill').classList.toggle('checked', isChecked);
+                });
                 document.getElementById('edit-teacher-bio').value = teacher.bio || '';
                 
                 // تفريغ وبناء جدول المواعيد
@@ -5021,12 +5045,16 @@
                 event.preventDefault();
                 const id = document.getElementById('edit-teacher-id').value;
                 const name = document.getElementById('edit-teacher-name').value;
-                const subjectAr = document.getElementById('edit-teacher-subject').value;
+                const subjectAr = Array.from(document.querySelectorAll('#edit-teacher-subjects-pills input[name="edit-teacher-subject-check"]:checked')).map(cb => cb.value).join(' | ');
                 const bio = document.getElementById('edit-teacher-bio').value;
                 
                 const checkedBoxes = document.querySelectorAll('#edit-teacher-grades-pills input[name="edit-teacher-grades-check"]:checked');
                 const grades = Array.from(checkedBoxes).map(cb => cb.value);
                 
+                if (!subjectAr) {
+                    toast('يرجى اختيار مادة دراسية واحدة على الأقل', 'error');
+                    return;
+                }
                 if (!grades.length) {
                     toast('يرجى اختيار صف دراسي واحد على الأقل', 'error');
                     return;
@@ -5147,10 +5175,11 @@
                 const submitBtn = form.querySelector('button[type="submit"]');
 
                 const name = document.getElementById('teacher-name').value;
-                const subjectAr = document.getElementById('teacher-subject').value;
+                const subjectAr = Array.from(document.querySelectorAll('#teacher-subjects-pills input[name="teacher-subject-check"]:checked')).map(cb => cb.value).join(' | ');
                 const bio = document.getElementById('teacher-bio').value;
                 const checkedBoxes = document.querySelectorAll('#teacher-grades-pills input[name="teacher-grades-check"]:checked');
                 const grades = Array.from(checkedBoxes).map(cb => cb.value);
+                if (!subjectAr) { toast('يرجى اختيار مادة دراسية واحدة على الأقل', 'error'); return; }
                 if (!grades.length) { toast('يرجى اختيار صف دراسي واحد على الأقل', 'error'); return; }
                 const imageFile = document.getElementById('teacher-image').files[0];
                 const formData = new FormData();
