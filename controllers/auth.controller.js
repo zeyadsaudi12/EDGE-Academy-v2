@@ -4,7 +4,7 @@ const crypto = require('crypto');
 
 exports.register = async (req, res, next) => {
     try {
-        const { username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password } = req.body;
+        const { username, email, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password } = req.body;
 
         if (!username || !firstName || !lastName || !phone || !nationalId || !password) {
             return res.status(400).json({ success: false, message: 'الرجاء ملء جميع الحقول المطلوبة' });
@@ -15,13 +15,17 @@ exports.register = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'رقم الهاتف غير صحيح' });
         }
 
-        const existingUser = await User.findOne({ $or: [{ phone }, { nationalId }, { username }] });
+        const normalizedEmail = email ? String(email).trim().toLowerCase() : '';
+        if (normalizedEmail && !/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
+            return res.status(400).json({ success: false, message: 'البريد الإلكتروني غير صحيح' });
+        }
+        const existingUser = await User.findOne({ $or: [{ phone }, { nationalId }, { username }, ...(normalizedEmail ? [{ email: normalizedEmail }] : [])] });
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'رقم الهاتف، الرقم القومي أو اسم المستخدم مسجل مسبقاً' });
         }
 
         const newUser = new User({
-            username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password,
+            username, email: normalizedEmail || undefined, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password,
             devices: []
         });
 

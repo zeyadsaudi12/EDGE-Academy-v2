@@ -1031,7 +1031,7 @@ function handleLogin(event) {
                     alert('👑 مرحباً بك يا مدير المنصة، جاري تحويلك للوحة التحكم...');
                     window.location.href = 'admin';
                 } else if (data.user.role === 'teacher') {
-                    window.location.href = 'assistant-hub';
+                    window.location.href = 'teacher-dashboard';
                 } else {
                     alert('✅ تم الدخول بنجاح، دراسة ممتعة وموفقة!');
                     window.location.href = '/';
@@ -1247,6 +1247,8 @@ function handleRegister(event) {
 
     const username = form.querySelector('input[name="username"]').value;
 
+    const email = form.querySelector('input[name="email"]').value.trim();
+
     const password = form.querySelector('input[name="password"]').value;
 
     const firstName = form.querySelector('input[name="firstName"]').value;
@@ -1277,7 +1279,7 @@ function handleRegister(event) {
 
         body: JSON.stringify({
 
-            username, firstName, lastName, birthDate, phone, parentPhone,
+            username, email, firstName, lastName, birthDate, phone, parentPhone,
 
             nationalId, governorate, grade, section, secondLanguage, password
 
