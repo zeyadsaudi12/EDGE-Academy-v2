@@ -1247,8 +1247,6 @@ function handleRegister(event) {
 
     const username = form.querySelector('input[name="username"]').value;
 
-    const email = form.querySelector('input[name="email"]').value.trim();
-
     const password = form.querySelector('input[name="password"]').value;
 
     const firstName = form.querySelector('input[name="firstName"]').value;
@@ -1279,7 +1277,7 @@ function handleRegister(event) {
 
         body: JSON.stringify({
 
-            username, email, firstName, lastName, birthDate, phone, parentPhone,
+            username, firstName, lastName, birthDate, phone, parentPhone,
 
             nationalId, governorate, grade, section, secondLanguage, password
 
