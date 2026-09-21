@@ -5387,7 +5387,8 @@
                 const bFiles = document.getElementById('add-video-booklet-files')?.files;
                 if (bFiles && bFiles.length > 0) {
                     for (let i = 0; i < bFiles.length; i++) {
-                        formData.append('bookletFiles[]', bFiles[i]);
+                        // يجب أن يطابق الاسم حقل multer في الخادم؛ استخدام [] كان يؤدي إلى "Unexpected field".
+                        formData.append('bookletFiles', bFiles[i]);
                     }
                 }
 
@@ -5395,7 +5396,7 @@
                 const hFiles = document.getElementById('add-video-homework-files')?.files;
                 if (hFiles && hFiles.length > 0) {
                     for (let i = 0; i < hFiles.length; i++) {
-                        formData.append('homeworkFiles[]', hFiles[i]);
+                        formData.append('homeworkFiles', hFiles[i]);
                     }
                 }
 
@@ -5410,11 +5411,12 @@
             });
 
             fetch(`${API}/api/videos`, { method: 'POST', body: formData })
-                .then(r => {
+                .then(async r => {
+                    const payload = await r.json().catch(() => ({}));
                     if (!r.ok) {
-                        throw new Error(`خطأ سيرفر بكود: ${r.status}`);
+                        throw new Error(payload.message || `خطأ من الخادم (${r.status})`);
                     }
-                    return r.json();
+                    return payload;
                 })
                 .then(d => {
                     if (submitBtn) submitBtn.disabled = false;
@@ -5430,7 +5432,7 @@
                 })
                 .catch(err => {
                     if (submitBtn) submitBtn.disabled = false;
-                    toast('خطأ في رفع الفيديو والربط التلقائي للحضور', 'error');
+                    toast(`تعذر رفع المحاضرة: ${err.message || 'تحقق من الملفات وحاول مرة أخرى'}`, 'error');
                     console.error("تفاصيل الخطأ البرمي:", err);
                 });
         }
