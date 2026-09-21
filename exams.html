@@ -661,6 +661,121 @@
             border-color: var(--accent);
         }
 
+        /* ===== EXAM WORKSPACE ===== */
+        .quiz-workspace {
+            width: min(1440px, 94%);
+            margin: 28px auto 110px;
+            display: grid;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .quiz-sidebar {
+            position: sticky;
+            top: 94px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-side-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-bottom: 13px;
+        }
+
+        .quiz-count-chip {
+            color: var(--teal);
+            background: rgba(46,196,182,.12);
+            border-radius: 99px;
+            padding: 3px 9px;
+            font-size: .72rem;
+        }
+
+        .question-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            max-height: 245px;
+            overflow: auto;
+            padding-left: 2px;
+        }
+
+        .question-nav-btn {
+            height: 38px;
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            background: var(--bg3);
+            color: var(--txt2);
+            cursor: pointer;
+            font: 800 .8rem 'Cairo', sans-serif;
+            transition: .18s ease;
+        }
+
+        .question-nav-btn:hover, .question-nav-btn.current {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        .question-nav-btn.answered {
+            border-color: var(--teal);
+            color: #052b27;
+            background: var(--teal);
+        }
+
+        .quiz-side-divider { border: 0; border-top: 1px solid var(--border); margin: 18px 0; }
+
+        .scratchpad-label { display:block; color:var(--accent); font-weight:800; font-size:.88rem; margin-bottom:8px; }
+        .scratchpad-hint { color:var(--txt3); font-size:.7rem; line-height:1.6; margin-bottom:8px; }
+        .quiz-scratchpad {
+            width: 100%; min-height: 145px; resize: vertical; padding: 11px;
+            background: var(--bg3); border: 1px solid var(--border2); color: var(--txt);
+            border-radius: 10px; outline: none; font: .82rem 'Cairo', sans-serif;
+        }
+        .quiz-scratchpad:focus { border-color: var(--teal); }
+
+        .quiz-main-column { min-width: 0; }
+        .quiz-content { max-width: 900px; width: 100%; margin: 0 auto; padding-bottom: 0; }
+        .q-item-box { scroll-margin-top: 100px; border-right: 4px solid transparent; }
+        .q-item-box.active-question { border-right-color: var(--accent); }
+
+        .quiz-progress-dock {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 150;
+            background: var(--bg2);
+            border-top: 1px solid var(--border2); backdrop-filter: blur(14px);
+            padding: 11px max(5%, 18px) 13px;
+        }
+        .quiz-progress-row { max-width: 960px; margin:auto; display:flex; align-items:center; gap:12px; color:var(--txt2); font-size:.82rem; font-weight:700; }
+        .quiz-progress-track { flex:1; height:9px; background:var(--bg3); border-radius:99px; overflow:hidden; border:1px solid var(--border); }
+        .quiz-progress-fill { height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg, var(--teal), var(--accent)); transition:width .25s ease; }
+        .quiz-progress-number { color:var(--accent); white-space:nowrap; }
+        .quiz-actions { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:28px; }
+
+        @media (max-width: 900px) {
+            .quiz-workspace { grid-template-columns: 1fr; width:min(94%, 800px); margin-top:18px; }
+            .quiz-sidebar { position:relative; top:auto; padding:14px; }
+            .question-nav-grid { max-height:130px; }
+            .quiz-scratchpad { min-height:90px; }
+        }
+        @media (max-width: 560px) {
+            .quiz-header { padding:12px 4%; }
+            .quiz-header h2 { font-size:1rem !important; }
+            .timer-badge { padding:7px 12px; font-size:.85rem; }
+            .quiz-workspace { width:94%; gap:14px; margin-bottom:100px; }
+            .q-item-box { padding:18px 14px; margin-bottom:14px; }
+            .q-text { font-size:1rem; }
+            .mcq-option-label { padding:13px 12px; font-size:.86rem; }
+            .quiz-actions { flex-direction:column; align-items:stretch; }
+            .quiz-actions .btn { width:100%; }
+        }
+
         /* ===== RESULTS VIEW ===== */
         .results-box {
             max-width: 600px;
@@ -882,15 +997,34 @@
                 <span id="timerValue">00:00</span>
             </div>
         </header>
-        <div class="quiz-content">
-            <div id="quizQuestionsContainer"></div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:30px;">
-                <button class="btn" style="background:var(--green); color:#000;" onclick="submitExamAnswers()">
-                    <i class="ti ti-checkbox"></i> إنهاء وتقديم الامتحان
-                </button>
-                <button class="btn secondary" onclick="confirmExitExam()">
-                    <i class="ti ti-arrow-right"></i> انسحاب من الامتحان
-                </button>
+        <div class="quiz-workspace">
+            <aside class="quiz-sidebar" aria-label="أدوات الامتحان">
+                <div class="quiz-side-heading"><span><i class="ti ti-list-numbers"></i> الانتقال للأسئلة</span><span class="quiz-count-chip" id="quizAnsweredCount">0 مجاب</span></div>
+                <div class="question-nav-grid" id="questionNavGrid"></div>
+                <hr class="quiz-side-divider">
+                <label class="scratchpad-label" for="quizScratchpad"><i class="ti ti-pencil"></i> مسودة الطالب</label>
+                <p class="scratchpad-hint">اكتب ملاحظاتك وحساباتك هنا. المسودة خاصة بك ولا تُرسل ضمن الإجابة.</p>
+                <textarea id="quizScratchpad" class="quiz-scratchpad" placeholder="اكتب مسودتك هنا..." oninput="saveQuizScratchpad(this.value)"></textarea>
+            </aside>
+            <main class="quiz-main-column">
+                <div class="quiz-content">
+                    <div id="quizQuestionsContainer"></div>
+                    <div class="quiz-actions">
+                        <button class="btn" style="background:var(--green); color:#000;" onclick="submitExamAnswers()">
+                            <i class="ti ti-checkbox"></i> إنهاء وتقديم الامتحان
+                        </button>
+                        <button class="btn secondary" onclick="confirmExitExam()">
+                            <i class="ti ti-arrow-right"></i> انسحاب من الامتحان
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div class="quiz-progress-dock" aria-live="polite">
+            <div class="quiz-progress-row">
+                <span><i class="ti ti-progress-check"></i> تقدّمك في الامتحان</span>
+                <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
+                <span class="quiz-progress-number" id="quizProgressText">0 / 0</span>
             </div>
         </div>
     </div>
@@ -935,6 +1069,7 @@
         let _examTimer = null;
         let _secondsLeft = 0;
         let _answers = [];
+        let _scratchpadStorageKey = '';
 
         // Auth Protection Check
         const savedUser = localStorage.getItem('currentUser');
@@ -1149,6 +1284,7 @@
 
                 _currentExam = data.exam;
                 _answers = Array(_currentExam.questions.length).fill('');
+                _scratchpadStorageKey = `edge-exam-draft:${_student._id}:${_currentExam._id}`;
                 
                 // Show Quiz Page
                 document.getElementById('mainContainer').style.display = 'none';
@@ -1188,7 +1324,7 @@
                     }
 
                     return `
-                        <div class="q-item-box">
+                        <div class="q-item-box" id="exam-question-${i}" data-question-index="${i}">
                             <div class="q-item-header">
                                 <div class="q-num">${i + 1}</div>
                                 <div class="q-text">${q.text}</div>
@@ -1197,6 +1333,12 @@
                         </div>
                     `;
                 }).join('');
+
+                renderQuestionNavigator();
+                updateQuizProgress();
+                const scratchpad = document.getElementById('quizScratchpad');
+                if (scratchpad) scratchpad.value = sessionStorage.getItem(_scratchpadStorageKey) || '';
+                setupQuestionScrollTracking();
 
                 // Start Timer
                 _secondsLeft = _currentExam.duration * 60;
@@ -1209,6 +1351,70 @@
                 toast('خطأ في الاتصال بالخادم', 'error');
             }
         }
+
+        function isQuestionAnswered(answer) {
+            return answer !== undefined && answer !== null && String(answer).trim() !== '';
+        }
+
+        function renderQuestionNavigator() {
+            const nav = document.getElementById('questionNavGrid');
+            if (!nav || !_currentExam) return;
+            nav.innerHTML = _currentExam.questions.map((_, index) =>
+                `<button type="button" class="question-nav-btn" id="question-nav-${index}" onclick="goToQuestion(${index})" title="الانتقال إلى السؤال ${index + 1}">${index + 1}</button>`
+            ).join('');
+            setCurrentQuestion(0);
+        }
+
+        function updateQuizProgress() {
+            const total = _answers.length;
+            const answered = _answers.filter(isQuestionAnswered).length;
+            const percentage = total ? Math.round((answered / total) * 100) : 0;
+            const fill = document.getElementById('quizProgressFill');
+            const text = document.getElementById('quizProgressText');
+            const count = document.getElementById('quizAnsweredCount');
+            if (fill) fill.style.width = `${percentage}%`;
+            if (text) text.textContent = `${answered} / ${total}`;
+            if (count) count.textContent = `${answered} مجاب`;
+            _answers.forEach((answer, index) => {
+                const button = document.getElementById(`question-nav-${index}`);
+                if (button) button.classList.toggle('answered', isQuestionAnswered(answer));
+            });
+        }
+
+        function setCurrentQuestion(index) {
+            document.querySelectorAll('.question-nav-btn').forEach((button, buttonIndex) => button.classList.toggle('current', buttonIndex === index));
+            document.querySelectorAll('.q-item-box').forEach((card, cardIndex) => card.classList.toggle('active-question', cardIndex === index));
+        }
+
+        window.goToQuestion = function(index) {
+            const question = document.getElementById(`exam-question-${index}`);
+            if (!question) return;
+            setCurrentQuestion(index);
+            question.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+
+        function setupQuestionScrollTracking() {
+            const overlay = document.getElementById('quizOverlay');
+            if (!overlay) return;
+            let scrollFrame;
+            overlay.onscroll = () => {
+                cancelAnimationFrame(scrollFrame);
+                scrollFrame = requestAnimationFrame(() => {
+                    const cards = Array.from(document.querySelectorAll('.q-item-box'));
+                    let currentIndex = 0;
+                    let closestDistance = Infinity;
+                    cards.forEach((card, index) => {
+                        const distance = Math.abs(card.getBoundingClientRect().top - 120);
+                        if (distance < closestDistance) { closestDistance = distance; currentIndex = index; }
+                    });
+                    setCurrentQuestion(currentIndex);
+                });
+            };
+        }
+
+        window.saveQuizScratchpad = function(value) {
+            if (_scratchpadStorageKey) sessionStorage.setItem(_scratchpadStorageKey, value);
+        };
 
         // تفعيل نظام قفل وتقديم الامتحان التلقائي عند مغادرة الصفحة أو فقدان التركيز
         function initActiveExamSecurity() {
@@ -1272,10 +1478,12 @@
                     }
                 });
             }
+            updateQuizProgress();
         }
 
         function recordEssay(qIdx, val) {
             _answers[qIdx] = val;
+            updateQuizProgress();
         }
 
         function startTimerCountdown() {
@@ -1324,6 +1532,7 @@
                 });
                 const d = await res.json();
                 if (d.success) {
+                    if (_scratchpadStorageKey) sessionStorage.removeItem(_scratchpadStorageKey);
                     toast('تم تقديم الامتحان بنجاح!', 'success');
                     displayExamResult(d);
                 } else {
