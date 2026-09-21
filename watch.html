@@ -854,8 +854,11 @@ body.secure-video-page {
                         const userResults = (ex.results || []).filter(r => r.studentId === currentUser._id);
                         if (userResults.length > 0) {
                             const bestResult = userResults.reduce((max, r) => (r.percentage > (max.percentage || 0) ? r : max), userResults[0]);
-                            studentScoreText = `درجتك الحالية: ${bestResult.percentage}% (${bestResult.score}/${bestResult.totalMarks || ex.totalMarks})`;
-                            if (bestResult.percentage >= 50) {
+                            studentScoreText = bestResult.isGraded === false
+                                ? 'تم إرسال الامتحان وبانتظار تصحيح الأسئلة المقالية'
+                                : `درجتك الحالية: ${bestResult.percentage}% (${bestResult.score}/${bestResult.totalMarks || ex.totalMarks})`;
+                            // لا تفتح المحاضرة على نتيجة مؤقتة بها أسئلة مقالية لم تُصحح بعد.
+                            if (bestResult.isGraded !== false && Number(bestResult.percentage) >= 50) {
                                 passedExam = true;
                             }
                         }
@@ -878,7 +881,19 @@ body.secure-video-page {
                         return;
                     }
                 } catch (e) {
+                    // تعذّر فحص الشرط لا يعني السماح بالمشاهدة؛ يظل الفيديو مقفولاً.
                     console.error('Error checking required exam:', e);
+                    const overlay = document.getElementById('examPrerequisiteOverlay');
+                    if (overlay) {
+                        overlay.style.display = 'flex';
+                        document.getElementById('examPrerequisiteStatus').innerHTML = `
+                            <div style="font-weight:700; color:#dda852; margin-bottom:4px;">الامتحان القبلي</div>
+                            <div style="color:var(--txt2); font-size:12px;">تعذّر التحقق من نتيجتك الآن. أتمّ الامتحان ثم أعد المحاولة.</div>
+                        `;
+                        document.getElementById('examPrerequisiteBtn').href = `exams.html?examId=${video.requiredExamId}`;
+                    }
+                    if (loadingOverlay) loadingOverlay.style.display = 'none';
+                    return;
                 }
             }
 

@@ -24,8 +24,14 @@ exports.verifyCode = async (req, res, next) => {
             const user = await User.findById(studentId);
             if (user) {
                 const isAdmin = user.role === 'admin' || user.phone === '01556448880' || user.phone === '01234567890';
-                const isSubscribed = user.subscribedVideos && user.subscribedVideos.map(id => id.toString()).includes(videoId.toString());
-                if (isAdmin || isSubscribed) {
+                const hasVideoSubscription = Array.isArray(user.subscribedVideos) && user.subscribedVideos
+                    .map(id => String(id))
+                    .includes(String(videoId));
+                // الاشتراك في الكورس يفتح جميع محاضراته؛ كان التحقق ينظر
+                // لاشتراك الفيديو المنفرد فقط، فيمنع الطالب المشترك في الكورس.
+                const hasCourseSubscription = Boolean(video.courseId) && Array.isArray(user.subscribedCourses) && user.subscribedCourses
+                    .some(enrollment => String(typeof enrollment === 'string' ? enrollment : enrollment.courseId) === String(video.courseId));
+                if (isAdmin || hasVideoSubscription || hasCourseSubscription) {
                     return res.json({ success: true, remainingViews: 'مفتوحة دائماً', alreadySubscribed: true });
                 }
             }
