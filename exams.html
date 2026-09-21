@@ -33,18 +33,74 @@
 
         /* ===== LIGHT MODE ===== */
         body.light-mode {
-            --bg: #f0f4f8;
+            --bg: #f0f4ff;
             --bg2: #ffffff;
-            --bg3: #eef1f7;
-            --surface: #e4e8f4;
-            --accent: #c08a30;
-            --accent-glow: rgba(192, 138, 48, 0.12);
-            --txt: #1a1d2e;
-            --txt2: #4a5070;
-            --txt3: #8a91b0;
-            --border: rgba(0, 0, 0, 0.06);
-            --border2: rgba(0, 0, 0, 0.1);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --bg3: #e8effe;
+            --surface: #e8effe;
+            --accent: #1a6bdb;
+            --accent-glow: rgba(26, 107, 219, 0.12);
+            --gold: #f39c12;
+            --teal: #00b894;
+            --blue: #1a6bdb;
+            --green: #00b894;
+            --txt: #1a2744;
+            --txt2: #5a6a8a;
+            --txt3: #8392b0;
+            --border: rgba(26, 107, 219, 0.12);
+            --border2: rgba(26, 107, 219, 0.20);
+            --shadow: 0 8px 32px rgba(26, 107, 219, 0.10);
+        }
+
+        /* ===== NAVBAR الموحد مع المنصة الأساسية ===== */
+        .platform-header {
+            position: sticky; top: 0; z-index: 500;
+            width: 100%; background: rgba(255,255,255,.92);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(26,107,219,.12);
+            box-shadow: 0 4px 20px rgba(26,107,219,.06);
+            direction: rtl;
+        }
+        .platform-header-inner {
+            min-height: 72px; padding: 0 5%; display:flex; align-items:center;
+            justify-content:space-between; gap:18px; max-width: 1600px; margin:auto;
+        }
+        .platform-nav-links { display:flex; align-items:center; justify-content:center; gap:8px; flex:1; }
+        .platform-nav-link { color:#1a2744; text-decoration:none; font-weight:700; font-size:.9rem; padding:9px 15px; border-radius:999px; transition:.22s ease; white-space:nowrap; }
+        .platform-nav-link:hover { color:#1a6bdb; background:rgba(26,107,219,.08); }
+        .platform-nav-link.active { color:#fff; background:#1a6bdb; box-shadow:0 4px 14px rgba(26,107,219,.3); }
+        .platform-theme-actions { display:flex; gap:7px; align-items:center; direction:ltr; }
+        .platform-theme-btn { border:1px solid rgba(26,107,219,.18); background:#e8effe; color:#1a6bdb; border-radius:999px; width:34px; height:34px; cursor:pointer; font-size:.9rem; transition:.2s ease; }
+        .platform-theme-btn:hover, .platform-theme-btn.active { background:#1a6bdb; color:#fff; box-shadow:0 3px 10px rgba(26,107,219,.22); }
+        .platform-auth-actions { display:flex; align-items:center; gap:10px; }
+        .platform-login-btn, .platform-register-btn { text-decoration:none; padding:10px 17px; border-radius:999px; font-size:.85rem; font-weight:800; white-space:nowrap; }
+        .platform-login-btn { color:#1a6bdb; border:1px solid #1a6bdb; background:#fff; }
+        .platform-register-btn { color:#fff; background:#1a6bdb; box-shadow:0 4px 13px rgba(26,107,219,.25); }
+        .platform-user-btn { text-decoration:none; color:#1a2744; align-items:center; gap:9px; padding:6px 10px 6px 6px; border-radius:999px; background:#e8effe; border:1px solid rgba(26,107,219,.17); font-weight:800; font-size:.85rem; }
+        .platform-user-icon { width:31px; height:31px; border-radius:50%; background:#00b894; color:#fff; display:grid; place-items:center; }
+        .platform-header .exams-hamburger { display:none; border:1px solid rgba(26,107,219,.22); color:#1a6bdb; background:#e8effe; }
+        .platform-header .exams-mobile-menu { background:#fff; border-top:1px solid rgba(26,107,219,.1); padding:12px 5%; gap:6px; }
+        .platform-header .exams-mobile-menu .platform-nav-link { display:block; background:#f0f4ff; padding:11px 14px; }
+        .platform-header .exams-mobile-menu .platform-nav-link.active { background:#1a6bdb; }
+        body:not(.light-mode) .platform-header { background:rgba(13,21,38,.94); border-bottom-color:rgba(61,142,240,.2); }
+        body:not(.light-mode) .platform-nav-link { color:#e8effe; }
+        body:not(.light-mode) .platform-nav-link:hover { color:#3d8ef0; background:rgba(61,142,240,.12); }
+        body:not(.light-mode) .platform-theme-btn, body:not(.light-mode) .platform-user-btn { background:#1c2e50; color:#e8effe; border-color:#2a4070; }
+        body:not(.light-mode) .platform-theme-btn.active { background:#1a6bdb; color:#fff; }
+        body:not(.light-mode) .platform-login-btn { background:#1c2e50; color:#e8effe; border-color:#3d8ef0; }
+        body:not(.light-mode) .platform-header .exams-mobile-menu { background:#0d1526; }
+        body:not(.light-mode) .platform-header .exams-mobile-menu .platform-nav-link { background:#152038; }
+        @media (max-width: 900px) {
+            .platform-nav-links { display:none; }
+            .platform-header .exams-hamburger { display:flex; margin-right:auto; }
+            .platform-header-inner { min-height:62px; padding:0 4%; gap:10px; }
+            .platform-theme-actions { order:3; }
+            .platform-auth-actions { margin-right:auto; }
+        }
+        @media (max-width: 560px) {
+            .platform-register-btn { display:none; }
+            .platform-login-btn { padding:8px 11px; font-size:.76rem; }
+            .platform-header-inner { min-height:58px; }
+            .platform-user-btn span:first-child { display:none; }
         }
 
         *,
@@ -910,37 +966,36 @@
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <a class="brand" href="/">
-            <div class="brand-logo">E</div>
-            <div class="brand-text">EDGE Academy</div>
-        </a>
-        <div class="nav-links">
-            <a href="/" class="nav-link"><i class="ti ti-smart-home"></i> الرئيسية</a>
-            <!-- <a href="watch" class="nav-link"><i class="ti ti-device-tv"></i> محاضراتي</a> -->
-            <a href="exams" class="nav-link active"><i class="ti ti-clipboard-list"></i> الامتحانات</a>
-            <a href="profile" class="nav-link"><i class="ti ti-user"></i> حسابي</a>
-            <!-- Theme Toggle -->
-            <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleExamsTheme()" title="تبديل الوضع الليلي/النهاري">
-                <span id="themeIcon">🌙</span>
-                <div class="theme-track" id="themeTrack"></div>
-            </button>
+    <!-- NAVBAR: موحّد مع النافبار الأساسي للمنصة -->
+    <header class="platform-header">
+        <div class="platform-header-inner">
+            <div class="platform-theme-actions" aria-label="تبديل المظهر">
+                <button type="button" class="platform-theme-btn" onclick="setExamsTheme('light')" title="وضع النهار" aria-label="وضع النهار">☀</button>
+                <button type="button" class="platform-theme-btn active" onclick="setExamsTheme('dark')" title="وضع الظلام" aria-label="وضع الظلام">🌙</button>
+            </div>
+            <nav class="platform-nav-links" aria-label="التنقل الرئيسي">
+                <a href="/" class="platform-nav-link">الرئيسية</a>
+                <a href="teachers" class="platform-nav-link">المعلمين</a>
+                <a href="subjects" class="platform-nav-link">المواد الدراسية</a>
+                <a href="courses" class="platform-nav-link">الكورسات</a>
+                <a href="exams" class="platform-nav-link active">الامتحانات</a>
+            </nav>
+            <div class="platform-auth-actions" id="examAuthActions">
+                <a href="login" class="platform-login-btn">تسجيل الدخول</a>
+                <a href="register" class="platform-register-btn">حساب جديد</a>
+            </div>
+            <a href="profile" class="platform-user-btn" id="examUserArea" style="display:none;"><span id="examNavUserName">حسابي</span><span class="platform-user-icon"><i class="ti ti-user"></i></span></a>
+            <button class="exams-hamburger" onclick="toggleExamsMenu()" aria-label="القائمة"><i class="ti ti-menu-2"></i></button>
         </div>
-        <button class="exams-hamburger" onclick="toggleExamsMenu()" aria-label="القائمة">
-                &#9776;
-            </button>
-    </nav>
-
-    <!-- قائمة الموبايل لصفحة الامتحانات -->
-    <div class="exams-mobile-menu" id="examsMobileMenu">
-        <a href="/" class="nav-link"><i class="ti ti-smart-home"></i> الرئيسية</a>
-        <a href="exams" class="nav-link active"><i class="ti ti-clipboard-list"></i> الامتحانات</a>
-        <a href="profile" class="nav-link"><i class="ti ti-user"></i> حسابي</a>
-        <button class="theme-toggle-btn" onclick="toggleExamsTheme()" style="width:100%; justify-content:center;">
-            <span id="themeIconMobile">🌙</span> تبديل الوضع
-        </button>
-    </div>
+        <div class="exams-mobile-menu" id="examsMobileMenu">
+            <a href="/" class="platform-nav-link">الرئيسية</a>
+            <a href="teachers" class="platform-nav-link">المعلمين</a>
+            <a href="subjects" class="platform-nav-link">المواد الدراسية</a>
+            <a href="courses" class="platform-nav-link">الكورسات</a>
+            <a href="exams" class="platform-nav-link active">الامتحانات</a>
+            <a href="profile" class="platform-nav-link">حسابي</a>
+        </div>
+    </header>
 
     <div class="container" id="mainContainer">
         <!-- Hero area -->
@@ -1655,22 +1710,42 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Apply saved theme
-            const savedTheme = localStorage.getItem('examsTheme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            // مشاركة نفس إعداد المظهر مع صفحات المنصة الأخرى.
+            const savedTheme = localStorage.getItem('theme') || localStorage.getItem('examsTheme') || 'light';
             applyExamsTheme(savedTheme);
+            updateExamNavbar();
             initPage();
         });
 
         // ===== THEME FUNCTIONS =====
         function applyExamsTheme(theme) {
             document.body.classList.toggle('light-mode', theme === 'light');
-            document.getElementById('themeIcon').textContent = theme === 'light' ? '☀️' : '🌙';
+            document.querySelectorAll('.platform-theme-btn').forEach(btn => {
+                const isLightButton = btn.textContent.trim() === '☀';
+                btn.classList.toggle('active', (theme === 'light') === isLightButton);
+            });
             localStorage.setItem('examsTheme', theme);
+            localStorage.setItem('theme', theme);
         }
+
+        window.setExamsTheme = function(theme) { applyExamsTheme(theme); };
 
         function toggleExamsTheme() {
             const isLight = document.body.classList.contains('light-mode');
             applyExamsTheme(isLight ? 'dark' : 'light');
+        }
+
+        function updateExamNavbar() {
+            const user = _student || (() => { try { return JSON.parse(localStorage.getItem('currentUser') || 'null'); } catch (_) { return null; } })();
+            const authActions = document.getElementById('examAuthActions');
+            const userArea = document.getElementById('examUserArea');
+            if (!user) return;
+            if (authActions) authActions.style.display = 'none';
+            if (userArea) {
+                userArea.style.display = 'inline-flex';
+                const name = user.firstName || user.name || user.username || 'حسابي';
+                document.getElementById('examNavUserName').textContent = name;
+            }
         }
 
         function toggleExamsMenu() {
