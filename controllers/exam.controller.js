@@ -5,6 +5,40 @@ const path = require('path');
 const { PDFParse } = require('pdf-parse');
 const mammoth = require('mammoth');
 
+// ملفات الامتحانات تُرفع إلى Cloudinary، ولذلك يكون file.path رابطاً في الإنتاج
+// وليس مساراً محلياً يمكن قراءته بـ fs مباشرة.
+async function readUploadedFile(filePath) {
+    if (/^https?:\/\//i.test(filePath)) {
+        const response = await fetch(filePath);
+        if (!response.ok) {
+            throw new Error(`تعذر تنزيل الملف المرفوع (HTTP ${response.status})`);
+        }
+        return Buffer.from(await response.arrayBuffer());
+    }
+    return fs.promises.readFile(filePath);
+}
+
+async function extractTextFromUploadedFile(file) {
+    const ext = path.extname(file.originalname || '').toLowerCase();
+    if (!['.pdf', '.docx'].includes(ext)) {
+        throw new Error('صيغة ملف الأسئلة غير مدعومة، يرجى رفع ملف PDF أو DOCX');
+    }
+
+    const dataBuffer = await readUploadedFile(file.path);
+    if (ext === '.pdf') {
+        const parser = new PDFParse({ data: dataBuffer });
+        try {
+            const pdfData = await parser.getText();
+            return pdfData.text || '';
+        } finally {
+            await parser.destroy();
+        }
+    }
+
+    const docData = await mammoth.extractRawText({ buffer: dataBuffer });
+    return docData.value || '';
+}
+
 // Helpers for Parsing
 function splitInlineOptions(line) {
     const markerRegex = /(?:^|\s+)(?:\(|\[)?([a-d]|[A-D]|[أبجد]|[اإآ])(?:\)|\]|[\.\-\):：])+\s+/g;
@@ -32,8 +66,13 @@ function splitInlineOptions(line) {
     return options;
 }
 
+function normalizeArabicNumerals(value) {
+    const arabicDigits = '٠١٢٣٤٥٦٧٨٩';
+    return String(value || '').replace(/[٠-٩]/g, digit => String(arabicDigits.indexOf(digit)));
+}
+
 function parseExamText(text) {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const lines = text.split('\n').map(l => normalizeArabicNumerals(l).trim()).filter(l => l.length > 0);
     const questions = [];
     let currentQuestion = null;
     let expectedQNum = 1;
@@ -155,7 +194,7 @@ function cleanAnswerValue(ansVal) {
 }
 
 function parseAnswersText(text) {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const lines = text.split('\n').map(l => normalizeArabicNumerals(l).trim()).filter(l => l.length > 0);
     const answers = [];
     lines.forEach(line => {
         const parts = line.split(/(?=\b\d+[\.\-\)])/);
@@ -411,41 +450,19 @@ exports.uploadFile = async (req, res, next) => {
         }
 
         const examFile = files['examFile'][0];
-        const filePath = examFile.path;
-        const ext = path.extname(examFile.originalname).toLowerCase();
-        let text = '';
-
-        if (ext === '.pdf') {
-            const dataBuffer = fs.readFileSync(filePath);
-            const parser = new PDFParse({ data: dataBuffer });
-            const pdfData = await parser.getText();
-            text = pdfData.text;
-            await parser.destroy();
-        } else if (ext === '.docx') {
-            const docData = await mammoth.extractRawText({ path: filePath });
-            text = docData.value;
-        } else {
-            return res.status(400).json({ success: false, message: 'صيغة ملف الأسئلة غير مدعومة، يرجى رفع ملف PDF أو DOCX' });
-        }
+        const text = await extractTextFromUploadedFile(examFile);
 
         const questions = parseExamText(text);
+        if (!questions.length) {
+            return res.status(422).json({
+                success: false,
+                message: 'تمت قراءة الملف، لكن لم نتعرّف على أسئلة مرقمة. تأكد أن الملف ليس صورة ممسوحة ضوئياً وأن الأسئلة تبدأ بـ 1. أو ١.، أو استخدم إدخال النص المباشر.'
+            });
+        }
 
         if (files['answerFile']) {
             const answerFile = files['answerFile'][0];
-            const ansPath = answerFile.path;
-            const ansExt = path.extname(answerFile.originalname).toLowerCase();
-            let ansText = '';
-
-            if (ansExt === '.pdf') {
-                const dataBuffer = fs.readFileSync(ansPath);
-                const parser = new PDFParse({ data: dataBuffer });
-                const pdfData = await parser.getText();
-                ansText = pdfData.text;
-                await parser.destroy();
-            } else if (ansExt === '.docx') {
-                const docData = await mammoth.extractRawText({ path: ansPath });
-                ansText = docData.value;
-            }
+            const ansText = await extractTextFromUploadedFile(answerFile);
 
             const correctAnswers = parseAnswersText(ansText);
 
