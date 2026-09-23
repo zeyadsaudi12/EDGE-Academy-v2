@@ -3751,22 +3751,28 @@ header {
 
 .auth-body .auth-page {
     direction: ltr; /* The first (visual) section is always the left image. */
-    width: min(1280px, calc(100% - 48px));
-    min-height: calc(100vh - 92px);
-    grid-template-columns: minmax(420px, 1.1fr) minmax(390px, .9fr);
-    gap: clamp(30px, 5vw, 80px);
-    padding: 32px 0 42px;
-    margin: 0 auto;
+    width: 100%;
+    min-height: calc(100vh - 72px);
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .auth-body .auth-left,
 .auth-body .auth-right { direction: rtl; }
 
 .auth-body .auth-left {
-    min-height: 630px;
-    border-radius: 28px;
-    box-shadow: 0 24px 60px rgba(16, 40, 76, .20);
+    min-height: calc(100vh - 72px);
+    border-radius: 0;
+    box-shadow: none;
     isolation: isolate;
+}
+
+.auth-body .auth-register-page .auth-left {
+    position: sticky;
+    top: 72px;
+    height: calc(100vh - 72px);
 }
 
 .auth-body .auth-left::before {
@@ -3813,13 +3819,13 @@ header {
 
 .auth-body .auth-right { align-items: center; }
 .auth-body .form-panel.auth-card {
-    width: min(100%, 500px);
-    max-width: 500px;
+    width: min(100%, 560px);
+    max-width: 560px;
     padding: clamp(28px, 4vw, 44px);
-    border: 1px solid rgba(25, 59, 111, .10);
-    border-radius: 24px;
-    background: rgba(255,255,255,.92);
-    box-shadow: 0 22px 50px rgba(28, 55, 98, .10);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
 }
 
 .auth-body .auth-register-page .form-panel.auth-card { max-width: 560px; }
@@ -3858,16 +3864,17 @@ header {
 .dark-mode.auth-body .register-progress-track { background:#33425d; }
 
 @media (max-width: 1050px) {
-    .auth-body .auth-page { display:block; width:min(620px, calc(100% - 32px)); min-height:auto; padding:32px 0 48px; }
+    .auth-body .auth-page { display:block; width:100%; min-height:auto; padding:0; }
     .auth-body .auth-left { display:block !important; min-height:260px; margin-bottom:26px; }
+    .auth-body .auth-register-page .auth-left { position:relative; top:auto; height:260px; }
     .auth-body .auth-left-content { padding:28px; }
     .auth-body .auth-left h1 { font-size:1.8rem; }
-    .auth-body .auth-right { padding:0 !important; }
-    .auth-body .form-panel.auth-card { max-width:none; }
+    .auth-body .auth-right { padding:28px 20px 48px !important; }
+    .auth-body .form-panel.auth-card { max-width:620px; background:transparent; }
 }
 
 @media (max-width: 580px) {
-    .auth-body .auth-page { width:calc(100% - 22px); padding-top:18px; }
+    .auth-body .auth-page { width:100%; padding:0; }
     .auth-body .auth-left { min-height:215px; border-radius:20px; }
     .auth-body .auth-left p, .auth-highlights { display:none; }
     .auth-body .form-panel.auth-card { padding:25px 20px; border-radius:20px; }
