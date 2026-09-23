@@ -5113,7 +5113,9 @@
                 toast(accountPhone ? 'جاري إنشاء/تحديث حساب المدرس...' : 'جاري حفظ التعديلات والسناتر...', 'info');
                 const controller = new AbortController();
                 const timeout = setTimeout(() => controller.abort(), 30000);
-                fetch(`${API}/api/teachers/${id}/update`, { method: 'POST', body: formData, signal: controller.signal })
+                // المسار الأساسي للتعديل؛ يعمل على الاستضافة المحلية وVercel
+                // بدون الاعتماد على مسار التوافق القديم /update.
+                fetch(`${API}/api/teachers/${id}`, { method: 'PUT', body: formData, signal: controller.signal })
                     .then(async response => {
                         const data = await response.json().catch(() => ({}));
                         if (!response.ok) throw new Error(data.message || 'تعذر حفظ بيانات المدرس');
