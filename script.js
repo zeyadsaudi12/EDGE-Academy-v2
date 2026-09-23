@@ -3413,6 +3413,17 @@ function renderSubjects() {
         });
     });
 
+    // Visual progress only — the registration fields and validation remain
+    // unchanged.  It gives the student clear feedback across the three steps.
+    const progress = Math.round((step / 3) * 100);
+    const progressBar = document.getElementById('register-progress-bar');
+    const progressValue = document.getElementById('register-progress-value');
+    const progressTitle = document.getElementById('register-step-title');
+    const stepNames = ['الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة'];
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (progressValue) progressValue.textContent = `${progress}%`;
+    if (progressTitle) progressTitle.textContent = stepNames[step - 1] || 'إنشاء الحساب';
+
     const subjectsList = Object.keys(subjectCounts);
 
     if (subjectsList.length === 0) {

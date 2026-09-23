@@ -33,11 +33,15 @@
         </section>
         <section class="auth-right">
             <div class="form-panel auth-card">
+                <div class="register-progress" aria-live="polite">
+                    <div class="register-progress-meta"><span id="register-step-title">الخطوة الأولى</span><strong id="register-progress-value">33%</strong></div>
+                    <div class="register-progress-track"><span id="register-progress-bar" style="width:33%"></span></div>
+                </div>
                 <div class="auth-brand"><span class="auth-brand-mark">E</span><span>EDGE Academy</span></div>
                 <p class="form-subtitle">إنشاء حساب جديد</p>
                 
                 <!-- مؤشر الخطوات -->
-                <div class="steps-indicator">
+                <div class="steps-indicator" aria-hidden="true">
                     <div class="step active" data-step="1">
                         <span class="step-number">1</span>
                         <span class="step-label">شخصي</span>
