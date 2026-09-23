@@ -4,6 +4,7 @@ const teacherController = require('../controllers/teacher.controller');
 const upload = require('../middleware/upload');
 
 router.get('/follower-counts', teacherController.getFollowerCounts);
+router.get('/dashboard/:id', teacherController.getTeacherDashboard);
 router.get('/', teacherController.getAllTeachers);
 router.put('/:id/toggle-visibility', teacherController.toggleTeacherVisibility);
 router.get('/:id', teacherController.getTeacherById);

@@ -7,6 +7,9 @@ const teacherSchema = new mongoose.Schema({
     studentsCount: { type: Number, default: 0 },
     rating: { type: Number, default: 5 },
     imagePath: { type: String, default: '' },
+    // The password is deliberately never stored here; it is stored in the
+    // linked User account.  This field is only a safe indicator for admin UI.
+    teacherAccountPhone: { type: String, default: '' },
     // الإخفاء يعطّل ظهور المدرس وكل محتواه للطلاب دون حذف البيانات.
     hidden: { type: Boolean, default: false },
     grades: [{ type: String }],

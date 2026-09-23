@@ -379,7 +379,7 @@
     // Accept: (1) DB-authenticated teacher in localStorage, OR (2) static session login
     function checkAuth() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        const isTeacher = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
+        const isTeacher = currentUser && (currentUser.role === 'assistant' || currentUser.role === 'teacher' || currentUser.role === 'admin');
         const isSession = sessionStorage.getItem(SESSION_KEY) === '1';
         return { isTeacher, isSession, currentUser };
     }
@@ -398,7 +398,7 @@
             // Also store teacher role in localStorage so attendance.html works
             if (!localStorage.getItem('currentUser')) {
                 localStorage.setItem('currentUser', JSON.stringify({
-                    _id: 'assistant-session-id', role: 'teacher', teacherId: null,
+                    _id: 'assistant-session-id', role: 'assistant', teacherId: null,
                     firstName: 'مساعد', lastName: 'المنصة', phone: user
                 }));
             }
@@ -438,7 +438,9 @@
         const grid = document.getElementById('questions-grid');
         grid.innerHTML = '<div class="spinner"><i class="ti ti-loader" style="font-size:2rem;animation:spin 1s linear infinite;"></i><br>جاري التحميل...</div>';
         try {
-            const res = await fetch(`${API}/api/video-questions`);
+            const { currentUser } = checkAuth();
+            const userId = currentUser && currentUser._id ? currentUser._id : '';
+            const res = await fetch(`${API}/api/video-questions?userId=${encodeURIComponent(userId)}`);
             const data = await res.json();
             if (data.success && Array.isArray(data.data)) {
                 allQuestions = data.data;

@@ -1,5 +1,8 @@
 const Teacher = require('../models/teacher.model');
 const User = require('../models/user.model');
+const Video = require('../models/video.model');
+const Exam = require('../models/exam.model');
+const VideoQuestion = require('../models/videoQuestion.model');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const { cloudinary } = require('../middleware/upload');
@@ -77,6 +80,87 @@ exports.getTeacherById = async (req, res, next) => {
     }
 };
 
+// Dashboard data is deliberately resolved from the signed-in teacher account,
+// not from a teacherId supplied by the browser alone.
+exports.getTeacherDashboard = async (req, res, next) => {
+    try {
+        const { userId } = req.query;
+        if (!mongoose.Types.ObjectId.isValid(req.params.id) || !mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ success: false, message: 'بيانات الحساب غير صالحة' });
+        }
+
+        const account = await User.findById(userId).select('role teacherId isTeacherAccount');
+        if (!account || account.role !== 'teacher' || !account.isTeacherAccount || String(account.teacherId) !== String(req.params.id)) {
+            return res.status(403).json({ success: false, message: 'هذه اللوحة متاحة لحساب المدرس فقط' });
+        }
+
+        const [teacher, videos, exams] = await Promise.all([
+            Teacher.findById(req.params.id).lean(),
+            Video.find({ teacherId: String(req.params.id) }).sort({ createdAt: -1 }).lean(),
+            Exam.find({ teacherId: String(req.params.id) }).sort({ createdAt: -1 }).lean()
+        ]);
+        if (!teacher) return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
+
+        const videoIds = videos.map(video => String(video._id));
+        const questions = videoIds.length
+            ? await VideoQuestion.find({
+                $or: [
+                    { teacherId: String(req.params.id) },
+                    { teacherId: { $in: ['', null] }, videoId: { $in: videoIds } }
+                ]
+            }).sort({ createdAt: -1 }).lean()
+            : [];
+
+        const watchersByVideo = await Promise.all(videos.map(async video => {
+            const conditions = [{ subscribedVideos: String(video._id) }];
+            if (video.courseId) conditions.push({ 'subscribedCourses.courseId': String(video.courseId) });
+            const watchers = await User.find({ role: 'student', $or: conditions })
+                .select('_id firstName lastName username phone grade governorate')
+                .lean();
+            return [String(video._id), watchers.map(student => ({
+                id: String(student._id),
+                name: `${student.firstName || ''} ${student.lastName || ''}`.trim() || student.username || 'طالب',
+                phone: student.phone || '—',
+                grade: student.grade || '—',
+                governorate: student.governorate || '—'
+            }))];
+        }));
+        const watcherMap = Object.fromEntries(watchersByVideo);
+
+        const resultStudentIds = [...new Set(exams.flatMap(exam => (exam.results || []).map(result => result.studentId).filter(Boolean)))];
+        const resultStudents = resultStudentIds.length
+            ? await User.find({ _id: { $in: resultStudentIds.filter(id => mongoose.Types.ObjectId.isValid(id)) } })
+                .select('_id firstName lastName username grade governorate').lean()
+            : [];
+        const studentsMap = Object.fromEntries(resultStudents.map(student => [String(student._id), student]));
+
+        const videoRows = videos.map(video => ({ ...video, watchers: watcherMap[String(video._id)] || [] }));
+        const examRows = exams.map(exam => ({
+            ...exam,
+            results: (exam.results || []).map(result => {
+                const student = studentsMap[String(result.studentId)] || {};
+                return {
+                    ...result,
+                    studentName: result.studentName || `${student.firstName || ''} ${student.lastName || ''}`.trim() || student.username || 'طالب',
+                    grade: student.grade || '—',
+                    governorate: student.governorate || '—'
+                };
+            })
+        }));
+        const uniqueViewers = new Set(videoRows.flatMap(video => video.watchers.map(watcher => watcher.id)));
+        const resultsCount = examRows.reduce((count, exam) => count + exam.results.length, 0);
+
+        res.json({
+            success: true,
+            teacher: { _id: teacher._id, name: teacher.name, subjectAr: teacher.subjectAr, imagePath: teacher.imagePath },
+            stats: { videosCount: videoRows.length, viewersCount: uniqueViewers.size, questionsCount: questions.length, examsCount: examRows.length, resultsCount },
+            videos: videoRows,
+            questions,
+            exams: examRows
+        });
+    } catch (err) { next(err); }
+};
+
 exports.toggleTeacherVisibility = async (req, res, next) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -129,11 +213,11 @@ exports.createTeacher = async (req, res, next) => {
         // 2. توليد كلمة مرور عشوائية
         const randomPassword = crypto.randomBytes(4).toString('hex');
 
-        // 3. تسجيل الحساب تلقائياً برتبة "teacher" كمساعد للمعلم
+        // 3. حساب المساعد منفصل تماماً عن حساب المدرس الشخصي.
         const assistantUser = new User({
             phone: uniquePhone,
             password: randomPassword,
-            role: 'teacher',
+            role: 'assistant',
             teacherId: newTeacher._id,
             firstName: 'مساعد ' + name,
             lastName: 'التعليمي',
@@ -171,7 +255,7 @@ exports.updateTeacher = async (req, res, next) => {
             return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
         }
 
-        const { name, subjectAr, bio, grades, schedule } = req.body;
+        const { name, subjectAr, bio, grades, schedule, teacherAccountPhone, teacherAccountPassword } = req.body;
 
         if (name) teacher.name = name;
         if (subjectAr) {
@@ -202,6 +286,43 @@ exports.updateTeacher = async (req, res, next) => {
                 cloudinary.uploader.destroy(oldPublicId).catch(e => console.error('خطأ في حذف الصورة القديمة من Cloudinary:', e));
             }
             teacher.imagePath = req.file.path; // Cloudinary URL الجديد
+        }
+
+        const phone = String(teacherAccountPhone || '').trim();
+        const password = String(teacherAccountPassword || '');
+        if (phone) {
+            if (!/^01[0125]\d{8}$/.test(phone)) {
+                return res.status(400).json({ success: false, message: 'رقم حساب المدرس غير صحيح' });
+            }
+            let teacherAccount = await User.findOne({ teacherId: teacher._id, role: 'teacher', isTeacherAccount: true });
+            const takenByAnother = await User.findOne({ phone, _id: { $ne: teacherAccount ? teacherAccount._id : null } });
+            if (takenByAnother) {
+                return res.status(400).json({ success: false, message: 'رقم الهاتف مستخدم في حساب آخر' });
+            }
+            if (!teacherAccount) {
+                if (!password) return res.status(400).json({ success: false, message: 'أدخل كلمة المرور لإنشاء حساب المدرس' });
+                teacherAccount = new User({
+                    phone,
+                    password,
+                    role: 'teacher',
+                    isTeacherAccount: true,
+                    teacherId: teacher._id,
+                    firstName: teacher.name,
+                    lastName: 'المدرس',
+                    username: `teacher_${phone}`,
+                    nationalId: `teacher_${phone}`,
+                    grade: 'All',
+                    governorate: 'الكل',
+                    parentPhone: phone,
+                    birthDate: new Date()
+                });
+            } else {
+                teacherAccount.phone = phone;
+                teacherAccount.firstName = teacher.name;
+                if (password) teacherAccount.password = password;
+            }
+            await teacherAccount.save();
+            teacher.teacherAccountPhone = phone;
         }
 
         await teacher.save();

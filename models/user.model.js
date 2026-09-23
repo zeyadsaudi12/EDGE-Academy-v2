@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     balance: { type: Number, default: 0 },
     role: { type: String, enum: ['student', 'admin', 'teacher', 'assistant'], default: 'student' },
+    // True only for the private account created for the teacher himself.  It
+    // keeps that account distinct from the attendance assistant account.
+    isTeacherAccount: { type: Boolean, default: false },
     imagePath: { type: String, default: '' },
     teacherId: { type: mongoose.Schema.Types.Mixed, default: null },
     devices: [{

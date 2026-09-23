@@ -96,7 +96,7 @@
 <script>
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     const isAssistantSession = sessionStorage.getItem('assistantLoggedIn') === '1';
-    const isTeacher = currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
+    const isTeacher = currentUser && (currentUser.role === 'assistant' || currentUser.role === 'teacher' || currentUser.role === 'admin') && !currentUser.isTeacherAccount;
 
     if (!isAssistantSession && !isTeacher) {
         alert('تم تسجيل دخولك، جاري التوجيه...');
@@ -115,7 +115,7 @@
     // Ensure localStorage has teacher role so attendance.html auth guard passes
     if (!currentUser || !currentUser.role) {
         localStorage.setItem('currentUser', JSON.stringify({
-            _id: 'assistant-session-id', role: 'teacher', teacherId: null,
+            _id: 'assistant-session-id', role: 'assistant', teacherId: null,
             firstName: 'مساعد', lastName: 'المنصة', phone: 'assistant'
         }));
     }

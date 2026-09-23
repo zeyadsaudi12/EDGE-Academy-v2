@@ -9,6 +9,12 @@ const videoQuestionSchema = new mongoose.Schema({
         type: String,
         default: 'فيديو غير معروف'
     },
+    // Saved when the student sends the question, so it remains scoped even if
+    // a video title is later changed.
+    teacherId: {
+        type: String,
+        default: ''
+    },
     question: {
         type: String,
         required: true

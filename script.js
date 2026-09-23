@@ -949,35 +949,6 @@ function handleLogin(event) {
 
     }
 
-    // assistant account simulation
-
-    if (phone === '050068792049' && password === 'wakelahen2027') {
-
-        localStorage.setItem('currentUser', JSON.stringify({
-
-            _id: 'assistant-test-id',
-
-            role: 'teacher',
-
-            teacherId: '6aadffe5cc20089d9f353a98',
-
-            // الحساب التجريبي قديم ومعرف المعلم يمكن أن يتغير عند إعادة إنشاء السجل.
-            teacherNameHint: 'وائل لاشين',
-
-            firstName: 'مساعد مستر وائل',
-
-            lastName: 'لاشين',
-
-            phone: '050068792049'
-
-        }));
-
-        window.location.href = 'assistant-hub';
-
-        return false;
-
-    }
-
     // default admin backup account
 
     if (phone === '01234567890' && password === 'admin') {
@@ -1033,7 +1004,9 @@ function handleLogin(event) {
                 if (data.user.role === 'admin') {
                     alert('👑 مرحباً بك يا مدير المنصة، جاري تحويلك للوحة التحكم...');
                     window.location.href = 'admin';
-                } else if (data.user.role === 'teacher') {
+                } else if (data.user.role === 'teacher' && data.user.isTeacherAccount) {
+                    window.location.href = 'teacher-dashboard';
+                } else if (data.user.role === 'assistant' || data.user.role === 'teacher') {
                     window.location.href = 'assistant-hub';
                 } else {
                     alert('✅ تم الدخول بنجاح، دراسة ممتعة وموفقة!');

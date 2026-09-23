@@ -367,7 +367,7 @@
     <script>
         // ===== الحاجز الأمني لبوابة الحضور السنتر =====
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+        if (!currentUser || (currentUser.role !== 'assistant' && currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
             alert('🚫 غير مصرح بالدخول: هذه البوابة مخصصة للمعلمين والمساعدين المعتمدين فقط.');
             window.location.href = 'login';
         }
