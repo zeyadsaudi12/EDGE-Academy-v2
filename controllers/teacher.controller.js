@@ -299,7 +299,11 @@ exports.updateTeacher = async (req, res, next) => {
             let teacherAccount = await User.findOne({ teacherId: { $in: accountTeacherIds }, role: 'teacher', isTeacherAccount: true });
             const takenByAnother = await User.findOne({ phone, _id: { $ne: teacherAccount ? teacherAccount._id : null } });
             if (takenByAnother) {
-                return res.status(400).json({ success: false, message: 'رقم الهاتف مستخدم في حساب آخر' });
+                return res.status(409).json({
+                    success: false,
+                    code: 'PHONE_ALREADY_USED',
+                    message: 'هذا الرقم مسجل بالفعل في حساب آخر. اختر رقمًا مختلفًا لحساب المدرس؛ لا يمكن ربط رقم واحد بحسابين.'
+                });
             }
             if (!teacherAccount) {
                 if (!password) return res.status(400).json({ success: false, message: 'أدخل كلمة المرور لإنشاء حساب المدرس' });
