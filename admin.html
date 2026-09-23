@@ -5058,6 +5058,8 @@
                 const name = document.getElementById('edit-teacher-name').value;
                 const subjectAr = Array.from(document.querySelectorAll('#edit-teacher-subjects-pills input[name="edit-teacher-subject-check"]:checked')).map(cb => cb.value).join(' | ');
                 const bio = document.getElementById('edit-teacher-bio').value;
+                const accountPhone = document.getElementById('edit-teacher-account-phone').value.trim();
+                const accountPassword = document.getElementById('edit-teacher-account-password').value;
                 
                 const checkedBoxes = document.querySelectorAll('#edit-teacher-grades-pills input[name="edit-teacher-grades-check"]:checked');
                 const grades = Array.from(checkedBoxes).map(cb => cb.value);
@@ -5068,6 +5070,15 @@
                 }
                 if (!grades.length) {
                     toast('يرجى اختيار صف دراسي واحد على الأقل', 'error');
+                    return;
+                }
+                if (accountPhone && !/^01[0125]\d{8}$/.test(accountPhone)) {
+                    toast('رقم حساب المدرس يجب أن يكون رقم موبايل مصري من 11 رقمًا', 'error');
+                    return;
+                }
+                const selectedTeacher = _teachers.find(t => t._id === id);
+                if (accountPhone && !accountPassword && !(selectedTeacher && selectedTeacher.teacherAccountPhone)) {
+                    toast('أدخل كلمة المرور لإنشاء حساب المدرس لأول مرة', 'error');
                     return;
                 }
 
@@ -5088,38 +5099,34 @@
                 formData.append('name', name);
                 formData.append('subjectAr', subjectAr);
                 formData.append('bio', bio);
-                formData.append('teacherAccountPhone', document.getElementById('edit-teacher-account-phone').value.trim());
-                formData.append('teacherAccountPassword', document.getElementById('edit-teacher-account-password').value);
+                formData.append('teacherAccountPhone', accountPhone);
+                formData.append('teacherAccountPassword', accountPassword);
                 formData.append('schedule', JSON.stringify(schedule)); // تحويل المصفوفة لـ JSON للإرسال الآمن لـ PHP
                 grades.forEach(g => formData.append('grades[]', g));
                 if (imageFile) {
                     formData.append('image', imageFile);
                 }
                 
-                toast('جاري حفظ التعديلات والسناتر...', 'info');
-                
-                // إرسال الطلب كـ POST ليتوافق مع خادم الـ PHP وسيرفر هوستنجر
-                fetch(`${API}/api/teachers/${id}/update`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(r => r.json())
-                .then(d => {
-                    if (d.success) {
-                        toast('تم تعديل بيانات المعلم والسناتر بنجاح', 'success');
-                        
-                        // استخدام الـ Try-Catch لضمان عمل العمليات التالية بأمان دون إفساد النتيجة
-                        try {
-                            closeEditTeacherModal();
-                            loadAll(); 
-                        } catch (uiError) {
-                            console.error("خطأ غير مؤثر أثناء تحديث الواجهة: ", uiError);
-                        }
-                    } else {
-                        toast('خطأ في التعديل: ' + d.message, 'error');
-                    }
-                })
-                .catch(() => toast('خطأ في الاتصال بالخادم', 'error'));
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                const oldButtonText = submitButton ? submitButton.innerHTML : '';
+                if (submitButton) { submitButton.disabled = true; submitButton.innerHTML = '<i class="ti ti-loader-2"></i> جاري الحفظ...'; }
+                toast(accountPhone ? 'جاري إنشاء/تحديث حساب المدرس...' : 'جاري حفظ التعديلات والسناتر...', 'info');
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 30000);
+                fetch(`${API}/api/teachers/${id}/update`, { method: 'POST', body: formData, signal: controller.signal })
+                    .then(async response => {
+                        const data = await response.json().catch(() => ({}));
+                        if (!response.ok) throw new Error(data.message || 'تعذر حفظ بيانات المدرس');
+                        return data;
+                    })
+                    .then(data => {
+                        if (!data.success) throw new Error(data.message || 'تعذر حفظ بيانات المدرس');
+                        toast(accountPhone ? 'تم حفظ حساب المدرس بنجاح' : 'تم تعديل بيانات المعلم والسناتر بنجاح', 'success');
+                        closeEditTeacherModal();
+                        loadAll();
+                    })
+                    .catch(error => toast(error.name === 'AbortError' ? 'انتهت مهلة الحفظ، تحقق من اتصال الخادم ثم أعد المحاولة' : `خطأ في الحفظ: ${error.message}`, 'error'))
+                    .finally(() => { clearTimeout(timeout); if (submitButton) { submitButton.disabled = false; submitButton.innerHTML = oldButtonText; } });
             }
         
         

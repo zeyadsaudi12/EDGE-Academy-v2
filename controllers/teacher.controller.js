@@ -294,7 +294,9 @@ exports.updateTeacher = async (req, res, next) => {
             if (!/^01[0125]\d{8}$/.test(phone)) {
                 return res.status(400).json({ success: false, message: 'رقم حساب المدرس غير صحيح' });
             }
-            let teacherAccount = await User.findOne({ teacherId: teacher._id, role: 'teacher', isTeacherAccount: true });
+            // teacherId was stored as either ObjectId or string in older data.
+            const accountTeacherIds = [teacher._id, String(teacher._id)];
+            let teacherAccount = await User.findOne({ teacherId: { $in: accountTeacherIds }, role: 'teacher', isTeacherAccount: true });
             const takenByAnother = await User.findOne({ phone, _id: { $ne: teacherAccount ? teacherAccount._id : null } });
             if (takenByAnother) {
                 return res.status(400).json({ success: false, message: 'رقم الهاتف مستخدم في حساب آخر' });
