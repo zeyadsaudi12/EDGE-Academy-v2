@@ -577,8 +577,8 @@ function updateNavbarAuth(currentUser) {
     const userDropdownArea = document.getElementById('userDropdownArea');
     const navUserName = document.getElementById('navUserName');
     const userPoints = document.getElementById('userPoints');
-    const mobileMenuAuth = document.getElementById('mobileMenuAuth');
-    const mobileMenuUser = document.getElementById('mobileMenuUser');
+    const mobileMenuAuth = document.getElementById('mobileAuthGuest');
+    const mobileMenuUser = document.getElementById('mobileAuthUser');
     const mobileUserPoints = document.getElementById('mobileUserPoints');
     const userGreeting = document.getElementById('userGreeting');
     const guestGreeting = document.getElementById('guestGreeting');
@@ -4962,11 +4962,17 @@ window.toggleMobileMenu = () => {
 
         mobileMenu.classList.toggle('active');
 
+        const isOpen = mobileMenu.classList.contains('active');
+
+        const menuButton = document.querySelector('.hamburger-btn');
+
+        if (menuButton) menuButton.setAttribute('aria-expanded', String(isOpen));
+
         const icon = document.querySelector('.hamburger-btn i');
 
         if (icon) {
 
-            icon.className = mobileMenu.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+            icon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
 
         }
 
@@ -4978,7 +4984,17 @@ window.toggleMobileMenu = () => {
 
 function updateMobileMenuAuth() {
 
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let currentUser = null;
+
+    try {
+
+        currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+    } catch (_) {
+
+        localStorage.removeItem('currentUser');
+
+    }
 
     const guestSection = document.getElementById('mobileAuthGuest');
 
@@ -5008,6 +5024,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateMobileMenuAuth();
 
+    document.querySelectorAll('#mobileNavMenu a, #mobileNavMenu button').forEach(item => {
+
+        item.addEventListener('click', () => {
+
+            const mobileMenu = document.getElementById('mobileNavMenu');
+            const menuButton = document.querySelector('.hamburger-btn');
+            const icon = menuButton?.querySelector('i');
+
+            if (mobileMenu) mobileMenu.classList.remove('active');
+            if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
+            if (icon) icon.className = 'fas fa-bars';
+
+        });
+
+    });
+
+});
+
+window.addEventListener('keydown', (e) => {
+
+    if (e.key !== 'Escape') return;
+
+    const mobileMenu = document.getElementById('mobileNavMenu');
+    const menuButton = document.querySelector('.hamburger-btn');
+    const icon = menuButton?.querySelector('i');
+
+    if (mobileMenu) mobileMenu.classList.remove('active');
+    if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
+    if (icon) icon.className = 'fas fa-bars';
+
 });
 
 window.addEventListener('click', (e) => {
@@ -5027,6 +5073,10 @@ window.addEventListener('click', (e) => {
         if (mobileMenu) {
 
             mobileMenu.classList.remove('active');
+
+            const menuButton = document.querySelector('.hamburger-btn');
+
+            if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
 
             const icon = document.querySelector('.hamburger-btn i');
 

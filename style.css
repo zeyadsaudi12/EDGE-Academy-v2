@@ -124,8 +124,8 @@ header {
     justify-content: space-between !important;
     align-items: center !important;
     gap: 16px !important;
-    padding: 8px 22px !important;
-    min-height: 62px !important;
+    padding: 10px 28px !important;
+    min-height: 76px !important;
     border-radius: 9999px !important; /* شكل الكبسولة العائمة المستديرة بالكامل */
     box-sizing: border-box !important;
     position: relative !important;
@@ -171,7 +171,7 @@ header {
 }
 
 .header-brand .logo-img {
-    height: 38px;
+    height: 46px;
     width: auto;
     max-width: 145px;
     object-fit: contain;
@@ -201,16 +201,19 @@ header {
 .header-center {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     margin: 0 auto;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 .nav-link-item {
     color: var(--text-dark);
     text-decoration: none;
     font-weight: 700;
-    font-size: 0.92rem;
-    padding: 8px 18px;
+    font-size: 1rem;
+    padding: 10px 20px;
     border-radius: 999px;
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
@@ -274,12 +277,12 @@ header {
 .btn-fill {
     background: linear-gradient(135deg, #ff6b35, #ea580c) !important;
     color: #ffffff !important;
-    padding: 9px 20px !important;
+    padding: 11px 22px !important;
     border-radius: 999px !important;
     border: none !important;
     cursor: pointer;
     font-weight: 800;
-    font-size: 0.88rem;
+    font-size: 0.94rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -299,12 +302,12 @@ header {
 .btn-outline {
     background: rgba(26, 107, 219, 0.04) !important;
     color: #1a6bdb !important;
-    padding: 8px 18px !important;
+    padding: 10px 20px !important;
     border-radius: 999px !important;
     border: 1.5px solid rgba(26, 107, 219, 0.35) !important;
     cursor: pointer;
     font-weight: 700;
-    font-size: 0.88rem;
+    font-size: 0.94rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -355,9 +358,9 @@ header {
 
 .theme-capsule .icon-btn,
 .header-icons .icon-btn {
-    width: 32px !important;
-    height: 32px !important;
-    min-width: 32px !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
     border-radius: 50% !important;
     border: none !important;
     background: transparent !important;
@@ -3753,6 +3756,7 @@ header {
 
 .mobile-nav-menu {
     display: none;
+    pointer-events: auto;
     position: absolute;
     top: calc(100% + 12px);
     left: 5%;
@@ -3765,7 +3769,8 @@ header {
     z-index: 9999;
     flex-direction: column;
     gap: 8px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
 }
 
 .mobile-nav-menu.active {
@@ -3807,6 +3812,42 @@ header {
 }
 
 /* تفعيل زر الهامبرغر وإخفاء أزرار الفرونت إند في الهيدر على الموبايل */
+@media (max-width: 1050px) {
+    header {
+        padding: 10px 14px !important;
+    }
+
+    .header-inner {
+        min-height: 52px !important;
+        padding: 6px 14px !important;
+        gap: 8px !important;
+    }
+
+    .header-center,
+    #authActions,
+    .user-dropdown-container {
+        display: none !important;
+    }
+
+    .hamburger-btn {
+        display: inline-flex !important;
+    }
+
+    .mobile-nav-menu {
+        left: 14px;
+        right: 14px;
+        top: calc(100% + 6px);
+        max-height: calc(100vh - 84px);
+        overflow-y: auto;
+    }
+}
+
+@media (min-width: 1051px) {
+    .mobile-nav-menu.active {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .hamburger-btn {
         display: flex !important;
@@ -3824,6 +3865,60 @@ header {
         radial-gradient(circle at 90% 8%, rgba(47, 119, 237, .12), transparent 26rem),
         radial-gradient(circle at 8% 95%, rgba(0, 196, 165, .10), transparent 24rem),
         var(--page-bg, #f6f8fc);
+}
+
+/* خلفية صفحة تسجيل الدخول: الصورة المقدمة مع تمويه يحافظ على وضوح النموذج. */
+.auth-body.login-page {
+    position: relative;
+    isolation: isolate;
+    background: #073b91;
+}
+
+.auth-body.login-page::before {
+    content: '';
+    position: fixed;
+    inset: -28px;
+    z-index: -1;
+    background:
+        linear-gradient(rgba(3, 27, 83, .42), rgba(3, 27, 83, .58)),
+        url('imges/login-background.jpg') center / cover no-repeat;
+    filter: blur(14px);
+    transform: scale(1.04);
+}
+
+.login-page .auth-page {
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 600px);
+    align-items: center;
+    min-height: calc(100vh - 104px);
+    padding: 20px 5vw 36px;
+}
+
+.login-page .auth-left {
+    display: none;
+}
+
+.login-page .auth-right {
+    min-height: auto;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, .16);
+    border: 1px solid rgba(255, 255, 255, .28);
+    box-shadow: 0 24px 70px rgba(0, 22, 70, .32);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+}
+
+.login-page .form-panel.auth-card {
+    background: transparent !important;
+    border-radius: 28px !important;
+}
+
+.dark-mode.auth-body.login-page {
+    background: #06162f;
+}
+
+.dark-mode.auth-body.login-page .auth-right {
+    background: rgba(8, 22, 49, .54);
+    border-color: rgba(191, 220, 255, .20);
 }
 
 .auth-body header {
@@ -3967,4 +4062,23 @@ header {
     .auth-body .steps-indicator { gap:7px; }
     .auth-body .step-line { width:18px; }
     .auth-body .step-label { font-size:.71rem; }
+}
+
+/* تبقى خلفية تسجيل الدخول نظيفة ومتسقة على الشاشات الصغيرة أيضاً. */
+@media (max-width: 1050px) {
+    .auth-body.login-page .auth-page {
+        display: grid;
+        grid-template-columns: minmax(0, 600px);
+        justify-content: center;
+        min-height: calc(100vh - 84px);
+        padding: 16px;
+    }
+
+    .auth-body.login-page .auth-left {
+        display: none !important;
+    }
+
+    .auth-body.login-page .auth-right {
+        padding: 0 !important;
+    }
 }

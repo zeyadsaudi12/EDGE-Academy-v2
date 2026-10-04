@@ -60,7 +60,7 @@
         }
         .platform-header-inner {
             pointer-events: auto;
-            min-height: 62px; padding: 8px 22px; display:flex; align-items:center;
+            min-height: 76px; padding: 10px 28px; display:flex; align-items:center;
             justify-content:space-between; gap:16px; max-width: 1260px; margin:auto;
             border-radius: 9999px;
             background: rgba(255, 255, 255, 0.88);
@@ -83,14 +83,14 @@
             transition: transform 0.25s ease; padding: 2px 6px;
         }
         .platform-brand:hover { transform: scale(1.03); }
-        .platform-brand .logo-img { height: 38px; width: auto; max-width: 145px; object-fit: contain; display: block; }
+        .platform-brand .logo-img { height: 46px; width: auto; max-width: 165px; object-fit: contain; display: block; }
         .platform-brand .logo-light { display: block; }
         .platform-brand .logo-dark { display: none; }
         body:not(.light-mode) .platform-brand .logo-light { display: none; }
         body:not(.light-mode) .platform-brand .logo-dark { display: block; }
 
         .platform-nav-links { display:flex; align-items:center; justify-content:center; gap:8px; flex:1; margin: 0 auto; }
-        .platform-nav-link { color:#1a2744; text-decoration:none; font-weight:700; font-size:.92rem; padding:8px 18px; border-radius:999px; transition:.22s ease; white-space:nowrap; }
+        .platform-nav-link { color:#1a2744; text-decoration:none; font-weight:700; font-size:1rem; padding:10px 20px; border-radius:999px; transition:.22s ease; white-space:nowrap; }
         .platform-nav-link:hover { color:#1a6bdb; background:rgba(26,107,219,.08); }
         .platform-nav-link.active { color:#fff; background:#1a6bdb; box-shadow:0 4px 14px rgba(26,107,219,.3); }
         .platform-theme-actions { display:inline-flex; gap:3px; align-items:center; padding: 3px 4px; border-radius: 999px; background: rgba(26,107,219,.06); border: 1px solid rgba(26,107,219,.18); }
@@ -99,7 +99,7 @@
         .platform-theme-btn.active { background:#fff; color:#f59e0b; box-shadow:0 2px 8px rgba(0,0,0,.12); }
         body:not(.light-mode) .platform-theme-btn.active { background:#1e293b; color:#38bdf8; box-shadow:0 2px 8px rgba(0,0,0,.35); }
         .platform-auth-actions { display:flex; align-items:center; gap:8px; }
-        .platform-login-btn, .platform-register-btn { text-decoration:none; padding:8px 18px; border-radius:999px; font-size:.88rem; font-weight:800; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; transition:.25s ease; }
+        .platform-login-btn, .platform-register-btn { text-decoration:none; padding:10px 20px; border-radius:999px; font-size:.94rem; font-weight:800; white-space:nowrap; display:inline-flex; align-items:center; justify-content:center; transition:.25s ease; }
         .platform-login-btn { color:#1a6bdb; border:1.5px solid rgba(26,107,219,.35); background:rgba(26,107,219,.04); }
         .platform-login-btn:hover { background:rgba(26,107,219,.12); transform:translateY(-1px); }
         .platform-register-btn { color:#fff !important; background:linear-gradient(135deg, #ff6b35, #ea580c); box-shadow:0 4px 14px rgba(234,88,12,.38); }
@@ -107,9 +107,11 @@
         .platform-user-btn { text-decoration:none; color:#1a6bdb; align-items:center; gap:8px; padding:6px 14px 6px 8px; border-radius:999px; background:rgba(26,107,219,.06); border:1.5px solid rgba(26,107,219,.25); font-weight:700; font-size:.88rem; display:inline-flex; }
         .platform-user-icon { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #1a6bdb, #0d54b8); color:#fff; display:grid; place-items:center; }
         .platform-header .exams-hamburger { display:none; border:1px solid rgba(26,107,219,.22); color:#1a6bdb; background:transparent; width:38px; height:38px; border-radius:50%; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem; }
-        .platform-header .exams-mobile-menu { background:rgba(255,255,255,.95); backdrop-filter:blur(20px); border:1px solid rgba(220,230,245,.9); border-radius:24px; padding:18px; gap:8px; box-shadow:0 15px 35px rgba(0,0,0,.15); position:absolute; top:calc(100% + 10px); left:16px; right:16px; display:none; flex-direction:column; }
+        .platform-header .exams-mobile-menu { background:rgba(255,255,255,.95); backdrop-filter:blur(20px); border:1px solid rgba(220,230,245,.9); border-radius:24px; padding:18px; gap:8px; box-shadow:0 15px 35px rgba(0,0,0,.15); position:absolute; top:calc(100% + 10px); left:16px; right:16px; display:none; flex-direction:column; pointer-events:auto; }
         .platform-header .exams-mobile-menu .platform-nav-link { display:block; padding:11px 14px; border-radius:12px; }
         .platform-header .exams-mobile-menu .platform-nav-link.active { background:#1a6bdb; color:#fff; }
+        .platform-mobile-auth { display:flex; gap:8px; padding-top:12px; margin-top:4px; border-top:1px solid rgba(26,107,219,.14); }
+        .platform-mobile-auth .platform-login-btn, .platform-mobile-auth .platform-register-btn { flex:1; }
         body:not(.light-mode) .platform-nav-link { color:#cbd5e1; }
         body:not(.light-mode) .platform-nav-link:hover { color:#60a5fa; background:rgba(255,255,255,.08); }
         body:not(.light-mode) .platform-nav-link.active { color:#fff; background:linear-gradient(135deg, #1d4ed8, #2563eb); }
@@ -1016,7 +1018,7 @@
                 <button type="button" class="platform-theme-btn" onclick="setExamsTheme('light')" title="وضع النهار" aria-label="وضع النهار">☀</button>
                 <button type="button" class="platform-theme-btn active" onclick="setExamsTheme('dark')" title="وضع الظلام" aria-label="وضع الظلام">🌙</button>
             </div>
-            <button class="exams-hamburger" onclick="toggleExamsMenu()" aria-label="القائمة"><i class="ti ti-menu-2"></i></button>
+            <button class="exams-hamburger" onclick="toggleExamsMenu()" aria-label="القائمة" aria-expanded="false" aria-controls="examsMobileMenu"><i class="ti ti-menu-2"></i></button>
         </div>
         <div class="exams-mobile-menu" id="examsMobileMenu">
             <a href="/" class="platform-nav-link">الرئيسية</a>
@@ -1024,7 +1026,11 @@
             <a href="subjects" class="platform-nav-link">المواد الدراسية</a>
             <a href="courses" class="platform-nav-link">الكورسات</a>
             <a href="exams" class="platform-nav-link active">الامتحانات</a>
-            <a href="profile" class="platform-nav-link">حسابي</a>
+            <div class="platform-mobile-auth" id="examMobileGuest">
+                <a href="login" class="platform-login-btn">تسجيل الدخول</a>
+                <a href="register" class="platform-register-btn">سجل الآن</a>
+            </div>
+            <a href="profile" class="platform-nav-link" id="examMobileUser" style="display:none;">حسابي</a>
         </div>
     </header>
 
@@ -1770,8 +1776,16 @@
             const user = _student || (() => { try { return JSON.parse(localStorage.getItem('currentUser') || 'null'); } catch (_) { return null; } })();
             const authActions = document.getElementById('examAuthActions');
             const userArea = document.getElementById('examUserArea');
-            if (!user) return;
+            const mobileGuest = document.getElementById('examMobileGuest');
+            const mobileUser = document.getElementById('examMobileUser');
+            if (!user) {
+                if (mobileGuest) mobileGuest.style.display = 'flex';
+                if (mobileUser) mobileUser.style.display = 'none';
+                return;
+            }
             if (authActions) authActions.style.display = 'none';
+            if (mobileGuest) mobileGuest.style.display = 'none';
+            if (mobileUser) mobileUser.style.display = 'block';
             if (userArea) {
                 userArea.style.display = 'inline-flex';
                 const name = user.firstName || user.name || user.username || 'حسابي';
@@ -1781,7 +1795,10 @@
 
         function toggleExamsMenu() {
             const menu = document.getElementById('examsMobileMenu');
-            if (menu) menu.classList.toggle('active');
+            const button = document.querySelector('.exams-hamburger');
+            if (!menu) return;
+            menu.classList.toggle('active');
+            if (button) button.setAttribute('aria-expanded', String(menu.classList.contains('active')));
         }
 
         // إغلاق قائمة الموبايل عند الضغط خارجها
@@ -1789,6 +1806,8 @@
             if (!e.target.closest('.exams-hamburger') && !e.target.closest('#examsMobileMenu')) {
                 const menu = document.getElementById('examsMobileMenu');
                 if (menu) menu.classList.remove('active');
+                const button = document.querySelector('.exams-hamburger');
+                if (button) button.setAttribute('aria-expanded', 'false');
             }
         });
     </script>
