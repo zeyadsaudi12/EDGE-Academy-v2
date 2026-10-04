@@ -162,7 +162,7 @@ app.use((req, res, next) => {
 
     let reqPath = req.path;
     if (reqPath === '/' || reqPath === '') {
-        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0');
         return res.sendFile(path.join(__dirname, 'index.html'));
     }
 
@@ -174,7 +174,7 @@ app.use((req, res, next) => {
         const htmlEquivalent = cleanPath.replace(/\.php$/, '.html');
         const fullHtmlPath = path.join(__dirname, htmlEquivalent);
         if (fs.existsSync(fullHtmlPath) && fs.statSync(fullHtmlPath).isFile()) {
-            res.setHeader('Cache-Control', 'no-cache');
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0');
             return res.sendFile(fullHtmlPath);
         }
     }
@@ -182,7 +182,7 @@ app.use((req, res, next) => {
     // 2. If path is extensionless (e.g. /courses or /admin), check if .html exists
     const candidateHtml = path.join(__dirname, cleanPath + '.html');
     if (fs.existsSync(candidateHtml) && fs.statSync(candidateHtml).isFile()) {
-        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0');
         return res.sendFile(candidateHtml);
     }
 
