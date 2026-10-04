@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     initTheme();
 
+    initLanguageSwitcher();
+
     // Init 3D canvas animation on auth pages (login/register)
 
     initAuthCanvas();
@@ -1076,14 +1078,15 @@ function showStep(step) {
     });
 
     // Update the registration progress whenever the visible form step changes.
+    const isEn = localStorage.getItem('platformLanguage') === 'en';
     const progress = Math.round((step / 3) * 100);
     const progressBar = document.getElementById('register-progress-bar');
     const progressValue = document.getElementById('register-progress-value');
     const progressTitle = document.getElementById('register-step-title');
-    const stepNames = ['الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة'];
+    const stepNames = isEn ? ['Step 1', 'Step 2', 'Step 3'] : ['الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة'];
     if (progressBar) progressBar.style.width = `${progress}%`;
     if (progressValue) progressValue.textContent = `${progress}%`;
-    if (progressTitle) progressTitle.textContent = stepNames[step - 1] || 'إنشاء الحساب';
+    if (progressTitle) progressTitle.textContent = stepNames[step - 1] || (isEn ? 'Create Account' : 'إنشاء الحساب');
 
     const prevBtn = document.getElementById('prevBtn');
 
@@ -5041,6 +5044,181 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// ==========================================
+// Global language and direction switcher
+// ==========================================
+const platformTranslations = {
+    // الهيدر والتنقل
+    'الرئيسية': 'Home', 'المعلمين': 'Teachers', 'المواد الدراسية': 'Subjects', 'الكورسات': 'Courses',
+    'الامتحانات': 'Exams', 'صفحة الادمن': 'Admin Portal', 'تسجيل الدخول': 'Log In', 'سجل الآن': 'Sign Up',
+    'الطالب': 'Student', 'البروفايل': 'Profile', 'الملف الشخصي': 'Profile', 'الرصيد:': 'Balance:',
+    'تسجيل خروج': 'Log Out', 'تبديل المظهر': 'Theme', 'وضع النهار': 'Light Mode', 'وضع الظلام': 'Dark Mode',
+    'تبديل اللغة': 'Switch Language',
+
+    // صفحة التسجيل - كروت وشاشات العرض (الصورة 1 و 2)
+    'سجّل في الأكاديمية': 'Register at the Academy',
+    'خليك من أوائل الطلاب الي يجربوا منظومة تعلم Sherbeni Academy - أذكى تجمع بين أفضل المدرسين، أدوات AI للمذاكرة، ألعاب تعليمية، دعم أكاديمي،': 'Be among the first students to experience the Sherbeni Academy learning ecosystem — combining top teachers, AI study tools, educational games, academic support,',
+    'تقارير لأولياء الأمور': 'parent reports',
+    'ومتابعة حقيقية للتقدم.': 'and genuine progress tracking.',
+    'املأ بياناتك، وفريقنا هيتواصل معاك بكل تفاصيل التسجيل والخطوات القادمة عند فتح باب التسجيل المبكر.': 'Fill in your details, and our team will contact you with all registration details and next steps once early registration opens.',
+    'أفضل المدرسين': 'Top Teachers',
+    'نخبة من أقوى المدرسين في جميع المواد': 'Elite teachers across all subjects',
+    'أدوات AI للمذاكرة': 'AI Study Tools',
+    'مذاكرة أذكى وتنظيم الوقت بسهولة': 'Smarter studying & effortless time management',
+    'ألعاب تعليمية': 'Educational Games',
+    'تعلم ممتع من خلال ألعاب تفاعلية': 'Fun learning through interactive games',
+    'دعم أكاديمي': 'Academic Support',
+    'دعم ومتابعة مستمرة للطالب': 'Continuous guidance and student care',
+    'متابعة الأداء': 'Performance Tracking',
+    'تقارير دورية توضح مستوى التقدم': 'Periodic reports detailing student growth',
+    'متابعة حقيقية للتقدم': 'Real Progress Tracking',
+    'خطط تطوير شخصية لكل طالب': 'Personalized development plans for each student',
+
+    // خطوات ونموذج التسجيل
+    'الخطوة الأولى': 'Step 1', 'الخطوة الثانية': 'Step 2', 'الخطوة الثالثة': 'Step 3',
+    'شخصي': 'Personal', 'أكاديمي': 'Academic', 'السابق': 'Back', 'التالي': 'Next',
+    'إنشاء الحساب': 'Create Account', 'إنشاء حساب جديد': 'Create New Account',
+    'هل لديك حساب بالفعل؟': 'Already have an account?', 'قم بتسجيل الدخول من هنا': 'Log in here',
+    'الاسم الأول*': 'First Name*', 'الاسم الأخير*': 'Last Name*',
+    'الرقم القومي* (14 رقم)': 'National ID* (14 digits)', 'تاريخ الميلاد*': 'Date of Birth*',
+    'رقم الهاتف*': 'Phone Number*', 'رقم هاتف ولي الأمر*': 'Parent Phone Number*', 'المحافظة*': 'Governorate*',
+    'الصف الدراسي*': 'Grade*', 'الشعبة*': 'Track*', 'اللغة الثانية*': 'Second Language*',
+    'اسم المستخدم*': 'Username*', 'كلمة المرور': 'Password', 'كلمة المرور*': 'Password*', 'تأكيد كلمة المرور*': 'Confirm Password*',
+    'أولاً: أكمل بياناتك الشخصية': 'First: complete your personal details',
+    'ثانياً: أكمل البيانات الدراسية الخاصة بك': 'Second: complete your academic details',
+    'ثالثاً: أنشئ كلمة مرور قوية': 'Third: create a strong password',
+
+    // خيارات القوائم المنسدلة (المحافظات)
+    'اختر محافظتك': 'Choose your governorate',
+    'القاهرة': 'Cairo', 'الجيزة': 'Giza', 'الإسكندرية': 'Alexandria', 'الدقهلية': 'Dakahlia', 'البحيرة': 'Beheira',
+    'الشرقية': 'Sharqia', 'القليوبية': 'Qalyubia', 'الغربية': 'Gharbia', 'المنوفية': 'Monufia', 'كفر الشيخ': 'Kafr El Sheikh',
+    'دمياط': 'Damietta', 'بورسعيد': 'Port Said', 'الإسماعيلية': 'Ismailia', 'السويس': 'Suez', 'شمال سيناء': 'North Sinai',
+    'جنوب سيناء': 'South Sinai', 'الفيوم': 'Fayoum', 'بني سويف': 'Beni Suef', 'المنيا': 'Minya', 'أسيوط': 'Asyut',
+    'سوهاج': 'Sohag', 'قنا': 'Qena', 'الأقصر': 'Luxor', 'أسوان': 'Aswan', 'البحر الأحمر': 'Red Sea',
+    'الوادي الجديد': 'New Valley', 'مطروح': 'Matrouh',
+
+    // الصفوف الدراسية
+    'اختر الصف الدراسي': 'Choose your grade',
+    'الصف الأول الإعدادي': '1st Prep', 'الصف الثاني الإعدادي': '2nd Prep', 'الصف الثالث الإعدادي': '3rd Prep',
+    'الصف الأول الثانوي': '1st Secondary', 'الصف الثاني الثانوي': '2nd Secondary', 'الصف الثالث الثانوي': '3rd Secondary',
+    'الأول الثانوي': '1st Secondary', 'الثاني الثانوي': '2nd Secondary', 'الثالث الثانوي': '3rd Secondary',
+
+    // الشعب واللغات
+    'اختر الشعبة': 'Choose your track', 'علمي علوم': 'Science', 'علمي رياضة': 'Math', 'أدبي': 'Literary',
+    'اختر اللغة الثانية': 'Choose a second language', 'إنجليزي': 'English', 'فرنسي': 'French', 'إيطالي': 'Italian', 'ألماني': 'German',
+
+    // صفحة تسجيل الدخول
+    'أهلاً تاني، جاهز للمذاكرة؟': 'Welcome back, ready to study?',
+    'ادخل رقم هاتفك وكلمة المرور المسجل بهم من قبل.': 'Enter your registered phone number and password.',
+    'تذكرني': 'Remember me', 'نسيت كلمة المرور؟': 'Forgot password?',
+    'ليس لديك حساب؟': 'Don\'t have an account?',
+    'مرحباً بك مرة أخرى': 'Welcome Back',
+    'ادخل بياناتك لتواصل رحلتك التعليمية مع EDGE Academy.': 'Enter your details to continue learning with EDGE Academy.',
+    'محتوى متميز': 'Premium Content', 'متابعة مستمرة': 'Continuous Follow-up'
+};
+
+const platformPlaceholders = {
+    'رقم الهاتف': 'Phone number', 'كلمة السر': 'Password', 'مثال: زياد': 'Example: Zeyad',
+    'مثال: أشرف': 'Example: Ashraf', 'ادخل رقم الهاتف': 'Enter phone number',
+    'ادخل رقم هاتف ولي الأمر': 'Enter parent phone number', 'ادخل الرقم القومي المكون من 14 رقم': 'Enter 14-digit National ID',
+    'اختر محافظتك': 'Choose your governorate', 'اختر الصف الدراسي': 'Choose your grade',
+    'اختر الشعبة': 'Choose your track', 'اختر اللغة الثانية': 'Choose a second language',
+    'مثال: ziyad.ashraf': 'Example: ziyad.ashraf', 'أدخل كلمة المرور قوية': 'Enter a strong password',
+    'أعد إدخال كلمة المرور': 'Re-enter your password'
+};
+
+const GLOBE_SVG_ICON = '<svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
+
+function setPlatformLanguage(language) {
+    const isEnglish = language === 'en';
+    localStorage.setItem('platformLanguage', isEnglish ? 'en' : 'ar');
+    document.documentElement.lang = isEnglish ? 'en' : 'ar';
+    document.documentElement.dir = isEnglish ? 'ltr' : 'rtl';
+    document.documentElement.setAttribute('dir', isEnglish ? 'ltr' : 'rtl');
+    document.body?.classList.toggle('lang-en', isEnglish);
+
+    // تحديث عناوين الصفحات
+    if (document.title.includes('حساب جديد') || document.title.includes('New Account')) {
+        document.title = isEnglish ? 'New Account | EDGE Academy' : 'حساب جديد | EDGE Academy';
+    } else if (document.title.includes('تسجيل الدخول') || document.title.includes('Log In')) {
+        document.title = isEnglish ? 'Log In | EDGE Academy' : 'تسجيل الدخول | EDGE Academy';
+    }
+
+    // استبدال نصوص العقد النصية
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+            return node.parentElement?.closest('script, style, select, pre, code') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+        }
+    });
+
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach(node => {
+        if (!Object.prototype.hasOwnProperty.call(node, '__arabicText')) node.__arabicText = node.nodeValue;
+        const original = node.__arabicText;
+        const trimmed = original.trim();
+        if (!isEnglish) {
+            node.nodeValue = original;
+            return;
+        }
+        const replacement = platformTranslations[trimmed];
+        if (replacement) node.nodeValue = original.replace(trimmed, replacement);
+    });
+
+    // تحديث خيارات الـ select
+    document.querySelectorAll('select option').forEach(option => {
+        if (!option.dataset.arText) option.dataset.arText = option.textContent;
+        const trimmed = option.dataset.arText.trim();
+        option.textContent = isEnglish ? (platformTranslations[trimmed] || option.dataset.arText) : option.dataset.arText;
+    });
+
+    // تحديث الـ placeholders
+    document.querySelectorAll('[placeholder]').forEach(input => {
+        if (!input.dataset.arPlaceholder) input.dataset.arPlaceholder = input.getAttribute('placeholder') || '';
+        const trimmed = input.dataset.arPlaceholder.trim();
+        input.placeholder = isEnglish ? (platformPlaceholders[trimmed] || platformTranslations[trimmed] || trimmed) : trimmed;
+    });
+
+    // تحديث أزرار تبديل اللغة (تطابق الصورة 3)
+    document.querySelectorAll('.language-switcher').forEach(button => {
+        button.innerHTML = isEnglish ? `<span>عربي</span>${GLOBE_SVG_ICON}` : `<span>EN</span>${GLOBE_SVG_ICON}`;
+        button.setAttribute('aria-label', isEnglish ? 'تبديل إلى العربية' : 'Switch to English');
+        button.title = button.getAttribute('aria-label');
+    });
+
+    // تحديث عنوان خطوة التسجيل الحالية إذا وجدت
+    const progressTitle = document.getElementById('register-step-title');
+    if (progressTitle && typeof currentStep !== 'undefined') {
+        const stepNames = isEnglish ? ['Step 1', 'Step 2', 'Step 3'] : ['الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة'];
+        progressTitle.textContent = stepNames[currentStep - 1] || (isEnglish ? 'Create Account' : 'إنشاء الحساب');
+    }
+
+    window.dispatchEvent(new CustomEvent('platformLanguageChanged', { detail: { language: isEnglish ? 'en' : 'ar', dir: isEnglish ? 'ltr' : 'rtl' } }));
+}
+
+function initLanguageSwitcher() {
+    const host = document.querySelector('header .header-left') || document.querySelector('.platform-header-inner') || document.querySelector('.watch-topbar-actions') || document.querySelector('.masar-nav-actions');
+    if (host && !host.querySelector('.language-switcher')) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'language-switcher';
+        host.insertBefore(button, host.querySelector('.theme-capsule') || host.firstChild);
+    }
+
+    document.querySelectorAll('.language-switcher').forEach(button => {
+        if (!button.dataset.langBound) {
+            button.dataset.langBound = 'true';
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentLang = localStorage.getItem('platformLanguage') || 'ar';
+                setPlatformLanguage(currentLang === 'en' ? 'ar' : 'en');
+            });
+        }
+    });
+
+    setPlatformLanguage(localStorage.getItem('platformLanguage') || 'ar');
+}
 
 window.addEventListener('keydown', (e) => {
 

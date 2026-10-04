@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <link rel="stylesheet" href="style.css?v=nav-20261004-5">
+    <link rel="stylesheet" href="style.css?v=20261004-lang">
     <title>حساب جديد | EDGE Academy</title>
 </head>
 <body class="auth-body register-page">
@@ -15,12 +15,20 @@
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
 
-            <!-- اليسار: أزرار التنقل ومحول الثيم -->
+            <!-- اليسار: أزرار التنقل ومحول الثيم وزر اللغة -->
             <div class="header-left">
                 <nav class="header-actions">
                     <a href="login" class="btn-outline">تسجيل الدخول</a>
                     <a href="/" class="btn-fill">الرئيسية</a>
                 </nav>
+                <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+                    <span>EN</span>
+                    <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </button>
                 <div class="theme-capsule" aria-label="تبديل المظهر">
                     <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
                     <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
@@ -29,13 +37,108 @@
         </div>
     </header>
     <main class="auth-page auth-register-page">
-        <section class="auth-left" aria-label="EDGE Academy">
-            <img src="imges/st.jpg" alt="شعار EDGE Academy" class="hero-image">
-            <div class="auth-left-content">
-                <span class="auth-kicker">EDGE ACADEMY</span>
-                <h1>انضم الآن لأكبر مجتمع من أوائل الجمهورية</h1>
-                <p>وتعلَّم مع EDGE Academy بأسلوب ممتع وفعال.</p>
-                <div class="auth-highlights"><span>✦ ابدأ في دقائق</span><span>✦ كل صفوفك في مكان واحد</span></div>
+        <section class="auth-left register-showcase" aria-label="Sherbeni Academy">
+            <div class="register-side-content">
+                <!-- الهيدر الخاص بالشيربيني أكاديمي -->
+                <div class="register-hero-header">
+                    <div class="register-side-logo-wrap">
+                        <img src="imges/sherbeni-logo.svg" alt="Sherbeni Academy" class="register-sherbeni-logo">
+                    </div>
+                    <h1 class="register-hero-title">سجّل في الأكاديمية</h1>
+                    <p class="register-hero-desc">
+                        خليك من أوائل الطلاب الي يجربوا منظومة تعلم Sherbeni Academy - أذكى تجمع بين أفضل المدرسين، أدوات AI للمذاكرة، ألعاب تعليمية، دعم أكاديمي، <span class="highlight-orange">تقارير لأولياء الأمور</span> ومتابعة حقيقية للتقدم.
+                    </p>
+                </div>
+
+                <!-- صندوق التنبيه العلوي -->
+                <div class="register-side-notice">
+                    املأ بياناتك، وفريقنا هيتواصل معاك بكل تفاصيل التسجيل والخطوات القادمة عند فتح باب التسجيل المبكر.
+                </div>
+
+                <!-- شبكة البطاقات الستة -->
+                <div class="register-features-grid">
+                    <!-- كارت 1: أفضل المدرسين -->
+                    <div class="register-feature-card">
+                        <div class="feature-icon icon-cyan" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="7" r="4.5"/>
+                                <path d="M5.5 21a6.5 6.5 0 0 1 13 0"/>
+                            </svg>
+                        </div>
+                        <h3>أفضل المدرسين</h3>
+                        <p>نخبة من أقوى المدرسين في جميع المواد</p>
+                    </div>
+
+                    <!-- كارت 2: أدوات AI للمذاكرة -->
+                    <div class="register-feature-card">
+                        <div class="feature-icon icon-cyan" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                <line x1="6" y1="8" x2="9" y2="8"/>
+                                <line x1="6" y1="12" x2="9" y2="12"/>
+                                <line x1="15" y1="8" x2="18" y2="8"/>
+                                <line x1="15" y1="12" x2="18" y2="12"/>
+                            </svg>
+                        </div>
+                        <h3>أدوات AI للمذاكرة</h3>
+                        <p>مذاكرة أذكى وتنظيم الوقت بسهولة</p>
+                    </div>
+
+                    <!-- كارت 3: ألعاب تعليمية -->
+                    <div class="register-feature-card">
+                        <div class="feature-icon icon-purple" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="6" width="20" height="12" rx="6"/>
+                                <line x1="6" y1="12" x2="10" y2="12"/>
+                                <line x1="8" y1="10" x2="8" y2="14"/>
+                                <circle cx="15.5" cy="10.5" r="0.75" fill="currentColor"/>
+                                <circle cx="17.5" cy="13.5" r="0.75" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h3>ألعاب تعليمية</h3>
+                        <p>تعلم ممتع من خلال ألعاب تفاعلية</p>
+                    </div>
+
+                    <!-- كارت 4: دعم أكاديمي -->
+                    <div class="register-feature-card">
+                        <div class="feature-icon icon-cyan" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                            </svg>
+                        </div>
+                        <h3>دعم أكاديمي</h3>
+                        <p>دعم ومتابعة مستمرة للطالب</p>
+                    </div>
+
+                    <!-- كارت 5: متابعة الأداء -->
+                    <div class="register-feature-card">
+                        <div class="feature-icon icon-cyan" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="3" y1="20" x2="21" y2="20"/>
+                                <rect x="6" y="14" width="3" height="6" rx="0.5"/>
+                                <rect x="11" y="10" width="3" height="10" rx="0.5"/>
+                                <rect x="16" y="6" width="3" height="14" rx="0.5"/>
+                            </svg>
+                        </div>
+                        <h3>متابعة الأداء</h3>
+                        <p>تقارير دورية توضح مستوى التقدم</p>
+                    </div>
+
+                    <!-- كارت 6: متابعة حقيقية للتقدم -->
+                    <div class="register-feature-card">
+                        <div class="feature-icon icon-purple" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <line x1="12" y1="8" x2="12" y2="14"/>
+                                <line x1="9" y1="11" x2="15" y2="11"/>
+                            </svg>
+                        </div>
+                        <h3>متابعة حقيقية للتقدم</h3>
+                        <p>خطط تطوير شخصية لكل طالب</p>
+                    </div>
+                </div>
             </div>
         </section>
         <section class="auth-right">
@@ -208,7 +311,7 @@
     
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="script.js?v=1.5" defer></script>
+<script src="script.js?v=20261004-lang" defer></script>
     <script src="disable-inspect.js" defer></script>
 </body>
 </html>

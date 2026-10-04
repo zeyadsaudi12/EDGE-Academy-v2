@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <link rel="stylesheet" href="style.css?v=nav-20261004-5">
+    <link rel="stylesheet" href="style.css?v=20261004-lang">
     <title>تسجيل الدخول | EDGE Academy</title>
 </head>
 <body class="auth-body login-page">
@@ -15,12 +15,20 @@
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
 
-            <!-- اليسار: أزرار التنقل ومحول الثيم -->
+            <!-- اليسار: أزرار التنقل ومحول الثيم وزر اللغة -->
             <div class="header-left">
                 <nav class="header-actions">
                     <a href="register" class="btn-fill">سجل الآن</a>
                     <a href="/" class="btn-outline">الرئيسية</a>
                 </nav>
+                <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+                    <span>EN</span>
+                    <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </button>
                 <div class="theme-capsule" aria-label="تبديل المظهر">
                     <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
                     <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
@@ -68,7 +76,7 @@
     
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="script.js?v=1.5" defer></script>
+<script src="script.js?v=20261004-lang" defer></script>
     <script src="disable-inspect.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 130" fill="none">
+    <defs>
+        <linearGradient id="sherbeniGrad" x1="80" y1="10" x2="180" y2="80" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ff7b1a"/>
+            <stop offset="50%" stop-color="#ff5900"/>
+            <stop offset="100%" stop-color="#e04300"/>
+        </linearGradient>
+        <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#ff5900" flood-opacity="0.35"/>
+        </filter>
+    </defs>
+    <!-- Top Sparkle / 4-point star -->
+    <path d="M136 12 C136 7 138 5 143 5 C138 5 136 3 136 -2 C136 3 134 5 129 5 C134 5 136 7 136 12 Z" fill="#ff7b1a" filter="url(#glow)"/>
+    <!-- Stylized S ribbon mark -->
+    <path d="M108 26 C115 18 132 15 143 23 C150 29 146 38 135 44 C120 52 110 57 114 68 C117 77 128 80 142 75 C146 73 148 76 146 79 C134 88 112 87 106 73 C101 60 112 51 125 45 C139 39 144 33 140 27 C136 21 123 23 113 29 C109 31 106 28 108 26 Z" fill="url(#sherbeniGrad)" filter="url(#glow)"/>
+    <!-- Academy Typography -->
+    <text x="130" y="103" text-anchor="middle" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif" font-weight="900" font-size="16" letter-spacing="1.5" fill="#ffffff">SHERBENI</text>
+    <text x="130" y="117" text-anchor="middle" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif" font-weight="800" font-size="9" letter-spacing="4" fill="#ff7b1a">ACADEMY</text>
+</svg>

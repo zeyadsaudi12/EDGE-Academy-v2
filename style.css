@@ -350,6 +350,54 @@ header {
     transition: all 0.25s ease;
 }
 
+.language-switcher {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    background: rgba(45, 52, 58, 0.82);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.language-switcher:hover {
+    background: rgba(58, 68, 77, 0.95);
+    border-color: rgba(255, 255, 255, 0.38);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.language-switcher .lang-globe-icon {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.dark-mode .language-switcher {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.dark-mode .language-switcher:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
 .dark-mode .theme-capsule,
 .dark-mode .header-icons {
     background: rgba(255, 255, 255, 0.06);
@@ -3639,6 +3687,8 @@ header {
         font-size: 1rem !important;
     }
 
+    .language-switcher { min-height:34px; padding:0 10px; }
+
     .theme-capsule .icon-btn,
     .header-icons .icon-btn {
         width: 28px !important;
@@ -4081,23 +4131,53 @@ header {
     inset: -28px;
     z-index: -1;
     background:
-        linear-gradient(rgba(3, 27, 83, .42), rgba(3, 27, 83, .58)),
-        url('imges/login-background.jpg') center / cover no-repeat;
-    filter: blur(8px) brightness(.72) saturate(1.08);
+/* صفحة التسجيل: تصميم الثيم الزيتي / الزمردي الراقي مع كروت الخصائص واللوجو */
+.auth-body.register-page {
+    position: relative;
+    isolation: isolate;
+    background: #071917;
+    min-height: 100vh;
+}
+
+.auth-body.register-page::before {
+    content: '';
+    position: fixed;
+    inset: -28px;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse at 25% 20%, rgba(13, 74, 62, 0.42), transparent 55%),
+        radial-gradient(ellipse at 85% 70%, rgba(8, 48, 40, 0.45), transparent 60%),
+        linear-gradient(175deg, #061816 0%, #0a2520 50%, #051412 100%);
+    filter: blur(10px);
     transform: scale(1.04);
 }
 
 .auth-body.register-page .auth-page {
     display: grid !important;
-    grid-template-columns: minmax(320px, 600px) !important;
+    grid-template-columns: minmax(380px, 1.08fr) minmax(480px, 0.92fr) !important;
+    width: min(1500px, calc(100% - 44px));
     justify-content: center;
     align-items: start;
-    min-height: calc(100vh - 104px);
-    padding: 20px;
+    min-height: calc(100vh - 110px);
+    gap: 26px;
+    padding: 0;
+    margin: 22px auto 44px;
 }
 
 .auth-body.register-page .auth-left {
-    display: none !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 0;
+    padding: clamp(26px, 3.2vw, 42px);
+    border-radius: 28px;
+    color: #ffffff;
+    background: radial-gradient(circle at 50% 12%, rgba(16, 56, 48, 0.82) 0%, rgba(8, 30, 26, 0.88) 55%, rgba(5, 18, 16, 0.96) 100%);
+    border: 1px solid rgba(45, 212, 191, 0.22);
+    box-shadow: 0 24px 70px rgba(0, 16, 14, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    overflow: hidden;
 }
 
 .auth-body.register-page .auth-right {
@@ -4105,32 +4185,275 @@ header {
     min-height: auto;
     padding: 0 !important;
     border-radius: 28px;
-    background: rgba(255, 255, 255, .92) !important;
-    border: 1px solid rgba(255, 255, 255, .72);
-    box-shadow: 0 24px 70px rgba(0, 18, 64, .38);
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    box-shadow: 0 24px 70px rgba(0, 18, 24, 0.35);
     backdrop-filter: blur(18px) saturate(145%);
     -webkit-backdrop-filter: blur(18px) saturate(145%);
+    overflow: hidden;
+}
+
+.register-page .form-panel.auth-card {
+    width: 100%;
+    max-width: none;
+    padding: clamp(26px, 3vw, 42px);
 }
 
 .dark-mode.auth-body.register-page {
-    background: #06162f;
+    background: #051412;
 }
 
 .dark-mode.auth-body.register-page .auth-right {
-    background: rgba(10, 28, 60, .90) !important;
-    border-color: rgba(191, 220, 255, .20);
+    background: rgba(9, 26, 23, 0.92) !important;
+    border-color: rgba(45, 212, 191, 0.2);
 }
 
-@media (max-width: 580px) {
+/* هيدر الشيربيني أكاديمي (الصورة 2) */
+.register-side-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.register-hero-header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.register-side-logo-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.register-sherbeni-logo {
+    width: auto;
+    height: 72px;
+    max-width: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 14px rgba(255, 123, 26, 0.32));
+}
+
+.register-hero-title {
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: clamp(2rem, 2.8vw, 3.1rem);
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.register-hero-desc {
+    margin: 0 auto;
+    max-width: 620px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+    line-height: 1.85;
+}
+
+.register-hero-desc .highlight-orange {
+    color: #ff7722;
+    font-weight: 800;
+}
+
+/* صندوق التنبيه العلوي (الصورة 1) */
+.register-side-notice {
+    margin: 0 0 20px 0;
+    padding: 16px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.95);
+    font-size: clamp(0.9rem, 1vw, 0.98rem);
+    font-weight: 600;
+    line-height: 1.8;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* شبكة البطاقات الستة (الصورة 1) */
+.register-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.register-feature-card {
+    padding: 20px 15px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+}
+
+.register-feature-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(45, 212, 191, 0.4);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.register-feature-card .feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 12px;
+}
+
+.register-feature-card .feature-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.register-feature-card .icon-cyan {
+    color: #00d9f5;
+}
+
+.register-feature-card .icon-purple {
+    color: #c084fc;
+}
+
+.register-feature-card h3 {
+    margin: 0 0 6px 0;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.register-feature-card p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 1080px) {
     .auth-body.register-page .auth-page {
         grid-template-columns: minmax(0, 1fr) !important;
-        padding: 12px;
+        width: min(720px, calc(100% - 32px));
+        margin: 16px auto 32px;
+        gap: 20px;
     }
+    .auth-body.register-page .auth-left {
+        order: 2;
+    }
+    .auth-body.register-page .auth-right {
+        order: 1;
+    }
+}
 
-    .auth-body.register-page .auth-right,
-    .register-page .form-panel.auth-card {
-        border-radius: 20px !important;
+@media (max-width: 640px) {
+    .register-features-grid {
+        grid-template-columns: 1fr;
     }
+    .register-feature-card {
+        padding: 16px 12px;
+    }
+}
+
+/* ═════════════════════════════════════════════════════════
+   LTR (English) Global Direction & Layout Styles
+   ═════════════════════════════════════════════════════════ */
+html[dir="ltr"],
+html[dir="ltr"] body,
+body.lang-en {
+    direction: ltr !important;
+    text-align: left;
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html[dir="ltr"] header .header-inner {
+    direction: ltr;
+}
+
+html[dir="ltr"] .header-brand {
+    order: 1;
+}
+
+html[dir="ltr"] .header-center {
+    order: 2;
+}
+
+html[dir="ltr"] .header-left {
+    order: 3;
+    direction: ltr;
+}
+
+html[dir="ltr"] .header-actions,
+html[dir="ltr"] .masar-nav-actions {
+    direction: ltr;
+}
+
+/* Auth Pages in LTR */
+html[dir="ltr"] .auth-body .auth-page {
+    direction: ltr;
+}
+
+html[dir="ltr"] .auth-body .auth-left {
+    direction: ltr;
+    text-align: left;
+}
+
+html[dir="ltr"] .auth-body .auth-right {
+    direction: ltr;
+    text-align: left;
+}
+
+html[dir="ltr"] .register-hero-header,
+html[dir="ltr"] .register-side-notice,
+html[dir="ltr"] .register-feature-card {
+    text-align: center;
+}
+
+html[dir="ltr"] .form-group label {
+    text-align: left;
+}
+
+html[dir="ltr"] .form-group input,
+html[dir="ltr"] .form-group select,
+html[dir="ltr"] .form-group textarea {
+    text-align: left;
+    direction: ltr;
+}
+
+html[dir="ltr"] .password-field input {
+    padding-right: 44px;
+    padding-left: 14px;
+}
+
+html[dir="ltr"] .password-toggle {
+    right: 12px;
+    left: auto;
+}
+
+html[dir="ltr"] .register-progress-meta,
+html[dir="ltr"] .steps-indicator,
+html[dir="ltr"] .form-navigation {
+    direction: ltr;
+}
+
+html[dir="ltr"] .form-footer {
+    text-align: center;
+}
+
+/* Platform cards & components in LTR */
+html[dir="ltr"] .hero-content,
+html[dir="ltr"] .section-header,
+html[dir="ltr"] .course-card,
+html[dir="ltr"] .teacher-card,
+html[dir="ltr"] .subject-card,
+html[dir="ltr"] .exam-card,
+html[dir="ltr"] .footer-content,
+html[dir="ltr"] .footer-col {
+    direction: ltr;
+    text-align: left;
 }
 
 /* تبقى خلفية تسجيل الدخول نظيفة ومتسقة على الشاشات الصغيرة أيضاً. */
