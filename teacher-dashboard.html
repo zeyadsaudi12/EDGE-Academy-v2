@@ -1,29 +1,1777 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>لوحة المدرس | EDGE Academy</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-  <style>
-    :root{--navy:#13294b;--blue:#1769e0;--teal:#00bfa6;--gold:#e9a93d;--ink:#17223b;--muted:#677492;--line:#e4eaf5;--soft:#f2f6ff;--white:#fff}
-    *{box-sizing:border-box} body{margin:0;background:var(--soft);color:var(--ink);font-family:Tahoma,Arial,sans-serif} .nav{height:84px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,5vw);position:sticky;top:0;z-index:3}.brand{font-size:22px;font-weight:900;color:var(--navy)}.brand i{color:var(--gold)}.profile{display:flex;gap:12px;align-items:center;color:var(--muted);font-weight:700}.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#5d94ef);color:#fff;display:grid;place-items:center;font-weight:900}.logout{border:1px solid #ffc8c8;color:#c73737;background:#fff5f5;border-radius:10px;padding:11px 16px;cursor:pointer;font:inherit}.wrap{max-width:1280px;margin:30px auto;padding:0 20px}.hero{background:linear-gradient(125deg,#13294b,#1e5fbe);color:#fff;border-radius:22px;padding:28px;display:flex;gap:20px;align-items:center;justify-content:space-between}.hero h1{margin:0 0 8px;font-size:27px}.hero p{margin:0;color:#dbe9ff}.teacher-photo{width:72px;height:72px;border-radius:16px;object-fit:cover;background:#fff}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin:22px 0}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 20px #1d3d7010}.stat{padding:18px}.stat i{font-size:22px;color:var(--blue)}.stat b{display:block;font-size:26px;margin-top:10px}.stat span{font-size:13px;color:var(--muted)}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.panel{padding:20px;margin-bottom:20px}.panel h2{font-size:18px;margin:0 0 16px}.empty{color:var(--muted);text-align:center;padding:25px}.video,.exam{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.title{font-weight:800}.tag{background:#e7f1ff;color:#1769e0;border-radius:20px;padding:5px 9px;font-size:12px}.watchers{margin-top:11px;border-top:1px dashed var(--line);padding-top:10px;font-size:13px;color:var(--muted)}details summary{cursor:pointer;color:var(--blue);font-weight:700}.people{margin-top:8px;display:grid;gap:7px}.person{background:#f7f9fd;padding:8px;border-radius:8px;color:var(--ink)}.question{border-right:4px solid var(--gold);background:#fffaf0;border-radius:8px;padding:12px;margin:9px 0;font-size:14px}.question small,.result small{display:block;color:var(--muted);margin-top:5px}.score{color:#008d77;font-weight:800}.loader{padding:70px;text-align:center;color:var(--muted)}@media(max-width:900px){.nav{height:76px}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.hero{align-items:flex-start}.teacher-photo{width:56px;height:56px}}@media(max-width:480px){.nav{padding:0 14px;height:68px}.brand{font-size:15px}.stats{gap:10px}.wrap{padding:0 12px}.hero{padding:20px}.hero h1{font-size:22px}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة إحصائيات المدرس والسناتر | EDGE Academy</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Platform Base Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=20261004-v7">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Platform script (theme + language + auth) — NO defer so functions are available to inline scripts -->
+    <script src="script.js?v=20261004-dash"></script>
+
+    <style>
+        /* ── Custom Teacher Dashboard Layout ── */
+        :root {
+            --sidebar-width: 290px;
+            --dash-primary: #1a6bdb;
+            --dash-primary-dark: #114fb0;
+            --dash-primary-light: #e8f1fc;
+            --dash-bg: #f8fafc;
+            --dash-card: #ffffff;
+            --dash-border: #e2e8f0;
+            --dash-text: #1e293b;
+            --dash-muted: #64748b;
+        }
+
+        .dark-mode {
+            --dash-bg: #091326;
+            --dash-card: #11203d;
+            --dash-border: #1f3259;
+            --dash-text: #f1f5f9;
+            --dash-muted: #94a3b8;
+            --dash-primary-light: #182e54;
+        }
+
+        body {
+            background-color: var(--dash-bg) !important;
+            color: var(--dash-text);
+            font-family: 'Cairo', -apple-system, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ── Top Header Customization for Dashboard ── */
+        header {
+            position: sticky !important;
+            top: 0 !important;
+            z-index: 1000 !important;
+        }
+
+        /* ── Dashboard Master Layout (Sidebar + Content) ── */
+        .dash-layout {
+            display: flex;
+            min-height: calc(100vh - 84px);
+            width: 100%;
+        }
+
+        /* ── Sidebar (شريط الأدوات الجانبي) ── */
+        .dash-sidebar {
+            width: var(--sidebar-width);
+            background: var(--dash-card);
+            border-left: 1px solid var(--dash-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px 16px;
+            position: sticky;
+            top: 84px;
+            height: calc(100vh - 84px);
+            overflow-y: auto;
+            flex-shrink: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.02);
+            z-index: 99;
+        }
+
+        /* Teacher Profile Mini Card in Sidebar */
+        .sidebar-teacher-card {
+            background: linear-gradient(135deg, rgba(26, 107, 219, 0.08), rgba(0, 191, 166, 0.08));
+            border: 1px solid var(--dash-border);
+            border-radius: 18px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--dash-primary), #00bfa6);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 1.3rem;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.25);
+            flex-shrink: 0;
+        }
+
+        .sidebar-teacher-name {
+            font-weight: 900;
+            font-size: 1rem;
+            color: var(--dash-text);
+            line-height: 1.3;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-teacher-sub {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: var(--dash-primary);
+            background: var(--dash-primary-light);
+            padding: 2px 8px;
+            border-radius: 999px;
+        }
+
+        /* Sidebar Navigation Menu */
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: var(--dash-muted);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: right;
+        }
+
+        .sidebar-link-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-link i {
+            font-size: 1.25rem;
+            transition: transform 0.2s ease;
+        }
+
+        .sidebar-link:hover {
+            color: var(--dash-primary);
+            background: var(--dash-primary-light);
+            transform: translateX(-3px);
+        }
+
+        .sidebar-link.active {
+            background: var(--dash-primary);
+            color: #ffffff !important;
+            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.35);
+        }
+
+        .sidebar-badge {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.76rem;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.08);
+            color: inherit;
+        }
+
+        .sidebar-link.active .sidebar-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            padding-top: 16px;
+            border-top: 1px solid var(--dash-border);
+            margin-top: 16px;
+        }
+
+        .sidebar-logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid #fee2e2;
+            background: #fff5f5;
+            color: #dc2626;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dark-mode .sidebar-logout-btn {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: rgba(220, 38, 38, 0.25);
+            color: #f87171;
+        }
+
+        .sidebar-logout-btn:hover {
+            background: #fee2e2;
+            transform: translateY(-2px);
+        }
+
+        /* ── Main Content Area ── */
+        .dash-main {
+            flex: 1;
+            padding: clamp(20px, 3.5vw, 40px);
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        /* ── Hero Welcome Card ── */
+        .teacher-hero-banner {
+            background: linear-gradient(135deg, #0d2249 0%, #153878 50%, #1b4b9b 100%);
+            border-radius: 24px;
+            padding: clamp(22px, 3vw, 36px);
+            color: #ffffff;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 40px rgba(13, 34, 73, 0.22);
+            margin-bottom: 24px;
+        }
+
+        .hero-welcome-h1 {
+            font-size: clamp(1.4rem, 2.3vw, 2.1rem);
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .hero-welcome-p {
+            color: #c7d8f5;
+            font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .hero-stat-badge {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 16px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* ── Percentages & Active Students KPIs ── */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .metric-card {
+            background: var(--dash-card);
+            border: 1px solid var(--dash-border);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(26, 107, 219, 0.1);
+            border-color: rgba(26, 107, 219, 0.35);
+        }
+
+        .metric-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+        }
+
+        .metric-icon-wrap.blue { background: #e0f2fe; color: #0284c7; }
+        .metric-icon-wrap.emerald { background: #dcfce7; color: #16a34a; }
+        .metric-icon-wrap.purple { background: #f3e8ff; color: #9333ea; }
+        .metric-icon-wrap.orange { background: #ffedd5; color: #ea580c; }
+
+        .pct-pill {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pct-pill.good { background: #dcfce7; color: #15803d; }
+        .pct-pill.info { background: #e0f2fe; color: #0369a1; }
+        .pct-pill.warning { background: #fef3c7; color: #b45309; }
+
+        .metric-main-val {
+            font-family: 'Outfit', 'Cairo', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: var(--dash-text);
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .metric-title {
+            color: var(--dash-muted);
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .metric-progress-track {
+            height: 6px;
+            background: var(--dash-border);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .metric-progress-bar {
+            height: 100%;
+            border-radius: inherit;
+            transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .bar-blue { background: linear-gradient(90deg, #38bdf8, #1a6bdb); }
+        .bar-emerald { background: linear-gradient(90deg, #4ade80, #10b981); }
+        .bar-purple { background: linear-gradient(90deg, #c084fc, #7952b3); }
+        .bar-orange { background: linear-gradient(90deg, #fb923c, #ff6b35); }
+
+        .metric-subtext {
+            font-size: 0.8rem;
+            color: var(--dash-muted);
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        /* ── CIRCULAR CENTERS / LOCATION ATTENDANCE SECTION (المؤشر الدائري للسناتر) ── */
+        .centers-attendance-section {
+            background: var(--dash-card);
+            border: 1px solid var(--dash-border);
+            border-radius: 24px;
+            padding: clamp(20px, 3vw, 32px);
+            margin-bottom: 28px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+        }
+
+        .section-header-flex {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .section-title-wrap h2 {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--dash-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title-wrap p {
+            color: var(--dash-muted);
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .toggle-group {
+            display: inline-flex;
+            background: var(--dash-bg);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--dash-border);
+            gap: 4px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.88rem;
+            color: var(--dash-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--dash-card);
+            color: var(--dash-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Circular Gauge + Center Breakdown Grid */
+        .centers-grid-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .center-chart-box {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: grid;
+            place-items: center;
+        }
+
+        .chart-center-cutout {
+            position: absolute;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .cutout-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--dash-text);
+            line-height: 1;
+        }
+
+        .cutout-label {
+            font-size: 0.82rem;
+            color: var(--dash-muted);
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        /* Centers Breakdown Cards List */
+        .centers-breakdown-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 14px;
+        }
+
+        .center-info-pill {
+            background: var(--dash-bg);
+            border: 1.5px solid var(--dash-border);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .center-info-pill:hover {
+            transform: translateY(-2px);
+            border-color: var(--dash-primary);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+        }
+
+        .center-color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .center-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .center-name {
+            font-weight: 800;
+            font-size: 0.98rem;
+            color: var(--dash-text);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .center-count-text {
+            font-size: 0.82rem;
+            color: var(--dash-muted);
+            font-weight: 600;
+        }
+
+        .center-pct-tag {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 1.15rem;
+            color: var(--dash-text);
+            flex-shrink: 0;
+        }
+
+        /* ── Dynamic Tab Panes ── */
+        .tab-content-area {
+            display: none;
+            animation: tabFadeIn 0.3s ease;
+        }
+
+        .tab-content-area.active {
+            display: block;
+        }
+
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Search & Filter Header */
+        .dash-filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            background: var(--dash-card);
+            border: 1px solid var(--dash-border);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+        }
+
+        .search-box-input {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+            max-width: 420px;
+        }
+
+        .search-box-input i {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dash-muted);
+        }
+
+        .search-box-input input {
+            width: 100%;
+            padding: 10px 42px 10px 14px;
+            border: 1.5px solid var(--dash-border);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            background: var(--dash-bg);
+            color: var(--dash-text);
+            outline: none;
+        }
+
+        .search-box-input input:focus {
+            border-color: var(--dash-primary);
+        }
+
+        /* Tables & Lists */
+        .dash-table-wrap {
+            background: var(--dash-card);
+            border: 1px solid var(--dash-border);
+            border-radius: 20px;
+            overflow-x: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .dash-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.92rem;
+        }
+
+        .dash-table th {
+            background: var(--dash-bg);
+            color: var(--dash-text);
+            font-weight: 800;
+            padding: 15px 18px;
+            border-bottom: 1.5px solid var(--dash-border);
+            white-space: nowrap;
+        }
+
+        .dash-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--dash-border);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .dash-table tr:hover td {
+            background: rgba(26, 107, 219, 0.03);
+        }
+
+        .btn-wa-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #dcfce7;
+            color: #16a34a;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-wa-action:hover {
+            background: #22c55e;
+            color: #ffffff;
+            transform: scale(1.08);
+        }
+
+        /* Responsive Mobile Toggle Button */
+        .sidebar-mobile-toggle {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 1001;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--dash-primary);
+            color: #fff;
+            border: none;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 24px rgba(26, 107, 219, 0.4);
+            cursor: pointer;
+        }
+
+        @media (max-width: 992px) {
+            .dash-sidebar {
+                position: fixed;
+                top: 0;
+                right: -320px;
+                height: 100vh;
+                z-index: 1002;
+                box-shadow: -8px 0 30px rgba(0, 0, 0, 0.25);
+            }
+
+            .dash-sidebar.open {
+                right: 0;
+            }
+
+            .sidebar-mobile-toggle {
+                display: grid;
+                place-items: center;
+            }
+
+            .centers-grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<nav class="nav"><div class="brand"><i class="ti ti-school"></i> EDGE Academy</div><div class="profile"><span id="account-name">حساب المدرس</span><div class="avatar" id="account-avatar">م</div><button class="logout" onclick="logout()"><i class="ti ti-logout"></i> خروج</button></div></nav>
-<main class="wrap" id="app"><div class="loader"><i class="ti ti-loader-2"></i> جاري تحميل لوحة المتابعة...</div></main>
-<script>
-const API=window.location.origin+(window.location.pathname.includes('/masar')?'/masar':'');
-const currentUser=JSON.parse(localStorage.getItem('currentUser')||'null');
-function escapeHtml(v=''){const d=document.createElement('div');d.textContent=String(v);return d.innerHTML}
-function logout(){localStorage.removeItem('currentUser');sessionStorage.removeItem('assistantLoggedIn');location.href='login'}
-if(!currentUser||currentUser.role!=='teacher'||!currentUser.isTeacherAccount||!currentUser.teacherId){location.href='login'}
-else { document.getElementById('account-name').textContent=`${currentUser.firstName||''} ${currentUser.lastName||''}`.trim()||'حساب المدرس'; document.getElementById('account-avatar').textContent=(currentUser.firstName||'م')[0]; loadDashboard(); }
-async function loadDashboard(){try{const r=await fetch(`${API}/api/teachers/dashboard/${currentUser.teacherId}?userId=${currentUser._id}`);const d=await r.json();if(!r.ok||!d.success)throw new Error(d.message||'تعذر تحميل البيانات');render(d)}catch(e){document.getElementById('app').innerHTML=`<div class="panel empty"><i class="ti ti-alert-circle"></i><br>${escapeHtml(e.message)}</div>`}}
-function people(list){return list.length?`<div class="people">${list.map(p=>`<div class="person"><b>${escapeHtml(p.name)}</b> — ${escapeHtml(p.phone)} <small>${escapeHtml(p.grade)} · ${escapeHtml(p.governorate)}</small></div>`).join('')}</div>`:'<div class="empty">لا توجد مشاهدات حتى الآن</div>'}
-function render(d){const s=d.stats,t=d.teacher;document.getElementById('app').innerHTML=`
-<section class="hero"><div><h1>مرحبًا أستاذ ${escapeHtml(t.name)}</h1><p>${escapeHtml(t.subjectAr||'')} · لوحة متابعة المحتوى والطلاب</p></div>${t.imagePath?`<img class="teacher-photo" src="${escapeHtml(t.imagePath)}" alt="صورة المدرس">`:''}</section>
-<section class="stats"><div class="stat"><i class="ti ti-video"></i><b>${s.videosCount}</b><span>فيديو مرفوع</span></div><div class="stat"><i class="ti ti-eye"></i><b>${s.viewersCount}</b><span>طالب شاهد المحتوى</span></div><div class="stat"><i class="ti ti-message-question"></i><b>${s.questionsCount}</b><span>سؤال من الطلاب</span></div><div class="stat"><i class="ti ti-file-description"></i><b>${s.examsCount}</b><span>امتحان مرفوع</span></div><div class="stat"><i class="ti ti-chart-bar"></i><b>${s.resultsCount}</b><span>نتيجة طالب</span></div></section>
-<section class="grid"><div><section class="panel"><h2><i class="ti ti-video" style="color:var(--blue)"></i> فيديوهاتي والمشاهدات</h2>${d.videos.length?d.videos.map(v=>`<article class="video"><div class="row"><span class="title">${escapeHtml(v.title)}</span><span class="tag">${v.watchers.length} مشاهدة</span></div><div class="watchers"><details><summary>عرض أسماء الطلاب الذين شاهدوا الفيديو</summary>${people(v.watchers)}</details></div></article>`).join(''):'<div class="empty">لم يتم رفع فيديوهات بعد</div>'}</section><section class="panel"><h2><i class="ti ti-file-description" style="color:var(--teal)"></i> الامتحانات والنتائج</h2>${d.exams.length?d.exams.map(e=>`<article class="exam"><div class="row"><span class="title">${escapeHtml(e.title)}</span><span class="tag">${e.results.length} نتيجة</span></div><details class="watchers"><summary>عرض نتائج الطلاب</summary>${e.results.length?`<div class="people">${e.results.map(r=>`<div class="person result"><b>${escapeHtml(r.studentName)}</b> <span class="score">${Number(r.percentage||0)}%</span><small>${escapeHtml(r.grade)} · ${escapeHtml(r.governorate)} · ${escapeHtml(r.studentPhone||'—')}</small></div>`).join('')}</div>`:'<div class="empty">لا توجد محاولات حتى الآن</div>'}</details></article>`).join(''):'<div class="empty">لم يتم رفع امتحانات بعد</div>'}</section></div><aside><section class="panel"><h2><i class="ti ti-messages" style="color:var(--gold)"></i> أسئلة الطلاب عن الفيديوهات</h2>${d.questions.length?d.questions.map(q=>`<div class="question"><b>${escapeHtml(q.studentName||'طالب')}</b> — ${escapeHtml(q.videoTitle)}<br>${escapeHtml(q.question)}<small>${escapeHtml(q.studentPhone||'')} · ${new Date(q.createdAt).toLocaleString('ar-EG')}</small></div>`).join(''):'<div class="empty">لا توجد أسئلة حاليًا</div>'}</section></aside></section>`}
-</script>
-</body></html>
+    <!-- ════ MAIN PLATFORM HEADER ════ -->
+    <header>
+        <div class="header-inner">
+            <!-- Right: Logo -->
+            <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+                <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
+                <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
+            </a>
+
+            <!-- Center: Navigation -->
+            <nav class="header-center">
+                <a href="/" class="nav-link-item">الرئيسية</a>
+                <a href="teachers" class="nav-link-item">المعلمين</a>
+                <a href="subjects" class="nav-link-item">المواد الدراسية</a>
+                <a href="courses" class="nav-link-item">الكورسات</a>
+                <a href="exams" class="nav-link-item">الامتحانات</a>
+            </nav>
+
+            <!-- Left: Actions & Themes -->
+            <div class="header-left">
+                <!-- قائمة المستخدم (يتحكم بها script.js) -->
+                <nav class="header-actions" id="authActions" style="display:none;"></nav>
+                <div class="user-dropdown-container" id="userDropdownArea" style="display:none;">
+                    <button class="user-menu-btn" onclick="toggleUserMenu()">
+                        <span id="navUserName">المعلم</span>
+                        <div class="user-icon-circle">👤</div>
+                    </button>
+                    <div class="user-dropdown-menu" id="userMenu">
+                        <a href="teacher-dashboard" class="menu-item" style="color:var(--dash-primary); font-weight:800;">📊 لوحة المعلم</a>
+                        <div class="menu-item balance-item"><span>💰 الرصيد:</span><span id="userPoints">0</span> ج.م</div>
+                        <hr>
+                        <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+                    </div>
+                </div>
+                <!-- زر تبديل اللغة -->
+                <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language" onclick="toggleLanguageMode(event)">
+                    <span>EN</span>
+                    <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </button>
+                <!-- محول الأوضاع -->
+                <div class="theme-capsule" aria-label="تبديل المظهر">
+                    <button type="button" class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار" onclick="setThemeMode('light')">☀</button>
+                    <button type="button" class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام" onclick="setThemeMode('dark')">🌙</button>
+                </div>
+                <button type="button" class="btn-fill" onclick="handleLogout ? handleLogout() : logout()" style="padding:8px 18px; font-size:0.88rem;">
+                    <i class="ti ti-logout" style="margin-left:4px;"></i> خروج
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Sidebar Trigger -->
+    <button class="sidebar-mobile-toggle" onclick="toggleSidebar()" aria-label="فتح القائمة الجانبية">
+        <i class="ti ti-layout-sidebar-right"></i>
+    </button>
+
+    <!-- ════ DASHBOARD MASTER LAYOUT ════ -->
+    <div class="dash-layout">
+        <!-- ── SIDEBAR (شريط الأدوات الجانبي) ── -->
+        <aside class="dash-sidebar" id="dashSidebar">
+            <div>
+                <!-- Teacher Profile Card -->
+                <div class="sidebar-teacher-card">
+                    <img id="sidebarAvatarImg" class="sidebar-avatar" src="" alt="المدرس" style="display:none;">
+                    <div id="sidebarAvatarFallback" class="sidebar-avatar">م</div>
+                    <div style="min-width:0;">
+                        <div class="sidebar-teacher-name" id="sidebarTeacherName">حساب المعلم</div>
+                        <span class="sidebar-teacher-sub" id="sidebarTeacherSubject">المادة الدراسية</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Menu -->
+                <div class="sidebar-menu">
+                    <button class="sidebar-link active" onclick="activateTab('overview', this)">
+                        <div class="sidebar-link-content">
+                            <i class="ti ti-dashboard"></i>
+                            <span>نظرة عامة والنسب</span>
+                        </div>
+                    </button>
+
+                    <button class="sidebar-link" onclick="activateTab('centers', this)">
+                        <div class="sidebar-link-content">
+                            <i class="ti ti-map-pin"></i>
+                            <span>أماكن وسناتر الطلاب</span>
+                        </div>
+                        <span class="sidebar-badge" id="sideBadgeCenters">0</span>
+                    </button>
+
+                    <button class="sidebar-link" onclick="activateTab('videos', this)">
+                        <div class="sidebar-link-content">
+                            <i class="ti ti-video"></i>
+                            <span>الفيديوهات والمشاهدات</span>
+                        </div>
+                        <span class="sidebar-badge" id="sideBadgeVideos">0</span>
+                    </button>
+
+                    <button class="sidebar-link" onclick="activateTab('exams', this)">
+                        <div class="sidebar-link-content">
+                            <i class="ti ti-file-certificate"></i>
+                            <span>الامتحانات والدرجات</span>
+                        </div>
+                        <span class="sidebar-badge" id="sideBadgeExams">0</span>
+                    </button>
+
+                    <button class="sidebar-link" onclick="activateTab('questions', this)">
+                        <div class="sidebar-link-content">
+                            <i class="ti ti-messages"></i>
+                            <span>استفسارات الطلاب</span>
+                        </div>
+                        <span class="sidebar-badge" id="sideBadgeQuestions">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <button class="sidebar-logout-btn" onclick="logout()">
+                    <i class="ti ti-logout"></i>
+                    <span>تسجيل الخروج</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ── MAIN CONTENT (مساحة العمل والمحتوى) ── -->
+        <main class="dash-main">
+            <!-- Loading Indicator -->
+            <div id="dashLoader" style="text-align:center; padding:100px 20px;">
+                <div style="width:48px; height:48px; border:4px solid rgba(26,107,219,0.2); border-top-color:#1a6bdb; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px;"></div>
+                <h3 style="font-size:1.15rem; font-weight:800;">جاري تحميل لوحة المؤشرات والسناتر...</h3>
+            </div>
+
+            <div id="dashContent" style="display:none;">
+                <!-- Hero Welcome Banner -->
+                <div class="teacher-hero-banner">
+                    <div>
+                        <h1 class="hero-welcome-h1" id="heroGreeting">مرحباً بك أستاذنا ✨</h1>
+                        <p class="hero-welcome-p" id="heroSubjectText">متابعة تفاعلية لحضور الطلاب والسناتر والامتحانات والمشاهدات</p>
+                    </div>
+                    <div class="hero-stat-badge">
+                        <i class="ti ti-activity" style="font-size:1.8rem; color:#38bdf8;"></i>
+                        <div>
+                            <div style="font-size:0.78rem; color:#bfdbfe; font-weight:700;">معدل نشاط الطلاب</div>
+                            <div style="font-family:'Outfit'; font-size:1.35rem; font-weight:900;" id="heroActiveRate">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ════ SMART PERCENTAGE METRICS (نسب وعدد الطلاب والفعالين) ════ -->
+                <div class="metrics-grid">
+                    <!-- Metric 1: Total & Active Students -->
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-wrap blue"><i class="ti ti-users-group"></i></div>
+                            <span class="pct-pill good" id="metricActivePct">0% نشاط</span>
+                        </div>
+                        <div>
+                            <div class="metric-main-val" id="metricActiveCount">0</div>
+                            <div class="metric-title">الطلاب الفعّالين (المتفاعلين)</div>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-bar bar-blue" id="metricActiveBar" style="width:0%;"></div>
+                            </div>
+                            <div class="metric-subtext">
+                                <span>إجمالي المسجلين: <b id="metricTotalRegistered">0</b></span>
+                                <span id="metricActiveRatioText">0 / 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric 2: Attendance Rate (نسبة الحضور) -->
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-wrap emerald"><i class="ti ti-qrcode"></i></div>
+                            <span class="pct-pill good" id="metricAttendPct">0% حضور</span>
+                        </div>
+                        <div>
+                            <div class="metric-main-val" id="metricAttendCount">0</div>
+                            <div class="metric-title">مرات الحضور المسجلة بالسناتر</div>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-bar bar-emerald" id="metricAttendBar" style="width:0%;"></div>
+                            </div>
+                            <div class="metric-subtext">
+                                <span>نسبة الحضور التقديرية</span>
+                                <span id="metricAttendSub">0 طالب</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric 3: Pass Rate (نسبة النجاح العامة) -->
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-wrap purple"><i class="ti ti-award"></i></div>
+                            <span class="pct-pill info" id="metricPassRate">0% نجاح</span>
+                        </div>
+                        <div>
+                            <div class="metric-main-val" id="metricExamResultsCount">0</div>
+                            <div class="metric-title">إجمالي نتائج واختبارات الطلاب</div>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-bar bar-purple" id="metricPassBar" style="width:0%;"></div>
+                            </div>
+                            <div class="metric-subtext">
+                                <span>متوسط درجات الطلاب</span>
+                                <span id="metricAvgScore">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric 4: Total Views & Inquiries -->
+                    <div class="metric-card">
+                        <div class="metric-top">
+                            <div class="metric-icon-wrap orange"><i class="ti ti-player-play"></i></div>
+                            <span class="pct-pill warning" id="metricInquiriesCount">0 سؤال</span>
+                        </div>
+                        <div>
+                            <div class="metric-main-val" id="metricTotalViews">0</div>
+                            <div class="metric-title">إجمالي مشاهدات الحصص والدروس</div>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-bar bar-orange" id="metricViewsBar" style="width:0%;"></div>
+                            </div>
+                            <div class="metric-subtext">
+                                <span>عدد الفيديوهات المرفوعة</span>
+                                <span id="metricVideosCount">0 فيديو</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ════ TAB 1: OVERVIEW & CHARTS ════ -->
+                <div id="tab-overview" class="tab-content-area active">
+                    <!-- ════ CIRCULAR CENTERS / LOCATION ATTENDANCE SECTION ════ -->
+                    <div class="centers-attendance-section">
+                        <div class="section-header-flex">
+                            <div class="section-title-wrap">
+                                <h2>
+                                    <i class="ti ti-chart-donut-filled" style="color:var(--dash-primary)"></i>
+                                    مؤشر توزيع ونسب حضور الطلاب بالأماكن والسناتر
+                                </h2>
+                                <p>مخطط دائري يوضح نسبة الطلاب الحاضرين في كل سنتر ومحافظة بلون مميز</p>
+                            </div>
+                            <div class="toggle-group">
+                                <button class="toggle-btn active" id="btnToggleCenters" onclick="setAttendanceViewMode('centers')">حسب السناتر</button>
+                                <button class="toggle-btn" id="btnToggleGovs" onclick="setAttendanceViewMode('govs')">حسب المحافظات</button>
+                            </div>
+                        </div>
+
+                        <div class="centers-grid-layout">
+                            <!-- Circular Donut Gauge -->
+                            <div class="center-chart-box">
+                                <canvas id="chartCentersDonut"></canvas>
+                                <div class="chart-center-cutout">
+                                    <div class="cutout-number" id="cutoutTotalCount">0</div>
+                                    <div class="cutout-label" id="cutoutLabelText">طالب مسجل</div>
+                                </div>
+                            </div>
+
+                            <!-- Centers Color Breakdown Grid -->
+                            <div class="centers-breakdown-list" id="centersBreakdownGrid">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Performing Students Leaderboard -->
+                    <div class="centers-attendance-section" style="padding:24px;">
+                        <div class="section-header-flex" style="margin-bottom:16px;">
+                            <div class="section-title-wrap">
+                                <h2>
+                                    <i class="ti ti-trophy" style="color:#eab308"></i>
+                                    لوحة شرف الأوائل (المتفوقين دراسياً)
+                                </h2>
+                                <p>أعلى الطلاب الحاصلين على درجات متفوقة مع إمكانية التهنئة المباشرة</p>
+                            </div>
+                        </div>
+                        <div id="topStudentsListWrap" class="centers-breakdown-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ════ TAB 2: CENTERS & ATTENDANCE LOG ════ -->
+                <div id="tab-centers" class="tab-content-area">
+                    <div class="dash-filter-row">
+                        <div class="search-box-input">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="attendanceSearchInput" placeholder="ابحث باسم الطالب أو السنتر..." oninput="filterAttendanceLogs()">
+                        </div>
+                        <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
+                            إجمالي المسجلين بالحضور: <b id="totalAttendRecords">0</b>
+                        </div>
+                    </div>
+
+                    <div class="dash-table-wrap">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم الطالب</th>
+                                    <th>السنتر / المقر</th>
+                                    <th>اليوم</th>
+                                    <th>الميعاد</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>وقت التسجيل</th>
+                                    <th>هاتف الطالب</th>
+                                    <th>تواصل واتساب</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ════ TAB 3: VIDEOS & WATCHERS ════ -->
+                <div id="tab-videos" class="tab-content-area">
+                    <div class="dash-filter-row">
+                        <div class="search-box-input">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="searchVideosInput" placeholder="ابحث باسم الفيديو أو الحصة..." oninput="filterVideosTab()">
+                        </div>
+                        <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
+                            إجمالي الفيديوهات: <b id="tabVideosCount">0</b>
+                        </div>
+                    </div>
+                    <div id="videosAccordionWrap">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- ════ TAB 4: EXAMS & RESULTS ════ -->
+                <div id="tab-exams" class="tab-content-area">
+                    <div class="dash-filter-row">
+                        <div class="search-box-input">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="searchExamsInput" placeholder="ابحث باسم الطالب أو رقم الهاتف..." oninput="filterExamsTable()">
+                        </div>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <select id="selectExamFilter" onchange="filterExamsTable()" style="padding:9px 14px; border-radius:10px; border:1px solid var(--dash-border); font-family:inherit; font-weight:700; background:var(--dash-card); color:var(--dash-text);">
+                                <option value="ALL">جميع الامتحانات</option>
+                            </select>
+                            <button onclick="exportExamsCSV()" style="padding:9px 16px; border-radius:10px; background:#f0fdf4; border:1px solid #86efac; color:#166534; font-family:inherit; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+                                <i class="ti ti-file-spreadsheet"></i> تصدير Excel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="dash-table-wrap">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم الطالب</th>
+                                    <th>الامتحان</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>المحافظة</th>
+                                    <th>النسبة المئوية</th>
+                                    <th>التقدير</th>
+                                    <th>الهاتف</th>
+                                    <th>مراسلة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="examResultsTbody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ════ TAB 5: STUDENT QUESTIONS ════ -->
+                <div id="tab-questions" class="tab-content-area">
+                    <div class="dash-filter-row">
+                        <div class="search-box-input">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="searchQuestionsInput" placeholder="ابحث في أسئلة الطلاب..." oninput="filterQuestionsTab()">
+                        </div>
+                        <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
+                            الأسئلة الواردة: <b id="tabQuestionsCount">0</b>
+                        </div>
+                    </div>
+                    <div id="questionsCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px;">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripting Logic -->
+    <script>
+        const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+        let dashData = null;
+        let attendanceMode = 'centers'; // 'centers' or 'govs'
+        let donutChartInstance = null;
+        let allFlattenedResults = [];
+
+        // Curated Palette for Centers and Governorates
+        const VIBRANT_PALETTE = [
+            '#1a6bdb', '#00bfa6', '#ff6b35', '#8b5cf6', '#eab308',
+            '#06b6d4', '#ec4899', '#10b981', '#f97316', '#6366f1',
+            '#14b8a6', '#f43f5e', '#84cc16', '#3b82f6', '#a855f7'
+        ];
+
+        function escapeHtml(str = '') {
+            const div = document.createElement('div');
+            div.textContent = String(str);
+            return div.innerHTML;
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            sessionStorage.removeItem('assistantLoggedIn');
+            location.href = 'login';
+        }
+
+        
+        function setThemeMode(theme) {
+            if (typeof applyTheme === 'function') {
+                applyTheme(theme);
+            } else {
+                document.body.classList.toggle('dark-mode', theme === 'dark');
+                localStorage.setItem('theme', theme);
+                document.querySelectorAll('.theme-switcher').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.theme === theme);
+                });
+            }
+            if (donutChartInstance) {
+                renderCentersAndLocationsGauge();
+            }
+        }
+
+        function toggleLanguageMode(e) {
+            if (e) e.preventDefault();
+            const currentLang = localStorage.getItem('platformLanguage') || 'ar';
+            const nextLang = currentLang === 'en' ? 'ar' : 'en';
+            if (typeof setPlatformLanguage === 'function') {
+                setPlatformLanguage(nextLang);
+            } else {
+                localStorage.setItem('platformLanguage', nextLang);
+                location.reload();
+            }
+        }
+
+        // Initialize theme & language from platform script (after script.js loads)
+        document.addEventListener('DOMContentLoaded', () => {
+            // script.js handles initTheme() and initLanguageSwitcher() automatically
+            // But we call them explicitly here in case of timing issues
+            if (typeof initTheme === 'function') initTheme();
+            if (typeof initLanguageSwitcher === 'function') initLanguageSwitcher();
+        });
+
+        function toggleSidebar() {
+            document.getElementById('dashSidebar')?.classList.toggle('open');
+        }
+
+        // Auth Protection
+        if (!currentUser || currentUser.role !== 'teacher' || !currentUser.teacherId) {
+            location.href = 'login';
+        } else {
+            loadDashboard();
+        }
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`${API}/api/teachers/dashboard/${currentUser.teacherId}?userId=${currentUser._id}`);
+                const data = await res.json();
+                if (!res.ok || !data.success) throw new Error(data.message || 'تعذر جلب البيانات');
+                dashData = data;
+                renderTeacherDashboard(data);
+            } catch (err) {
+                document.getElementById('dashLoader').innerHTML = `
+                    <div style="color:#ef4444; font-weight:800; font-size:1.1rem;">
+                        <i class="ti ti-alert-triangle" style="font-size:2rem; display:block; margin-bottom:8px;"></i>
+                        حدث خطأ أثناء تحميل البيانات: ${escapeHtml(err.message)}
+                        <br>
+                        <button onclick="loadDashboard()" style="margin-top:14px; padding:8px 16px; border-radius:10px; background:var(--dash-primary); color:#fff; border:none; cursor:pointer;">إعادة المحاولة</button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderTeacherDashboard(d) {
+            document.getElementById('dashLoader').style.display = 'none';
+            document.getElementById('dashContent').style.display = 'block';
+
+            const t = d.teacher || {};
+            const s = d.stats || {};
+            const attendances = d.attendances || [];
+            const videos = d.videos || [];
+            const exams = d.exams || [];
+            const questions = d.questions || [];
+
+            // Sidebar details
+            document.getElementById('sidebarTeacherName').textContent = t.name || 'المعلم';
+            document.getElementById('sidebarTeacherSubject').textContent = t.subjectAr || 'المادة';
+            if (t.imagePath) {
+                const imgEl = document.getElementById('sidebarAvatarImg');
+                imgEl.src = t.imagePath;
+                imgEl.style.display = 'block';
+                document.getElementById('sidebarAvatarFallback').style.display = 'none';
+            }
+
+            // Hero Details
+            document.getElementById('heroGreeting').textContent = `مرحباً بك يا أستاذ ${t.name || ''} 👋`;
+            document.getElementById('heroSubjectText').textContent = `لوحة متابعة طلاب مادة ${t.subjectAr || ''} والسناتر والامتحانات والمشاهدات اللحظية`;
+
+            // Active Students & Percentage calculations (strictly real data)
+            const totalStudents = s.totalStudentsCount || 0;
+            const activeStudents = s.viewersCount || 0;
+            const activeRate = totalStudents > 0 ? Math.min(100, Math.round((activeStudents / totalStudents) * 100)) : 0;
+
+            document.getElementById('heroActiveRate').textContent = `${activeRate}%`;
+            document.getElementById('metricActivePct').textContent = `${activeRate}% نشاط`;
+            document.getElementById('metricActiveCount').textContent = activeStudents;
+            document.getElementById('metricActiveBar').style.width = `${activeRate}%`;
+            document.getElementById('metricTotalRegistered').textContent = totalStudents;
+            document.getElementById('metricActiveRatioText').textContent = totalStudents > 0 
+                ? `${activeStudents} من أصل ${totalStudents} طالب`
+                : 'لا يوجد طلاب مسجلين بعد';
+
+            // Attendance & QR Scans (strictly real data)
+            const attendCount = attendances.length;
+            const attendBase = totalStudents > 0 ? totalStudents : (activeStudents > 0 ? activeStudents : 0);
+            const attendRate = attendBase > 0 ? Math.min(100, Math.round((attendCount / attendBase) * 100)) : 0;
+            document.getElementById('metricAttendPct').textContent = `${attendRate}% حضور`;
+            document.getElementById('metricAttendCount').textContent = attendCount;
+            document.getElementById('metricAttendBar').style.width = `${attendRate}%`;
+            document.getElementById('metricAttendSub').textContent = attendCount > 0 
+                ? `${attendCount} تسجيل حضور بالسناتر`
+                : 'لا توجد تسجيلات حضور بعد';
+
+            // Exams & Results (strictly real data)
+            const allResults = exams.flatMap(e => e.results || []);
+            const totalResults = allResults.length;
+            const passCount = allResults.filter(r => Number(r.percentage || 0) >= 50).length;
+            const passRate = totalResults > 0 ? Math.round((passCount / totalResults) * 100) : 0;
+            const avgScore = totalResults > 0 ? (allResults.reduce((a, b) => a + Number(b.percentage || 0), 0) / totalResults).toFixed(1) : 0;
+
+            document.getElementById('metricPassRate').textContent = `${passRate}% نجاح`;
+            document.getElementById('metricExamResultsCount').textContent = totalResults;
+            document.getElementById('metricPassBar').style.width = `${passRate}%`;
+            document.getElementById('metricAvgScore').textContent = totalResults > 0 ? `${avgScore}%` : '—';
+
+            // Views & Inquiries (strictly real data)
+            const totalViews = videos.reduce((acc, v) => acc + (v.watchers ? v.watchers.length : 0), 0);
+            document.getElementById('metricTotalViews').textContent = totalViews;
+            document.getElementById('metricInquiriesCount').textContent = `${questions.length} سؤال`;
+            document.getElementById('metricVideosCount').textContent = `${videos.length} فيديو`;
+            const viewsRate = totalStudents > 0 ? Math.min(100, Math.round((totalViews / totalStudents) * 100)) : (totalViews > 0 ? 100 : 0);
+            document.getElementById('metricViewsBar').style.width = `${viewsRate}%`;
+
+            // Sidebar Badges
+            document.getElementById('sideBadgeVideos').textContent = videos.length;
+            document.getElementById('sideBadgeExams').textContent = exams.length;
+            document.getElementById('sideBadgeQuestions').textContent = questions.length;
+            document.getElementById('sideBadgeCenters').textContent = attendances.length;
+
+            // Render Center / Location Gauge
+            renderCentersAndLocationsGauge();
+
+            // Render Leaderboard
+            renderTopPerformers(allResults);
+
+            // Render Attendance Table
+            renderAttendanceTable(attendances);
+
+            // Render Videos
+            renderVideosAccordion(videos);
+
+            // Render Exams
+            renderExamsTable(exams);
+
+            // Render Questions
+            renderQuestionsGrid(questions);
+
+            // Re-apply platform language in case user is in English mode
+            if (typeof setPlatformLanguage === 'function') {
+                setPlatformLanguage(localStorage.getItem('platformLanguage') || 'ar');
+            }
+        }
+
+        // ════ TABS NAVIGATION ════
+        function activateTab(tabId, btn) {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-content-area').forEach(t => t.classList.remove('active'));
+
+            btn.classList.add('active');
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.classList.add('active');
+
+            if (window.innerWidth <= 992) {
+                document.getElementById('dashSidebar')?.classList.remove('open');
+            }
+        }
+
+        // ════ CENTERS & LOCATIONS CIRCULAR DONUT GAUGE ════
+        function setAttendanceViewMode(mode) {
+            attendanceMode = mode;
+            document.getElementById('btnToggleCenters').classList.toggle('active', mode === 'centers');
+            document.getElementById('btnToggleGovs').classList.toggle('active', mode === 'govs');
+            renderCentersAndLocationsGauge();
+        }
+
+        function renderCentersAndLocationsGauge() {
+            if (!dashData) return;
+            const attendances = dashData.attendances || [];
+            const videos = dashData.videos || [];
+            const allWatchers = videos.flatMap(v => v.watchers || []);
+
+            // Aggregate data by Center or Governorate
+            const countMap = {};
+            if (attendanceMode === 'centers') {
+                attendances.forEach(a => {
+                    const name = (a.center && a.center !== '—') ? a.center : 'السنتر الرئيسي';
+                    countMap[name] = (countMap[name] || 0) + 1;
+                });
+            } else {
+                // By Governorate — from video watchers
+                allWatchers.forEach(w => {
+                    const gov = w.governorate && w.governorate !== '—' ? w.governorate : 'غير محدد';
+                    countMap[gov] = (countMap[gov] || 0) + 1;
+                });
+            }
+
+            const labels = Object.keys(countMap);
+            const values = Object.values(countMap);
+            const total = values.reduce((a, b) => a + b, 0);
+
+            // ── إذا مفيش داتا حقيقية اعرض رسالة فارغة ومؤشر دائري محايد ──
+            const breakdownGrid = document.getElementById('centersBreakdownGrid');
+            if (labels.length === 0) {
+                document.getElementById('cutoutTotalCount').textContent = '0';
+                document.getElementById('cutoutLabelText').textContent = attendanceMode === 'centers' ? 'حاضر بالسناتر' : 'طالب مشاهد';
+                if (donutChartInstance) { donutChartInstance.destroy(); donutChartInstance = null; }
+                const isDark = document.body.classList.contains('dark-mode');
+                const ctx = document.getElementById('chartCentersDonut')?.getContext('2d');
+                if (ctx) {
+                    donutChartInstance = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['لا توجد تسجيلات بعد'],
+                            datasets: [{
+                                data: [1],
+                                backgroundColor: [isDark ? '#1e293b' : '#e2e8f0'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '72%',
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { enabled: false }
+                            }
+                        }
+                    });
+                }
+                if (breakdownGrid) {
+                    const modeLabel = attendanceMode === 'centers' ? 'سجلات حضور بالسنتر' : 'مشاهدين مسجلين';
+                    breakdownGrid.innerHTML = `
+                        <div style="color:var(--dash-muted); padding:32px 20px; text-align:center; grid-column:1/-1; font-size:0.95rem; font-weight:700;">
+                            <i class="ti ti-map-pin-off" style="font-size:2.2rem; display:block; margin-bottom:10px; opacity:0.6; color:var(--dash-primary);"></i>
+                            لا توجد ${modeLabel} حالياً.<br>
+                            <small style="font-weight:600; font-size:0.85rem; opacity:0.8;">عندما يقوم المساعد بمسح كود حضور الطلاب في السنتر، ستظهر هنا نسب الطلاب لكل سنتر بلون مميز في المخطط الدائري تلقائياً.</small>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            // Assign distinct color to every center
+            const bgColors = labels.map((_, i) => VIBRANT_PALETTE[i % VIBRANT_PALETTE.length]);
+
+            // Update Cutout Info
+            document.getElementById('cutoutTotalCount').textContent = total;
+            document.getElementById('cutoutLabelText').textContent = attendanceMode === 'centers' ? 'حاضر بالسناتر' : 'طالب مشاهد';
+
+            // Render Chart.js Donut
+            const ctx = document.getElementById('chartCentersDonut')?.getContext('2d');
+            if (ctx) {
+                if (donutChartInstance) donutChartInstance.destroy();
+                donutChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: bgColors,
+                            borderWidth: 3,
+                            borderColor: document.body.classList.contains('dark-mode') ? '#11203d' : '#ffffff',
+                            hoverOffset: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '72%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                rtl: true,
+                                titleFont: { family: 'Cairo' },
+                                bodyFont: { family: 'Cairo' },
+                                callbacks: {
+                                    label: function(ctx) {
+                                        const val = ctx.raw || 0;
+                                        const pct = total > 0 ? Math.round((val / total) * 100) : 0;
+                                        return ` ${val} طالب (${pct}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Render Color Breakdown Grid
+            if (breakdownGrid) {
+                breakdownGrid.innerHTML = labels.map((name, i) => {
+                    const count = values[i];
+                    const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+                    const color = bgColors[i];
+                    return `
+                        <div class="center-info-pill">
+                            <div class="center-color-dot" style="background:${color}; box-shadow:0 0 0 3px ${color}33;"></div>
+                            <div class="center-details">
+                                <div class="center-name" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
+                                <div class="center-count-text">${count} ${attendanceMode === 'centers' ? 'طالب حاضر' : 'طالب'}</div>
+                            </div>
+                            <div class="center-pct-tag" style="color:${color};">${pct}%</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // ════ TOP PERFORMERS (LEADERBOARD) ════
+        function renderTopPerformers(results) {
+            const studentMap = {};
+            results.forEach(r => {
+                if (!r.studentName || r.studentName === 'طالب') return;
+                const key = (r.studentPhone && r.studentPhone !== '—') ? r.studentPhone : r.studentName;
+                if (!studentMap[key]) {
+                    studentMap[key] = {
+                        name: r.studentName,
+                        phone: r.studentPhone,
+                        grade: r.grade,
+                        gov: r.governorate,
+                        totalScore: 0,
+                        count: 0
+                    };
+                }
+                studentMap[key].totalScore += Number(r.percentage || 0);
+                studentMap[key].count += 1;
+            });
+
+            const top = Object.values(studentMap)
+                .map(s => ({ ...s, avg: Math.round(s.totalScore / s.count) }))
+                .sort((a, b) => b.avg - a.avg)
+                .slice(0, 6);
+
+            const wrap = document.getElementById('topStudentsListWrap');
+            if (!wrap) return;
+
+            if (!top.length) {
+                wrap.innerHTML = `<div style="color:var(--dash-muted); padding:20px; text-align:center; grid-column:1/-1;">لا توجد درجات امتحانات كافية بعد لإظهار لوحة الشرف.</div>`;
+                return;
+            }
+
+            wrap.innerHTML = top.map((st, idx) => {
+                const medals = ['🥇', '🥈', '🥉', '🏅', '⭐', '✨'];
+                const badgeColor = idx === 0 ? '#fef08a' : (idx === 1 ? '#e2e8f0' : (idx === 2 ? '#fed7aa' : '#f1f5f9'));
+                const waText = encodeURIComponent(`أهلاً يا ${st.name}، فخور جداً بتفوقك وحصولك على المركز المتقدم (${st.avg}%) في مادتنا على منصة EDGE Academy. استمر في التألق! 🌟`);
+                return `
+                    <div class="center-info-pill" style="border-right:4px solid var(--dash-primary);">
+                        <div style="font-size:1.5rem;">${medals[idx] || '🏆'}</div>
+                        <div class="center-details">
+                            <div class="center-name">${escapeHtml(st.name)}</div>
+                            <div class="center-count-text">${escapeHtml(st.grade || '—')} · ${escapeHtml(st.gov || '—')}</div>
+                        </div>
+                        <div class="center-pct-tag" style="color:#16a34a;">${st.avg}%</div>
+                        ${st.phone && st.phone !== '—' ? `
+                            <a href="https://wa.me/20${st.phone.replace(/^0+/, '')}?text=${waText}" target="_blank" class="btn-wa-action" title="تهنئة واتساب">
+                                <i class="ti ti-brand-whatsapp"></i>
+                            </a>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ════ ATTENDANCE TABLE ════
+        let allAttendances = [];
+        function renderAttendanceTable(list) {
+            allAttendances = list || [];
+            document.getElementById('totalAttendRecords').textContent = allAttendances.length;
+            filterAttendanceLogs();
+        }
+
+        function filterAttendanceLogs() {
+            const q = (document.getElementById('attendanceSearchInput')?.value || '').toLowerCase().trim();
+            const tbody = document.getElementById('attendanceTableBody');
+            if (!tbody) return;
+
+            const filtered = allAttendances.filter(a =>
+                !q ||
+                (a.studentName && a.studentName.toLowerCase().includes(q)) ||
+                (a.center && a.center.toLowerCase().includes(q)) ||
+                (a.studentPhone && a.studentPhone.includes(q))
+            );
+
+            if (!filtered.length) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--dash-muted);">لا توجد سجلات حضور مسجلة بالسناتر حالياً.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((a, i) => {
+                const dateStr = a.scannedAt ? new Date(a.scannedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '—';
+                const waMsg = encodeURIComponent(`أهلاً يا ${a.studentName}، تم تسجيل حضورك بنجاح في ${a.center || 'السنتر'} بمادة ${dashData?.teacher?.subjectAr || ''}.`);
+                return `
+                    <tr>
+                        <td style="color:var(--dash-muted);">${i + 1}</td>
+                        <td><b>${escapeHtml(a.studentName || 'طالب')}</b></td>
+                        <td><span style="font-weight:800; color:var(--dash-primary);">${escapeHtml(a.center || 'السنتر')}</span></td>
+                        <td>${escapeHtml(a.day || '—')}</td>
+                        <td>${escapeHtml(a.time || '—')}</td>
+                        <td>${escapeHtml(a.grade || '—')}</td>
+                        <td><small style="color:var(--dash-muted);">${dateStr}</small></td>
+                        <td style="font-family:'Outfit';">${escapeHtml(a.studentPhone || '—')}</td>
+                        <td>
+                            ${a.studentPhone && a.studentPhone !== '—' ? `
+                                <a href="https://wa.me/20${a.studentPhone.replace(/^0+/, '')}?text=${waMsg}" target="_blank" class="btn-wa-action">
+                                    <i class="ti ti-brand-whatsapp"></i>
+                                </a>
+                            ` : '—'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ════ VIDEOS ACCORDION ════
+        function renderVideosAccordion(videos) {
+            const wrap = document.getElementById('videosAccordionWrap');
+            document.getElementById('tabVideosCount').textContent = videos.length;
+            if (!wrap) return;
+
+            if (!videos.length) {
+                wrap.innerHTML = `<div style="text-align:center; padding:40px; color:var(--dash-muted);">لم يتم رفع أي فيديوهات حتى الآن.</div>`;
+                return;
+            }
+
+            wrap.innerHTML = videos.map((v, i) => {
+                const watchers = v.watchers || [];
+                return `
+                    <div class="center-info-pill" style="margin-bottom:12px; display:block; padding:18px;" data-title="${escapeHtml(v.title.toLowerCase())}">
+                        <div style="display:flex; align-items:center; justify-content:space-between; cursor:pointer;" onclick="toggleWatchersSection(${i})">
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <i class="ti ti-video" style="font-size:1.4rem; color:var(--dash-primary);"></i>
+                                <span style="font-weight:900; font-size:1.05rem;">${escapeHtml(v.title)}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="background:var(--dash-primary-light); color:var(--dash-primary); padding:4px 12px; border-radius:999px; font-weight:800; font-size:0.85rem;">
+                                    <i class="ti ti-eye"></i> ${watchers.length} مشاهدة
+                                </span>
+                                <i class="ti ti-chevron-down" id="vChevron-${i}" style="color:var(--dash-muted); transition:transform 0.2s;"></i>
+                            </div>
+                        </div>
+
+                        <div id="vWatchers-${i}" style="display:none; margin-top:16px; padding-top:14px; border-top:1px dashed var(--dash-border);">
+                            <div style="font-size:0.85rem; font-weight:800; color:var(--dash-muted); margin-bottom:10px;">الطلاب المشاهدون:</div>
+                            ${watchers.length ? `
+                                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px;">
+                                    ${watchers.map(w => `
+                                        <div style="background:var(--dash-card); padding:10px 14px; border-radius:12px; border:1px solid var(--dash-border); display:flex; align-items:center; justify-content:space-between;">
+                                            <div>
+                                                <b>${escapeHtml(w.name)}</b>
+                                                <div style="font-size:0.78rem; color:var(--dash-muted);">${escapeHtml(w.grade || '—')} · ${escapeHtml(w.governorate || '—')}</div>
+                                            </div>
+                                            ${w.phone && w.phone !== '—' ? `
+                                                <a href="https://wa.me/20${w.phone.replace(/^0+/, '')}" target="_blank" class="btn-wa-action"><i class="ti ti-brand-whatsapp"></i></a>
+                                            ` : ''}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : `<div style="color:var(--dash-muted); font-size:0.85rem;">لم يسجل هذا الفيديو مشاهدات بعد.</div>`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleWatchersSection(idx) {
+            const p = document.getElementById(`vWatchers-${idx}`);
+            const c = document.getElementById(`vChevron-${idx}`);
+            if (p) {
+                const isOpen = p.style.display === 'block';
+                p.style.display = isOpen ? 'none' : 'block';
+                if (c) c.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
+        function filterVideosTab() {
+            const q = (document.getElementById('searchVideosInput')?.value || '').toLowerCase().trim();
+            document.querySelectorAll('#videosAccordionWrap > div').forEach(el => {
+                const title = el.getAttribute('data-title') || '';
+                el.style.display = title.includes(q) ? 'block' : 'none';
+            });
+        }
+
+        // ════ EXAMS TABLE ════
+        function renderExamsTable(exams) {
+            allFlattenedResults = [];
+            const select = document.getElementById('selectExamFilter');
+            if (select) {
+                select.innerHTML = '<option value="ALL">جميع الامتحانات</option>';
+                exams.forEach(e => {
+                    const opt = document.createElement('option');
+                    opt.value = e._id || e.title;
+                    opt.textContent = e.title;
+                    select.appendChild(opt);
+                });
+            }
+
+            exams.forEach(exam => {
+                (exam.results || []).forEach(r => {
+                    allFlattenedResults.push({
+                        examId: exam._id || exam.title,
+                        examTitle: exam.title,
+                        studentName: r.studentName || 'طالب',
+                        grade: r.grade || '—',
+                        gov: r.governorate || '—',
+                        percentage: Number(r.percentage || 0),
+                        phone: r.studentPhone || '—'
+                    });
+                });
+            });
+
+            allFlattenedResults.sort((a, b) => b.percentage - a.percentage);
+            filterExamsTable();
+        }
+
+        function filterExamsTable() {
+            const q = (document.getElementById('searchExamsInput')?.value || '').toLowerCase().trim();
+            const examFilter = document.getElementById('selectExamFilter')?.value || 'ALL';
+            const tbody = document.getElementById('examResultsTbody');
+            if (!tbody) return;
+
+            const filtered = allFlattenedResults.filter(r => {
+                const matchExam = examFilter === 'ALL' || r.examId === examFilter || r.examTitle === examFilter;
+                const matchQ = !q || r.studentName.toLowerCase().includes(q) || (r.phone && r.phone.includes(q));
+                return matchExam && matchQ;
+            });
+
+            if (!filtered.length) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--dash-muted);">لا توجد نتائج مطابقة لبحثك.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((r, i) => {
+                let badgeColor = '#16a34a';
+                let badgeText = 'ممتاز';
+                if (r.percentage < 50) { badgeColor = '#dc2626'; badgeText = 'راسب'; }
+                else if (r.percentage < 65) { badgeColor = '#ea580c'; badgeText = 'مقبول'; }
+                else if (r.percentage < 75) { badgeColor = '#ca8a04'; badgeText = 'جيد'; }
+                else if (r.percentage < 85) { badgeColor = '#0284c7'; badgeText = 'جيد جداً'; }
+
+                const waMsg = encodeURIComponent(`أهلاً يا ${r.studentName}، درجتك في امتحان (${r.examTitle}) بمادة ${dashData?.teacher?.subjectAr || ''} هي ${r.percentage}% (${badgeText}).`);
+                return `
+                    <tr>
+                        <td style="color:var(--dash-muted);">${i + 1}</td>
+                        <td><b>${escapeHtml(r.studentName)}</b></td>
+                        <td style="color:var(--dash-primary); font-weight:700;">${escapeHtml(r.examTitle)}</td>
+                        <td>${escapeHtml(r.grade)}</td>
+                        <td>${escapeHtml(r.gov)}</td>
+                        <td><b style="font-family:'Outfit'; font-size:1.05rem;">${r.percentage}%</b></td>
+                        <td><span style="color:${badgeColor}; font-weight:800;">${badgeText}</span></td>
+                        <td style="font-family:'Outfit';">${escapeHtml(r.phone)}</td>
+                        <td>
+                            ${r.phone && r.phone !== '—' ? `
+                                <a href="https://wa.me/20${r.phone.replace(/^0+/, '')}?text=${waMsg}" target="_blank" class="btn-wa-action"><i class="ti ti-brand-whatsapp"></i></a>
+                            ` : '—'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function exportExamsCSV() {
+            if (!allFlattenedResults.length) {
+                alert('لا توجد نتائج لتصديرها');
+                return;
+            }
+            const headers = ['م', 'اسم الطالب', 'الامتحان', 'الصف', 'المحافظة', 'النسبة المئوية', 'الهاتف'];
+            const rows = allFlattenedResults.map((r, i) => [
+                i + 1,
+                `"${r.studentName.replace(/"/g, '""')}"`,
+                `"${r.examTitle.replace(/"/g, '""')}"`,
+                `"${r.grade.replace(/"/g, '""')}"`,
+                `"${r.gov.replace(/"/g, '""')}"`,
+                `"${r.percentage}%"`,
+                `"${r.phone}"`
+            ]);
+            const csv = '\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `نتائج_الامتحانات_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ════ QUESTIONS GRID ════
+        function renderQuestionsGrid(questions) {
+            const grid = document.getElementById('questionsCardsGrid');
+            document.getElementById('tabQuestionsCount').textContent = questions.length;
+            if (!grid) return;
+
+            if (!questions.length) {
+                grid.innerHTML = `<div style="text-align:center; padding:40px; color:var(--dash-muted); grid-column:1/-1;">لا توجد أسئلة من الطلاب حالياً.</div>`;
+                return;
+            }
+
+            grid.innerHTML = questions.map(q => {
+                const dateStr = q.createdAt ? new Date(q.createdAt).toLocaleDateString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : 'مؤخراً';
+                const waText = encodeURIComponent(`أهلاً يا ${q.studentName || 'طالب'}، بخصوص سؤالك في مادة ${dashData?.teacher?.subjectAr || ''} على درس (${q.videoTitle || ''}):\n\n"${q.question || ''}"\n\nإجابتك كالتالي: `);
+                return `
+                    <div class="center-info-pill" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px; border-right:4px solid var(--accent-orange);" data-q="${escapeHtml((q.studentName || '') + ' ' + (q.videoTitle || '') + ' ' + (q.question || '')).toLowerCase()}">
+                        <div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                                <b>${escapeHtml(q.studentName || 'طالب')}</b>
+                                <span style="font-size:0.75rem; background:var(--dash-primary-light); color:var(--dash-primary); padding:3px 8px; border-radius:6px;">${escapeHtml(q.videoTitle || 'فيديو')}</span>
+                            </div>
+                            <div style="font-size:0.92rem; color:var(--dash-text); line-height:1.6; background:var(--dash-card); padding:10px; border-radius:8px; border:1px solid var(--dash-border);">
+                                ${escapeHtml(q.question || '')}
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--dash-border); padding-top:10px; width:100%;">
+                            <small style="color:var(--dash-muted);">${dateStr}</small>
+                            ${q.studentPhone && q.studentPhone !== '—' ? `
+                                <a href="https://wa.me/20${q.studentPhone.replace(/^0+/, '')}?text=${waText}" target="_blank" style="display:inline-flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; background:#22c55e; color:#fff; text-decoration:none; font-weight:800; font-size:0.8rem;">
+                                    <i class="ti ti-brand-whatsapp"></i> رد عبر واتساب
+                                </a>
+                            ` : '<span style="font-size:0.78rem; color:var(--dash-muted);">الرقم غير مسجل</span>'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterQuestionsTab() {
+            const q = (document.getElementById('searchQuestionsInput')?.value || '').toLowerCase().trim();
+            document.querySelectorAll('#questionsCardsGrid > div').forEach(el => {
+                const text = el.getAttribute('data-q') || '';
+                el.style.display = text.includes(q) ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>

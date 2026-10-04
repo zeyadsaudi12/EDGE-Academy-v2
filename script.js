@@ -430,11 +430,11 @@ function initAuthCanvas() {
 
     for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
 
-    const hLines = Array.from({length: 12}, () => new GridLine(true));
+    const hLines = Array.from({ length: 12 }, () => new GridLine(true));
 
-    const vLines = Array.from({length: 10}, () => new GridLine(false));
+    const vLines = Array.from({ length: 10 }, () => new GridLine(false));
 
-    const spheres = Array.from({length: 4}, () => new Sphere());
+    const spheres = Array.from({ length: 4 }, () => new Sphere());
 
     function animate() {
 
@@ -631,6 +631,21 @@ function updateNavbarAuth(currentUser) {
         if (guestGreeting) guestGreeting.style.display = 'none';
         if (userNamePlaceholder) userNamePlaceholder.textContent = currentUser.firstName || currentUser.name || (isAdmin ? 'المسؤول' : 'طالب EDGE Academy');
 
+        // للمدرس: حول رابط البروفايل لصفحة لوحة المعلم
+        if (currentUser.role === 'teacher' || currentUser.isTeacherAccount || currentUser.teacherId) {
+            document.querySelectorAll('a[href="profile"], a[href="/profile"], #userMenu a[href="profile"], #mobileAuthUser a[href="profile"], #mobileNavMenu a[href="profile"]').forEach(function(a) {
+                a.href = 'teacher-dashboard';
+                a.innerHTML = '📊 لوحة المعلم';
+            });
+            document.querySelectorAll('#mobileAuthUser a[href="profile"]').forEach(function(a) {
+                a.href = 'teacher-dashboard';
+                a.innerHTML = '📊 لوحة المعلم';
+            });
+            document.querySelectorAll('#userMenu .balance-item').forEach(function(el) {
+                el.style.display = 'none';
+            });
+        }
+
     } else {
 
         if (authActions) authActions.style.display = 'flex';
@@ -660,9 +675,9 @@ function initSmartNavbar() {
 
     const sections = [
 
-        { id: 'teachersGrid',          selector: '[href*="teachersGrid"]' },
+        { id: 'teachersGrid', selector: '[href*="teachersGrid"]' },
 
-        { id: 'subjectsWrapper',       selector: '[href*="subjectsWrapper"]' },
+        { id: 'subjectsWrapper', selector: '[href*="subjectsWrapper"]' },
 
         { id: 'latest-videos-section', selector: '[href*="latest-videos-section"]' },
 
@@ -784,7 +799,7 @@ function setNavActive(activeLink) {
 
     const isDesktop = activeLink.classList.contains('nav-link-item');
 
-    const isMobile  = activeLink.classList.contains('mobile-nav-link');
+    const isMobile = activeLink.classList.contains('mobile-nav-link');
 
     if (isDesktop) {
 
@@ -828,14 +843,14 @@ function initHeartbeat(userId) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, deviceId })
         })
-        .then(async res => {
-            if (res.status === 403) {
-                alert('❌ تم إلغاء ربط هذا الجهاز أو تم تسجيل الدخول من جهاز آخر. سيتم تسجيل خروجك الآن.');
-                localStorage.removeItem('currentUser');
-                window.location.href = 'login';
-            }
-        })
-        .catch(() => {});
+            .then(async res => {
+                if (res.status === 403) {
+                    alert('❌ تم إلغاء ربط هذا الجهاز أو تم تسجيل الدخول من جهاز آخر. سيتم تسجيل خروجك الآن.');
+                    localStorage.removeItem('currentUser');
+                    window.location.href = 'login';
+                }
+            })
+            .catch(() => { });
     };
     sendPing();
     setInterval(sendPing, 30000);
@@ -1006,7 +1021,7 @@ function handleLogin(event) {
                 if (data.user.role === 'admin') {
                     alert('👑 مرحباً بك يا مدير المنصة، جاري تحويلك للوحة التحكم...');
                     window.location.href = 'admin';
-                } else if (data.user.role === 'teacher' && data.user.isTeacherAccount) {
+                } else if (data.user.role === 'teacher' || data.user.isTeacherAccount) {
                     window.location.href = 'teacher-dashboard';
                 } else if (data.user.role === 'assistant' || data.user.role === 'teacher') {
                     window.location.href = 'assistant-hub';
@@ -2564,20 +2579,20 @@ function renderVideos() {
     // Courses and standalone lectures may coexist.  Do not hide a teacher's
     // standalone lecture merely because another course exists on the platform.
     const visibleCourses = (courses || []).filter(course => {
-            if (course.hidden) return false;
-            if (studentGrade && course.grades && course.grades.length > 0) {
-                return course.grades.includes(studentGrade);
-            }
-            return true;
-        });
+        if (course.hidden) return false;
+        if (studentGrade && course.grades && course.grades.length > 0) {
+            return course.grades.includes(studentGrade);
+        }
+        return true;
+    });
     const visibleStandaloneVideos = (videos || []).filter(video => {
-            if (video.courseId) return false;
-            if (video.hidden === true || video.hidden === 'true') return false;
-            if (studentGrade && video.grades && video.grades.length > 0) {
-                return video.grades.includes(studentGrade);
-            }
-            return true;
-        });
+        if (video.courseId) return false;
+        if (video.hidden === true || video.hidden === 'true') return false;
+        if (studentGrade && video.grades && video.grades.length > 0) {
+            return video.grades.includes(studentGrade);
+        }
+        return true;
+    });
     const itemsToDisplay = [
         ...visibleCourses.map(course => ({ ...course, _isStandaloneVideo: false })),
         ...visibleStandaloneVideos.map(video => ({ ...video, _isStandaloneVideo: true }))
@@ -3400,7 +3415,7 @@ function renderSubjects() {
     let currentUser = null;
     try {
         currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    } catch(e) {}
+    } catch (e) { }
 
     const studentGrade = currentUser && currentUser.grade ? currentUser.grade.trim() : null;
 
@@ -3776,7 +3791,7 @@ window.downloadStudentQR = async function () {
     let user = null;
     try {
         user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    } catch(e) {}
+    } catch (e) { }
     const studentName = user.username || user.firstName || 'student';
 
     try {
@@ -5115,10 +5130,84 @@ const platformTranslations = {
     'ليس لديك حساب؟': 'Don\'t have an account?',
     'مرحباً بك مرة أخرى': 'Welcome Back',
     'ادخل بياناتك لتواصل رحلتك التعليمية مع EDGE Academy.': 'Enter your details to continue learning with EDGE Academy.',
-    'محتوى متميز': 'Premium Content', 'متابعة مستمرة': 'Continuous Follow-up'
+    'محتوى متميز': 'Premium Content', 'متابعة مستمرة': 'Continuous Follow-up',
+    // لوحة المعلم وإحصائيات السناتر والطلاب
+    'لوحة المعلم': 'Teacher Dashboard',
+    'نظرة عامة والنسب': 'Overview & Rates',
+    'أماكن وسناتر الطلاب': 'Student Centers & Locations',
+    'الحصص والفيديوهات': 'Lessons & Videos',
+    'الامتحانات والنتائج': 'Exams & Results',
+    'أسئلة واستفسارات الطلاب': 'Student Inquiries',
+    'تسجيل الخروج': 'Log Out',
+    'خروج': 'Log Out',
+    'المادة الدراسية': 'Subject',
+    'حساب المعلم': 'Teacher Account',
+    'المعلم': 'Teacher',
+    'مرحباً بك أستاذنا ✨': 'Welcome, Teacher ✨',
+    'متابعة تفاعلية لحضور الطلاب والسناتر والامتحانات والمشاهدات': 'Interactive tracking of student attendance, centers, exams, and views',
+    'معدل نشاط الطلاب': 'Student Activity Rate',
+    'الطلاب الفعّالين (المتفاعلين)': 'Active Students',
+    'إجمالي المسجلين:': 'Total Enrolled:',
+    'مرات الحضور المسجلة بالسناتر': 'Center Attendance Logs',
+    'نسبة الحضور التقديرية': 'Estimated Attendance Rate',
+    'إجمالي نتائج واختبارات الطلاب': 'Total Exam Results',
+    'متوسط درجات الطلاب': 'Average Student Score',
+    'إجمالي مشاهدات الحصص والدروس': 'Total Lesson Views',
+    'عدد الفيديوهات المرفوعة': 'Uploaded Videos Count',
+    'مؤشر توزيع ونسب حضور الطلاب بالأماكن والسناتر': 'Student Attendance & Center Breakdown',
+    'مخطط دائري يوضح نسبة الطلاب الحاضرين في كل سنتر ومحافظة بلون مميز': 'A circular chart displaying attendance percentage per center and governorate with distinct colors',
+    'حسب السناتر': 'By Centers',
+    'حسب المحافظات': 'By Governorates',
+    'لوحة شرف الأوائل (المتفوقين دراسياً)': 'Honor Board (Top Performers)',
+    'أعلى الطلاب الحاصلين على درجات متفوقة مع إمكانية التهنئة المباشرة': 'Top scoring students with direct congratulations',
+    'إجمالي المسجلين بالحضور:': 'Total Attendance Records:',
+    'اسم الطالب': 'Student Name',
+    'السنتر / المقر': 'Center / Venue',
+    'اليوم': 'Day',
+    'الميعاد': 'Time',
+    'الصف الدراسي': 'Grade',
+    'وقت التسجيل': 'Record Time',
+    'هاتف الطالب': 'Student Phone',
+    'تواصل واتساب': 'WhatsApp Chat',
+    'إجمالي الفيديوهات:': 'Total Videos:',
+    'الامتحان': 'Exam',
+    'المحافظة': 'Governorate',
+    'النسبة المئوية': 'Percentage',
+    'التقدير': 'Rating',
+    'الهاتف': 'Phone',
+    'مراسلة': 'Chat',
+    'جميع الامتحانات': 'All Exams',
+    'تصدير Excel': 'Export Excel',
+    'الأسئلة الواردة:': 'Received Questions:',
+    'رد عبر واتساب': 'Reply via WhatsApp',
+    'طالب مسجل': 'Enrolled Student',
+    'حاضر بالسناتر': 'Attended at Centers',
+    'طالب مشاهد': 'Student Viewer',
+    'طالب حاضر': 'Attended Student',
+    'لا توجد بيانات': 'No data available',
+    'لا توجد بيانات حضور مسجلة بالسناتر حالياً': 'No attendance records logged in centers yet',
+    'لا يوجد طلاب مسجلين بعد': 'No students enrolled yet',
+    'لا توجد تسجيلات حضور بعد': 'No attendance logs yet',
+    'ممتاز': 'Excellent',
+    'جيد جداً': 'Very Good',
+    'جيد': 'Good',
+    'مقبول': 'Pass',
+    'راسب': 'Fail',
+    'تهنئة واتساب': 'WhatsApp Greeting',
+    'الرقم غير مسجل': 'Number not registered',
+    'مؤخراً': 'Recently',
+    'لا توجد نتائج مطابقة لبحثك.': 'No results matching your search.',
+    'لا توجد أسئلة من الطلاب حالياً.': 'No student inquiries currently.',
+    'لا توجد درجات امتحانات كافية بعد لإظهار لوحة الشرف.': 'No exam grades yet to display the honor board.',
+    'لا توجد نتائج لتصديرها': 'No results to export'
+
 };
 
 const platformPlaceholders = {
+    'ابحث باسم الطالب أو السنتر...': 'Search by student name or center...',
+    'ابحث باسم الفيديو أو الحصة...': 'Search by lesson or video title...',
+    'ابحث باسم الطالب أو رقم الهاتف...': 'Search by student name or phone...',
+    'ابحث في أسئلة الطلاب...': 'Search student questions...',
     'رقم الهاتف': 'Phone number', 'كلمة السر': 'Password', 'مثال: زياد': 'Example: Zeyad',
     'مثال: أشرف': 'Example: Ashraf', 'ادخل رقم الهاتف': 'Enter phone number',
     'ادخل رقم هاتف ولي الأمر': 'Enter parent phone number', 'ادخل الرقم القومي المكون من 14 رقم': 'Enter 14-digit National ID',
@@ -5145,17 +5234,9 @@ function setPlatformLanguage(language) {
         document.title = isEnglish ? 'Log In | EDGE Academy' : 'تسجيل الدخول | EDGE Academy';
     }
 
-    // ── 1) data-en / data-ar attributes (fastest, most reliable) ──
-    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-        const text = isEnglish ? el.dataset.en : el.dataset.ar;
-        if (text !== undefined) el.textContent = text;
-    });
-
-    // ── 2) استبدال نصوص العقد النصية (text nodes) ──
+    // استبدال نصوص العقد النصية
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
-            // تجنب العناصر اللي عندها data-ar/data-en — اتعالجت فوق
-            if (node.parentElement?.closest('[data-ar][data-en]')) return NodeFilter.FILTER_REJECT;
             return node.parentElement?.closest('script, style, select, pre, code') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
         }
     });
@@ -5174,59 +5255,36 @@ function setPlatformLanguage(language) {
         if (replacement) node.nodeValue = original.replace(trimmed, replacement);
     });
 
-    // ── 3) تحديث خيارات الـ select ──
+    // تحديث خيارات الـ select
     document.querySelectorAll('select option').forEach(option => {
         if (!option.dataset.arText) option.dataset.arText = option.textContent;
         const trimmed = option.dataset.arText.trim();
         option.textContent = isEnglish ? (platformTranslations[trimmed] || option.dataset.arText) : option.dataset.arText;
     });
 
-    // ── 4) تحديث الـ placeholders ──
+    // تحديث الـ placeholders
     document.querySelectorAll('[placeholder]').forEach(input => {
         if (!input.dataset.arPlaceholder) input.dataset.arPlaceholder = input.getAttribute('placeholder') || '';
         const trimmed = input.dataset.arPlaceholder.trim();
         input.placeholder = isEnglish ? (platformPlaceholders[trimmed] || platformTranslations[trimmed] || trimmed) : trimmed;
     });
 
-    // ── 5) تحديث aria-labels و titles للأزرار المهمة ──
-    document.querySelectorAll('[data-ar-label][data-en-label]').forEach(el => {
-        const label = isEnglish ? el.dataset.enLabel : el.dataset.arLabel;
-        if (label) { el.setAttribute('aria-label', label); el.title = label; }
-    });
-
-    // ── 6) تحديث أزرار تبديل اللغة ──
+    // تحديث أزرار تبديل اللغة (تطابق الصورة 3)
     document.querySelectorAll('.language-switcher').forEach(button => {
         button.innerHTML = isEnglish ? `<span>عربي</span>${GLOBE_SVG_ICON}` : `<span>EN</span>${GLOBE_SVG_ICON}`;
         button.setAttribute('aria-label', isEnglish ? 'تبديل إلى العربية' : 'Switch to English');
         button.title = button.getAttribute('aria-label');
     });
 
-    // ── 7) تحديث عنوان خطوة التسجيل الحالية إذا وجدت ──
+    // تحديث عنوان خطوة التسجيل الحالية إذا وجدت
     const progressTitle = document.getElementById('register-step-title');
     if (progressTitle && typeof currentStep !== 'undefined') {
         const stepNames = isEnglish ? ['Step 1', 'Step 2', 'Step 3'] : ['الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة'];
         progressTitle.textContent = stepNames[currentStep - 1] || (isEnglish ? 'Create Account' : 'إنشاء الحساب');
     }
 
-    // ── 8) تغيير اتجاه عناصر الفورم داخل صفحة register ──
-    if (isEnglish) {
-        document.querySelectorAll('.form-group label, .form-group input, .form-group select').forEach(el => {
-            el.style.textAlign = 'left';
-            el.style.direction = 'ltr';
-        });
-        document.querySelectorAll('.form-note, .form-subtitle, .form-footer').forEach(el => {
-            el.style.textAlign = 'left';
-        });
-    } else {
-        document.querySelectorAll('.form-group label, .form-group input, .form-group select, .form-note, .form-subtitle, .form-footer').forEach(el => {
-            el.style.textAlign = '';
-            el.style.direction = '';
-        });
-    }
-
     window.dispatchEvent(new CustomEvent('platformLanguageChanged', { detail: { language: isEnglish ? 'en' : 'ar', dir: isEnglish ? 'ltr' : 'rtl' } }));
 }
-
 
 function initLanguageSwitcher() {
     const host = document.querySelector('header .header-left') || document.querySelector('.platform-header-inner') || document.querySelector('.watch-topbar-actions') || document.querySelector('.masar-nav-actions');

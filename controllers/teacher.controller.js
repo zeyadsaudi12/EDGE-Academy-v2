@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 const Video = require('../models/video.model');
 const Exam = require('../models/exam.model');
 const VideoQuestion = require('../models/videoQuestion.model');
+const Attendance = require('../models/attendance.model');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const { cloudinary } = require('../middleware/upload');
@@ -90,7 +91,7 @@ exports.getTeacherDashboard = async (req, res, next) => {
         }
 
         const account = await User.findById(userId).select('role teacherId isTeacherAccount');
-        if (!account || account.role !== 'teacher' || !account.isTeacherAccount || String(account.teacherId) !== String(req.params.id)) {
+        if (!account || account.role !== 'teacher' || String(account.teacherId) !== String(req.params.id)) {
             return res.status(403).json({ success: false, message: 'هذه اللوحة متاحة لحساب المدرس فقط' });
         }
 
@@ -130,7 +131,7 @@ exports.getTeacherDashboard = async (req, res, next) => {
         const resultStudentIds = [...new Set(exams.flatMap(exam => (exam.results || []).map(result => result.studentId).filter(Boolean)))];
         const resultStudents = resultStudentIds.length
             ? await User.find({ _id: { $in: resultStudentIds.filter(id => mongoose.Types.ObjectId.isValid(id)) } })
-                .select('_id firstName lastName username grade governorate').lean()
+                .select('_id firstName lastName username phone parentPhone grade governorate').lean()
             : [];
         const studentsMap = Object.fromEntries(resultStudents.map(student => [String(student._id), student]));
 
@@ -142,21 +143,52 @@ exports.getTeacherDashboard = async (req, res, next) => {
                 return {
                     ...result,
                     studentName: result.studentName || `${student.firstName || ''} ${student.lastName || ''}`.trim() || student.username || 'طالب',
-                    grade: student.grade || '—',
-                    governorate: student.governorate || '—'
+                    studentPhone: student.phone || result.studentPhone || '—',
+                    parentPhone: student.parentPhone || '—',
+                    grade: student.grade || result.grade || '—',
+                    governorate: student.governorate || result.governorate || '—'
                 };
             })
         }));
         const uniqueViewers = new Set(videoRows.flatMap(video => video.watchers.map(watcher => watcher.id)));
         const resultsCount = examRows.reduce((count, exam) => count + exam.results.length, 0);
 
+        const queryConditions = [];
+        if (videoIds.length) queryConditions.push({ videoId: { $in: videoIds } });
+        const relevantStudentIds = [...new Set([...uniqueViewers, ...resultStudentIds])];
+        if (relevantStudentIds.length) queryConditions.push({ studentId: { $in: relevantStudentIds } });
+
+        const attendances = queryConditions.length
+            ? await Attendance.find({ $or: queryConditions }).sort({ scannedAt: -1 }).lean()
+            : [];
+
+        // Real students strictly associated with this teacher (followers, video viewers, exam takers, attendees)
+        const followerStudents = await User.find({ role: 'student', followedTeachers: String(req.params.id) }).select('_id').lean();
+        const followerIds = followerStudents.map(s => String(s._id));
+
+        const allRealTeacherStudents = new Set([
+            ...followerIds,
+            ...uniqueViewers,
+            ...resultStudentIds,
+            ...attendances.map(a => String(a.studentId)).filter(Boolean)
+        ]);
+
         res.json({
             success: true,
-            teacher: { _id: teacher._id, name: teacher.name, subjectAr: teacher.subjectAr, imagePath: teacher.imagePath },
-            stats: { videosCount: videoRows.length, viewersCount: uniqueViewers.size, questionsCount: questions.length, examsCount: examRows.length, resultsCount },
+            teacher: { _id: teacher._id, name: teacher.name, subjectAr: teacher.subjectAr, imagePath: teacher.imagePath, grades: teacher.grades },
+            stats: {
+                videosCount: videoRows.length,
+                viewersCount: uniqueViewers.size,
+                questionsCount: questions.length,
+                examsCount: examRows.length,
+                resultsCount,
+                attendancesCount: attendances.length,
+                totalStudentsCount: allRealTeacherStudents.size
+            },
             videos: videoRows,
             questions,
-            exams: examRows
+            exams: examRows,
+            attendances
         });
     } catch (err) { next(err); }
 };
