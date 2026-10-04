@@ -103,7 +103,7 @@ app.use(express.static(path.join(__dirname), {
     // can remain cached, but stale JavaScript can keep an old broken page
     // alive in the user's browser for a full day.
     setHeaders: (res, filePath) => {
-        if (/\.(html|js)$/i.test(filePath)) res.setHeader('Cache-Control', 'no-cache');
+        if (/\.(html|js|css|svg)$/i.test(filePath)) { res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0'); }
     }
 }));
 

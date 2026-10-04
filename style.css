@@ -4118,20 +4118,12 @@ header {
     .auth-body .step-label { font-size:.71rem; }
 }
 
-/* صفحة التسجيل تستخدم نفس تجربة الدخول: خلفية مموهة وكارت واضح في المنتصف. */
-.auth-body.register-page {
-    position: relative;
-    isolation: isolate;
-    background: #073b91;
+/* صفحة التسجيل: تصميم الثيم الزيتي / الزمردي الراقي مع كروت الخصائص واللوجو */
+.auth-body.register-page .auth-left::before,
+.auth-body.register-page .auth-left::after {
+    display: none !important;
 }
 
-.auth-body.register-page::before {
-    content: '';
-    position: fixed;
-    inset: -28px;
-    z-index: -1;
-    background:
-/* صفحة التسجيل: تصميم الثيم الزيتي / الزمردي الراقي مع كروت الخصائص واللوجو */
 .auth-body.register-page {
     position: relative;
     isolation: isolate;
