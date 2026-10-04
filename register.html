@@ -9,16 +9,23 @@
 <body class="auth-body">
     <header>
         <div class="header-inner">
+            <!-- اليمين: شعار المنصة المتغير تلقائياً مع الثيم -->
+            <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+                <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
+                <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
+            </a>
+
+            <!-- اليسار: أزرار التنقل ومحول الثيم -->
             <div class="header-left">
-                <div class="header-icons">
-                    <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار">☀</button>
-                    <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام">🌙</button>
+                <nav class="header-actions">
+                    <a href="login" class="btn-outline">تسجيل الدخول</a>
+                    <a href="/" class="btn-fill">الرئيسية</a>
+                </nav>
+                <div class="theme-capsule" aria-label="تبديل المظهر">
+                    <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
+                    <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
                 </div>
             </div>
-            <nav class="header-actions">
-                <a href="login" class="btn-outline">تسجيل الدخول</a>
-                <a href="/" class="btn-fill">الرئيسية</a>
-            </nav>
         </div>
     </header>
     <main class="auth-page auth-register-page">
