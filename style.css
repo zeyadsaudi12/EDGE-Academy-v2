@@ -4118,235 +4118,192 @@ header {
     .auth-body .step-label { font-size:.71rem; }
 }
 
-/* صفحة التسجيل: تصميم الثيم الزيتي / الزمردي الراقي مع كروت الخصائص واللوجو */
-.auth-body.register-page .auth-left::before,
-.auth-body.register-page .auth-left::after {
+/* ══ صفحة التسجيل: ستايل زي login — صورة كاملة + overlay content ══ */
+.auth-body.register-page .auth-left::before {
     display: none !important;
+}
+
+/* Override the dark green overlay so the image shows properly */
+.auth-body.register-page .auth-left::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(5, 12, 28, 0.38) 0%,
+        rgba(5, 14, 32, 0.55) 55%,
+        rgba(4, 10, 22, 0.82) 100%
+    ) !important;
+    display: block !important;
+    border-radius: 0;
 }
 
 .auth-body.register-page {
     position: relative;
     isolation: isolate;
-    background: #071917;
+    background: #060d1e;
     min-height: 100vh;
-}
-
-.auth-body.register-page::before {
-    content: '';
-    position: fixed;
-    inset: -28px;
-    z-index: -1;
-    background:
-        radial-gradient(ellipse at 25% 20%, rgba(13, 74, 62, 0.42), transparent 55%),
-        radial-gradient(ellipse at 85% 70%, rgba(8, 48, 40, 0.45), transparent 60%),
-        linear-gradient(175deg, #061816 0%, #0a2520 50%, #051412 100%);
-    filter: blur(10px);
-    transform: scale(1.04);
 }
 
 .auth-body.register-page .auth-page {
     display: grid !important;
-    grid-template-columns: minmax(380px, 1.08fr) minmax(480px, 0.92fr) !important;
-    width: min(1500px, calc(100% - 44px));
-    justify-content: center;
-    align-items: start;
-    min-height: calc(100vh - 110px);
-    gap: 26px;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100%;
+    gap: 0;
     padding: 0;
-    margin: 22px auto 44px;
+    margin: 0;
+    min-height: calc(100vh - 72px);
 }
 
 .auth-body.register-page .auth-left {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: flex-start;
-    min-height: 0;
-    padding: clamp(26px, 3.2vw, 42px);
-    border-radius: 28px;
-    color: #ffffff;
-    background: radial-gradient(circle at 50% 12%, rgba(16, 56, 48, 0.82) 0%, rgba(8, 30, 26, 0.88) 55%, rgba(5, 18, 16, 0.96) 100%);
-    border: 1px solid rgba(45, 212, 191, 0.22);
-    box-shadow: 0 24px 70px rgba(0, 16, 14, 0.45);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    display: block !important;
+    min-height: calc(100vh - 72px);
+    border-radius: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     overflow: hidden;
+    position: relative;
 }
 
 .auth-body.register-page .auth-right {
     width: 100%;
-    min-height: auto;
+    min-height: calc(100vh - 72px);
     padding: 0 !important;
-    border-radius: 28px;
-    background: rgba(255, 255, 255, 0.94) !important;
-    border: 1px solid rgba(255, 255, 255, 0.72);
-    box-shadow: 0 24px 70px rgba(0, 18, 24, 0.35);
-    backdrop-filter: blur(18px) saturate(145%);
-    -webkit-backdrop-filter: blur(18px) saturate(145%);
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.97) !important;
+    border: none;
+    box-shadow: none;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .register-page .form-panel.auth-card {
     width: 100%;
-    max-width: none;
-    padding: clamp(26px, 3vw, 42px);
+    max-width: 540px;
+    padding: clamp(28px, 4vw, 52px) clamp(24px, 3.5vw, 44px);
+    overflow-y: auto;
+    max-height: calc(100vh - 72px);
 }
 
 .dark-mode.auth-body.register-page {
-    background: #051412;
+    background: #060d1e;
 }
 
 .dark-mode.auth-body.register-page .auth-right {
-    background: rgba(9, 26, 23, 0.92) !important;
-    border-color: rgba(45, 212, 191, 0.2);
+    background: rgba(8, 16, 36, 0.97) !important;
 }
 
-/* هيدر الشيربيني أكاديمي (الصورة 2) */
-.register-side-content {
+/* ══ Register Left Content (overlay on image, like login) ══ */
+.register-left-content {
+    position: relative;
+    z-index: 2;
+    padding: 50px 48px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    width: 100%;
-}
-
-.register-hero-header {
-    text-align: center;
-    margin-bottom: 22px;
-}
-
-.register-side-logo-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.register-sherbeni-logo {
-    width: auto;
-    height: 72px;
-    max-width: 220px;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 14px rgba(255, 123, 26, 0.32));
+    justify-content: flex-end;
+    gap: 0;
 }
 
 .register-hero-title {
-    margin: 0 0 12px;
+    margin: 14px 0 14px;
     color: #ffffff;
-    font-size: clamp(2rem, 2.8vw, 3.1rem);
+    font-size: clamp(2.2rem, 3.2vw, 3.8rem);
     font-weight: 900;
-    line-height: 1.2;
+    line-height: 1.18;
     letter-spacing: -0.5px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.28);
 }
 
 .register-hero-desc {
-    margin: 0 auto;
-    max-width: 620px;
-    color: rgba(255, 255, 255, 0.88);
-    font-size: clamp(0.95rem, 1.1vw, 1.1rem);
-    line-height: 1.85;
-}
-
-.register-hero-desc .highlight-orange {
-    color: #ff7722;
-    font-weight: 800;
-}
-
-/* صندوق التنبيه العلوي (الصورة 1) */
-.register-side-notice {
-    margin: 0 0 20px 0;
-    padding: 16px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.04);
-    color: rgba(255, 255, 255, 0.95);
-    font-size: clamp(0.9rem, 1vw, 0.98rem);
-    font-weight: 600;
+    margin: 0 0 22px;
+    max-width: 520px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(0.95rem, 1.1vw, 1.07rem);
     line-height: 1.8;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.22);
 }
 
-/* شبكة البطاقات الستة (الصورة 1) */
-.register-features-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-}
-
-.register-feature-card {
-    padding: 20px 15px 18px;
-    border: 1px solid rgba(255, 255, 255, 0.11);
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.04);
+/* Pills grid (زي auth-highlights في login) */
+.register-feature-pills {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    margin-bottom: 22px;
+}
+
+.register-pill {
+    display: inline-flex;
     align-items: center;
+    gap: 5px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.register-pill:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Notice box */
+.register-side-notice {
+    padding: 14px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+    font-weight: 600;
+    line-height: 1.75;
     text-align: center;
-    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-}
-
-.register-feature-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(45, 212, 191, 0.4);
-    background: rgba(255, 255, 255, 0.07);
-}
-
-.register-feature-card .feature-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    margin-bottom: 12px;
-}
-
-.register-feature-card .feature-icon svg {
-    width: 32px;
-    height: 32px;
-}
-
-.register-feature-card .icon-cyan {
-    color: #00d9f5;
-}
-
-.register-feature-card .icon-purple {
-    color: #c084fc;
-}
-
-.register-feature-card h3 {
-    margin: 0 0 6px 0;
-    color: #ffffff;
-    font-size: 1.05rem;
-    font-weight: 800;
-    line-height: 1.3;
-}
-
-.register-feature-card p {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.84rem;
-    line-height: 1.5;
+    max-width: 520px;
 }
 
 @media (max-width: 1080px) {
     .auth-body.register-page .auth-page {
         grid-template-columns: minmax(0, 1fr) !important;
-        width: min(720px, calc(100% - 32px));
-        margin: 16px auto 32px;
-        gap: 20px;
+        min-height: auto;
     }
     .auth-body.register-page .auth-left {
         order: 2;
+        min-height: 320px;
     }
     .auth-body.register-page .auth-right {
         order: 1;
+        min-height: auto;
+    }
+    .register-page .form-panel.auth-card {
+        max-height: none;
     }
 }
 
 @media (max-width: 640px) {
-    .register-features-grid {
-        grid-template-columns: 1fr;
+    .auth-body.register-page .auth-left {
+        min-height: 240px;
     }
-    .register-feature-card {
-        padding: 16px 12px;
+    .register-left-content {
+        padding: 32px 24px;
+    }
+    .register-feature-pills {
+        gap: 8px;
+    }
+    .register-pill {
+        font-size: 0.82rem;
+        padding: 6px 12px;
     }
 }
 

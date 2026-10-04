@@ -5145,9 +5145,17 @@ function setPlatformLanguage(language) {
         document.title = isEnglish ? 'Log In | EDGE Academy' : 'تسجيل الدخول | EDGE Academy';
     }
 
-    // استبدال نصوص العقد النصية
+    // ── 1) data-en / data-ar attributes (fastest, most reliable) ──
+    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        const text = isEnglish ? el.dataset.en : el.dataset.ar;
+        if (text !== undefined) el.textContent = text;
+    });
+
+    // ── 2) استبدال نصوص العقد النصية (text nodes) ──
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
+            // تجنب العناصر اللي عندها data-ar/data-en — اتعالجت فوق
+            if (node.parentElement?.closest('[data-ar][data-en]')) return NodeFilter.FILTER_REJECT;
             return node.parentElement?.closest('script, style, select, pre, code') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
         }
     });
@@ -5166,36 +5174,59 @@ function setPlatformLanguage(language) {
         if (replacement) node.nodeValue = original.replace(trimmed, replacement);
     });
 
-    // تحديث خيارات الـ select
+    // ── 3) تحديث خيارات الـ select ──
     document.querySelectorAll('select option').forEach(option => {
         if (!option.dataset.arText) option.dataset.arText = option.textContent;
         const trimmed = option.dataset.arText.trim();
         option.textContent = isEnglish ? (platformTranslations[trimmed] || option.dataset.arText) : option.dataset.arText;
     });
 
-    // تحديث الـ placeholders
+    // ── 4) تحديث الـ placeholders ──
     document.querySelectorAll('[placeholder]').forEach(input => {
         if (!input.dataset.arPlaceholder) input.dataset.arPlaceholder = input.getAttribute('placeholder') || '';
         const trimmed = input.dataset.arPlaceholder.trim();
         input.placeholder = isEnglish ? (platformPlaceholders[trimmed] || platformTranslations[trimmed] || trimmed) : trimmed;
     });
 
-    // تحديث أزرار تبديل اللغة (تطابق الصورة 3)
+    // ── 5) تحديث aria-labels و titles للأزرار المهمة ──
+    document.querySelectorAll('[data-ar-label][data-en-label]').forEach(el => {
+        const label = isEnglish ? el.dataset.enLabel : el.dataset.arLabel;
+        if (label) { el.setAttribute('aria-label', label); el.title = label; }
+    });
+
+    // ── 6) تحديث أزرار تبديل اللغة ──
     document.querySelectorAll('.language-switcher').forEach(button => {
         button.innerHTML = isEnglish ? `<span>عربي</span>${GLOBE_SVG_ICON}` : `<span>EN</span>${GLOBE_SVG_ICON}`;
         button.setAttribute('aria-label', isEnglish ? 'تبديل إلى العربية' : 'Switch to English');
         button.title = button.getAttribute('aria-label');
     });
 
-    // تحديث عنوان خطوة التسجيل الحالية إذا وجدت
+    // ── 7) تحديث عنوان خطوة التسجيل الحالية إذا وجدت ──
     const progressTitle = document.getElementById('register-step-title');
     if (progressTitle && typeof currentStep !== 'undefined') {
         const stepNames = isEnglish ? ['Step 1', 'Step 2', 'Step 3'] : ['الخطوة الأولى', 'الخطوة الثانية', 'الخطوة الثالثة'];
         progressTitle.textContent = stepNames[currentStep - 1] || (isEnglish ? 'Create Account' : 'إنشاء الحساب');
     }
 
+    // ── 8) تغيير اتجاه عناصر الفورم داخل صفحة register ──
+    if (isEnglish) {
+        document.querySelectorAll('.form-group label, .form-group input, .form-group select').forEach(el => {
+            el.style.textAlign = 'left';
+            el.style.direction = 'ltr';
+        });
+        document.querySelectorAll('.form-note, .form-subtitle, .form-footer').forEach(el => {
+            el.style.textAlign = 'left';
+        });
+    } else {
+        document.querySelectorAll('.form-group label, .form-group input, .form-group select, .form-note, .form-subtitle, .form-footer').forEach(el => {
+            el.style.textAlign = '';
+            el.style.direction = '';
+        });
+    }
+
     window.dispatchEvent(new CustomEvent('platformLanguageChanged', { detail: { language: isEnglish ? 'en' : 'ar', dir: isEnglish ? 'ltr' : 'rtl' } }));
 }
+
 
 function initLanguageSwitcher() {
     const host = document.querySelector('header .header-left') || document.querySelector('.platform-header-inner') || document.querySelector('.watch-topbar-actions') || document.querySelector('.masar-nav-actions');
