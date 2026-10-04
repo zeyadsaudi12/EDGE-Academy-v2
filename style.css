@@ -4082,3 +4082,51 @@ header {
         padding: 0 !important;
     }
 }
+
+/* النسخة النهائية لواجهة الدخول: كارت واحد واضح في المنتصف فوق الخلفية المموهة. */
+.auth-body.login-page::before {
+    filter: blur(8px) brightness(.72) saturate(1.08);
+}
+
+.auth-body.login-page .auth-page {
+    display: grid !important;
+    grid-template-columns: minmax(320px, 560px) !important;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 104px);
+    padding: 20px;
+}
+
+.auth-body.login-page .auth-left {
+    display: none !important;
+}
+
+.auth-body.login-page .auth-right {
+    width: 100%;
+    min-height: auto;
+    padding: 0 !important;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, .92) !important;
+    border: 1px solid rgba(255, 255, 255, .72);
+    box-shadow: 0 24px 70px rgba(0, 18, 64, .38);
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+}
+
+.dark-mode.auth-body.login-page .auth-right {
+    background: rgba(10, 28, 60, .90) !important;
+    border-color: rgba(191, 220, 255, .20);
+}
+
+@media (max-width: 580px) {
+    .auth-body.login-page .auth-page {
+        grid-template-columns: minmax(0, 1fr) !important;
+        min-height: calc(100vh - 76px);
+        padding: 12px;
+    }
+
+    .auth-body.login-page .auth-right,
+    .login-page .form-panel.auth-card {
+        border-radius: 20px !important;
+    }
+}
