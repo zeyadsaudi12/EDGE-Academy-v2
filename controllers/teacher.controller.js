@@ -4,6 +4,8 @@ const Video = require('../models/video.model');
 const Exam = require('../models/exam.model');
 const VideoQuestion = require('../models/videoQuestion.model');
 const Attendance = require('../models/attendance.model');
+const Course = require('../models/course.model');
+const Code = require('../models/code.model');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const { cloudinary } = require('../middleware/upload');
@@ -173,17 +175,234 @@ exports.getTeacherDashboard = async (req, res, next) => {
             ...attendances.map(a => String(a.studentId)).filter(Boolean)
         ]);
 
+        // ── Comprehensive Real Analytics for Teacher Dashboard ──
+        const [
+            allTeachersList,
+            teacherCourses,
+            allStudentsList,
+            allUsedCodes
+        ] = await Promise.all([
+            Teacher.find({ hidden: { $ne: true } }).select('_id name subjectAr imagePath phone whatsapp createdAt').sort({ createdAt: -1 }).lean(),
+            Course.find({ teacherId: String(req.params.id) }).lean(),
+            User.find({ role: 'student' }).select('_id firstName lastName username phone parentPhone grade governorate createdAt subscribedVideos subscribedCourses balance lastActive').sort({ createdAt: -1 }).lean(),
+            Code.find({ videoId: { $in: videoIds }, used: true }).sort({ updatedAt: -1 }).lean()
+        ]);
+
+        // 1. Demographics & Groups — only THIS teacher's students
+        // Build a lookup map for fast access to student objects by ID
+        const allStudentsMap = Object.fromEntries(allStudentsList.map(s => [String(s._id), s]));
+
+        // Only students who interacted with this teacher (viewed, attended, took exam, follow)
+        const teacherStudentIds = [...allRealTeacherStudents];
+        const teacherStudents = teacherStudentIds
+            .map(id => allStudentsMap[id])
+            .filter(Boolean);
+
+        const gradesCounts = {};
+        const govsCounts = {};
+        teacherStudents.forEach(s => {
+            if (s.grade && s.grade.trim()) {
+                const g = s.grade.trim();
+                gradesCounts[g] = (gradesCounts[g] || 0) + 1;
+            }
+            if (s.governorate && s.governorate.trim()) {
+                const gov = s.governorate.trim();
+                govsCounts[gov] = (govsCounts[gov] || 0) + 1;
+            }
+        });
+
+        const topGrades = Object.entries(gradesCounts)
+            .map(([grade, count]) => ({ grade, count }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 3);
+
+        const topGovs = Object.entries(govsCounts)
+            .map(([governorate, count]) => ({ governorate, count }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 10);
+
+        // 2. Active vs Inactive — only from THIS teacher's students
+        const activeStudentObjects = [];
+        const inactiveStudentObjects = [];
+        teacherStudents.forEach(s => {
+            const sId = String(s._id);
+            // "Active" = subscribed to any of this teacher's videos or courses
+            const hasVideoSub = Array.isArray(s.subscribedVideos) &&
+                s.subscribedVideos.some(vid => videoIds.includes(String(vid)));
+            const hasCoursesSub = Array.isArray(s.subscribedCourses) &&
+                s.subscribedCourses.some(c => {
+                    const cId = c && (c.courseId || c);
+                    return teacherCourses.some(tc => String(tc._id) === String(cId));
+                });
+            const isViewer = uniqueViewers.has(sId);
+            const isAttendee = attendances.some(a => String(a.studentId) === sId);
+            const hasResult = resultStudentIds.includes(sId);
+            const fullName = `${s.firstName || ''} ${s.lastName || ''}`.trim() || s.username || 'طالب';
+
+            const studentObj = {
+                _id: s._id,
+                name: fullName,
+                phone: s.phone || '—',
+                governorate: s.governorate || '—',
+                grade: s.grade || '—',
+                createdAt: s.createdAt ? new Date(s.createdAt).toISOString().replace('T', ' ').slice(0, 16) : '—'
+            };
+
+            if (hasVideoSub || hasCoursesSub || isViewer || isAttendee || hasResult) {
+                activeStudentObjects.push({ ...studentObj, status: 'مفعل' });
+            } else {
+                inactiveStudentObjects.push({ ...studentObj, status: 'لم يشترك بعد' });
+            }
+        });
+
+        const inactiveStudentsTable = inactiveStudentObjects.map((s, idx) => ({
+            index: idx + 1,
+            ...s
+        }));
+
+        // 3. Top Interactive Students (Strictly Real)
+        const studentActivityScores = {};
+        videoRows.forEach(v => {
+            (v.watchers || []).forEach(w => {
+                const wid = String(w.id || w._id);
+                studentActivityScores[wid] = (studentActivityScores[wid] || { name: w.name, count: 0 });
+                studentActivityScores[wid].count += 1;
+            });
+        });
+        examRows.forEach(e => {
+            (e.results || []).forEach(r => {
+                const sid = String(r.studentId);
+                if (sid) {
+                    studentActivityScores[sid] = (studentActivityScores[sid] || { name: r.studentName, count: 0 });
+                    studentActivityScores[sid].count += 1;
+                }
+            });
+        });
+
+        const topInteractiveStudents = Object.values(studentActivityScores)
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 10);
+
+        // 4. Recent Lists (Strictly Real)
+        // Recent students = only THIS teacher's students, sorted by join date
+        const recentStudents = teacherStudents
+            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+            .slice(0, 6)
+            .map(s => {
+                let timeAgo = 'حديثاً';
+                if (s.createdAt) {
+                    const diffHours = Math.round((Date.now() - new Date(s.createdAt).getTime()) / (1000 * 60 * 60));
+                    if (diffHours < 1) timeAgo = 'الآن';
+                    else if (diffHours < 24) timeAgo = `منذ ${diffHours} ساعة`;
+                    else {
+                        const days = Math.round(diffHours / 24);
+                        timeAgo = days === 1 ? 'منذ يوم' : `منذ ${days} أيام`;
+                    }
+                }
+                return {
+                    name: `${s.firstName || ''} ${s.lastName || ''}`.trim() || s.username,
+                    grade: s.grade || '—',
+                    timeAgo
+                };
+            });
+
+        const recentLectures = videoRows.slice(0, 6).map(v => ({
+            title: v.title,
+            teacherName: teacher.name,
+            price: v.price != null ? v.price : 0
+        }));
+
+        const recentTeachers = allTeachersList.slice(0, 5).map(t => ({
+            _id: t._id,
+            name: t.name,
+            subjectAr: t.subjectAr,
+            imagePath: t.imagePath || '',
+            phone: t.phone || '',
+            whatsapp: t.whatsapp || t.phone || ''
+        }));
+
+        // 5. Monthly Sales & Timeline (Strictly Real Last 6 Months)
+        const now = new Date();
+        const monthlySales = [];
+        for (let i = 5; i >= 0; i--) {
+            const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const y = d.getFullYear();
+            const monthKey = `${m}/${y}`;
+            const nextD = new Date(d.getFullYear(), d.getMonth() + 1, 1);
+
+            const codesInMonth = allUsedCodes.filter(c => {
+                const cd = new Date(c.updatedAt || c.createdAt);
+                return cd >= d && cd < nextD;
+            });
+            const lecturesAmount = codesInMonth.reduce((sum, c) => sum + (Number(c.value) || 0), 0);
+
+            const regsInMonth = allStudentsList.filter(s => {
+                const sd = new Date(s.createdAt);
+                return sd >= d && sd < nextD;
+            }).length;
+
+            monthlySales.push({
+                month: monthKey,
+                total: lecturesAmount,
+                courses: 0,
+                packages: 0,
+                lectures: lecturesAmount,
+                centers: 0,
+                registrations: regsInMonth
+            });
+        }
+
+        const totalUsedCodesAmount = allUsedCodes.reduce((sum, c) => sum + (Number(c.value) || 0), 0);
+
+        const realStats = {
+            videosCount: videoRows.length,
+            viewersCount: uniqueViewers.size,
+            questionsCount: questions.length,
+            examsCount: examRows.length,
+            resultsCount,
+            attendancesCount: attendances.length,
+            totalStudentsCount: allRealTeacherStudents.size,
+            teachersCount: allTeachersList.length,
+            coursesCount: teacherCourses.length,
+            studentsCount: allStudentsList.length
+        };
+
         res.json({
             success: true,
             teacher: { _id: teacher._id, name: teacher.name, subjectAr: teacher.subjectAr, imagePath: teacher.imagePath, grades: teacher.grades },
-            stats: {
-                videosCount: videoRows.length,
-                viewersCount: uniqueViewers.size,
-                questionsCount: questions.length,
-                examsCount: examRows.length,
-                resultsCount,
-                attendancesCount: attendances.length,
-                totalStudentsCount: allRealTeacherStudents.size
+            stats: realStats,
+            analytics: {
+                teachersCount: allTeachersList.length,
+                studentsCount: allStudentsList.length,
+                coursesCount: teacherCourses.length,
+                lecturesCount: videoRows.length,
+                platformOverview: {
+                    teachers: allTeachersList.length,
+                    students: allStudentsList.length,
+                    courses: teacherCourses.length,
+                    lectures: videoRows.length
+                },
+                monthlySales,
+                salesSummary: {
+                    totalSales: totalUsedCodesAmount,
+                    courses: { amount: 0, count: 0 },
+                    packages: { amount: 0, count: 0 },
+                    lectures: { amount: totalUsedCodesAmount, count: allUsedCodes.length },
+                    centers: { amount: 0, count: attendances.length }
+                },
+                topInteractiveStudents,
+                topGrades,
+                topGovs,
+                activeStudentsStats: {
+                    activeCount: activeStudentObjects.length,
+                    inactiveCount: inactiveStudentObjects.length,
+                    totalCount: allStudentsList.length
+                },
+                inactiveStudents: inactiveStudentsTable,
+                recentLectures,
+                recentTeachers,
+                recentStudents
             },
             videos: videoRows,
             questions,

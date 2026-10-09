@@ -515,10 +515,22 @@
 <header>
     <div class="header-inner">
         <!-- اليمين: شعار المنصة المتغير تلقائياً مع الثيم -->
-        <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+        <!-- اليمين: شعار المنصة وزر تبديل اللغة بجانبه -->
+        <div class="header-right">
+            <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
             <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
             <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
         </a>
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+                <span>EN</span>
+                <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
+        </div>
 
         <!-- المنتصف: روابط التنقل -->
         <div class="header-center">

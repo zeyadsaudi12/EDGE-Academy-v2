@@ -121,7 +121,7 @@ header {
     pointer-events: auto;
     /* إعادة تفعيل التفاعل مع محتوى شريط النافبار */
     width: 100% !important;
-    max-width: 1260px !important;
+    max-width: 17000px !important;
     margin: 0 auto !important;
     display: flex !important;
     justify-content: space-between !important;
@@ -129,7 +129,7 @@ header {
     gap: 16px !important;
     padding: 10px 28px !important;
     min-height: 76px !important;
-    border-radius: 9999px !important;
+    border-radius: 88px !important;
     /* شكل الكبسولة العائمة المستديرة بالكامل */
     box-sizing: border-box !important;
     position: relative !important;
@@ -156,6 +156,14 @@ header {
         0 16px 40px -8px rgba(0, 0, 0, 0.6),
         0 4px 16px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.09) !important;
+}
+
+/* ═══ الجانب الأيمن (الشعار وزر اللغة) ═══ */
+.header-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0; 
 }
 
 /* ═══ شعار المنصة (Brand Logo) ═══ */
@@ -4658,6 +4666,10 @@ body.lang-en {
 
 html[dir="ltr"] header .header-inner {
     direction: ltr;
+}
+
+html[dir="ltr"] .header-right {
+    order: 1;
 }
 
 html[dir="ltr"] .header-brand {

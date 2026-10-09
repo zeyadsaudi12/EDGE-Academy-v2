@@ -5064,6 +5064,35 @@ document.addEventListener('DOMContentLoaded', () => {
 // Global language and direction switcher
 // ==========================================
 const platformTranslations = {
+    "الطلبة غير المفعلين": "Inactive Students",
+    "المبيعات الشهرية — آخر 6 أشهر": "Monthly Sales — Last 6 Months",
+    "نظرة عامة على المنصة": "Platform Overview",
+    "أكثر الطلبة تفاعلاً (بالمحاضرات)": "Most Interactive Students (Lectures)",
+    "أكثر الطلبة تفاعلاً": "Most Interactive Students",
+    "ملخص المبيعات": "Sales Summary",
+    "إجمالي المبيعات": "Total Sales",
+    "أكثر 3 سنوات دراسية تسجيلاً": "Top 3 Registered Grades",
+    "أكثر 10 محافظات تسجيلاً": "Top 10 Registered Governorates",
+    "الطلبة النشطون": "Active Students",
+    "آخر المحاضرات المضافة": "Recently Added Lectures",
+    "آخر المدرسين المضافين": "Recently Added Teachers",
+    "آخر الطلبة المسجلين": "Recently Registered Students",
+    "كل المعاملات": "All Transactions",
+    "عرض التفاصيل": "View Details",
+    "الحسابات": "Accounts",
+    "تقارير الماليّات": "Financial Reports",
+    "اشتروا اشتراكات": "Purchased Subscriptions",
+    "مسجلين فقط": "Registered Only",
+    "عملية": "Transactions",
+    "الباكدجات": "Packages",
+    "السناتر": "Centers",
+    "تاريخ الانشاء": "Creation Date",
+    "غير مفعل": "Inactive",
+    "مفعل": "Active",
+    "من تاريخ": "From Date",
+    "إلى تاريخ": "To Date",
+    "المبيعات والإحصائيات": "Sales & Analytics",
+    "المحاضرات المشاهدة": "Lectures Watched",
     // الهيدر والتنقل
     'الرئيسية': 'Home', 'المعلمين': 'Teachers', 'المواد الدراسية': 'Subjects', 'الكورسات': 'Courses',
     'الامتحانات': 'Exams', 'صفحة الادمن': 'Admin Portal', 'تسجيل الدخول': 'Log In', 'سجل الآن': 'Sign Up',
@@ -5199,11 +5228,127 @@ const platformTranslations = {
     'لا توجد نتائج مطابقة لبحثك.': 'No results matching your search.',
     'لا توجد أسئلة من الطلاب حالياً.': 'No student inquiries currently.',
     'لا توجد درجات امتحانات كافية بعد لإظهار لوحة الشرف.': 'No exam grades yet to display the honor board.',
-    'لا توجد نتائج لتصديرها': 'No results to export'
+    'لا توجد نتائج لتصديرها': 'No results to export',
+
+    // ─ The main page (index.html)
+    'المُعلمين المتميزين': 'Outstanding Teachers',
+    'تعلم من أفضل الأساتذة المتخصصين لتصل لأعلى الدرجات': 'Learn from the best specialist teachers to reach top grades',
+    'تصفح الجميع': 'Browse All',
+    'الكورسات التعليمية المتاحة': 'Available Educational Courses',
+    'عرض جميع الكورسات': 'View All Courses',
+    'شركاء النجاح': 'Success Partners',
+    'عايز تنضم لفريق': 'Want to join the',
+    'معلمين EDGE Academy؟': 'EDGE Academy Teachers Team?',
+    'انضم إلى منصة تعليمية تهتم بتجربة المعلم والطالب، وشارك خبرتك في تقديم محتوى مؤثر وبناء جيل متفوق.': 'Join an educational platform that cares about teacher and student experience.',
+    'تواصل معنا: 01556448880': 'Contact us: 01556448880',
+    'تابعنا على السوشيال ميديا': 'Follow us on social media',
+
+    // ─ Mobile menu (Emoji + text)
+    '🏠 الرئيسية': '🏠 Home',
+    '📚 المواد الدراسية': '📚 Subjects',
+    '🎥 الكورسات': '🎥 Courses',
+    '📝 الامتحانات': '📝 Exams',
+    '👤 البروفايل': '👤 Profile',
+    '🚪 تسجيل خروج': '🚪 Log Out',
+    '👑 صفحة الادمن': '👑 Admin Portal',
+    '💰 الرصيد:': '💰 Balance:',
+
+    // ─ Courses page (courses.html)
+    'مكتبة الكورسات': 'Courses Library',
+    'اختر كورسك وابدأ رحلة التعلم': 'Choose your course and start your learning journey',
+    'فلتر المدرس:': 'Teacher Filter:',
+    'الكل': 'All',
+    'ابحث عن كورس...': 'Search for a course...',
+    'لا توجد كورسات متاحة حالياً.': 'No courses available currently.',
+    'لا توجد كورسات تطابق بحثك.': 'No courses match your search.',
+
+    // ─ Profile page (profile.html)
+    'ملف المستخدم': 'User Profile',
+    'كارت الحضور (QR)': 'Attendance Card (QR)',
+    'شحن كود سنتر': 'Recharge Center Code',
+    'كورساتي': 'My Courses',
+    'الفواتير': 'Invoices',
+    'الاشتراكات': 'Subscriptions',
+    'المعلومات الشخصية': 'Personal Information',
+    'الاسم:': 'Name:',
+    'الهاتف:': 'Phone:',
+    'البريد:': 'Email:',
+    'الصف الدراسي:': 'Grade:',
+    'كارت الحضور الذكي (QR Code)': 'Smart Attendance Card (QR Code)',
+    'باركود الطالب الرسمي': 'Official Student Barcode',
+    'مخصص لحضور السنتر': 'Dedicated for Center Attendance',
+    'كارت الطالب لتسجيل الحضور وتفعيل الحصص': 'Student Card for Attendance & Lesson Activation',
+    'كود البريد:': 'QR Code:',
+    'جاري توليد الرمز...': 'Generating code...',
+    'تنزيل كارت QR (حفظ الصورة)': 'Download QR Card (Save Image)',
+    'عرض مكبر للشاشة': 'Full Screen View',
+    'إحصائيات التعلم': 'Learning Statistics',
+    'فيديو تمت مشاهدته': 'Video Watched',
+    'امتحان مكتمل': 'Exam Completed',
+    'متوسط النتائج': 'Average Results',
+    'المدرسين المتابعين': 'Followed Teachers',
+    'لا تتابع أي مدرس حالياً.': 'You are not following any teacher currently.',
+    'شحن كود السنتر': 'Recharge Center Code',
+    'أدخل الكود المكون من 12 رقم': 'Enter the 12-digit code',
+    'تحقق': 'Verify',
+    'مكتبة كورساتي': 'My Courses Library',
+    'كل المواد': 'All Subjects',
+    'كل المدرسين': 'All Teachers',
+    'لا توجد كورسات مشتراة حالياً.': 'No purchased courses currently.',
+    'سجل الفواتير': 'Invoices Record',
+    'التاريخ': 'Date',
+    'البيان': 'Description',
+    'المبلغ': 'Amount',
+    'الحالة': 'Status',
+    'لا يوجد سجلات': 'No records',
+    'الاشتراكات النشطة': 'Active Subscriptions',
+    'لا يوجد اشتراكات شهرية حالياً.': 'No monthly subscriptions currently.',
+    '📊 نتائج الاختبارات المنجزة': '📊 Completed Exam Results',
+    'كل المواد الدراسية': 'All Subjects',
+    'كل المعلمين': 'All Teachers',
+    'لا توجد نتائج امتحانات متطابقة مع التصفية الحالية': 'No exam results match the current filter',
+    'اسم الامتحان': 'Exam Name',
+    'الدرجة الكلية': 'Total Score',
+    'حالة التصحيح': 'Grading Status',
+    'تاريخ حل الامتحان': 'Exam Date',
+    'طالب EDGE Academy': 'EDGE Academy Student',
+
+    // ─ Teachers page (teachers.html)
+    'جميع معلمي منصة EDGE Academy': 'All EDGE Academy Teachers',
+    'جاري تحميل المعلمين...': 'Loading teachers...',
+    'جاري تحميل المحاضرات المخصصة لمرحلتك...': 'Loading lectures tailored to your level...',
+    'المحاضرات المتاحة لك مع هذا المعلم': 'Available Lectures with this Teacher',
+    'لا يوجد معلمون مضافون حالياً.': 'No teachers added currently.',
+    'تصفح الكورسات والبروفايل': 'Browse Courses & Profile',
+    'متابعة': 'Follow',
+    'متابعة المعلم': 'Follow Teacher',
+    'إلغاء المتابعة': 'Unfollow',
+
+    // ─ Common UI
+    'جاري التحميل...': 'Loading...',
+    'حدث خطأ في الاتصال بالخادم.': 'Server connection error.',
+    'تأكيد': 'Confirm',
+    'إلغاء': 'Cancel',
+    'حفظ': 'Save',
+    'تم': 'Done',
+    'نعم': 'Yes',
+    // ─ Subjects page (subjects.html)
+    'المواد الدراسية ونخبة المعلمين': 'Subjects & Top Teachers',
+    'اختر المادة لعرض المعلمين المتخصصين فيها، أو تصفح جميع المواد ومدرسيها مصنفين لكل مرحلة': 'Select a subject to view its specialist teachers, or browse all subjects and their teachers sorted by level',
+    'المادة الدراسية:': 'Subject:',
+    'جميع المواد': 'All Subjects',
+    'لا': 'No',
+
+    'جميع الحقوق محفوظة. تطوير': 'All rights reserved. Developed by',
+    'جميع الحقوق محفوظة': 'All rights reserved',
+    ' صفحة الادمن': ' Admin Portal'
 
 };
 
 const platformPlaceholders = {
+
+    "بحث باسم الطالب أو الهاتف...": "Search by student name or phone...",
+
     'ابحث باسم الطالب أو السنتر...': 'Search by student name or center...',
     'ابحث باسم الفيديو أو الحصة...': 'Search by lesson or video title...',
     'ابحث باسم الطالب أو رقم الهاتف...': 'Search by student name or phone...',
@@ -5214,6 +5359,8 @@ const platformPlaceholders = {
     'اختر محافظتك': 'Choose your governorate', 'اختر الصف الدراسي': 'Choose your grade',
     'اختر الشعبة': 'Choose your track', 'اختر اللغة الثانية': 'Choose a second language',
     'مثال: ziyad.ashraf': 'Example: ziyad.ashraf', 'أدخل كلمة المرور قوية': 'Enter a strong password',
+    'أدخل الكود المكون من 12 رقم': 'Enter the 12-digit code',
+    'ابحث عن كورس...': 'Search for a course...',
     'أعد إدخال كلمة المرور': 'Re-enter your password'
 };
 
@@ -5251,8 +5398,22 @@ function setPlatformLanguage(language) {
             node.nodeValue = original;
             return;
         }
-        const replacement = platformTranslations[trimmed];
-        if (replacement) node.nodeValue = original.replace(trimmed, replacement);
+        // Direct match first
+        let replacement = platformTranslations[trimmed];
+        if (replacement) {
+            node.nodeValue = original.replace(trimmed, replacement);
+            return;
+        }
+        // Handle emoji+Arabic text combinations (e.g. '🏠 الرئيسية')
+        const emojiMatch = trimmed.match(/^((?:[^\u0600-\u06FF])*)([\u0600-\u06FF][\s\S]*)$/u);
+        if (emojiMatch) {
+            const emojiPart = emojiMatch[1];
+            const arabicPart = emojiMatch[2].trim();
+            const arabicReplacement = platformTranslations[arabicPart];
+            if (arabicReplacement) {
+                node.nodeValue = original.replace(trimmed, emojiPart + arabicReplacement);
+            }
+        }
     });
 
     // تحديث خيارات الـ select
@@ -5287,12 +5448,33 @@ function setPlatformLanguage(language) {
 }
 
 function initLanguageSwitcher() {
-    const host = document.querySelector('header .header-left') || document.querySelector('.platform-header-inner') || document.querySelector('.watch-topbar-actions') || document.querySelector('.masar-nav-actions');
-    if (host && !host.querySelector('.language-switcher')) {
-        const button = document.createElement('button');
+    const headerRight = document.querySelector('header .header-right');
+    const headerBrand = document.querySelector('header .header-brand');
+    const fallbackHost = document.querySelector('.platform-header-inner') || document.querySelector('.watch-topbar-actions') || document.querySelector('.masar-nav-actions') || document.querySelector('header .header-left');
+
+    let button = document.querySelector('.language-switcher');
+    if (!button) {
+        button = document.createElement('button');
         button.type = 'button';
         button.className = 'language-switcher';
-        host.insertBefore(button, host.querySelector('.theme-capsule') || host.firstChild);
+        button.setAttribute('aria-label', 'تبديل اللغة');
+        button.title = 'Switch Language';
+        if (headerRight) {
+            headerRight.appendChild(button);
+        } else if (headerBrand) {
+            headerBrand.insertAdjacentElement('afterend', button);
+        } else if (fallbackHost) {
+            fallbackHost.insertBefore(button, fallbackHost.querySelector('.theme-capsule') || fallbackHost.firstChild);
+        }
+    } else {
+        const parent = button.parentElement;
+        if (parent && parent.classList.contains('header-left')) {
+            if (headerRight) {
+                headerRight.appendChild(button);
+            } else if (headerBrand) {
+                headerBrand.insertAdjacentElement('afterend', button);
+            }
+        }
     }
 
     document.querySelectorAll('.language-switcher').forEach(button => {
