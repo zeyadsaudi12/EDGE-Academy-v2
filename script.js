@@ -3906,7 +3906,6 @@ window.switchTab = function (tabId, element) {
     });
 
     document.querySelectorAll('.side-item').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.pill-nav-item').forEach(b => b.classList.remove('active'));
 
     const target = document.getElementById(tabId);
     if (target) {
@@ -3918,13 +3917,21 @@ window.switchTab = function (tabId, element) {
         if (tabId === 'tab-results') loadStudentResults();
     }
 
-    // Sync active classes on both sidebar items and mobile pills
-    document.querySelectorAll(`.side-item[onclick*="${tabId}"], .pill-nav-item[onclick*="${tabId}"]`).forEach(b => b.classList.add('active'));
+    // Sync active classes on sidebar items
+    const activeItem = document.querySelector('.side-item[onclick*="' + tabId + '"]');
+    if (activeItem) {
+        activeItem.classList.add('active');
 
-    // Smoothly center the active pill in view on mobile
-    const activePill = document.querySelector(`.pill-nav-item[onclick*="${tabId}"]`);
-    if (activePill) {
-        activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        // Update mobile section title and icon
+        const mobileTitle = document.getElementById('mobileActiveTabTitle');
+        const mobileIcon = document.getElementById('mobileActiveTabIcon');
+        if (mobileTitle) {
+            mobileTitle.textContent = activeItem.textContent.trim();
+        }
+        if (mobileIcon) {
+            const iconEl = activeItem.querySelector('i');
+            if (iconEl) mobileIcon.className = iconEl.className;
+        }
     }
 
     // Close mobile off-canvas drawer if open
