@@ -3023,13 +3023,15 @@ header {
 }
 
 .side-item.active {
-    background: #13201c;
-    color: var(--accent-gold);
+    background: linear-gradient(135deg, var(--primary, #1a6bdb), var(--primary-dark, #114fb0)) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 18px rgba(26, 107, 219, 0.35);
 }
 
 .dark-mode .side-item.active {
-    background: var(--accent-gold);
-    color: #000;
+    background: linear-gradient(135deg, var(--primary, #1a6bdb), #00b894) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 18px rgba(26, 107, 219, 0.45);
 }
 
 /* Main Content Area */
@@ -3106,15 +3108,15 @@ header {
 }
 
 .blue .progress {
-    stroke: #3b82f6;
+    stroke: var(--primary, #1a6bdb);
 }
 
 .pink .progress {
-    stroke: #ec4899;
+    stroke: #8b5cf6;
 }
 
 .gold .progress {
-    stroke: var(--accent-gold);
+    stroke: #00b894;
 }
 
 .circular-progress .content {
@@ -3438,32 +3440,35 @@ header {
 
 .btn-royal-action {
     padding: 0 30px;
-    background: #13201c;
-    color: var(--accent-gold);
+    background: linear-gradient(135deg, var(--primary, #1a6bdb), var(--primary-dark, #114fb0));
+    color: #ffffff;
     border-radius: 15px;
     font-weight: 800;
     cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+}
+
+.btn-royal-action:hover {
+    box-shadow: 0 6px 18px rgba(26, 107, 219, 0.35);
+    transform: translateY(-2px);
 }
 
 @media (max-width: 900px) {
     .royal-wrapper {
         grid-template-columns: 1fr;
+        padding: 16px 12px;
+        gap: 16px;
     }
 
-    .royal-sidebar {
-        position: static;
-        height: auto;
+    .dynamic-stats-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
     }
 
-    .sidebar-nav {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
-
-    .dynamic-stats-row,
     .user-info-display {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
     }
 }
 

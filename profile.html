@@ -7,79 +7,677 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>الحساب الشخصي | EDGE Academy</title>
     <style>
-                #tab-results .royal-table {
-                    display: table !important;
-                    width: 100% !important;
-                    border-collapse: separate !important;
-                    border-spacing: 0 10px !important;
-                    margin-top: 25px !important;
-                }
-                #tab-results .royal-table thead {
-                    display: table-header-group !important;
-                }
-                #tab-results .royal-table tbody {
-                    display: table-row-group !important;
-                }
-                #tab-results .royal-table tr {
-                    display: table-row !important;
-                    transition: all 0.2s ease !important;
-                }
-                #tab-results .royal-table th,
-                #tab-results .royal-table td {
-                    display: table-cell !important;
-                    text-align: right !important;
-                    vertical-align: middle !important;
-                    padding: 14px 16px !important;
-                }
-                #tab-results .royal-table th {
-                    font-size: 0.9rem !important;
-                    font-weight: 800 !important;
-                    color: var(--text-dark) !important;
-                    opacity: 0.8 !important;
-                    border-bottom: 2px solid var(--glass-border) !important;
-                }
-                #tab-results .royal-table td {
-                    font-size: 0.9rem !important;
-                    background: rgba(255, 255, 255, 0.03) !important;
-                    border-top: 1px solid var(--glass-border) !important;
-                    border-bottom: 1px solid var(--glass-border) !important;
-                    color: var(--text-dark) !important;
-                }
-                .dark-mode #tab-results .royal-table td {
-                    background: rgba(255, 255, 255, 0.01) !important;
-                }
-                #tab-results .royal-table tr td:first-child {
-                    border-right: 1px solid var(--glass-border) !important;
-                    border-top-right-radius: 12px !important;
-                    border-bottom-right-radius: 12px !important;
-                    font-weight: 800 !important;
-                }
-                #tab-results .royal-table tr td:last-child {
-                    border-left: 1px solid var(--glass-border) !important;
-                    border-top-left-radius: 12px !important;
-                    border-bottom-left-radius: 12px !important;
-                }
-                #tab-results .royal-table tbody tr:hover td {
-                    background: rgba(221, 168, 82, 0.08) !important;
-                    border-color: rgba(221, 168, 82, 0.3) !important;
-                }
-                #tab-results .filter-controls select {
-                    border: 1px solid var(--glass-border) !important;
-                    background: var(--glass-bg) !important;
-                    color: var(--text-dark) !important;
-                    border-radius: 12px !important;
-                    font-weight: 700 !important;
-                    font-family: inherit !important;
-                    padding: 0 15px !important;
-                    height: 48px !important;
-                    outline: none !important;
-                    transition: all 0.3s ease !important;
-                }
-                #tab-results .filter-controls select:focus {
-                    border-color: var(--accent-gold) !important;
-                    box-shadow: 0 0 0 3px rgba(221, 168, 82, 0.15) !important;
-                }
-            </style>
+        /* ══════════════════════════════════════════════════════
+           💎 Modern Student Profile Theme (EDGE Academy Colors)
+           ══════════════════════════════════════════════════════ */
+        :root {
+            --profile-primary: #1a6bdb;
+            --profile-primary-light: #e8f1fc;
+            --profile-primary-dark: #114fb0;
+            --profile-accent: #00b894;
+            --profile-bg: #f0f4ff;
+            --profile-card: #ffffff;
+            --profile-card-alt: #f8fafc;
+            --profile-border: rgba(26, 107, 219, 0.12);
+            --profile-text: #1a2744;
+            --profile-muted: #5a6a8a;
+            --profile-shadow: 0 10px 30px rgba(26, 107, 219, 0.06);
+        }
+
+        .dark-mode {
+            --profile-bg: #0d1526;
+            --profile-card: #152038;
+            --profile-card-alt: #1c2e50;
+            --profile-border: rgba(26, 107, 219, 0.22);
+            --profile-text: #f1f5f9;
+            --profile-muted: #94a3b8;
+            --profile-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        body.royal-dashboard {
+            background-color: var(--profile-bg) !important;
+            color: var(--profile-text) !important;
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* ── Master Grid Layout ── */
+        .royal-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 28px;
+            max-width: 1400px;
+            margin: 20px auto 60px;
+            padding: 0 24px;
+            transition: all 0.3s ease;
+        }
+
+        /* ── Sidebar (شريط الأدوات الجانبي للبروفايل) ── */
+        .royal-sidebar {
+            background: var(--profile-card) !important;
+            border: 1px solid var(--profile-border) !important;
+            border-radius: 26px !important;
+            padding: 28px 16px !important;
+            box-shadow: var(--profile-shadow) !important;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 90;
+        }
+
+        .sidebar-close-btn {
+            display: none;
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--profile-card-alt);
+            border: 1px solid var(--profile-border);
+            color: var(--profile-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .sidebar-close-btn:hover {
+            background: #fee2e2;
+            color: #dc2626;
+            border-color: #fca5a5;
+        }
+
+        .sidebar-user-header {
+            text-align: center;
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 14px;
+        }
+
+        .sidebar-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 22px;
+            border: 3px solid var(--profile-primary) !important;
+            box-shadow: 0 4px 18px rgba(26, 107, 219, 0.25);
+            object-fit: cover;
+        }
+
+        .online-pulse {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            width: 18px;
+            height: 18px;
+            background: var(--profile-accent) !important;
+            border: 3px solid var(--profile-card) !important;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 184, 148, 0.5);
+        }
+
+        .sidebar-user-header h4 {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--profile-text);
+            margin: 0 0 6px 0;
+        }
+
+        .sidebar-user-header p {
+            display: inline-block;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--profile-primary);
+            background: rgba(26, 107, 219, 0.1);
+            padding: 3px 12px;
+            border-radius: 999px;
+            margin: 0;
+        }
+
+        /* ── Sidebar Navigation Items ── */
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .side-item {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            color: var(--profile-muted);
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 0.94rem;
+            transition: all 0.2s ease;
+            text-align: right;
+            font-family: inherit;
+        }
+
+        .side-item i {
+            font-size: 1.15rem;
+            transition: transform 0.2s ease;
+        }
+
+        .side-item:hover {
+            background: rgba(26, 107, 219, 0.08) !important;
+            color: var(--profile-primary) !important;
+            transform: translateX(-3px);
+        }
+
+        .side-item.active {
+            background: linear-gradient(135deg, var(--profile-primary), var(--profile-primary-dark)) !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.35) !important;
+        }
+
+        /* ── Main Content Area ── */
+        .royal-content {
+            background: var(--profile-card) !important;
+            border: 1px solid var(--profile-border) !important;
+            border-radius: 28px !important;
+            padding: clamp(22px, 3.2vw, 38px) !important;
+            box-shadow: var(--profile-shadow) !important;
+            min-height: 600px;
+            overflow-x: hidden;
+        }
+
+        .glass-section-title {
+            border-bottom: 2px solid var(--profile-border) !important;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+        }
+
+        .glass-section-title h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--profile-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .glass-section-title h3 i {
+            color: var(--profile-primary);
+        }
+
+        /* ── Quick Pills Bar on Mobile (شريط الاختصارات المريح) ── */
+        .mobile-quick-pills-bar {
+            display: none;
+            overflow-x: auto;
+            gap: 8px;
+            padding: 4px 2px 14px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid var(--profile-border);
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .mobile-quick-pills-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .pill-nav-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 999px;
+            background: var(--profile-card-alt);
+            border: 1px solid var(--profile-border);
+            color: var(--profile-muted);
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 800;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .pill-nav-item i {
+            font-size: 1rem;
+        }
+
+        .pill-nav-item:hover {
+            color: var(--profile-primary);
+            border-color: var(--profile-primary);
+        }
+
+        .pill-nav-item.active {
+            background: linear-gradient(135deg, var(--profile-primary), var(--profile-primary-dark)) !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.35) !important;
+        }
+
+        /* ── Floating Action Button (FAB) on Mobile ── */
+        .profile-mobile-fab {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 20px;
+            z-index: 999;
+            background: linear-gradient(135deg, var(--profile-primary), var(--profile-primary-dark));
+            color: #ffffff;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 20px;
+            font-family: inherit;
+            font-size: 0.94rem;
+            font-weight: 800;
+            box-shadow: 0 8px 25px rgba(26, 107, 219, 0.45);
+            cursor: pointer;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .profile-mobile-fab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(26, 107, 219, 0.55);
+        }
+
+        .profile-mobile-fab i {
+            font-size: 1.1rem;
+        }
+
+        /* ── Mobile Sidebar Backdrop ── */
+        .sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 21, 38, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-backdrop.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ── User Information Cards ── */
+        .user-info-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .info-item {
+            background: var(--profile-card-alt) !important;
+            padding: 16px 20px !important;
+            border-radius: 16px !important;
+            border: 1px solid var(--profile-border) !important;
+            transition: all 0.2s ease;
+        }
+
+        .info-item:hover {
+            border-color: rgba(26, 107, 219, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .info-item span {
+            display: block;
+            font-size: 0.84rem;
+            color: var(--profile-muted);
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .info-item b {
+            font-size: 1.05rem;
+            color: var(--profile-text);
+            font-weight: 800;
+        }
+
+        /* ── Circular Progress & Stats ── */
+        .dynamic-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-progress-item {
+            background: var(--profile-card-alt);
+            border: 1px solid var(--profile-border);
+            border-radius: 20px;
+            padding: 20px 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-progress-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(26, 107, 219, 0.3);
+        }
+
+        .stat-progress-item p {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--profile-muted);
+            margin: 8px 0 0;
+        }
+
+        .blue .progress { stroke: var(--profile-primary) !important; }
+        .pink .progress { stroke: #8b5cf6 !important; }
+        .gold .progress { stroke: var(--profile-accent) !important; }
+
+        /* ── Student QR Card & Pass ── */
+        .student-qr-card {
+            background: var(--profile-card) !important;
+            border: 1px solid var(--profile-border) !important;
+            border-radius: 22px !important;
+            padding: 24px !important;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--profile-shadow) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-qr-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--profile-primary), var(--profile-accent));
+        }
+
+        .student-qr-img-wrapper {
+            background: #ffffff !important;
+            padding: 12px;
+            border-radius: 18px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            border: 2px solid var(--profile-border);
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .student-qr-badge {
+            background: rgba(26, 107, 219, 0.12) !important;
+            color: var(--profile-primary) !important;
+            font-weight: 800;
+        }
+
+        .student-qr-code-box b {
+            color: var(--profile-primary) !important;
+        }
+
+        .btn-qr-download {
+            background: linear-gradient(135deg, var(--profile-primary), var(--profile-primary-dark)) !important;
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.35) !important;
+            color: #ffffff !important;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-qr-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.45) !important;
+        }
+
+        .student-id-pass-card {
+            background: var(--profile-card) !important;
+            border: 1px solid var(--profile-border) !important;
+            border-radius: 24px !important;
+            box-shadow: var(--profile-shadow) !important;
+        }
+
+        .id-pass-header {
+            background: linear-gradient(135deg, #0d2249 0%, #153878 50%, #1a6bdb 100%) !important;
+        }
+
+        .id-pass-logo {
+            background: linear-gradient(135deg, var(--profile-primary), var(--profile-accent)) !important;
+        }
+
+        .id-pass-status {
+            background: rgba(0, 184, 148, 0.2) !important;
+            border: 1px solid rgba(0, 184, 148, 0.4) !important;
+            color: #2dd4bf !important;
+        }
+
+        /* ── Royal Table & Results ── */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .royal-table {
+            width: 100% !important;
+            border-collapse: separate !important;
+            border-spacing: 0 8px !important;
+            margin-top: 15px !important;
+        }
+
+        .royal-table th {
+            font-size: 0.88rem !important;
+            font-weight: 800 !important;
+            color: var(--profile-muted) !important;
+            padding: 12px 16px !important;
+            border-bottom: 2px solid var(--profile-border) !important;
+            text-align: right !important;
+        }
+
+        .royal-table td {
+            font-size: 0.9rem !important;
+            font-weight: 700;
+            background: var(--profile-card-alt) !important;
+            border-top: 1px solid var(--profile-border) !important;
+            border-bottom: 1px solid var(--profile-border) !important;
+            color: var(--profile-text) !important;
+            padding: 14px 16px !important;
+            vertical-align: middle !important;
+            text-align: right !important;
+        }
+
+        .royal-table tr td:first-child {
+            border-right: 1px solid var(--profile-border) !important;
+            border-top-right-radius: 12px !important;
+            border-bottom-right-radius: 12px !important;
+        }
+
+        .royal-table tr td:last-child {
+            border-left: 1px solid var(--profile-border) !important;
+            border-top-left-radius: 12px !important;
+            border-bottom-left-radius: 12px !important;
+        }
+
+        .royal-table tbody tr:hover td {
+            background: rgba(26, 107, 219, 0.05) !important;
+            border-color: rgba(26, 107, 219, 0.25) !important;
+        }
+
+        .filter-controls select {
+            border: 1px solid var(--profile-border) !important;
+            background: var(--profile-card) !important;
+            color: var(--profile-text) !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            font-family: inherit !important;
+            padding: 0 15px !important;
+            height: 46px !important;
+            outline: none !important;
+            transition: all 0.25s ease !important;
+        }
+
+        .filter-controls select:focus {
+            border-color: var(--profile-primary) !important;
+            box-shadow: 0 0 0 3px rgba(26, 107, 219, 0.15) !important;
+        }
+
+        .language-switcher {
+            display: none !important;
+        }
+
+        /* ══════════════════════════════════════════════════════
+           📱 RESPONSIVE MEDIA QUERIES (Mobile & Tablet)
+           ══════════════════════════════════════════════════════ */
+        @media (max-width: 992px) {
+            .royal-wrapper {
+                display: flex;
+                flex-direction: column;
+                padding: 14px 12px 70px;
+                gap: 16px;
+                margin-top: 0;
+            }
+
+            /* Show mobile quick-pills & floating action button */
+            .mobile-quick-pills-bar {
+                display: flex;
+            }
+
+            .profile-mobile-fab {
+                display: inline-flex;
+            }
+
+            .sidebar-close-btn {
+                display: flex;
+            }
+
+            /* Off-canvas sidebar on mobile */
+            .royal-sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                right: -330px !important;
+                width: 310px !important;
+                max-width: 86vw !important;
+                height: 100vh !important;
+                z-index: 10000 !important;
+                overflow-y: auto !important;
+                border-radius: 26px 0 0 26px !important;
+                box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3) !important;
+                transition: right 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                padding: 24px 16px !important;
+            }
+
+            .royal-sidebar.open {
+                right: 0 !important;
+            }
+
+            .royal-content {
+                border-radius: 22px !important;
+                padding: 18px 14px !important;
+            }
+
+            .user-info-display {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .dynamic-stats-row {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .circular-progress {
+                width: 85px;
+                height: 85px;
+            }
+
+            .circular-progress svg {
+                width: 85px;
+                height: 85px;
+            }
+
+            .circular-progress .content h2 {
+                font-size: 1.3rem;
+            }
+
+            .student-qr-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 18px;
+                padding: 20px 14px !important;
+            }
+
+            .student-qr-buttons {
+                justify-content: center;
+            }
+
+            .id-pass-body {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 14px !important;
+            }
+
+            .id-pass-details {
+                text-align: right;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .user-info-display {
+                grid-template-columns: 1fr;
+            }
+
+            .dynamic-stats-row {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-progress-item {
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 12px 18px;
+            }
+
+            .stat-progress-item p {
+                margin: 0;
+                font-size: 0.95rem;
+            }
+
+            .input-glow-row {
+                flex-direction: column;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+            }
+
+            .royal-table th, .royal-table td {
+                padding: 10px 10px !important;
+                font-size: 0.82rem !important;
+            }
+        }
+    </style>
 </head>
 <body class="royal-dashboard">
 <!-- Early teacher redirect: المدرس دايما يروح لوحة المعلم -->
@@ -196,7 +794,11 @@
 
 <div class="royal-wrapper container">
     <!-- القائمة الجانبية الموحدة -->
-    <aside class="royal-sidebar">
+    <aside class="royal-sidebar" id="royalSidebar">
+        <!-- زر إغلاق القائمة للموبايل -->
+        <button class="sidebar-close-btn" onclick="toggleProfileSidebar(false)" aria-label="إغلاق القائمة">
+            <i class="fas fa-times"></i>
+        </button>
     <div class="sidebar-user-header">
         <div class="avatar-container" onclick="document.getElementById('avatarInput').click()" style="cursor: pointer;" title="تغيير الصورة الشخصية">
             <img src="imges/man.png" id="profileImg" class="sidebar-avatar" alt="الصورة الشخصية">
@@ -221,9 +823,29 @@
     </nav>
 </aside>
 
+    <!-- غطاء معتم للقائمة الجانبية للموبايل -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleProfileSidebar(false)"></div>
+
+    <!-- زر فتح القائمة الجانبية العائم للموبايل -->
+    <button class="profile-mobile-fab" id="profileMobileFab" onclick="toggleProfileSidebar(true)" aria-label="فتح القائمة الجانبية" title="القائمة والاختصارات">
+        <i class="fas fa-bars"></i>
+        <span>القائمة</span>
+    </button>
+
 
     <!-- منطقة المحتوى الرئيسية -->
     <main class="royal-content">
+        <!-- شريط الاختصارات السريع للموبايل (Pills Bar) -->
+        <div class="mobile-quick-pills-bar" id="mobileQuickPills">
+            <button class="pill-nav-item active" onclick="switchTab('tab-user', this)"><i class="fas fa-user-circle"></i> ملفي</button>
+            <button class="pill-nav-item" onclick="switchTab('tab-qr-card', this)"><i class="fas fa-qrcode"></i> كارت QR</button>
+            <button class="pill-nav-item" onclick="switchTab('tab-teachers', this)"><i class="fas fa-user-tie"></i> المدرسين</button>
+            <button class="pill-nav-item" onclick="switchTab('tab-recharge', this)"><i class="fas fa-bolt"></i> شحن كود</button>
+            <button class="pill-nav-item" onclick="switchTab('tab-my-courses', this)"><i class="fas fa-graduation-cap"></i> كورساتي</button>
+            <button class="pill-nav-item" onclick="switchTab('tab-invoices', this)"><i class="fas fa-file-invoice-dollar"></i> الفواتير</button>
+            <button class="pill-nav-item" onclick="switchTab('tab-subs', this)"><i class="fas fa-calendar-check"></i> الاشتراكات</button>
+            <button class="pill-nav-item" onclick="switchTab('tab-results', this)"><i class="fas fa-poll"></i> النتائج</button>
+        </div>
         
         <!-- 1. ملف المستخدم والإحصائيات -->
         <div id="tab-user" class="profile-pane active">
@@ -291,7 +913,7 @@
             <!-- سجل ونتائج الامتحانات السريعة -->
             <div class="glass-section-title" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:35px;">
                 <h3><i class="fas fa-clipboard-check"></i> آخر نتائج الامتحانات المنجزة</h3>
-                <button type="button" onclick="switchTab('tab-results', document.querySelector('.side-item[onclick*=\'tab-results\']'))" style="background:rgba(221, 168, 82, 0.12); border:1px solid rgba(221, 168, 82, 0.35); color:var(--accent-gold); padding:8px 18px; border-radius:999px; font-weight:800; cursor:pointer; font-size:0.85rem; display:inline-flex; align-items:center; gap:8px; transition:0.25s ease;">
+                <button type="button" onclick="switchTab('tab-results', document.querySelector('.side-item[onclick*=\'tab-results\']'))" style="background:rgba(26, 107, 219, 0.1); border:1px solid rgba(26, 107, 219, 0.25); color:var(--profile-primary); padding:8px 18px; border-radius:999px; font-weight:800; cursor:pointer; font-size:0.85rem; display:inline-flex; align-items:center; gap:8px; transition:0.25s ease;">
                     عرض كافة النتائج بالتفصيل <i class="fas fa-arrow-left"></i>
                 </button>
             </div>
@@ -351,80 +973,7 @@
 
         <!-- 7. نتائج الامتحانات -->
         <div id="tab-results" class="profile-pane">
-            <style>
-                #tab-results .royal-table {
-                    display: table !important;
-                    width: 100% !important;
-                    border-collapse: separate !important;
-                    border-spacing: 0 10px !important;
-                    margin-top: 25px !important;
-                }
-                #tab-results .royal-table thead {
-                    display: table-header-group !important;
-                }
-                #tab-results .royal-table tbody {
-                    display: table-row-group !important;
-                }
-                #tab-results .royal-table tr {
-                    display: table-row !important;
-                    transition: all 0.2s ease !important;
-                }
-                #tab-results .royal-table th,
-                #tab-results .royal-table td {
-                    display: table-cell !important;
-                    text-align: right !important;
-                    vertical-align: middle !important;
-                    padding: 14px 16px !important;
-                }
-                #tab-results .royal-table th {
-                    font-size: 0.9rem !important;
-                    font-weight: 800 !important;
-                    color: var(--text-dark) !important;
-                    opacity: 0.8 !important;
-                    border-bottom: 2px solid var(--glass-border) !important;
-                }
-                #tab-results .royal-table td {
-                    font-size: 0.9rem !important;
-                    background: rgba(255, 255, 255, 0.03) !important;
-                    border-top: 1px solid var(--glass-border) !important;
-                    border-bottom: 1px solid var(--glass-border) !important;
-                    color: var(--text-dark) !important;
-                }
-                .dark-mode #tab-results .royal-table td {
-                    background: rgba(255, 255, 255, 0.01) !important;
-                }
-                #tab-results .royal-table tr td:first-child {
-                    border-right: 1px solid var(--glass-border) !important;
-                    border-top-right-radius: 12px !important;
-                    border-bottom-right-radius: 12px !important;
-                    font-weight: 800 !important;
-                }
-                #tab-results .royal-table tr td:last-child {
-                    border-left: 1px solid var(--glass-border) !important;
-                    border-top-left-radius: 12px !important;
-                    border-bottom-left-radius: 12px !important;
-                }
-                #tab-results .royal-table tbody tr:hover td {
-                    background: rgba(221, 168, 82, 0.08) !important;
-                    border-color: rgba(221, 168, 82, 0.3) !important;
-                }
-                #tab-results .filter-controls select {
-                    border: 1px solid var(--glass-border) !important;
-                    background: var(--glass-bg) !important;
-                    color: var(--text-dark) !important;
-                    border-radius: 12px !important;
-                    font-weight: 700 !important;
-                    font-family: inherit !important;
-                    padding: 0 15px !important;
-                    height: 48px !important;
-                    outline: none !important;
-                    transition: all 0.3s ease !important;
-                }
-                #tab-results .filter-controls select:focus {
-                    border-color: var(--accent-gold) !important;
-                    box-shadow: 0 0 0 3px rgba(221, 168, 82, 0.15) !important;
-                }
-            </style>
+            
             <div class="glass-section-title"><h3>📊 نتائج الاختبارات المنجزة</h3></div>
             
             <div class="filter-controls">

@@ -3900,37 +3900,53 @@ function runCircularProgress() {
 }
 
 window.switchTab = function (tabId, element) {
-
     document.querySelectorAll('.profile-pane').forEach(p => {
-
         p.classList.remove('active');
-
         p.style.display = 'none';
-
     });
 
     document.querySelectorAll('.side-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.pill-nav-item').forEach(b => b.classList.remove('active'));
 
     const target = document.getElementById(tabId);
-
     if (target) {
-
         target.style.display = 'block';
-
         setTimeout(() => target.classList.add('active'), 10);
-
         if (tabId === 'tab-user') runCircularProgress();
-
         if (tabId === 'tab-teachers') renderFollowedTeachers();
-
         if (tabId === 'tab-my-courses') renderSubscribedVideos();
-
         if (tabId === 'tab-results') loadStudentResults();
-
     }
 
-    if (element) element.classList.add('active');
+    // Sync active classes on both sidebar items and mobile pills
+    document.querySelectorAll(`.side-item[onclick*="${tabId}"], .pill-nav-item[onclick*="${tabId}"]`).forEach(b => b.classList.add('active'));
 
+    // Smoothly center the active pill in view on mobile
+    const activePill = document.querySelector(`.pill-nav-item[onclick*="${tabId}"]`);
+    if (activePill) {
+        activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+
+    // Close mobile off-canvas drawer if open
+    if (typeof window.toggleProfileSidebar === 'function') {
+        window.toggleProfileSidebar(false);
+    }
+};
+
+window.toggleProfileSidebar = function (open) {
+    const sidebar = document.getElementById('royalSidebar') || document.querySelector('.royal-sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (!sidebar) return;
+    const shouldOpen = (open !== undefined) ? open : !sidebar.classList.contains('open');
+    if (shouldOpen) {
+        sidebar.classList.add('open');
+        backdrop?.classList.add('show');
+        if (window.innerWidth <= 992) document.body.style.overflow = 'hidden';
+    } else {
+        sidebar.classList.remove('open');
+        backdrop?.classList.remove('show');
+        document.body.style.overflow = '';
+    }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
