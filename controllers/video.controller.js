@@ -101,7 +101,7 @@ exports.createVideo = async (req, res, next) => {
         const imageFile = req.files && req.files['image'] ? req.files['image'][0] : null;
         const videoFile = req.files && req.files['video'] ? req.files['video'][0] : null;
 
-        const imagePath = imageFile ? imageFile.path : req.body.image;
+        const imagePath = (imageFile ? imageFile.path : (req.body.image || req.body.imagePath)) || 'imges/logo-light-mode.png';
         const gradesArray = rawGrades ? (Array.isArray(rawGrades) ? rawGrades : rawGrades.split(",").map(g => g.trim())) : [];
         const videoPath = videoFile ? videoFile.path : '';
 

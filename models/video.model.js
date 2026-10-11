@@ -6,7 +6,7 @@ const videoSchema = new mongoose.Schema({
     // null lets the client distinguish it from a paid lecture priced at zero.
     price: { type: Number, default: null },
     link: { type: String, default: "" },
-    imagePath: { type: String, required: true },
+    imagePath: { type: String, default: 'imges/logo-light-mode.png' },
     videoPath: { type: String, default: "" },
     grades: { type: [String], default: [] },
     teacherId: { type: String, default: null }, // تم وضع الفاصلة هنا لتفادي انهيار الكود

@@ -93,7 +93,9 @@ exports.getTeacherDashboard = async (req, res, next) => {
         }
 
         const account = await User.findById(userId).select('role teacherId isTeacherAccount');
-        if (!account || account.role !== 'teacher' || String(account.teacherId) !== String(req.params.id)) {
+        const isAuthorizedTeacher = account && account.role === 'teacher' && String(account.teacherId) === String(req.params.id);
+        const isAdmin = account && account.role === 'admin';
+        if (!account || (!isAuthorizedTeacher && !isAdmin)) {
             return res.status(403).json({ success: false, message: 'هذه اللوحة متاحة لحساب المدرس فقط' });
         }
 

@@ -3749,9 +3749,19 @@ async function loadFullProfile() {
 
             avgGrade = Math.round(totalPercentage / examsCount);
 
+            if (typeof renderRecentExamsPreview === 'function') {
+                renderRecentExamsPreview(data.results);
+            }
+        } else {
+            if (typeof renderRecentExamsPreview === 'function') {
+                renderRecentExamsPreview([]);
+            }
         }
 
     } catch (err) {
+        if (typeof renderRecentExamsPreview === 'function') {
+            renderRecentExamsPreview([]);
+        }
 
         console.error('Error loading stats:', err);
 
@@ -4023,6 +4033,85 @@ async function loadStudentResults() {
     }
 
 }
+
+window.renderRecentExamsPreview = function(results) {
+    const container = document.getElementById('recent-exams-preview-container');
+    if (!container) return;
+
+    if (!results || results.length === 0) {
+        container.innerHTML = `
+            <div style="background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:16px; padding:28px 20px; text-align:center;">
+                <i class="fas fa-clipboard-list" style="font-size:2.2rem; color:var(--accent-gold); opacity:0.8; margin-bottom:12px; display:inline-block;"></i>
+                <h4 style="margin:0 0 6px 0; font-weight:800; color:var(--text-dark);">لم تقم بإجراء أي امتحانات بعد</h4>
+                <p style="margin:0 0 16px 0; font-size:0.88rem; opacity:0.75; color:var(--text-dark);">يمكنك البدء في خوض الامتحانات التفاعلية لقياس فهمك للدروس فوراً.</p>
+                <a href="exams" style="display:inline-flex; align-items:center; gap:8px; padding:8px 20px; border-radius:999px; background:var(--accent-gold); color:#000; font-weight:800; text-decoration:none; font-size:0.88rem; margin:auto;">
+                    <i class="fas fa-pen-to-square"></i> تصفح الامتحانات المتاحة
+                </a>
+            </div>
+        `;
+        return;
+    }
+
+    const recent = [...results].reverse().slice(0, 3);
+
+    container.innerHTML = `
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+            ${recent.map(r => {
+                const pct = Number(r.percentage || 0);
+                let badgeBg = 'rgba(34, 197, 94, 0.15)';
+                let badgeColor = '#22c55e';
+                let statusText = 'ممتاز 🌟';
+                if (pct < 50) {
+                    badgeBg = 'rgba(239, 68, 68, 0.15)';
+                    badgeColor = '#ef4444';
+                    statusText = 'بحاجة لمراجعة ⚠️';
+                } else if (pct < 65) {
+                    badgeBg = 'rgba(249, 115, 22, 0.15)';
+                    badgeColor = '#f97316';
+                    statusText = 'مقبول';
+                } else if (pct < 85) {
+                    badgeBg = 'rgba(234, 179, 8, 0.15)';
+                    badgeColor = '#eab308';
+                    statusText = 'جيد جداً 👍';
+                }
+
+                const dateStr = r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric', year: 'numeric' }) : 'مؤخراً';
+
+                return `
+                    <div style="background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:18px; padding:18px 20px; display:flex; flex-direction:column; justify-content:space-between; gap:14px; transition:transform 0.2s ease, border-color 0.2s ease; box-shadow:0 4px 20px rgba(0,0,0,0.02);">
+                        <div>
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:8px;">
+                                <span style="font-size:0.78rem; font-weight:800; color:var(--accent-gold); background:rgba(221, 168, 82, 0.12); padding:3px 10px; border-radius:999px;">
+                                    ${r.subject || 'مادة دراسية'}
+                                </span>
+                                <span style="font-size:0.75rem; color:var(--text-dark); opacity:0.6; font-weight:600;">
+                                    <i class="far fa-clock"></i> ${dateStr}
+                                </span>
+                            </div>
+                            <h4 style="margin:0 0 6px 0; font-size:1rem; font-weight:800; color:var(--text-dark); line-height:1.4;">
+                                ${r.examTitle || 'امتحان إلكتروني'}
+                            </h4>
+                            <p style="margin:0; font-size:0.82rem; opacity:0.75; color:var(--text-dark);">
+                                المعلم: ${r.teacherName || 'معلم المادة'}
+                            </p>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--glass-border); padding-top:12px; margin-top:2px;">
+                            <div>
+                                <span style="font-size:0.78rem; opacity:0.7; color:var(--text-dark); display:block;">الدرجة المستحقة:</span>
+                                <b style="font-size:1.1rem; color:var(--text-dark); font-family:inherit;">${r.score} <span style="font-size:0.82rem; opacity:0.6;">من ${r.totalMarks}</span></b>
+                            </div>
+                            <div style="text-align:left;">
+                                <span style="display:inline-block; font-size:0.85rem; font-weight:800; padding:4px 12px; border-radius:8px; background:${badgeBg}; color:${badgeColor};">
+                                    ${pct}% · ${statusText}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+};
 
 window.filterStudentResults = function () {
 

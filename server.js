@@ -207,8 +207,16 @@ app.use(errorHandler);
 
 // Local development server listener
 if (!process.env.VERCEL) {
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
         console.log(`🚀 خادم منصة EDGE Academy (Node.js) يعمل بنجاح على: http://localhost:${port}`);
+    });
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.warn(`⚠️ تنبيه: المنفذ ${port} قيد الاستخدام بالفعل من قبل نسخة سابقة من الخادم.`);
+            console.log(`ℹ️ الخادم متاح وجاهز للاستخدام مباشرة على: http://localhost:${port}`);
+        } else {
+            console.error('❌ خطأ في تشغيل الخادم:', err.message);
+        }
     });
 }
 

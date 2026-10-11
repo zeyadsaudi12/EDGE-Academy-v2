@@ -491,28 +491,55 @@
     // 1. SCREEN RECORDING BLOCK
     // ============================================
     function initScreenRecordBlock() {
+        // ── 1. Strictly block getDisplayMedia (Browser Screen Share / Record) ──
         if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
-            const _orig = navigator.mediaDevices.getDisplayMedia.bind(navigator.mediaDevices);
-
-            navigator.mediaDevices.getDisplayMedia = async function (...args) {
+            navigator.mediaDevices.getDisplayMedia = function (...args) {
                 triggerAdministrativeLockout('browser_screen_share_activated');
+                pauseVideo();
+                showBlackout();
+                return Promise.reject(new DOMException('Permission denied: Screen recording is strictly disabled on this platform', 'NotAllowedError'));
+            };
+        }
 
-                try {
-                    if (blackCanvas && blackCanvas.captureStream) {
-                        const blackStream = blackCanvas.captureStream(1);
-                        setTimeout(() => {
-                            blackStream.getTracks().forEach(t => t.stop());
-                            _recordingActive = false;
-                        }, 30000);
-                        return blackStream;
-                    }
-                } catch (_) {}
+        // ── 2. Block MediaRecorder API (Extensions / Screen recorders) ──
+        if (typeof window.MediaRecorder !== 'undefined') {
+            const OrigRecorder = window.MediaRecorder;
+            window.MediaRecorder = function (...args) {
+                triggerAdministrativeLockout('media_recorder_detected');
+                pauseVideo();
+                showBlackout();
+                throw new Error('Screen and audio recording is strictly prohibited');
+            };
+            window.MediaRecorder.isTypeSupported = OrigRecorder.isTypeSupported ? OrigRecorder.isTypeSupported.bind(OrigRecorder) : () => false;
+        }
 
-                try {
-                    return await _orig(...args);
-                } catch (e) {
-                    throw e;
+        // ── 3. Block captureStream on video & media elements ──
+        if (typeof HTMLMediaElement !== 'undefined' && HTMLMediaElement.prototype.captureStream) {
+            HTMLMediaElement.prototype.captureStream = function() {
+                triggerAdministrativeLockout('media_capture_stream');
+                pauseVideo();
+                showBlackout();
+                throw new Error('Stream capture is disabled');
+            };
+        }
+        if (typeof HTMLVideoElement !== 'undefined' && HTMLVideoElement.prototype.captureStream) {
+            HTMLVideoElement.prototype.captureStream = function() {
+                triggerAdministrativeLockout('video_capture_stream');
+                pauseVideo();
+                showBlackout();
+                throw new Error('Stream capture is disabled');
+            };
+        }
+        if (typeof HTMLCanvasElement !== 'undefined' && HTMLCanvasElement.prototype.captureStream) {
+            const _origCanvasCapture = HTMLCanvasElement.prototype.captureStream;
+            HTMLCanvasElement.prototype.captureStream = function(...args) {
+                if (this !== blackCanvas) {
+                    triggerAdministrativeLockout('canvas_capture_stream');
+                    pauseVideo();
+                    showBlackout();
+                    throw new Error('Canvas stream capture is disabled');
                 }
+                return _origCanvasCapture.apply(this, args);
             };
         }
 
@@ -721,29 +748,46 @@
         });
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'PrintScreen') {
+            if (e.key === 'PrintScreen' || e.code === 'PrintScreen') {
                 e.preventDefault();
                 clearClipboardBuffer();
+                showBlackout();
                 triggerAdministrativeLockout('printscreen_detected');
                 return;
             }
-            if (e.metaKey && e.shiftKey && e.key.toLowerCase() === 's') {
+            // Windows Snipping Tool (Win+Shift+S) / Chrome Screenshot (Ctrl+Shift+S)
+            if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 's') {
                 e.preventDefault();
+                clearClipboardBuffer();
+                showBlackout();
                 triggerAdministrativeLockout('snipping_tool_detected');
                 return;
             }
-            if (e.metaKey && e.altKey && e.key.toLowerCase() === 'r') {
+            // Mac Screenshot & Screen Record (Cmd+Shift+3, Cmd+Shift+4, Cmd+Shift+5)
+            if (e.metaKey && e.shiftKey && ['3', '4', '5'].includes(e.key)) {
                 e.preventDefault();
+                clearClipboardBuffer();
+                showBlackout();
+                triggerAdministrativeLockout('mac_screenshot_record_detected');
+                return;
+            }
+            // Windows Game Bar Record (Win+Alt+R or Ctrl+Alt+R)
+            if ((e.metaKey || e.ctrlKey) && e.altKey && e.key.toLowerCase() === 'r') {
+                e.preventDefault();
+                showBlackout();
                 triggerAdministrativeLockout('game_bar_record_detected');
                 return;
             }
+            // Windows Game Bar overlay (Win+G)
             if (e.metaKey && e.key.toLowerCase() === 'g') {
                 e.preventDefault();
-                flashBlackout(2000);
+                showBlackout();
+                flashBlackout(2500);
                 return;
             }
             if (e.ctrlKey && e.key.toLowerCase() === 'p') {
                 e.preventDefault();
+                showBlackout();
                 return;
             }
             if (e.key === 'F12') {

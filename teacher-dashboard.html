@@ -1157,6 +1157,18 @@
             .dash-stat-cards-row {
                 grid-template-columns: 1fr;
             }
+        #tableInactiveStudentsWrap, #salesSummaryWrap {
+            scroll-margin-top: 100px;
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .highlight-section {
+            border-color: var(--dash-primary) !important;
+            box-shadow: 0 0 0 3px rgba(26, 107, 219, 0.25), 0 8px 30px rgba(26, 107, 219, 0.15) !important;
+        }
+
+        .language-switcher {
+            display: none !important;
         }
 
     </style>
@@ -1412,8 +1424,6 @@
                 </div>
 
                 <!-- ════ TAB 1: OVERVIEW & CHARTS ════ -->
-                
-                <!-- ════ TAB 1: OVERVIEW & CHARTS ════ -->
                 <div id="tab-overview" class="tab-content-area active">
                     <!-- ════ 5. FOURTH ROW (آخر المحاضرات + آخر المدرسين + آخر الطلبة) ════ -->
                     <div class="dash-charts-grid-1">
@@ -1429,7 +1439,7 @@
                                 </div>
                             </div>
                         </div>
-
+                    </div>
 
                     <!-- ════ 6. FIFTH ROW (جدول الطلبة غير المفعلين) ════ -->
                     <div class="dash-widget-box" id="tableInactiveStudentsWrap" style="margin-bottom: 28px;">
@@ -1486,7 +1496,7 @@
                                 </div>
                             </div>
 
-                            <!-- Centers Color Breakdown Grid -->
+                            <!-- Centers Breakdown Grid -->
                             <div class="centers-breakdown-list" id="centersBreakdownGrid">
                                 <!-- Populated dynamically -->
                             </div>
@@ -1506,6 +1516,145 @@
                         </div>
                         <div id="topStudentsListWrap" class="centers-breakdown-list">
                             <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- ════ SALES & COMPREHENSIVE ANALYTICS SECTION ════ -->
+                    <div id="salesSummaryWrap" style="margin-bottom: 24px;">
+                        <!-- Sales Summary Box -->
+                        <div class="dash-widget-box" style="margin-bottom: 24px; padding: 24px;">
+                            <div class="sales-grand-card">
+                                <div class="grand-card-label">إجمالي المبيعات المحققة</div>
+                                <div class="grand-card-val" id="salesGrandVal">0 ج</div>
+                            </div>
+                            <div class="sales-sub-grid">
+                                <div class="sales-sub-card">
+                                    <div class="sub-card-title">مبيعات الكورسات</div>
+                                    <div class="sub-card-val" id="subSalesCoursesVal">0</div>
+                                    <div class="sub-card-ops" id="subSalesCoursesOps">0 عملية</div>
+                                </div>
+                                <div class="sales-sub-card">
+                                    <div class="sub-card-title">مبيعات الباكدجات</div>
+                                    <div class="sub-card-val" id="subSalesPackagesVal">0</div>
+                                    <div class="sub-card-ops" id="subSalesPackagesOps">0 عملية</div>
+                                </div>
+                                <div class="sales-sub-card">
+                                    <div class="sub-card-title">مبيعات المحاضرات</div>
+                                    <div class="sub-card-val" id="subSalesLecturesVal">0</div>
+                                    <div class="sub-card-ops" id="subSalesLecturesOps">0 عملية</div>
+                                </div>
+                                <div class="sales-sub-card">
+                                    <div class="sub-card-title">مبيعات السناتر</div>
+                                    <div class="sub-card-val" id="subSalesCentersVal">0</div>
+                                    <div class="sub-card-ops" id="subSalesCentersOps">0 عملية</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Monthly Sales & Registrations Chart -->
+                        <div class="dash-widget-box" style="margin-bottom: 24px;">
+                            <div class="widget-header">
+                                <h3><i class="ti ti-chart-line"></i> المبيعات الشهرية وتسجيلات الطلبة</h3>
+                            </div>
+                            <div class="widget-body" style="height: 320px;">
+                                <canvas id="chartMonthlySales"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Platform Overview Donut & Active vs Inactive -->
+                        <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
+                            <div class="dash-widget-box">
+                                <div class="widget-header">
+                                    <h3><i class="ti ti-chart-pie"></i> نظرة عامة على المنصة</h3>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="platform-donut-wrap" style="height: 200px;">
+                                        <canvas id="chartPlatformOverview"></canvas>
+                                    </div>
+                                    <div class="platform-donut-legend">
+                                        <span class="p-legend-item"><span class="p-dot" style="background:#6366f1"></span>المدرسين</span>
+                                        <span class="p-legend-item"><span class="p-dot" style="background:#f87171"></span>الطلبة</span>
+                                        <span class="p-legend-item"><span class="p-dot" style="background:#14b8a6"></span>الكورسات</span>
+                                        <span class="p-legend-item"><span class="p-dot" style="background:#f59e0b"></span>المحاضرات</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dash-widget-box">
+                                <div class="widget-header">
+                                    <h3><i class="ti ti-user-check"></i> نسبة الطلاب الفعّالين مقابل غير الفعّالين</h3>
+                                </div>
+                                <div class="widget-body">
+                                    <div style="position:relative; height: 200px;">
+                                        <canvas id="chartActiveVsInactive"></canvas>
+                                    </div>
+                                    <div class="active-students-pills-row">
+                                        <div class="active-pill-box">
+                                            <span class="active-num-badge teal" id="badgeActiveCount">0</span>
+                                            <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">اشتروا اشتراكات</span>
+                                        </div>
+                                        <div class="active-pill-box">
+                                            <span class="active-num-badge" style="background:rgba(148,163,184,0.2); color:var(--dash-text);" id="badgeInactiveCount">0</span>
+                                            <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">مسجلين فقط</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Interactive Students & Top Grades -->
+                        <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
+                            <div class="dash-widget-box">
+                                <div class="widget-header">
+                                    <h3><i class="ti ti-flame"></i> أكثر الطلاب تفاعلاً (مشاهدات المحاضرات)</h3>
+                                </div>
+                                <div class="widget-body" style="height: 260px;">
+                                    <canvas id="chartTopInteractiveStudents"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="dash-widget-box">
+                                <div class="widget-header">
+                                    <h3><i class="ti ti-school"></i> توزيع الصفوف الدراسية (Top 3)</h3>
+                                </div>
+                                <div class="widget-body">
+                                    <div style="height: 180px;">
+                                        <canvas id="chartTopGrades"></canvas>
+                                    </div>
+                                    <div id="gradesLegendContainer" style="margin-top: 12px; display:flex; flex-direction:column; gap:6px; padding:0 8px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top 10 Governorates -->
+                        <div class="dash-widget-box" style="margin-bottom: 24px;">
+                            <div class="widget-header">
+                                <h3><i class="ti ti-map-pins"></i> أعلى 10 محافظات تسجيلاً</h3>
+                            </div>
+                            <div class="widget-body" style="height: 280px;">
+                                <canvas id="chartTopGovs"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Recent Teachers & Recent Students -->
+                        <div class="dash-charts-grid-2">
+                            <div class="dash-widget-box">
+                                <div class="widget-header">
+                                    <h3><i class="ti ti-users"></i> آخر المعلمين المضافين</h3>
+                                </div>
+                                <div class="widget-body" style="padding: 12px 16px;">
+                                    <div id="recentTeachersList"></div>
+                                </div>
+                            </div>
+
+                            <div class="dash-widget-box">
+                                <div class="widget-header">
+                                    <h3><i class="ti ti-user-plus"></i> آخر الطلاب المسجلين</h3>
+                                </div>
+                                <div class="widget-body" style="padding: 12px 16px;">
+                                    <div class="recent-items-list" id="recentStudentsList"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1689,8 +1838,21 @@
             document.getElementById('dashSidebar')?.classList.toggle('open');
         }
 
-        // Auth Protection
-        if (!currentUser || currentUser.role !== 'teacher' || !currentUser.teacherId) {
+        // Safe helper to set text content without throwing
+        function setSafeText(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = (val != null ? val : '0');
+        }
+        function setSafeWidth(id, pct) {
+            const el = document.getElementById(id);
+            if (el) el.style.width = pct;
+        }
+
+        // Auth Protection & Teacher Resolution
+        const _urlParams = new URLSearchParams(window.location.search);
+        if (!currentUser || (currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+            location.href = 'login';
+        } else if (currentUser.role === 'teacher' && !currentUser.teacherId) {
             location.href = 'login';
         } else {
             loadDashboard();
@@ -1698,7 +1860,15 @@
 
         async function loadDashboard() {
             try {
-                const res = await fetch(`${API}/api/teachers/dashboard/${currentUser.teacherId}?userId=${currentUser._id}`);
+                const targetTeacherId = (currentUser.role === 'admin' && _urlParams.get('teacherId'))
+                    ? _urlParams.get('teacherId')
+                    : currentUser.teacherId;
+
+                if (!targetTeacherId) {
+                    throw new Error('يرجى تحديد المعلم المطلوب عرض لوحته الإحصائية');
+                }
+
+                const res = await fetch(`${API}/api/teachers/dashboard/${targetTeacherId}?userId=${currentUser._id}`);
                 const data = await res.json();
                 if (!res.ok || !data.success) throw new Error(data.message || 'تعذر جلب البيانات');
                 dashData = data;
@@ -1725,11 +1895,31 @@
         let chartActiveInactiveInstance = null;
 
         function scrollToSection(targetId, btn) {
-            activateTab('overview', btn || document.querySelector('.sidebar-link'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-content-area').forEach(t => t.classList.remove('active'));
+
+            if (btn && btn instanceof Element) {
+                btn.classList.add('active');
+            } else {
+                const b = document.querySelector(`.sidebar-link[onclick*="${targetId}"]`);
+                if (b) b.classList.add('active');
+            }
+
+            const overviewTab = document.getElementById('tab-overview');
+            if (overviewTab) overviewTab.classList.add('active');
+
+            if (window.innerWidth <= 992) {
+                document.getElementById('dashSidebar')?.classList.remove('open');
+            }
+
             setTimeout(() => {
                 const el = document.getElementById(targetId);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    el.classList.add('highlight-section');
+                    setTimeout(() => el.classList.remove('highlight-section'), 2000);
+                }
+            }, 60);
         }
 
         function renderComprehensiveAnalytics(an) {
@@ -1757,10 +1947,10 @@
             const inact = an.inactiveStudents || [];
 
             // 1. Top Stat Cards (Strictly Real)
-            document.getElementById('cardTeachersCount').textContent = teachersCount;
-            document.getElementById('cardStudentsCount').textContent = studentsCount;
-            document.getElementById('cardCoursesCount').textContent = coursesCount;
-            document.getElementById('cardLecturesCount').textContent = lecturesCount;
+            setSafeText('cardTeachersCount', teachersCount);
+            setSafeText('cardStudentsCount', studentsCount);
+            setSafeText('cardCoursesCount', coursesCount);
+            setSafeText('cardLecturesCount', lecturesCount);
 
             // 2. Platform Overview Donut
             const pCtx = document.getElementById('chartPlatformOverview')?.getContext('2d');
@@ -1952,15 +2142,15 @@
 
             // 5. Sales Summary Box (Strictly Real)
             const ss = an.salesSummary || {};
-            document.getElementById('salesGrandVal').textContent = (ss.totalSales || 0) + ' ج';
-            document.getElementById('subSalesCoursesVal').textContent = ss.courses?.amount || 0;
-            document.getElementById('subSalesCoursesOps').textContent = (ss.courses?.count || 0) + ' عملية';
-            document.getElementById('subSalesPackagesVal').textContent = ss.packages?.amount || 0;
-            document.getElementById('subSalesPackagesOps').textContent = (ss.packages?.count || 0) + ' عملية';
-            document.getElementById('subSalesLecturesVal').textContent = ss.lectures?.amount || 0;
-            document.getElementById('subSalesLecturesOps').textContent = (ss.lectures?.count || 0) + ' عملية';
-            document.getElementById('subSalesCentersVal').textContent = ss.centers?.amount || 0;
-            document.getElementById('subSalesCentersOps').textContent = (ss.centers?.count || 0) + ' عملية';
+            setSafeText('salesGrandVal', (ss.totalSales || 0) + ' ج');
+            setSafeText('subSalesCoursesVal', ss.courses?.amount || 0);
+            setSafeText('subSalesCoursesOps', (ss.courses?.count || 0) + ' عملية');
+            setSafeText('subSalesPackagesVal', ss.packages?.amount || 0);
+            setSafeText('subSalesPackagesOps', (ss.packages?.count || 0) + ' عملية');
+            setSafeText('subSalesLecturesVal', ss.lectures?.amount || 0);
+            setSafeText('subSalesLecturesOps', (ss.lectures?.count || 0) + ' عملية');
+            setSafeText('subSalesCentersVal', ss.centers?.amount || 0);
+            setSafeText('subSalesCentersOps', (ss.centers?.count || 0) + ' عملية');
 
             // 6. Top 3 Grades Donut (Strictly Real)
             const tgCtx = document.getElementById('chartTopGrades')?.getContext('2d');
@@ -2070,8 +2260,8 @@
                     }
                 });
 
-                document.getElementById('badgeActiveCount').textContent = as.activeCount || 0;
-                document.getElementById('badgeInactiveCount').textContent = as.inactiveCount || 0;
+                setSafeText('badgeActiveCount', as.activeCount || 0);
+                setSafeText('badgeInactiveCount', as.inactiveCount || 0);
             }
 
             // 9. Recent Lectures List (Strictly Real)
@@ -2180,43 +2370,46 @@
             const questions = d.questions || [];
 
             // Sidebar details
-            document.getElementById('sidebarTeacherName').textContent = t.name || 'المعلم';
-            document.getElementById('sidebarTeacherSubject').textContent = t.subjectAr || 'المادة';
+            setSafeText('sidebarTeacherName', t.name || 'المعلم');
+            setSafeText('sidebarTeacherSubject', t.subjectAr || 'المادة');
             if (t.imagePath) {
                 const imgEl = document.getElementById('sidebarAvatarImg');
-                imgEl.src = t.imagePath;
-                imgEl.style.display = 'block';
-                document.getElementById('sidebarAvatarFallback').style.display = 'none';
+                if (imgEl) {
+                    imgEl.src = t.imagePath;
+                    imgEl.style.display = 'block';
+                }
+                const fallbackEl = document.getElementById('sidebarAvatarFallback');
+                if (fallbackEl) fallbackEl.style.display = 'none';
             }
 
             // Hero Details
-            document.getElementById('heroGreeting').textContent = `مرحباً بك يا أستاذ ${t.name || ''} 👋`;
-            document.getElementById('heroSubjectText').textContent = `لوحة متابعة طلاب مادة ${t.subjectAr || ''} والسناتر والامتحانات والمشاهدات اللحظية`;
+            setSafeText('heroGreeting', `مرحباً بك يا أستاذ ${t.name || ''} 👋`);
+            setSafeText('heroSubjectText', `لوحة متابعة طلاب مادة ${t.subjectAr || ''} والسناتر والامتحانات والمشاهدات اللحظية`);
 
             // Active Students & Percentage calculations (strictly real data)
             const totalStudents = s.totalStudentsCount || 0;
             const activeStudents = s.viewersCount || 0;
             const activeRate = totalStudents > 0 ? Math.min(100, Math.round((activeStudents / totalStudents) * 100)) : 0;
 
-            document.getElementById('heroActiveRate').textContent = `${activeRate}%`;
-            document.getElementById('metricActivePct').textContent = `${activeRate}% نشاط`;
-            document.getElementById('metricActiveCount').textContent = activeStudents;
-            document.getElementById('metricActiveBar').style.width = `${activeRate}%`;
-            document.getElementById('metricTotalRegistered').textContent = totalStudents;
-            document.getElementById('metricActiveRatioText').textContent = totalStudents > 0 
+            setSafeText('heroActiveRate', `${activeRate}%`);
+            setSafeText('metricActivePct', `${activeRate}% نشاط`);
+            setSafeText('metricActiveCount', activeStudents);
+            setSafeWidth('metricActiveBar', `${activeRate}%`);
+            setSafeText('metricTotalRegistered', totalStudents);
+            setSafeText('metricActiveRatioText', totalStudents > 0 
                 ? `${activeStudents} من أصل ${totalStudents} طالب`
-                : 'لا يوجد طلاب مسجلين بعد';
+                : 'لا يوجد طلاب مسجلين بعد');
 
             // Attendance & QR Scans (strictly real data)
             const attendCount = attendances.length;
             const attendBase = totalStudents > 0 ? totalStudents : (activeStudents > 0 ? activeStudents : 0);
             const attendRate = attendBase > 0 ? Math.min(100, Math.round((attendCount / attendBase) * 100)) : 0;
-            document.getElementById('metricAttendPct').textContent = `${attendRate}% حضور`;
-            document.getElementById('metricAttendCount').textContent = attendCount;
-            document.getElementById('metricAttendBar').style.width = `${attendRate}%`;
-            document.getElementById('metricAttendSub').textContent = attendCount > 0 
+            setSafeText('metricAttendPct', `${attendRate}% حضور`);
+            setSafeText('metricAttendCount', attendCount);
+            setSafeWidth('metricAttendBar', `${attendRate}%`);
+            setSafeText('metricAttendSub', attendCount > 0 
                 ? `${attendCount} تسجيل حضور بالسناتر`
-                : 'لا توجد تسجيلات حضور بعد';
+                : 'لا توجد تسجيلات حضور بعد');
 
             // Exams & Results (strictly real data)
             const allResults = exams.flatMap(e => e.results || []);
@@ -2225,35 +2418,37 @@
             const passRate = totalResults > 0 ? Math.round((passCount / totalResults) * 100) : 0;
             const avgScore = totalResults > 0 ? (allResults.reduce((a, b) => a + Number(b.percentage || 0), 0) / totalResults).toFixed(1) : 0;
 
-            document.getElementById('metricPassRate').textContent = `${passRate}% نجاح`;
-            document.getElementById('metricExamResultsCount').textContent = totalResults;
-            document.getElementById('metricPassBar').style.width = `${passRate}%`;
-            document.getElementById('metricAvgScore').textContent = totalResults > 0 ? `${avgScore}%` : '—';
+            setSafeText('metricPassRate', `${passRate}% نجاح`);
+            setSafeText('metricExamResultsCount', totalResults);
+            setSafeWidth('metricPassBar', `${passRate}%`);
+            setSafeText('metricAvgScore', totalResults > 0 ? `${avgScore}%` : '—');
 
             // Views & Inquiries (strictly real data)
             const totalViews = videos.reduce((acc, v) => acc + (v.watchers ? v.watchers.length : 0), 0);
-            document.getElementById('metricTotalViews').textContent = totalViews;
-            document.getElementById('metricInquiriesCount').textContent = `${questions.length} سؤال`;
-            document.getElementById('metricVideosCount').textContent = `${videos.length} فيديو`;
+            setSafeText('metricTotalViews', totalViews);
+            setSafeText('metricInquiriesCount', `${questions.length} سؤال`);
+            setSafeText('metricVideosCount', `${videos.length} فيديو`);
             const viewsRate = totalStudents > 0 ? Math.min(100, Math.round((totalViews / totalStudents) * 100)) : (totalViews > 0 ? 100 : 0);
-            document.getElementById('metricViewsBar').style.width = `${viewsRate}%`;
+            setSafeWidth('metricViewsBar', `${viewsRate}%`);
 
             // ── Top Stat Cards: populate from real data (works with or without analytics) ──
             const _an = d.analytics || {};
-            document.getElementById('cardTeachersCount').textContent =
-                (_an.teachersCount != null ? _an.teachersCount : (s.teachersCount != null ? s.teachersCount : 0));
-            document.getElementById('cardStudentsCount').textContent =
-                (_an.studentsCount != null ? _an.studentsCount : (s.totalStudentsCount != null ? s.totalStudentsCount : 0));
-            document.getElementById('cardCoursesCount').textContent =
-                (_an.coursesCount != null ? _an.coursesCount : (s.coursesCount != null ? s.coursesCount : (d.courses ? d.courses.length : 0)));
-            document.getElementById('cardLecturesCount').textContent =
-                (_an.lecturesCount != null ? _an.lecturesCount : (s.videosCount != null ? s.videosCount : videos.length));
+            setSafeText('cardTeachersCount', _an.teachersCount != null ? _an.teachersCount : (s.teachersCount != null ? s.teachersCount : 0));
+            setSafeText('cardStudentsCount', _an.studentsCount != null ? _an.studentsCount : (s.totalStudentsCount != null ? s.totalStudentsCount : 0));
+            setSafeText('cardCoursesCount', _an.coursesCount != null ? _an.coursesCount : (s.coursesCount != null ? s.coursesCount : (d.courses ? d.courses.length : 0)));
+            setSafeText('cardLecturesCount', _an.lecturesCount != null ? _an.lecturesCount : (s.videosCount != null ? s.videosCount : videos.length));
 
             // Sidebar Badges
-            document.getElementById('sideBadgeVideos').textContent = videos.length;
-            document.getElementById('sideBadgeExams').textContent = exams.length;
-            document.getElementById('sideBadgeQuestions').textContent = questions.length;
-            document.getElementById('sideBadgeCenters').textContent = attendances.length;
+            setSafeText('sideBadgeVideos', videos.length);
+            setSafeText('sideBadgeExams', exams.length);
+            setSafeText('sideBadgeQuestions', questions.length);
+            setSafeText('sideBadgeCenters', attendances.length);
+            setSafeText('sideBadgeInactive', (_an.inactiveStudents || []).length);
+
+            // Comprehensive Analytics
+            if (typeof renderComprehensiveAnalytics === 'function') {
+                renderComprehensiveAnalytics(d.analytics);
+            }
 
             // Render Center / Location Gauge
             renderCentersAndLocationsGauge();
@@ -2284,9 +2479,20 @@
             document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
             document.querySelectorAll('.tab-content-area').forEach(t => t.classList.remove('active'));
 
-            btn.classList.add('active');
+            const activeBtn = (btn instanceof Element) ? btn : null;
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            } else {
+                document.querySelectorAll('.sidebar-link').forEach(b => {
+                    if (b.getAttribute('onclick')?.includes(`'${tabId}'`)) b.classList.add('active');
+                });
+            }
+
             const target = document.getElementById(`tab-${tabId}`);
-            if (target) target.classList.add('active');
+            if (target) {
+                target.classList.add('active');
+                document.querySelector('.dash-main')?.scrollTo({ top: 0, behavior: 'smooth' });
+            }
 
             if (window.innerWidth <= 992) {
                 document.getElementById('dashSidebar')?.classList.remove('open');
