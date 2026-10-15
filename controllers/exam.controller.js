@@ -248,18 +248,21 @@ exports.getStudentResults = async (req, res, next) => {
 
 exports.getAllExams = async (req, res, next) => {
     try {
-        const { grade, teacherId, studentId } = req.query;
-        let filter = { isActive: true };
-        if (grade) filter.grades = grade;
-        if (teacherId) filter.teacherId = teacherId;
+        const { grade, teacherId, studentId, all } = req.query;
+        let filter = (all === 'true' || all === true) ? {} : { isActive: true };
+        if (grade && grade !== 'all') filter.grades = grade;
+        if (teacherId && teacherId !== 'all') filter.teacherId = teacherId;
 
         const exams = await Exam.find(filter).sort({ createdAt: -1 });
 
         const mappedExams = exams.map(exam => {
             const examObj = exam.toObject();
+            examObj.resultsCount = Array.isArray(exam.results) ? exam.results.length : 0;
             if (studentId) {
                 const studentResult = exam.results.find(r => r.studentId === studentId);
                 examObj.results = studentResult ? [studentResult] : [];
+            } else if (all === 'true' || req.query.withResults === 'true') {
+                // Keep results if explicitly asked
             } else {
                 delete examObj.results;
             }

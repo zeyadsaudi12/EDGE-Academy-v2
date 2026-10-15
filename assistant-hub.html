@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -19,9 +19,10 @@
             color: var(--txt); min-height: 100vh;
             display: flex; align-items: center; justify-content: center;
             background: radial-gradient(ellipse at top, #1a2540 0%, #0f1117 70%);
+            padding: 20px 0;
         }
-        .hub-wrap { width: 100%; max-width: 520px; padding: 24px; }
-        .hub-header { text-align: center; margin-bottom: 36px; }
+        .hub-wrap { width: 100%; max-width: 580px; padding: 24px; }
+        .hub-header { text-align: center; margin-bottom: 32px; }
         .hub-logo {
             width: 80px; height: 80px;
             background: linear-gradient(135deg, var(--primary), var(--purple));
@@ -37,10 +38,10 @@
             color: var(--primary); padding: 6px 16px; border-radius: 20px;
             font-size: 0.9rem; font-weight: 700; margin-top: 12px;
         }
-        .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
         .hub-card {
             background: var(--bg2); border: 1px solid var(--border);
-            border-radius: 20px; padding: 28px 20px; text-align: center;
+            border-radius: 20px; padding: 26px 20px; text-align: center;
             cursor: pointer; text-decoration: none; color: var(--txt);
             transition: all 0.25s ease; display: flex;
             flex-direction: column; align-items: center; gap: 14px;
@@ -49,12 +50,31 @@
         .hub-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
         .hub-card.attendance:hover { border-color: rgba(221,168,82,0.4); }
         .hub-card.questions:hover { border-color: rgba(79,142,247,0.4); }
-        .card-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .hub-card.exams:hover { border-color: rgba(6,214,160,0.4); }
+        .card-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
         .attendance .card-icon { background: rgba(221,168,82,0.12); color: var(--gold); }
         .questions .card-icon { background: rgba(79,142,247,0.12); color: var(--primary); }
+        .exams .card-icon { background: rgba(6,214,160,0.12); color: var(--green); }
         .hub-card h3 { font-size: 1.05rem; font-weight: 800; }
         .hub-card p { font-size: 0.8rem; color: var(--txt2); line-height: 1.6; }
         .card-badge { position: absolute; top: 12px; left: 12px; background: var(--green); color: #0a1a14; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 20px; }
+        
+        .hub-card.exams-full {
+            grid-column: 1 / -1;
+            flex-direction: row;
+            text-align: right;
+            padding: 20px 24px;
+            gap: 18px;
+        }
+        .hub-card.exams-full .card-content { flex: 1; }
+        .hub-card.exams-full .card-arrow {
+            color: var(--txt2); font-size: 1.3rem; transition: transform 0.2s;
+        }
+        .hub-card.exams-full:hover .card-arrow {
+            transform: translateX(-6px);
+            color: var(--green);
+        }
+
         .logout-row { text-align: center; }
         .logout-btn {
             background: rgba(230,57,70,0.08); border: 1px solid rgba(230,57,70,0.2);
@@ -63,7 +83,11 @@
             transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
         }
         .logout-btn:hover { background: rgba(230,57,70,0.15); }
-        @media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 520px) { 
+            .cards-grid { grid-template-columns: 1fr; }
+            .hub-card.exams-full { flex-direction: column; text-align: center; }
+            .hub-card.exams-full .card-arrow { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -85,6 +109,15 @@
             <div class="card-icon"><i class="ti ti-messages"></i></div>
             <h3>أسئلة الطلاب</h3>
             <p>استعراض أسئلة الطلاب والرد عليهم عبر الواتساب</p>
+        </a>
+        <a href="assistant-exams" class="hub-card exams exams-full">
+            <div class="card-badge" style="background: rgba(6,214,160,0.2); color: var(--green); border: 1px solid rgba(6,214,160,0.3);">جديد</div>
+            <div class="card-icon"><i class="ti ti-clipboard-check"></i></div>
+            <div class="card-content">
+                <h3>إدارة الامتحانات</h3>
+                <p>استعراض امتحانات المدرس ومراحلها، متابعة نتائج الطلاب، تصحيح الأسئلة المقالية وإعادة الامتحان للطلاب</p>
+            </div>
+            <div class="card-arrow"><i class="ti ti-chevron-left"></i></div>
         </a>
     </div>
     <div class="logout-row">
