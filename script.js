@@ -2089,12 +2089,22 @@ async function sendBotMessage(message) {
         window.masarChatHistory = [...window.masarChatHistory, { role: 'assistant', content: data.reply }].slice(-10);
     } catch (error) {
         typing.remove();
-        appendChatMessage('حصلت مشكلة مؤقتة في الاتصال. جرّب مرة أخرى بعد قليل 🙏', 'bot');
+        appendChatMessage(getLocalChatFallback(message), 'bot');
     } finally {
         input.disabled = false;
         if (sendButton) sendButton.disabled = false;
         input.focus();
     }
+}
+
+function getLocalChatFallback(message) {
+    const text = String(message || '').toLowerCase();
+    if (/(نكت|نكتة|اضحك|ضحكني)/.test(text)) {
+        return 'مرة طالب قال للمدرس: ينفع أتعلم من غير ما أذاكر؟ قاله: ينفع، بس النتيجة مش هتتعلم معاك 😄';
+    }
+    if (/(كود|شحن|تفعيل)/.test(text)) return 'جرّب فتح المحاضرة من صفحة الكورسات ثم أدخل كود الشحن في المكان المخصص.';
+    if (/(امتحان|اختبار|درجات)/.test(text)) return 'هتلاقي الامتحانات المتاحة في قسم «الامتحانات». تأكد من اتصال الإنترنت قبل البدء.';
+    return 'أنا موجود لمساعدتك في الكورسات والامتحانات، أو ممكن نحكي نكتة خفيفة 😄';
 }
 
 function appendChatMessage(text, sender) {
