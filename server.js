@@ -56,7 +56,8 @@ app.use(cors((req, callback) => {
     // The site and API are served by the same Vercel deployment. Always
     // allow that exact origin so a stale/missing CORS_ORIGIN variable cannot
     // block login, while external origins still require an explicit allowlist.
-    const requestOrigin = `${req.protocol}://${req.get('host')}`;
+    const forwardedProtocol = (req.get('x-forwarded-proto') || req.protocol).split(',')[0].trim();
+    const requestOrigin = `${forwardedProtocol}://${req.get('host')}`;
     const isAllowed = !origin
         || origin === requestOrigin
         || allowedOrigins.includes(origin)
