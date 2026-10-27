@@ -9,6 +9,11 @@
     // ─── كشف نوع الجهاز ───────────────────────────────────────────────────────
     const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window);
 
+    // Do not interfere with native touch scrolling, taps, zoom, form controls,
+    // or accessibility gestures. Browser-side "anti-inspect" code cannot stop
+    // determined copying and was preventing normal mobile use across the site.
+    if (isMobileDevice) return;
+
     // ─── حقن CSS لمنع تحديد النصوص وسحب المحتوى على جميع الأجهزة ──────────
     (function injectProtectionCSS() {
         const style = document.createElement('style');

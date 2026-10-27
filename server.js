@@ -31,6 +31,10 @@ require('dotenv').config();
 const express = require('express');
 const compression = require('compression');
 const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cookieParser = require('cookie-parser');
+const sanitize = require('./middleware/sanitize');
 const path = require('path');
 const fs = require('fs');
 
@@ -43,10 +47,20 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Middlewares
+app.disable('x-powered-by');
+app.use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(compression()); // Gzip compression
-app.use(cors());
+const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(value => value.trim()).filter(Boolean);
+app.use(cors({ origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || (!allowedOrigins.length && process.env.NODE_ENV !== 'production')) return callback(null, true);
+    return callback(new Error('Origin غير مسموح به بواسطة CORS'));
+}, credentials: true }));
+app.use(cookieParser());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(sanitize);
+app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, limit: 500, standardHeaders: true, legacyHeaders: false }));
+app.use('/api/login', rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false, message: { success: false, message: 'محاولات دخول كثيرة، حاول لاحقاً' } }));
 
 // Static uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
@@ -94,7 +108,13 @@ app.use((req, res, next) => {
 });
 
 // Static assets — CSS, JS, images served directly with correct Content-Type
+const privatePaths = /^\/(?:controllers|models|routes|middleware|config|node_modules|scratch|\.git)(?:\/|$)|^\/(?:server\.js|package(?:-lock)?\.json|\.env)/i;
+app.use((req, res, next) => {
+    if (privatePaths.test(req.path)) return res.status(404).end();
+    next();
+});
 app.use(express.static(path.join(__dirname), {
+    dotfiles: 'deny',
     maxAge: '1d',
     etag: true,
     lastModified: true,

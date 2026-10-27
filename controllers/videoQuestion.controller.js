@@ -18,7 +18,10 @@ async function getQuestionScope(userId) {
 // POST /api/video-questions
 exports.createQuestion = async (req, res, next) => {
     try {
-        const { videoId, videoTitle, question, studentId, studentName, studentPhone } = req.body;
+        const { videoId, videoTitle, question } = req.body;
+        const studentId = String(req.user._id);
+        const studentName = `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim();
+        const studentPhone = req.user.phone || '';
 
         if (!videoId || !question || !studentId) {
             return res.status(400).json({ success: false, message: 'البيانات غير مكتملة' });
@@ -49,7 +52,7 @@ exports.createQuestion = async (req, res, next) => {
 // GET /api/video-questions?userId=...
 exports.getAllQuestions = async (req, res, next) => {
     try {
-        const scope = await getQuestionScope(req.query.userId);
+        const scope = await getQuestionScope(String(req.user._id));
         if (!scope) return res.status(403).json({ success: false, message: 'يلزم تسجيل الدخول بحساب مساعد أو مدرس' });
         if (scope.admin) {
             const questions = await VideoQuestion.find().sort({ createdAt: -1 }).lean();
@@ -76,7 +79,7 @@ exports.deleteQuestion = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'معرف سؤال غير صالح' });
         }
 
-        const scope = await getQuestionScope(req.query.userId);
+        const scope = await getQuestionScope(String(req.user._id));
         if (!scope) return res.status(403).json({ success: false, message: 'غير مصرح بحذف السؤال' });
         const question = await VideoQuestion.findById(req.params.id);
         if (!question) {

@@ -206,8 +206,8 @@
         if (!watermarkContainer) return;
 
         const name = ((currentUser.firstName || '') + ' ' + (currentUser.lastName || '') + ' ' + (currentUser.username || '')).trim() || currentUser.name || 'طالب';
-        const password = currentUser.password || currentUser.pass || '';
-        const watermarkText = password ? `${name} | ${password}` : name;
+        // A password must never be rendered or retained in browser storage.
+        const watermarkText = name;
 
         watermarkContainer.innerHTML = '';
 

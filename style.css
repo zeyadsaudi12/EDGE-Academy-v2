@@ -82,6 +82,17 @@
 }
 
 /* ═══ Base Body ═══ */
+html {
+    min-height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
+
+button, a, input, select, textarea, label {
+    touch-action: manipulation;
+}
+
 body {
     font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg);

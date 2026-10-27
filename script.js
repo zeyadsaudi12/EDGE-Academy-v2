@@ -966,18 +966,6 @@ function handleLogin(event) {
 
     }
 
-    // default admin backup account
-
-    if (phone === '01234567890' && password === 'admin') {
-
-        localStorage.setItem('currentUser', JSON.stringify({ role: 'admin', name: 'Admin' }));
-
-        window.location.href = 'admin';
-
-        return false;
-
-    }
-
     function getDeviceName() {
         const ua = navigator.userAgent;
         let os = "جهاز غير معروف";
@@ -1044,6 +1032,7 @@ function handleLogin(event) {
 
 function handleLogout() {
 
+    fetch(`${API_URL}/api/logout`, { method: 'POST', credentials: 'same-origin' }).catch(() => {});
     localStorage.removeItem('currentUser');
 
     sessionStorage.clear();
@@ -4782,7 +4771,7 @@ function checkCenterCode() {
 
                     <p><strong>القيمة:</strong> ${code.value || 0} ج.م</p>
 
-                    <button onclick="window.location.href = 'watch?videoId=${code.videoId}&code=${code.code}'" 
+                    <button onclick="window.location.href = 'watch?videoId=${code.videoId}&code=${code.code}'"
 
                             class="btn-fill" style="margin-top: 12px; width: 100%;">
 

@@ -248,7 +248,8 @@ exports.getStudentResults = async (req, res, next) => {
 
 exports.getAllExams = async (req, res, next) => {
     try {
-        const { grade, teacherId, studentId, all } = req.query;
+        const { grade, teacherId, all } = req.query;
+        const studentId = String(req.user._id);
         let filter = (all === 'true' || all === true) ? {} : { isActive: true };
         if (grade && grade !== 'all') filter.grades = grade;
         if (teacherId && teacherId !== 'all') filter.teacherId = teacherId;
@@ -258,14 +259,15 @@ exports.getAllExams = async (req, res, next) => {
         const mappedExams = exams.map(exam => {
             const examObj = exam.toObject();
             examObj.resultsCount = Array.isArray(exam.results) ? exam.results.length : 0;
-            if (studentId) {
+            if (req.user.role === 'student') {
                 const studentResult = exam.results.find(r => r.studentId === studentId);
                 examObj.results = studentResult ? [studentResult] : [];
-            } else if (all === 'true' || req.query.withResults === 'true') {
+            } else if ((all === 'true' || req.query.withResults === 'true') && ['admin', 'teacher', 'assistant'].includes(req.user.role)) {
                 // Keep results if explicitly asked
             } else {
                 delete examObj.results;
             }
+            if (req.user.role === 'student') examObj.questions = (examObj.questions || []).map(({ correctAnswer, ...question }) => question);
             return examObj;
         });
 
@@ -303,7 +305,12 @@ exports.getExamById = async (req, res, next) => {
     try {
         const exam = await Exam.findById(req.params.id);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
-        res.json({ success: true, exam });
+        const examObject = exam.toObject();
+        if (req.user.role === 'student') {
+            examObject.questions = examObject.questions.map(({ correctAnswer, ...question }) => question);
+            delete examObject.results;
+        }
+        res.json({ success: true, exam: examObject });
     } catch (err) {
         next(err);
     }
@@ -344,7 +351,10 @@ exports.deleteExam = async (req, res, next) => {
 
 exports.submitExam = async (req, res, next) => {
     try {
-        const { studentId, studentName, studentPhone, answers } = req.body;
+        const { answers } = req.body;
+        const studentId = String(req.user._id);
+        const studentName = `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim();
+        const studentPhone = req.user.phone || '';
         const exam = await Exam.findById(req.params.id);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
 
@@ -380,7 +390,7 @@ exports.submitExam = async (req, res, next) => {
             };
         });
 
-        const percentage = Math.round((score / exam.totalMarks) * 100);
+        const percentage = exam.totalMarks > 0 ? Math.round((score / exam.totalMarks) * 100) : 0;
         const result = {
             studentId,
             studentName,

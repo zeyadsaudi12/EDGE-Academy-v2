@@ -60,7 +60,7 @@ exports.deleteVideo = async (req, res, next) => {
 
 exports.likeVideo = async (req, res, next) => {
     try {
-        const { studentId } = req.body;
+        const studentId = String(req.user._id);
         const video = await Video.findById(req.params.id);
         if (!video) return res.status(404).json({ success: false, message: 'المحاضرة غير موجودة' });
 
@@ -84,10 +84,10 @@ exports.likeVideo = async (req, res, next) => {
 
 exports.getAllVideos = async (req, res, next) => {
     try {
-        const videos = await Video.find().sort({ createdAt: -1 }).lean();
-        if (req.query.includeHidden === 'true') return res.json(videos);
+        const videos = await Video.find({ hidden: { $ne: true } }).sort({ createdAt: -1 }).lean();
+        if (req.query.includeHidden === 'true' && req.user?.role === 'admin') return res.json(videos);
         const visibleTeacherIds = new Set((await Teacher.find({ hidden: { $ne: true } }).select('_id').lean()).map(t => String(t._id)));
-        res.json(videos.filter(video => !video.teacherId || visibleTeacherIds.has(String(video.teacherId))));
+        res.json(videos.filter(video => !video.teacherId || visibleTeacherIds.has(String(video.teacherId))).map(({ link, videoPath, bookletFiles, homeworkFiles, ...safeVideo }) => safeVideo));
     } catch (err) {
         next(err);
     }
@@ -176,6 +176,17 @@ exports.getVideoById = async (req, res, next) => {
     try {
         const video = await Video.findById(req.params.id);
         if (!video) return res.status(404).json({ success: false, message: 'الفيديو غير موجود' });
+        const isPrivileged = ['admin', 'teacher', 'assistant'].includes(req.user.role);
+        if (video.hidden && !isPrivileged) return res.status(404).json({ success: false, message: 'الفيديو غير موجود' });
+        if (!isPrivileged && Array.isArray(video.grades) && video.grades.length && !video.grades.includes(req.user.grade)) {
+            return res.status(403).json({ success: false, message: 'هذه المحاضرة غير متاحة لصفك الدراسي' });
+        }
+        const subscribed = (req.user.subscribedVideos || []).some(id => String(id) === String(video._id));
+        const courseSubscribed = video.courseId && (req.user.subscribedCourses || []).some(e => String(e.courseId) === String(video.courseId));
+        const isFree = Number(video.price || 0) === 0;
+        if (!isPrivileged && !subscribed && !courseSubscribed && !isFree) {
+            return res.status(403).json({ success: false, message: 'يلزم اشتراك صالح لمشاهدة هذه المحاضرة' });
+        }
         if (video.teacherId && mongoose.Types.ObjectId.isValid(video.teacherId) && req.query.includeHidden !== 'true') {
             const teacher = await Teacher.findById(video.teacherId).select('hidden').lean();
             if (teacher && teacher.hidden) return res.status(404).json({ success: false, message: 'الفيديو غير موجود' });
@@ -189,6 +200,11 @@ exports.getVideoById = async (req, res, next) => {
 exports.getVideoWatchers = async (req, res, next) => {
     try {
         const videoId = req.params.id;
+        const video = await Video.findById(videoId).select('teacherId').lean();
+        if (!video) return res.status(404).json({ success: false, message: 'الفيديو غير موجود' });
+        if (req.user.role === 'teacher' && String(video.teacherId) !== String(req.user.teacherId)) {
+            return res.status(403).json({ success: false, message: 'لا تملك صلاحية قائمة المشاهدين' });
+        }
         const query = {
             $or: [
                 { subscribedVideos: videoId },

@@ -2,10 +2,12 @@ const Code = require('../models/code.model');
 const Video = require('../models/video.model');
 const User = require('../models/user.model');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 
 exports.verifyCode = async (req, res, next) => {
     try {
-        const { codeStr, videoId, studentId } = req.body;
+        const { codeStr, videoId } = req.body;
+        const studentId = String(req.user._id);
 
         // 0. التحقق من حالة قفل المحاضرة أولاً
         const video = await Video.findById(videoId);
@@ -95,7 +97,7 @@ exports.generateCodes = async (req, res, next) => {
 
         const newCodes = [];
         for (let i = 0; i < count; i++) {
-            const codeStr = 'MS-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const codeStr = 'MS-' + crypto.randomBytes(6).toString('hex').toUpperCase();
             newCodes.push({ code: codeStr, videoId, videoTitle, value });
         }
         const savedCodes = await Code.insertMany(newCodes);

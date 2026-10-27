@@ -4,7 +4,14 @@ const SecurityReport = require('../models/securityReport.model');
 exports.report = async (req, res) => {
     try {
         const reportData = {
-            ...req.body,
+            studentPhone: req.user.phone || '',
+            userId: String(req.user._id),
+            studentName: `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim(),
+            videoId: String(req.body.videoId || ''),
+            videoTitle: String(req.body.videoTitle || '').slice(0, 300),
+            reason: String(req.body.reason || '').slice(0, 300),
+            details: req.body.details || {},
+            isCritical: Boolean(req.body.isCritical),
             serverTimestamp: new Date(),
             ip: req.ip || req.connection.remoteAddress
         };
@@ -74,7 +81,7 @@ exports.unlock = async (req, res) => {
 // التحقق مما إذا كان الطالب محظوراً
 exports.checkLock = async (req, res) => {
     try {
-        const studentPhone = req.query.phone || req.body.phone || '';
+        const studentPhone = req.user.phone || '';
         const videoId = req.query.videoId || req.body.videoId || '';
 
         if (!studentPhone || !videoId) {

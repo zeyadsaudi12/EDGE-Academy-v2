@@ -6572,7 +6572,7 @@
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">جاري تحميل الأسئلة...</td></tr>';
                 try {
                     const questionUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-                    const res = await fetch(`${API}/api/video-questions?userId=${encodeURIComponent(questionUser._id || 'admin-master-id')}`);
+                    const res = await fetch(`${API}/api/video-questions`);
                     const data = await res.json();
                     if (data.success) {
                         let questions = data.data || [];
@@ -6625,7 +6625,7 @@
                 if (!confirm('هل أنت متأكد من حذف هذا السؤال؟')) return;
                 try {
                     const questionUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-                    const res = await fetch(`${API}/api/video-questions/${id}?userId=${encodeURIComponent(questionUser._id || 'admin-master-id')}`, { method: 'DELETE' });
+                    const res = await fetch(`${API}/api/video-questions/${id}`, { method: 'DELETE' });
                     const data = await res.json();
                     if (data.success) {
                         toast('تم الحذف بنجاح', 'success');

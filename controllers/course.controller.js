@@ -71,8 +71,9 @@ exports.getCourseById = async (req, res, next) => {
             }
         }
 
-        const videos = await Video.find({ courseId: req.params.id }).sort({ createdAt: 1 }).lean();
-        course.videos = videos;
+        const videos = await Video.find({ courseId: req.params.id, hidden: { $ne: true } }).sort({ createdAt: 1 }).lean();
+        // Do not expose stream/document URLs from the public course endpoint.
+        course.videos = videos.map(({ link, videoPath, bookletFiles, homeworkFiles, ...safeVideo }) => safeVideo);
         course.videoCount = videos.length;
 
         res.json({ success: true, course });
@@ -186,7 +187,7 @@ exports.getCourseVideosForStudent = async (req, res, next) => {
             .sort({ releaseAfterDays: 1, createdAt: 1 })
             .lean();
 
-        const { userId } = req.query;
+        const userId = String(req.user._id);
         let purchasedAt = null;
         let isEnrolled = false;
 
@@ -247,7 +248,8 @@ exports.subscribeToCourse = async (req, res, next) => {
     try {
         const mongoose = require('mongoose');
         const Code = require('../models/code.model');
-        const { codeStr, userId } = req.body;
+        const { codeStr } = req.body;
+        const userId = String(req.user._id);
         const courseId = req.params.id;
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -299,6 +301,11 @@ exports.subscribeToCourse = async (req, res, next) => {
 exports.getCourseStudents = async (req, res, next) => {
     try {
         const courseId = req.params.id;
+        const course = await Course.findById(courseId).select('teacherId').lean();
+        if (!course) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
+        if (req.user.role === 'teacher' && String(course.teacherId) !== String(req.user.teacherId)) {
+            return res.status(403).json({ success: false, message: 'لا تملك صلاحية طلاب هذا الكورس' });
+        }
         const students = await User.find({
             'subscribedCourses.courseId': courseId
         }).select('_id firstName lastName phone grade parentPhone').lean();

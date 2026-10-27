@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const codeController = require('../controllers/code.controller');
+const { authenticate, allowRoles } = require('../middleware/auth');
 
-router.post('/verify', codeController.verifyCode);
-router.get('/', codeController.getAllCodes);
-router.post('/generate', codeController.generateCodes);
-router.put('/:id', codeController.updateCode);
-router.delete('/:id', codeController.deleteCode);
-router.delete('/', codeController.deleteAllCodes);
+router.post('/verify', authenticate, codeController.verifyCode);
+router.get('/', authenticate, allowRoles('admin'), codeController.getAllCodes);
+router.post('/generate', authenticate, allowRoles('admin'), codeController.generateCodes);
+router.put('/:id', authenticate, allowRoles('admin'), codeController.updateCode);
+router.delete('/:id', authenticate, allowRoles('admin'), codeController.deleteCode);
+router.delete('/', authenticate, allowRoles('admin'), codeController.deleteAllCodes);
 
 module.exports = router;

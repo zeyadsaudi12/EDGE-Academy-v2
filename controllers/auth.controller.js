@@ -1,12 +1,22 @@
 const User = require('../models/user.model');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+const { COOKIE_NAME, signSession } = require('../middleware/auth');
+
+const sessionCookie = () => ({
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 8 * 60 * 60 * 1000,
+    path: '/'
+});
 
 exports.register = async (req, res, next) => {
     try {
         const { username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password } = req.body;
 
-        if (!username || !firstName || !lastName || !phone || !nationalId || !password) {
+        if (!username || !firstName || !lastName || !birthDate || !phone || !parentPhone || !nationalId || !governorate || !grade || !password) {
             return res.status(400).json({ success: false, message: 'الرجاء ملء جميع الحقول المطلوبة' });
         }
 
@@ -20,13 +30,19 @@ exports.register = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'رقم الهاتف، الرقم القومي أو اسم المستخدم مسجل مسبقاً' });
         }
 
+        if (String(password).length < 8) {
+            return res.status(400).json({ success: false, message: 'كلمة المرور يجب ألا تقل عن 8 أحرف' });
+        }
+        const hashedPassword = await bcrypt.hash(String(password), 12);
         const newUser = new User({
-            username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password,
+            username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password: hashedPassword,
             devices: []
         });
 
         await newUser.save();
-        res.status(201).json({ success: true, user: newUser });
+        const user = newUser.toObject();
+        delete user.password;
+        res.status(201).json({ success: true, user });
     } catch (err) {
         next(err);
     }
@@ -37,24 +53,19 @@ exports.login = async (req, res, next) => {
         const { phone, password, deviceName } = req.body;
         let { deviceId } = req.body;
 
-        // التحقق من حساب الأدمن المخصص
-        if (phone === '01556448880' && password === 'masar2027@agency') {
-            return res.json({ 
-                success: true, 
-                user: { 
-                    _id: "admin-master-id", 
-                    role: 'admin', 
-                    firstName: 'الإدارة', 
-                    lastName: '', 
-                    phone: '01556448880' 
-                } 
-            });
-        }
-
-        const user = await User.findOne({ phone, password });
+        if (!phone || !password) return res.status(400).json({ success: false, message: 'رقم الهاتف وكلمة المرور مطلوبان' });
+        const user = await User.findOne({ phone }).select('+password');
         if (!user) {
             return res.status(401).json({ success: false, message: 'رقم الهاتف أو كلمة المرور غير صحيحة' });
         }
+        // Migrate legacy plaintext passwords only after a successful login.
+        const storedPassword = user.password || '';
+        const suppliedPassword = String(password);
+        const validPassword = storedPassword.startsWith('$2')
+            ? await bcrypt.compare(suppliedPassword, storedPassword)
+            : suppliedPassword.length === storedPassword.length && crypto.timingSafeEqual(Buffer.from(suppliedPassword), Buffer.from(storedPassword));
+        if (!validPassword) return res.status(401).json({ success: false, message: 'رقم الهاتف أو كلمة المرور غير صحيحة' });
+        if (!storedPassword.startsWith('$2')) user.password = await bcrypt.hash(String(password), 12);
 
         // فحص أمان الأجهزة للطلاب
         if (user.role === 'student') {
@@ -95,10 +106,16 @@ exports.login = async (req, res, next) => {
             userData.deviceId = deviceId;
         }
 
+        res.cookie(COOKIE_NAME, signSession(user), sessionCookie());
         res.json({ success: true, user: userData, deviceId });
     } catch (err) {
         next(err);
     }
+};
+
+exports.logout = (req, res) => {
+    res.clearCookie(COOKIE_NAME, sessionCookie());
+    res.json({ success: true });
 };
 
 exports.ping = async (req, res, next) => {

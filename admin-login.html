@@ -98,13 +98,7 @@
                     alert('❌ خطأ: الحساب ليس مشرفاً أو البيانات غير صحيحة');
                 }
             } catch (err) {
-                // تراجع تلقائي لوضع الأوفلاين/الاختبار لدخول الأدمن الافتراضي
-                if (phone === '01234567890' && password === 'admin') {
-                    localStorage.setItem('currentUser', JSON.stringify({ role: 'admin', name: 'Admin' }));
-                    window.location.href = 'admin';
-                } else {
-                    alert('❌ خطأ في الاتصال بقاعدة البيانات');
-                }
+                alert('❌ تعذر تسجيل الدخول، تحقق من الاتصال بالخادم');
             }
             return false;
         }

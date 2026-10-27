@@ -31,6 +31,11 @@ const storage = new CloudinaryStorage({
 const upload = multer({
     storage: storage,
     limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+    fileFilter: (req, file, cb) => {
+        const allowed = /^image\/(jpeg|png|webp)$/i.test(file.mimetype) || /^video\/(mp4|webm)$/i.test(file.mimetype) ||
+            ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.mimetype);
+        cb(allowed ? null : new Error('نوع الملف غير مسموح به'), allowed);
+    }
 });
 
 module.exports = upload;
