@@ -3689,8 +3689,17 @@ header {
     /* النافبار والهيدر على الموبايل */
     header {
         padding: 10px 14px !important;
-        position: sticky !important;
+        /* Fixed is more reliable than sticky in mobile WebKit, especially when
+           a page contains scrollable cards, transforms, or overflow wrappers. */
+        position: fixed !important;
         top: 0 !important;
+        right: 0 !important;
+        left: 0 !important;
+        z-index: 10000 !important;
+    }
+
+    body:not(.auth-body) {
+        padding-top: 76px;
     }
 
     .header-inner {
