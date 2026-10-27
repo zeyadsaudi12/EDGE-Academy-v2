@@ -6,6 +6,7 @@ const User = require('../models/user.model');
 const phone = String(process.env.ADMIN_PHONE || '').trim();
 const password = String(process.env.ADMIN_PASSWORD || '');
 const username = String(process.env.ADMIN_USERNAME || `admin_${phone}`).trim();
+const resetExisting = String(process.env.ADMIN_RESET_EXISTING || '').toLowerCase() === 'true';
 
 async function createAdmin() {
     if (!process.env.MONGODB_URI) throw new Error('MONGODB_URI is required.');
@@ -15,8 +16,22 @@ async function createAdmin() {
 
     await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 15000 });
 
-    const existing = await User.findOne({ $or: [{ phone }, { username }] }).lean();
-    if (existing) throw new Error('An account already exists with this phone number or username. No changes were made.');
+    const matches = await User.find({ $or: [{ phone }, { username }] }).select('+password');
+    if (matches.length > 1) throw new Error('The phone number and username belong to different accounts. No changes were made.');
+
+    if (matches.length === 1) {
+        if (!resetExisting) {
+            throw new Error('An account already exists with this phone number or username. Set ADMIN_RESET_EXISTING=true to promote and reset this specific account.');
+        }
+
+        const existing = matches[0];
+        existing.role = 'admin';
+        existing.password = password;
+        existing.devices = [];
+        await existing.save();
+        console.log(`Existing account promoted to admin and password reset for ${phone}.`);
+        return;
+    }
 
     const admin = new User({
         username,

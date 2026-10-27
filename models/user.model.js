@@ -52,10 +52,9 @@ const userSchema = new mongoose.Schema({
     
 }, { timestamps: true });
 
-userSchema.pre('save', async function hashPassword(next) {
-    if (!this.isModified('password') || String(this.password).startsWith('$2')) return next();
+userSchema.pre('save', async function hashPassword() {
+    if (!this.isModified('password') || String(this.password).startsWith('$2')) return;
     this.password = await bcrypt.hash(String(this.password), 12);
-    next();
 });
 
 module.exports = mongoose.model('User', userSchema);
