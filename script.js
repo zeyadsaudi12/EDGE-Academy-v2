@@ -1710,6 +1710,37 @@ function initMasarChatbot(currentUser) {
 
             }
 
+            .chat-msg.typing {
+                color: #64748b;
+                font-style: italic;
+            }
+
+            .chatbot-input-area button:disabled,
+            .chatbot-input-area input:disabled {
+                opacity: 0.65;
+                cursor: wait;
+            }
+
+            @media (max-width: 600px) {
+                .masar-chatbot-btn {
+                    right: 16px;
+                    bottom: 16px;
+                    width: 56px;
+                    height: 56px;
+                    z-index: 10001;
+                }
+                .masar-chatbot-window {
+                    right: 12px;
+                    left: 12px;
+                    bottom: 84px;
+                    width: auto;
+                    height: min(560px, calc(100dvh - 100px));
+                    z-index: 10001;
+                }
+                .chatbot-messages { padding: 14px; }
+                .chatbot-input-area { padding: 10px 12px; }
+            }
+
             .chatbot-faq-container {
 
                 display: flex;
@@ -1941,6 +1972,8 @@ function initMasarChatbot(currentUser) {
     botWindow.id = 'masarChatbotWindow';
 
     const userName = currentUser ? currentUser.firstName : 'طالبنا العزيز';
+    const safeUserName = String(userName).replace(/[<>]/g, '');
+    window.masarChatHistory = [];
 
     botWindow.innerHTML = `
 
@@ -1968,7 +2001,7 @@ function initMasarChatbot(currentUser) {
 
             <div class="chat-msg bot">
 
-                أهلاً بك يا <b>${userName}</b> في منصة EDGE Academy التعليمية! 👋<br>
+                أهلاً بك يا <b>${safeUserName}</b> في منصة EDGE Academy التعليمية! 👋<br>
 
                 أنا مساعدك الذكي لمنصة EDGE Academy، كيف يمكنني إرشادك وتسهيل دراستك اليوم؟
 
@@ -2021,59 +2054,58 @@ function initMasarChatbot(currentUser) {
 }
 
 window.sendFaqRequest = function (faqText) {
-
-    appendChatMessage(faqText, 'user');
-
-    setTimeout(() => {
-
-        const botReply = getBotRuleResponse(faqText);
-
-        appendChatMessage(botReply, 'bot');
-
-    }, 600);
-
+    sendBotMessage(faqText);
 };
 
 window.handleBotSendMessage = function (event) {
-
     event.preventDefault();
-
     const input = document.getElementById('chatbotInput');
-
     const msgText = input.value.trim();
-
     if (!msgText) return;
-
-    appendChatMessage(msgText, 'user');
-
     input.value = '';
-
-    setTimeout(() => {
-
-        const botReply = getBotRuleResponse(msgText);
-
-        appendChatMessage(botReply, 'bot');
-
-    }, 700);
-
+    sendBotMessage(msgText);
 };
 
+async function sendBotMessage(message) {
+    const input = document.getElementById('chatbotInput');
+    const sendButton = document.querySelector('#chatbotForm button');
+    if (!message || !input || input.disabled) return;
+    appendChatMessage(message, 'user');
+    window.masarChatHistory = [...(window.masarChatHistory || []), { role: 'user', content: message }].slice(-10);
+    input.disabled = true;
+    if (sendButton) sendButton.disabled = true;
+    const typing = appendChatMessage('يفكر المساعد…', 'bot typing');
+    try {
+        const response = await fetch(`${API_URL}/api/chat`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message, history: window.masarChatHistory.slice(0, -1) })
+        });
+        const data = await response.json();
+        typing.remove();
+        if (!response.ok || !data.success) throw new Error(data.message || 'تعذر الوصول للمساعد');
+        appendChatMessage(data.reply, 'bot');
+        window.masarChatHistory = [...window.masarChatHistory, { role: 'assistant', content: data.reply }].slice(-10);
+    } catch (error) {
+        typing.remove();
+        appendChatMessage('حصلت مشكلة مؤقتة في الاتصال. جرّب مرة أخرى بعد قليل 🙏', 'bot');
+    } finally {
+        input.disabled = false;
+        if (sendButton) sendButton.disabled = false;
+        input.focus();
+    }
+}
+
 function appendChatMessage(text, sender) {
-
     const container = document.getElementById('chatbotMessages');
-
     if (!container) return;
-
     const div = document.createElement('div');
-
     div.className = `chat-msg ${sender}`;
-
-    div.innerHTML = text;
-
+    div.textContent = text;
     container.appendChild(div);
-
     container.scrollTop = container.scrollHeight;
-
+    return div;
 }
 
 function getBotRuleResponse(msg) {

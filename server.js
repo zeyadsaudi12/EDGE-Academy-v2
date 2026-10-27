@@ -74,6 +74,11 @@ try {
     }
 } catch (e) {}
 
+// The public chat assistant does not need database access. Keeping it before
+// the DB gate lets it remain available if Atlas is temporarily unavailable.
+const chatRoutes = require('./routes/chat.routes');
+app.use('/api/chat', chatRoutes);
+
 // ============================================================
 // CLEAN URLs: Redirect *.html, *.php, /index to clean extensionless URLs
 // e.g. /courses.html -> /courses, /admin.html -> /admin, /index.html -> /
