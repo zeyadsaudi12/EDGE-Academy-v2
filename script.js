@@ -950,6 +950,14 @@ function initRealtimeSync(currentUser) {
 
 }
 
+function showLoginFeedback(message, type = 'error') {
+    const feedback = document.getElementById('loginFeedback');
+    if (!feedback) return;
+    feedback.textContent = message;
+    feedback.className = `login-feedback is-${type}`;
+    feedback.hidden = false;
+}
+
 function handleLogin(event) {
 
     event.preventDefault();
@@ -960,7 +968,7 @@ function handleLogin(event) {
 
     if (!phone || !password) {
 
-        alert('❌ يرجى ملء رقم الهاتف وكلمة المرور');
+        showLoginFeedback('من فضلك اكتب رقم الهاتف وكلمة المرور أولاً.');
 
         return false;
 
@@ -1008,23 +1016,23 @@ function handleLogin(event) {
                 localStorage.setItem('currentUser', JSON.stringify(data.user));
 
                 if (data.user.role === 'admin') {
-                    alert('👑 مرحباً بك يا مدير المنصة، جاري تحويلك للوحة التحكم...');
+                    showLoginFeedback('أهلاً بك يا مدير المنصة، جاري فتح لوحة التحكم...', 'success');
                     window.location.href = 'admin';
                 } else if (data.user.role === 'teacher' || data.user.isTeacherAccount) {
                     window.location.href = 'teacher-dashboard';
                 } else if (data.user.role === 'assistant' || data.user.role === 'teacher') {
                     window.location.href = 'assistant-hub';
                 } else {
-                    alert('✅ تم الدخول بنجاح، دراسة ممتعة وموفقة!');
+                    showLoginFeedback('تم تسجيل الدخول بنجاح، أهلاً بك!', 'success');
                     window.location.href = '/';
                 }
             } else {
-                alert('❌ ' + (data.message || 'بيانات الدخول غير صحيحة'));
+                showLoginFeedback(data.message || 'بيانات الدخول غير صحيحة');
             }
         })
         .catch(err => {
             console.error('Login error:', err);
-            alert(err.message || '❌ خطأ في الاتصال بقاعدة البيانات. تأكد من تشغيل الخادم');
+            showLoginFeedback(err.message || 'تعذر الاتصال بالخادم، حاول مرة أخرى.');
         });
 
     return false;

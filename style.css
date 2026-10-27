@@ -4254,6 +4254,72 @@ body:not(.auth-body) {
     filter: brightness(1.04);
 }
 
+/* Inline feedback replaces disruptive browser alert dialogs on the login page. */
+.login-feedback {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: .88rem;
+    font-weight: 700;
+    line-height: 1.55;
+    animation: login-feedback-in .22s ease-out;
+}
+
+.login-feedback::before {
+    content: '⚠';
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    border-radius: 50%;
+    font-size: .76rem;
+}
+
+.login-feedback.is-error {
+    color: #b42318;
+    background: #fff1f0;
+    border-color: #ffc8c3;
+}
+
+.login-feedback.is-error::before {
+    color: #fff;
+    background: #dc2626;
+}
+
+.login-feedback.is-success {
+    color: #0e6b45;
+    background: #edfdf4;
+    border-color: #abeec8;
+}
+
+.login-feedback.is-success::before {
+    content: '✓';
+    color: #fff;
+    background: #16a34a;
+}
+
+.dark-mode .login-feedback.is-error {
+    color: #ffb4aa;
+    background: rgba(220, 38, 38, .16);
+    border-color: rgba(255, 160, 150, .28);
+}
+
+.dark-mode .login-feedback.is-success {
+    color: #a7f3c5;
+    background: rgba(22, 163, 74, .16);
+    border-color: rgba(135, 239, 180, .28);
+}
+
+@keyframes login-feedback-in {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .auth-body .form-footer {
     text-align: center;
     margin-top: 25px;
