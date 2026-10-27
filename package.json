@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
+    "create-admin": "node scripts/create-admin.js",
     "sync": "cmd /c push.bat",
     "auto-sync": "cmd /c start-auto-sync.bat"
   },
