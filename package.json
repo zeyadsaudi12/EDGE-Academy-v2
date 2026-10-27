@@ -28,7 +28,6 @@
     "mammoth": "^1.12.1",
     "mongoose": "^9.11.4",
     "multer": "^2.5.0",
-    "multer-storage-cloudinary": "^4.0.0",
     "pdf-parse": "^2.4.5"
   }
 }
