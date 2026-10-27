@@ -106,7 +106,18 @@ exports.login = async (req, res, next) => {
             userData.deviceId = deviceId;
         }
 
-        res.cookie(COOKIE_NAME, signSession(user), sessionCookie());
+        let sessionToken;
+        try {
+            sessionToken = signSession(user);
+        } catch (sessionError) {
+            console.error('Unable to create login session:', sessionError.message);
+            return res.status(503).json({
+                success: false,
+                message: 'خدمة تسجيل الدخول تحتاج إعداداً من إدارة المنصة. يرجى المحاولة لاحقاً.'
+            });
+        }
+
+        res.cookie(COOKIE_NAME, sessionToken, sessionCookie());
         res.json({ success: true, user: userData, deviceId });
     } catch (err) {
         next(err);

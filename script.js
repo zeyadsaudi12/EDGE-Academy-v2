@@ -990,6 +990,7 @@ function handleLogin(event) {
     fetch(`${API_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ phone, password, deviceId, deviceName })
     })
         .then(async res => {
