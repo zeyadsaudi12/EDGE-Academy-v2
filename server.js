@@ -51,10 +51,18 @@ app.disable('x-powered-by');
 app.use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(compression()); // Gzip compression
 const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map(value => value.trim()).filter(Boolean);
-app.use(cors({ origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || (!allowedOrigins.length && process.env.NODE_ENV !== 'production')) return callback(null, true);
-    return callback(new Error('Origin غير مسموح به بواسطة CORS'));
-}, credentials: true }));
+app.use(cors((req, callback) => {
+    const origin = req.get('origin');
+    // The site and API are served by the same Vercel deployment. Always
+    // allow that exact origin so a stale/missing CORS_ORIGIN variable cannot
+    // block login, while external origins still require an explicit allowlist.
+    const requestOrigin = `${req.protocol}://${req.get('host')}`;
+    const isAllowed = !origin
+        || origin === requestOrigin
+        || allowedOrigins.includes(origin)
+        || (!allowedOrigins.length && process.env.NODE_ENV !== 'production');
+    callback(null, { origin: isAllowed, credentials: true });
+}));
 app.use(cookieParser());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
