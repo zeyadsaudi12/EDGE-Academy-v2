@@ -5114,6 +5114,12 @@ function showMobileDeviceSuggestion() {
 
     };
 
+    // Keep the device suggestion helpful without blocking the form. It is
+    // visible long enough to read, then dismisses itself for this session.
+    setTimeout(() => {
+        window.dismissMobileSuggestion?.();
+    }, 2000);
+
 }
 
 window.toggleUserMenu = () => {
