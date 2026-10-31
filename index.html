@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=20261031-v18">
+    <link rel="stylesheet" href="style.css?v=20261031-v19">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>EDGE Academy</title>
     <style>
@@ -252,13 +252,25 @@
                 </div>
                 <div class="teachers-header-actions">
                     <div class="teachers-nav-buttons">
-                        <button class="teachers-nav-btn" onclick="scrollTeachers(1)" aria-label="السابق">
+                        <button type="button" class="teachers-nav-btn" onclick="scrollTeachers(1)" aria-label="السابق">
                             <i class="fas fa-chevron-right"></i>
                         </button>
-                        <button class="teachers-nav-btn" onclick="scrollTeachers(-1)" aria-label="التالي">
+                        <button type="button" class="teachers-nav-btn" onclick="scrollTeachers(-1)" aria-label="التالي">
                             <i class="fas fa-chevron-left"></i>
                         </button>
                     </div>
+                    <label class="catalogue-grade-filter" data-guest-grade-filter>
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                        <select aria-label="اختر الصف الدراسي" onchange="setGuestGradeFilter(this.value)">
+                            <option value="">كل الصفوف الدراسية</option>
+                            <option value="الصف الأول الإعدادي">الأول الإعدادي</option>
+                            <option value="الصف الثاني الإعدادي">الثاني الإعدادي</option>
+                            <option value="الصف الثالث الإعدادي">الثالث الإعدادي</option>
+                            <option value="الصف الأول الثانوي">الأول الثانوي</option>
+                            <option value="الصف الثاني الثانوي">الثاني الثانوي</option>
+                            <option value="الصف الثالث الثانوي">الثالث الثانوي</option>
+                        </select>
+                    </label>
                     <a href="teachers" class="btn-fill teachers-all-btn">
                         <span>تصفح الجميع</span>
                         <i class="fas fa-arrow-left" style="font-size:0.85rem;"></i>
@@ -274,7 +286,27 @@
         </div>
     </section>
 <section class="subjects-section">
-    <h2 class="section-title">المواد الدراسية</h2>
+    <div class="catalogue-section-heading">
+        <h2 class="section-title">المواد الدراسية</h2>
+        <div class="catalogue-section-controls">
+            <label class="catalogue-grade-filter" data-guest-grade-filter>
+                <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                <select aria-label="اختر الصف الدراسي" onchange="setGuestGradeFilter(this.value)">
+                    <option value="">كل الصفوف الدراسية</option>
+                    <option value="الصف الأول الإعدادي">الأول الإعدادي</option>
+                    <option value="الصف الثاني الإعدادي">الثاني الإعدادي</option>
+                    <option value="الصف الثالث الإعدادي">الثالث الإعدادي</option>
+                    <option value="الصف الأول الثانوي">الأول الثانوي</option>
+                    <option value="الصف الثاني الثانوي">الثاني الثانوي</option>
+                    <option value="الصف الثالث الثانوي">الثالث الثانوي</option>
+                </select>
+            </label>
+            <div class="subjects-controls">
+                <button type="button" class="nav-btn prev" onclick="scrollSubjects(-1)" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+                <button type="button" class="nav-btn next" onclick="scrollSubjects(1)" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
+            </div>
+        </div>
+    </div>
     
     <div class="subjects-container">
         <div class="subjects-wrapper" id="subjectsWrapper">
@@ -282,24 +314,31 @@
         </div>
     </div>
 
-    <!-- شريط التحكم السفلي للمواد الدراسية -->
-<div class="subjects-controls">
-    <button class="nav-btn prev" onclick="scrollSubjects(-1)" aria-label="السابق">
-        <i class="fas fa-chevron-right"></i>
-    </button>
     <div class="pagination-dots" id="paginationDots"></div>
-    <button class="nav-btn next" onclick="scrollSubjects(1)" aria-label="التالي">
-        <i class="fas fa-chevron-left"></i>
-    </button>
-</div>
 </section>
 <section class="courses-section" id="latest-videos-section" style="background-color: var(--surface-alt);">
     <div class="container">
         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-bottom:10px;">
             <h2 class="section-main-title" style="margin-bottom:0;">الكورسات التعليمية المتاحة</h2>
-            <a href="courses" class="btn-fill" style="font-size:0.9rem; padding:10px 22px;">
-                <i class="fas fa-th-large" style="margin-left:6px;"></i>عرض جميع الكورسات
-            </a>
+            <div class="catalogue-section-controls">
+                <div class="catalogue-nav-buttons" aria-label="التنقل بين الكورسات">
+                    <button type="button" class="nav-btn" onclick="scrollLatestCourses(1)" aria-label="السابق"><i class="fas fa-chevron-right"></i></button>
+                    <button type="button" class="nav-btn" onclick="scrollLatestCourses(-1)" aria-label="التالي"><i class="fas fa-chevron-left"></i></button>
+                </div>
+                <label class="catalogue-grade-filter" data-guest-grade-filter>
+                    <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                    <select aria-label="اختر الصف الدراسي" onchange="setGuestGradeFilter(this.value)">
+                        <option value="">كل الصفوف الدراسية</option>
+                        <option value="الصف الأول الإعدادي">الأول الإعدادي</option>
+                        <option value="الصف الثاني الإعدادي">الثاني الإعدادي</option>
+                        <option value="الصف الثالث الإعدادي">الثالث الإعدادي</option>
+                        <option value="الصف الأول الثانوي">الأول الثانوي</option>
+                        <option value="الصف الثاني الثانوي">الثاني الثانوي</option>
+                        <option value="الصف الثالث الثانوي">الثالث الثانوي</option>
+                    </select>
+                </label>
+                <a href="courses" class="btn-fill" style="font-size:0.9rem; padding:10px 22px;"><i class="fas fa-th-large" style="margin-left:6px;"></i>عرض جميع الكورسات</a>
+            </div>
         </div>
         <div class="video-grid" id="latest-videos">
             <!-- الكورسات ستظهر هنا بواسطة JS -->

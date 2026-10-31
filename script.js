@@ -59,6 +59,36 @@ function getStudentGrade(user) {
     return user?.role === 'student' && user.grade ? String(user.grade).trim() : null;
 }
 
+function getCatalogueGrade(user) {
+    const studentGrade = getStudentGrade(user);
+    if (studentGrade) return studentGrade;
+    return user ? null : String(localStorage.getItem('edge_guest_grade_filter') || '').trim() || null;
+}
+
+function initGuestGradeFilters(user) {
+    const filters = Array.from(document.querySelectorAll('[data-guest-grade-filter]'));
+    if (!filters.length) return;
+    const shouldShow = !user;
+    const selectedGrade = shouldShow ? (localStorage.getItem('edge_guest_grade_filter') || '') : '';
+    filters.forEach(filter => {
+        filter.hidden = !shouldShow;
+        const select = filter.querySelector('select');
+        if (select) select.value = selectedGrade;
+    });
+}
+
+window.setGuestGradeFilter = function (grade) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (currentUser) return;
+    if (grade) localStorage.setItem('edge_guest_grade_filter', grade);
+    else localStorage.removeItem('edge_guest_grade_filter');
+    initGuestGradeFilters(null);
+    renderTeachers();
+    renderSubjects();
+    renderVideos();
+    renderCoursesLibrary();
+};
+
 let videos = [];
 window._allVideos = videos; // مشاركة القائمة مع watchVideo لكشف الفيديوهات المجانية
 
@@ -127,6 +157,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Update navbar actions depending on auth state
 
     updateNavbarAuth(currentUser);
+
+    initGuestGradeFilters(currentUser);
 
     // Initializations for student page elements
 
@@ -2666,7 +2698,7 @@ function renderVideos() {
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    const studentGrade = getStudentGrade(currentUser);
+    const studentGrade = getCatalogueGrade(currentUser);
 
     // Courses and standalone lectures may coexist.  Do not hide a teacher's
     // standalone lecture merely because another course exists on the platform.
@@ -2776,6 +2808,14 @@ function renderVideos() {
     }).join('');
 }
 
+window.scrollLatestCourses = function (direction) {
+    const container = document.getElementById('latest-videos');
+    if (!container) return;
+    const card = container.querySelector('.course-card, .video-card');
+    const amount = (card?.offsetWidth || 320) + 24;
+    container.scrollBy({ left: Number(direction || 0) * amount, behavior: 'smooth' });
+};
+
 // ==========================================
 // COURSES LIBRARY PAGE (courses.html)
 // ==========================================
@@ -2787,7 +2827,7 @@ function renderCoursesLibrary() {
     if (!grid) return; // not on courses page
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const studentGrade = getStudentGrade(currentUser);
+    const studentGrade = getCatalogueGrade(currentUser);
 
     // Filter visible courses by grade
     _coursesLibraryData = (courses || []).filter(c => {
@@ -3311,7 +3351,7 @@ function renderTeachers() {
     if (!teachersGrid) return;
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    const studentGrade = getStudentGrade(currentUser);
+    const studentGrade = getCatalogueGrade(currentUser);
 
     let teachersList = [];
     if (studentGrade) {
@@ -3519,7 +3559,7 @@ function renderSubjects() {
         currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     } catch (e) { }
 
-    const studentGrade = getStudentGrade(currentUser);
+    const studentGrade = getCatalogueGrade(currentUser);
 
     // فلترة المعلمين حسب مرحلة الطالب إذا كان مسجلاً
     let filteredTeachers = teachers;
@@ -3713,8 +3753,10 @@ window.scrollToIndex = function (index) {
         dot.classList.toggle('active', dotIndex === targetIndex);
         dot.setAttribute('aria-current', dotIndex === targetIndex ? 'true' : 'false');
     });
-    // scrollIntoView يعمل بصورة سليمة مع الاتجاه العربي ولا يعتمد على قيمة scrollLeft السالبة.
-    card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    // حرّك حاوية المواد أفقياً فقط؛ scrollIntoView قد يحرك الصفحة عمودياً أيضاً.
+    const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+    const wrapperCenter = wrapper.scrollLeft + (wrapper.clientWidth / 2);
+    wrapper.scrollBy({ left: cardCenter - wrapperCenter, behavior: 'smooth' });
 
 };
 
