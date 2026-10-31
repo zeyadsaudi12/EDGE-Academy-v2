@@ -4649,6 +4649,10 @@ body:not(.auth-body) {
 }
 
 .home-page .teachers-section .teachers-carousel-wrap {
+    width: calc(100vw - 48px);
+    box-sizing: border-box;
+    margin-right: calc(50% - 50vw + 24px);
+    margin-left: 0;
     padding: 16px;
     border: 1px solid rgba(42, 112, 207, .12);
     border-radius: 30px;
@@ -4769,6 +4773,9 @@ body:not(.auth-body) {
     }
 
     .home-page .teachers-section .teachers-carousel-wrap {
+        width: auto;
+        margin-right: 0;
+        margin-left: 0;
         padding: 10px;
         border-radius: 22px;
     }
