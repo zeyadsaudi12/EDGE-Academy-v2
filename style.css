@@ -4862,6 +4862,79 @@ html[dir="ltr"] .footer-col {
     }
 }
 
+/* Auth navigation must fit inside narrow mobile viewports.  The desktop
+   header has two action buttons, a logo and the theme picker; keeping all
+   four at their desktop size was pushing the theme picker off-screen. */
+@media (max-width: 600px) {
+    .auth-body > header {
+        padding: 8px !important;
+    }
+
+    .auth-body > header .header-inner {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0;
+        min-height: 50px !important;
+        padding: 6px 8px !important;
+        gap: 6px !important;
+    }
+
+    .auth-body > header .header-right,
+    .auth-body > header .header-left,
+    .auth-body > header .header-actions {
+        min-width: 0;
+    }
+
+    .auth-body > header .header-right {
+        flex: 0 0 auto;
+    }
+
+    .auth-body > header .header-brand {
+        padding: 0 2px;
+    }
+
+    .auth-body > header .header-brand .logo-img {
+        height: 28px !important;
+        max-width: 84px !important;
+    }
+
+    .auth-body > header .header-left {
+        flex: 1 1 auto;
+        justify-content: flex-start;
+    }
+
+    .auth-body > header .header-actions {
+        display: flex !important;
+        flex: 1 1 auto;
+        gap: 5px !important;
+    }
+
+    .auth-body > header .header-actions a {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 34px;
+        padding: 7px 5px !important;
+        font-size: .76rem !important;
+        line-height: 1.15;
+        text-align: center;
+    }
+
+    .auth-body > header .theme-capsule {
+        display: none !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .auth-body > header .header-brand .logo-img {
+        max-width: 72px !important;
+    }
+
+    .auth-body > header .header-actions a {
+        font-size: .7rem !important;
+        padding-inline: 3px !important;
+    }
+}
+
 /* النسخة النهائية لواجهة الدخول: كارت واحد واضح في المنتصف فوق الخلفية المموهة. */
 .auth-body.login-page::before {
     filter: blur(8px) brightness(.72) saturate(1.08);
