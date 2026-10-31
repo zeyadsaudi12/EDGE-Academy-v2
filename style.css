@@ -5309,3 +5309,82 @@ html[dir="ltr"] .footer-col {
         border-radius: 20px !important;
     }
 }
+
+/* تصميم كروت المعلمين البسيط: صورة مربعة كاملة ثم الاسم والتخصص */
+.home-page .teachers-section .teacher-card {
+    min-height: 0;
+    padding: 16px 14px 18px;
+    align-items: stretch;
+    text-align: right;
+    border: 0;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 14px 30px rgba(34, 83, 151, .13);
+}
+
+.home-page .teachers-section .teacher-card::after {
+    display: none;
+}
+
+.home-page .teachers-section .teacher-avatar-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0 0 20px;
+    border-radius: 14px;
+    background: #eef3f8;
+}
+
+.home-page .teachers-section .teacher-avatar,
+.home-page .teachers-section .teacher-avatar img {
+    border-radius: 14px;
+}
+
+.home-page .teachers-section .teacher-avatar img {
+    background: #eef3f8;
+}
+
+.home-page .teachers-section .teacher-name {
+    margin: 0 5px 6px;
+    font-size: 1.35rem;
+    color: #132441;
+}
+
+.home-page .teachers-section .teacher-subject {
+    margin: 0 5px;
+    padding: 0;
+    color: #73829a;
+    background: transparent;
+    font-size: .88rem;
+    font-weight: 500;
+}
+
+.home-page .teachers-section .teacher-bio,
+.home-page .teachers-section .teacher-btn {
+    display: none;
+}
+
+.home-page .teachers-section .teacher-card:hover {
+    transform: translateY(-7px);
+    border-color: transparent;
+    box-shadow: 0 20px 38px rgba(34, 83, 151, .2);
+}
+
+.dark-mode.home-page .teachers-section .teacher-card {
+    background: #142440;
+    border: 0;
+}
+
+.dark-mode.home-page .teachers-section .teacher-name {
+    color: #f3f7ff;
+}
+
+.dark-mode.home-page .teachers-section .teacher-subject {
+    color: #aabbd5;
+}
+
+@media (max-width: 768px) {
+    .home-page .teachers-section .teacher-card {
+        padding: 14px 12px 17px;
+    }
+}
