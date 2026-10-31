@@ -3348,7 +3348,7 @@ function renderTeachers() {
                 <span class="teacher-subject">${teacher.subjectAr || 'مدرس المادة'}</span>
                 <p class="teacher-bio">${bioText}</p>
                 <button class="teacher-btn" onclick="event.stopPropagation(); location.href='${profileUrl}';">
-                    <span>عرض البروفايل والكورسات</span>
+                    <span>صفحة المدرس</span>
                     <i class="fas fa-arrow-left"></i>
                 </button>
             </div>

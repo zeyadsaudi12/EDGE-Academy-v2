@@ -5359,9 +5359,31 @@ html[dir="ltr"] .footer-col {
     font-weight: 500;
 }
 
-.home-page .teachers-section .teacher-bio,
-.home-page .teachers-section .teacher-btn {
+.home-page .teachers-section .teacher-bio {
     display: none;
+}
+
+.home-page .teachers-section .teacher-btn {
+    display: inline-flex;
+    width: calc(100% - 10px);
+    min-height: 44px;
+    margin: 18px 5px 0;
+    padding: 10px 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 12px;
+    color: #ffffff !important;
+    background: linear-gradient(105deg, #1664cf, #2686dd 58%, #18b6a0);
+    box-shadow: 0 9px 18px rgba(27, 104, 205, .22);
+    font-size: .9rem;
+    font-weight: 800;
+}
+
+.home-page .teachers-section .teacher-btn:hover {
+    background: linear-gradient(105deg, #1056b5, #2074c8 58%, #119684);
+    box-shadow: 0 12px 22px rgba(27, 104, 205, .3);
 }
 
 .home-page .teachers-section .teacher-card:hover {
