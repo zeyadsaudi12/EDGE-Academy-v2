@@ -4690,7 +4690,7 @@ body:not(.auth-body) {
 /* اجعل صورة المعلم غلافاً أعلى الكارت بدلاً من الصورة الدائرية */
 .home-page .teachers-section .teacher-avatar-container {
     width: calc(100% + 40px);
-    height: 190px;
+    height: 268px;
     margin: 0 -20px 19px;
     overflow: hidden;
     border-radius: 23px 23px 16px 16px;
@@ -4711,8 +4711,9 @@ body:not(.auth-body) {
     height: 100%;
     border: 0;
     border-radius: 0;
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
+    object-position: center bottom;
+    background: #edf4ff;
 }
 
 .home-page .teachers-section .teacher-avatar::after {
@@ -4720,7 +4721,7 @@ body:not(.auth-body) {
 }
 
 .home-page .teachers-section .teacher-card:hover .teacher-avatar img {
-    transform: scale(1.035);
+    transform: scale(1.015);
 }
 
 .home-page .teachers-section .teacher-card:hover {
@@ -4822,7 +4823,7 @@ body:not(.auth-body) {
     }
 
     .home-page .teachers-section .teacher-avatar-container {
-        height: 172px;
+        height: 248px;
     }
 }
 
