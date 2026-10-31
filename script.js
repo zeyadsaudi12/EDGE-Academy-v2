@@ -2740,7 +2740,7 @@ function renderVideos() {
     }).filter(Boolean) : [];
     const enrolledVideoIds = currentUser ? (currentUser.subscribedVideos || []).map(v => String(v)) : [];
 
-    container.innerHTML = itemsToDisplay.map(item => {
+    container.innerHTML = itemsToDisplay.map((item, index) => {
         const itemId = String(item._id);
         const isStandaloneVideo = item._isStandaloneVideo === true;
         const isSubscribed = isStandaloneVideo ? enrolledVideoIds.includes(itemId) : enrolledCourseIds.includes(itemId);
@@ -2783,7 +2783,7 @@ function renderVideos() {
         const details = String(item.description || '').trim();
 
         return `
-            <div class="course-card course-card-featured" onclick="${isStandaloneVideo ? '' : `location.href='${destUrl}'`}">
+            <div class="course-card course-card-featured" data-course-index="${index}" onclick="${isStandaloneVideo ? '' : `location.href='${destUrl}'`}">
                 <div class="course-thumb-wrap">
                     <span class="${priceBadgeClass}">${priceLabelText}</span>
                     <img src="${resolveImg(item.imagePath || item.image) || 'imges/st.jpg'}" class="course-thumb" alt="${escapeCardHtml(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
@@ -2806,14 +2806,67 @@ function renderVideos() {
             </div>
         `;
     }).join('');
+
+    setupLatestCourseCarousel(container);
 }
 
 window.scrollLatestCourses = function (direction) {
     const container = document.getElementById('latest-videos');
     if (!container) return;
-    const card = container.querySelector('.course-card, .video-card');
-    const amount = (card?.offsetWidth || 320) + 24;
-    container.scrollBy({ left: Number(direction || 0) * amount, behavior: 'smooth' });
+    const cards = Array.from(container.querySelectorAll('.course-card, .video-card'));
+    if (!cards.length) return;
+    const current = Number(container.dataset.activeCourseIndex || 0);
+    const next = Math.max(0, Math.min(cards.length - 1, current + Number(direction || 0)));
+    scrollLatestCourseTo(next);
+};
+
+function setupLatestCourseCarousel(container) {
+    const dots = document.getElementById('latestVideosDots');
+    const cards = Array.from(container.querySelectorAll('.course-card, .video-card'));
+    if (!dots) return;
+    container.dataset.activeCourseIndex = '0';
+    dots.innerHTML = cards.map((_, index) => `<button type="button" class="course-carousel-dot ${index === 0 ? 'active' : ''}" aria-label="الكورس ${index + 1}" onclick="scrollLatestCourseTo(${index})"></button>`).join('');
+    let frame;
+    container.onscroll = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+            const center = container.getBoundingClientRect().left + (container.clientWidth / 2);
+            let closestIndex = 0;
+            let closestDistance = Infinity;
+            cards.forEach((card, index) => {
+                const rect = card.getBoundingClientRect();
+                const distance = Math.abs((rect.left + rect.width / 2) - center);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestIndex = index;
+                }
+            });
+            setLatestCourseDot(closestIndex);
+        });
+    };
+}
+
+function setLatestCourseDot(index) {
+    const container = document.getElementById('latest-videos');
+    if (container) container.dataset.activeCourseIndex = String(index);
+    document.querySelectorAll('#latestVideosDots .course-carousel-dot').forEach((dot, dotIndex) => {
+        const active = dotIndex === index;
+        dot.classList.toggle('active', active);
+        dot.setAttribute('aria-current', active ? 'true' : 'false');
+    });
+}
+
+window.scrollLatestCourseTo = function (index) {
+    const container = document.getElementById('latest-videos');
+    if (!container) return;
+    const cards = Array.from(container.querySelectorAll('.course-card, .video-card'));
+    const target = Math.max(0, Math.min(cards.length - 1, Number(index) || 0));
+    const card = cards[target];
+    if (!card) return;
+    setLatestCourseDot(target);
+    const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+    const containerCenter = container.scrollLeft + (container.clientWidth / 2);
+    container.scrollBy({ left: cardCenter - containerCenter, behavior: 'smooth' });
 };
 
 // ==========================================
@@ -3677,7 +3730,7 @@ function renderSubjects() {
                         <span><strong>${courseCount}</strong><small>${courseCount === 1 ? 'كورس' : 'كورسات'}</small></span>
                     </div>
                     <a href="${subjectUrl}" class="subject-view-btn" onclick="event.stopPropagation();">
-                        <span>اعرف أكثر</span>
+                        <span>عرض الكل</span>
                         <i class="fas fa-arrow-left" aria-hidden="true"></i>
                     </a>
                 </div>

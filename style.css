@@ -2323,6 +2323,111 @@ body:not(.auth-body) {
     }
 }
 
+/* كاروسيل الكورسات في الرئيسية: 3 كروت بارزة مع نقاط بعدد المحتوى */
+#latest-videos.video-grid {
+    gap: 28px;
+    padding: 18px 4px 14px;
+    scroll-padding-inline: 8px;
+}
+
+#latest-videos .course-card-featured {
+    flex: 0 0 clamp(340px, 29.5vw, 520px);
+    max-width: 520px;
+    min-height: 510px;
+    scroll-snap-align: center;
+    border-radius: 20px;
+}
+
+#latest-videos .course-card-featured .course-thumb-wrap {
+    height: 230px;
+}
+
+#latest-videos .course-card-featured .course-body {
+    padding: 16px 18px 18px;
+}
+
+#latest-videos .course-card-featured .course-description {
+    -webkit-line-clamp: 2;
+    min-height: 2.95em;
+}
+
+.course-carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    min-height: 28px;
+    padding: 10px 0 0;
+}
+
+.course-carousel-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 99px;
+    cursor: pointer;
+    background: #c8d3e2;
+    transition: width .22s ease, background .22s ease, transform .22s ease;
+}
+
+.course-carousel-dot.active {
+    width: 23px;
+    background: linear-gradient(90deg, #1767ce, #18ad9c);
+    transform: none;
+}
+
+/* كروت المواد بهوية مستقلة: رأس أزرق وجسم أبيض نظيف */
+.subjects-section .subject-card {
+    min-height: 304px;
+    padding: 0;
+    overflow: hidden;
+    color: #16375f;
+    border: 1px solid rgba(31, 116, 211, .14);
+    background: #ffffff;
+    box-shadow: 0 14px 26px rgba(30, 91, 168, .13);
+}
+
+.subjects-section .subject-icon-container {
+    width: 100%;
+    height: 132px;
+    border-radius: 0 0 22px 22px;
+    color: #fff;
+    background: linear-gradient(135deg, #1889e8, #1c62ca 100%);
+}
+
+.subjects-section .subject-card-content {
+    padding: 16px 18px 18px;
+}
+
+.subjects-section .subject-card h3 { color: #173b69; }
+.subjects-section .subject-stats strong { color: #176bd1; }
+.subjects-section .subject-stats small { color: #7184a0; }
+
+.subjects-section .subject-card .subject-view-btn {
+    color: #ffffff !important;
+    background: linear-gradient(105deg, #1b65cf, #227edb 58%, #18aa98);
+    box-shadow: 0 8px 16px rgba(27, 101, 207, .2);
+}
+
+.subjects-section .subject-card .subject-view-btn:hover {
+    color: #ffffff !important;
+    background: linear-gradient(105deg, #1559ba, #1c6bc4 58%, #129483);
+}
+
+.dark-mode .subjects-section .subject-card { background: #152844; border-color: rgba(126, 186, 255, .18); }
+.dark-mode .subjects-section .subject-card h3 { color: #eef6ff; }
+.dark-mode .subjects-section .subject-stats small { color: #aec0d9; }
+
+@media (max-width: 800px) {
+    #latest-videos .course-card-featured {
+        flex-basis: min(84vw, 430px);
+        min-height: 0;
+    }
+
+    #latest-videos .course-card-featured .course-thumb-wrap { height: 205px; }
+}
+
 .subject-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
