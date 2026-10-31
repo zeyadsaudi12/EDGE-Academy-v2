@@ -4578,6 +4578,207 @@ body:not(.auth-body) {
     }
 }
 
+/* واجهة مميزة لقسم المعلمين في الصفحة الرئيسية */
+.home-page .teachers-section {
+    isolation: isolate;
+    overflow: hidden;
+    padding: 74px 5% 78px;
+    background:
+        radial-gradient(circle at 8% 18%, rgba(41, 131, 255, .18), transparent 29rem),
+        radial-gradient(circle at 92% 82%, rgba(30, 190, 170, .14), transparent 24rem),
+        linear-gradient(135deg, #edf4ff 0%, #f8fbff 48%, #eaf5ff 100%);
+}
+
+.home-page .teachers-section::before,
+.home-page .teachers-section::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+.home-page .teachers-section::before {
+    width: 330px;
+    height: 330px;
+    top: -190px;
+    right: -80px;
+    border: 52px solid rgba(37, 110, 220, .075);
+}
+
+.home-page .teachers-section::after {
+    width: 210px;
+    height: 210px;
+    bottom: -120px;
+    left: 12%;
+    background: rgba(24, 178, 164, .09);
+}
+
+.home-page .teachers-section .section-container {
+    position: relative;
+}
+
+.home-page .teachers-section-header {
+    position: relative;
+    padding: 0 0 20px;
+    margin-bottom: 26px;
+    border-bottom: 1px solid rgba(29, 91, 185, .14);
+}
+
+.home-page .teachers-section-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    right: 0;
+    width: 116px;
+    height: 4px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #17b6a4, #286fd9 58%, #ffb648);
+    box-shadow: 0 4px 12px rgba(40, 111, 217, .25);
+}
+
+.home-page .teachers-section .section-title {
+    color: #12264a !important;
+    font-size: clamp(2rem, 3vw, 2.7rem);
+    letter-spacing: -.8px;
+}
+
+.home-page .teachers-section .section-subtitle {
+    color: #597093 !important;
+    font-weight: 600;
+}
+
+.home-page .teachers-section .teachers-carousel-wrap {
+    padding: 16px;
+    border: 1px solid rgba(42, 112, 207, .12);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, .48);
+    box-shadow: 0 18px 42px rgba(43, 99, 181, .08);
+    backdrop-filter: blur(12px);
+}
+
+.home-page .teachers-section .teachers-grid {
+    gap: 22px;
+    padding: 6px;
+}
+
+.home-page .teachers-section .teacher-card {
+    flex-basis: 296px;
+    min-height: 392px;
+    padding: 28px 22px 22px;
+    border: 1px solid rgba(44, 114, 209, .15);
+    border-radius: 24px;
+    background:
+        linear-gradient(155deg, rgba(255, 255, 255, .98), rgba(243, 249, 255, .93));
+    box-shadow: 0 16px 30px rgba(28, 87, 166, .10);
+}
+
+.home-page .teachers-section .teacher-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #16b9a5, #286fd9 54%, #f4b342);
+}
+
+.home-page .teachers-section .teacher-card:hover {
+    transform: translateY(-9px);
+    border-color: rgba(40, 111, 217, .36);
+    box-shadow: 0 24px 45px rgba(28, 87, 166, .18);
+}
+
+.home-page .teachers-section .teacher-avatar {
+    background: conic-gradient(from 210deg, #15baa5, #286fd9, #ffc34b, #15baa5);
+    box-shadow: 0 13px 28px rgba(37, 100, 190, .22);
+}
+
+.home-page .teachers-section .teacher-subject {
+    color: #1765cb;
+    background: #e7f0ff;
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+
+.home-page .teachers-section .teacher-btn {
+    width: 100%;
+    color: #fff !important;
+    background: linear-gradient(100deg, #1a63c8, #2d82e5 55%, #22ae9c);
+    box-shadow: 0 10px 20px rgba(30, 103, 205, .22);
+}
+
+.home-page .teachers-section .teacher-btn:hover {
+    background: linear-gradient(100deg, #1557b6, #246fce 55%, #159985);
+}
+
+.home-page .teachers-section .teachers-nav-btn {
+    border-color: rgba(40, 111, 217, .15);
+    background: rgba(255, 255, 255, .86);
+}
+
+.dark-mode.home-page .teachers-section {
+    background:
+        radial-gradient(circle at 8% 18%, rgba(47, 124, 228, .18), transparent 30rem),
+        radial-gradient(circle at 92% 82%, rgba(30, 190, 170, .11), transparent 23rem),
+        linear-gradient(135deg, #0a1222 0%, #0d1930 52%, #0b1b31 100%);
+}
+
+.dark-mode.home-page .teachers-section-header {
+    border-color: rgba(144, 190, 255, .16);
+}
+
+.dark-mode.home-page .teachers-section .section-title {
+    color: #ecf5ff !important;
+}
+
+.dark-mode.home-page .teachers-section .section-subtitle {
+    color: #9db7da !important;
+}
+
+.dark-mode.home-page .teachers-section .teachers-carousel-wrap {
+    border-color: rgba(123, 178, 255, .14);
+    background: rgba(11, 25, 47, .62);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, .22);
+}
+
+.dark-mode.home-page .teachers-section .teacher-card {
+    background: linear-gradient(155deg, rgba(20, 36, 64, .98), rgba(12, 26, 50, .95));
+    border-color: rgba(123, 178, 255, .17);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, .26);
+}
+
+.dark-mode.home-page .teachers-section .teacher-name {
+    color: #f3f8ff;
+}
+
+@media (max-width: 768px) {
+    .home-page .teachers-section {
+        padding: 48px 15px 52px !important;
+    }
+
+    .home-page .teachers-section-header {
+        align-items: flex-start;
+        padding-bottom: 16px;
+        gap: 16px;
+    }
+
+    .home-page .teachers-section .teachers-header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .home-page .teachers-section .teachers-carousel-wrap {
+        padding: 10px;
+        border-radius: 22px;
+    }
+
+    .home-page .teachers-section .teacher-card {
+        flex-basis: 278px;
+        min-height: 375px;
+    }
+}
+
 /* صفحة التسجيل: تصميم الثيم الزيتي / الزمردي الراقي مع كروت الخصائص واللوجو */
 .auth-body.register-page .auth-left::before,
 .auth-body.register-page .auth-left::after {
