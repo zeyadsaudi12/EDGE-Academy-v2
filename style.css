@@ -2690,6 +2690,78 @@ body:not(.auth-body) {
     background: #009879;
 }
 
+/* ─── Rich course and lesson cards ─────────────────────────── */
+.course-card-featured {
+    flex: 0 0 370px;
+    min-height: 0;
+    border-radius: 22px;
+    border-color: rgba(26, 107, 219, .16);
+    box-shadow: 0 14px 35px rgba(24, 67, 130, .12);
+}
+
+.course-card-featured .course-thumb-wrap {
+    height: 220px;
+    background: linear-gradient(135deg, #0c2f70, #1169db);
+}
+
+.course-card-featured .course-body { padding: 18px 20px 20px; }
+
+.course-grade-row { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 0 10px; }
+
+.course-grade-pill {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px;
+    border-radius: 999px; background: #eaf2ff; color: #176cda;
+    font-size: .76rem; font-weight: 900;
+}
+
+.course-grade-pill.is-all { color: #5c4b00; background: #fff4d6; }
+
+.course-card-featured .course-title { font-size: 1.12rem; margin-bottom: 7px; min-height: 3.15em; }
+
+.course-card-teacher {
+    display: flex; align-items: center; gap: 7px; min-height: 25px;
+    color: #2877de; font-size: .84rem; font-weight: 800; margin-bottom: 9px;
+}
+.course-card-teacher i { color: #176cda; }
+.course-card-teacher span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.course-card-teacher img {
+    width: 25px; height: 25px; flex: 0 0 25px; border-radius: 50%; object-fit: cover;
+    border: 1px solid rgba(26, 107, 219, .22);
+}
+
+.course-description {
+    display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+    min-height: 2.95em; margin: 0 0 12px; color: var(--gray); font-size: .85rem;
+    font-weight: 600; line-height: 1.7;
+}
+
+.course-info-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    min-height: 28px; margin-bottom: 12px; color: var(--gray); font-size: .76rem; font-weight: 700;
+}
+.course-content-count, .course-date { display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
+.course-content-count { padding: 5px 8px; border-radius: 7px; color: #52657f; background: var(--surface-alt, #eef4ff); }
+.course-date { text-align: left; white-space: nowrap; }
+
+.course-price-prominent {
+    margin: 0 0 15px; padding: 10px 12px; border-radius: 12px; color: #0969d8;
+    background: linear-gradient(135deg, #edf6ff, #e2eeff); border: 1px solid rgba(26, 107, 219, .14);
+    font-size: 1.15rem; text-align: right;
+}
+
+.course-card-featured .course-price-badge-overlay { top: 13px; left: 13px; background: rgba(7, 25, 59, .92); font-size: .86rem; }
+.dark-mode .course-grade-pill { color: #9dccff; background: rgba(37, 99, 235, .2); }
+.dark-mode .course-grade-pill.is-all { color: #fde68a; background: rgba(245, 158, 11, .16); }
+.dark-mode .course-price-prominent { color: #9dccff; background: rgba(37, 99, 235, .18); border-color: rgba(147, 197, 253, .2); }
+
+@media (max-width: 600px) {
+    .course-card-featured, .video-grid .course-card-featured {
+        flex-basis: min(88vw, 370px) !important; width: min(88vw, 370px) !important;
+    }
+    .courses-library-grid { grid-template-columns: 1fr; padding-inline: 16px; }
+    .course-card-featured .course-thumb-wrap { height: 205px; }
+}
+
 .course-nav-btn {
     position: absolute;
     top: 50%;

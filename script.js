@@ -23,6 +23,38 @@ function resolveImg(path) {
     return path;
 }
 
+function escapeCardHtml(value) {
+    return String(value ?? '').replace(/[&<>'"]/g, character => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[character]));
+}
+
+function formatGradeLabel(grade) {
+    const value = String(grade || '').trim();
+    const normalized = value.replace(/[إأآ]/g, 'ا').replace(/ى/g, 'ي').toLowerCase();
+    const numbers = { 'الاول': '1', 'الثاني': '2', 'الثالث': '3', 'first': '1', 'second': '2', 'third': '3' };
+    const number = normalized.match(/[١1]/)?.[0] ? '1'
+        : normalized.match(/[٢2]/)?.[0] ? '2'
+        : normalized.match(/[٣3]/)?.[0] ? '3'
+        : Object.entries(numbers).find(([word]) => normalized.includes(word))?.[1];
+    if (number && (normalized.includes('اعداد') || normalized.includes('prep'))) return `${number}ع`;
+    if (number && (normalized.includes('ثانو') || normalized.includes('secondary'))) return `${number}ث`;
+    return value;
+}
+
+function formatCardDate(dateValue) {
+    if (!dateValue) return '';
+    const date = new Date(dateValue);
+    if (Number.isNaN(date.getTime())) return '';
+    return date.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function cardGradesMarkup(grades) {
+    const items = Array.isArray(grades) ? grades.filter(Boolean) : [];
+    if (!items.length) return '<span class="course-grade-pill is-all"><i class="fas fa-graduation-cap"></i> كل المراحل</span>';
+    return items.slice(0, 3).map(grade => `<span class="course-grade-pill"><i class="fas fa-graduation-cap"></i> ${escapeCardHtml(formatGradeLabel(grade))}</span>`).join('');
+}
+
 let videos = [];
 window._allVideos = videos; // مشاركة القائمة مع watchVideo لكشف الفيديوهات المجانية
 
@@ -2691,24 +2723,29 @@ function renderVideos() {
         // Meta info (Teacher name & lecture count)
         const tName = item.teacherName || (teachers.find(t => t._id === item.teacherId)?.name) || '';
         const tSubject = item.teacherSubject || (teachers.find(t => t._id === item.teacherId)?.subjectAr) || '';
-        const teacherMeta = tName ? `<div style="font-size:0.82rem; color:var(--primary); font-weight:700; margin-bottom:6px;"><i class="fas fa-chalkboard-teacher" style="margin-left:4px;"></i>${tName}${tSubject ? ' (' + tSubject + ')' : ''}</div>` : '';
+        const teacherMeta = tName ? `<div class="course-card-teacher"><i class="fas fa-chalkboard-teacher"></i>${escapeCardHtml(tName)}${tSubject ? ` <span>· ${escapeCardHtml(tSubject)}</span>` : ''}</div>` : '';
         const lecturesMeta = isStandaloneVideo
-            ? '<span style="font-size:0.8rem; color:var(--gray); background:var(--surface-alt); padding:2px 8px; border-radius:6px;"><i class="fas fa-play-circle" style="margin-left:4px;"></i>محاضرة منفصلة</span>'
-            : (item.videoCount ? `<span style="font-size:0.8rem; color:var(--gray); background:var(--surface-alt); padding:2px 8px; border-radius:6px;"><i class="fas fa-video" style="margin-left:4px;"></i>${item.videoCount} محاضرة</span>` : '');
+            ? '<span class="course-content-count"><i class="fas fa-play-circle"></i> محاضرة منفصلة</span>'
+            : (item.videoCount ? `<span class="course-content-count"><i class="fas fa-video"></i> ${item.videoCount} محاضرة</span>` : '');
+        const cardDate = formatCardDate(isStandaloneVideo ? (item.startDate || item.createdAt) : item.createdAt);
+        const details = String(item.description || '').trim();
 
         return `
-            <div class="course-card" style="flex: 0 0 320px; cursor:pointer;" onclick="${isStandaloneVideo ? '' : `location.href='${destUrl}'`}">
+            <div class="course-card course-card-featured" onclick="${isStandaloneVideo ? '' : `location.href='${destUrl}'`}">
                 <div class="course-thumb-wrap">
                     <span class="${priceBadgeClass}">${priceLabelText}</span>
-                    <img src="${resolveImg(item.imagePath || item.image) || 'imges/st.jpg'}" class="course-thumb" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
+                    <img src="${resolveImg(item.imagePath || item.image) || 'imges/st.jpg'}" class="course-thumb" alt="${escapeCardHtml(item.title)}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
                 </div>
                 <div class="course-body">
-                    <h3 class="course-title">${item.title}</h3>
+                    <div class="course-grade-row">${cardGradesMarkup(item.grades)}</div>
+                    <h3 class="course-title">${escapeCardHtml(item.title)}</h3>
                     ${teacherMeta}
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-                        <div class="course-price" style="margin:0;">${priceLabelText}</div>
+                    ${details ? `<p class="course-description">${escapeCardHtml(details)}</p>` : ''}
+                    <div class="course-info-row">
                         ${lecturesMeta}
+                        ${cardDate ? `<span class="course-date"><i class="far fa-calendar-alt"></i> ${cardDate}</span>` : ''}
                     </div>
+                    <div class="course-price course-price-prominent">${priceLabelText}</div>
                     <div class="course-btns">
                         ${enterBtn}
                         ${actionButtonHTML}
@@ -2827,8 +2864,10 @@ function applyCoursesFilter() {
 
         const tName = course.teacherName || (teachers.find(t => t._id === course.teacherId)?.name) || '';
         const tImg = course.teacherImage || (teachers.find(t => t._id === course.teacherId)?.imagePath) || '';
-        const teacherBadge = tName ? `<div class="course-card-teacher-badge">${tImg ? `<img src="${resolveImg(tImg)}" onerror="this.style.display='none'">` : ''}<span>${tName}</span></div>` : '';
-        const lecturesMeta = course.videoCount ? `<span style="font-size:0.8rem;color:var(--gray);background:var(--surface-alt,#f3f4f6);padding:2px 8px;border-radius:6px;"><i class="fas fa-video" style="margin-left:4px;"></i>${course.videoCount} محاضرة</span>` : '';
+        const teacherBadge = tName ? `<div class="course-card-teacher">${tImg ? `<img src="${resolveImg(tImg)}" alt="" onerror="this.style.display='none'">` : '<i class="fas fa-chalkboard-teacher"></i>'}<span>${escapeCardHtml(tName)}</span></div>` : '';
+        const lecturesMeta = course.videoCount ? `<span class="course-content-count"><i class="fas fa-video"></i> ${course.videoCount} محاضرة</span>` : '';
+        const cardDate = formatCardDate(course.createdAt);
+        const details = String(course.description || '').trim();
 
         let actionBtn;
         if (isFreeOpen) {
@@ -2840,18 +2879,21 @@ function applyCoursesFilter() {
         }
 
         return `
-        <div class="course-card" style="cursor:pointer;" onclick="location.href='${destUrl}'">
+        <div class="course-card course-card-featured" onclick="location.href='${destUrl}'">
             <div class="course-thumb-wrap">
                 <span class="${priceBadgeClass}">${priceLabelText}</span>
-                <img src="${resolveImg(course.imagePath || course.image) || 'imges/st.jpg'}" class="course-thumb" alt="${course.title}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
+                <img src="${resolveImg(course.imagePath || course.image) || 'imges/st.jpg'}" class="course-thumb" alt="${escapeCardHtml(course.title)}" loading="lazy" onerror="this.onerror=null;this.src='imges/st.jpg'">
             </div>
-            ${teacherBadge}
             <div class="course-body">
-                <h3 class="course-title">${course.title}</h3>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                    <div class="course-price" style="margin:0;">${priceLabelText}</div>
+                <div class="course-grade-row">${cardGradesMarkup(course.grades)}</div>
+                <h3 class="course-title">${escapeCardHtml(course.title)}</h3>
+                ${teacherBadge}
+                ${details ? `<p class="course-description">${escapeCardHtml(details)}</p>` : ''}
+                <div class="course-info-row">
                     ${lecturesMeta}
+                    ${cardDate ? `<span class="course-date"><i class="far fa-calendar-alt"></i> ${cardDate}</span>` : ''}
                 </div>
+                <div class="course-price course-price-prominent">${priceLabelText}</div>
                 <div class="course-btns">
                     <a href="${destUrl}" class="btn-enter" onclick="event.stopPropagation()">الدخول</a>
                     ${actionBtn}
