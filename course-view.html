@@ -509,6 +509,73 @@
         order: -1;
     }
 }
+
+/* Phone layout: prevent lecture actions and course content from overflowing
+   horizontally. Each lecture's action moves to its own full-width row. */
+@media (max-width: 600px) {
+    .cv-page-wrap {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 18px 12px 46px;
+        overflow: hidden;
+    }
+
+    .cv-main-layout,
+    .cv-content-col,
+    .cv-sidebar-col {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .cv-breadcrumb {
+        gap: 6px;
+        margin-bottom: 16px;
+        font-size: .8rem;
+    }
+
+    .cv-header-card,
+    .cv-lectures-card {
+        box-sizing: border-box;
+        border-radius: 18px;
+        padding: 18px 14px;
+    }
+
+    .cv-course-title { font-size: 1.35rem; }
+    .cv-lectures-header h2 { font-size: 1.08rem; }
+
+    .cv-summary-card { width: 100%; box-sizing: border-box; border-radius: 18px; }
+    .cv-summary-thumb-box { height: 180px; }
+    .cv-summary-body { padding: 18px; }
+
+    .cv-v-item {
+        display: grid;
+        grid-template-columns: 38px 72px minmax(0, 1fr);
+        gap: 10px;
+        padding: 14px 12px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .cv-v-thumbnail { width: 72px; height: 52px; border-radius: 9px; }
+    .cv-v-details { min-width: 0; }
+    .cv-v-title { font-size: .93rem; overflow-wrap: anywhere; }
+    .cv-v-meta { gap: 6px; font-size: .74rem; }
+
+    .cv-v-action-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    .cv-v-action-btn .cv-play-btn,
+    .cv-v-action-btn .cv-lock-pill,
+    .cv-v-action-btn .cv-exam-btn {
+        width: 100%;
+        min-height: 40px;
+        box-sizing: border-box;
+        justify-content: center;
+    }
+}
 </style>
 </head>
 <body class="course-view-page">
