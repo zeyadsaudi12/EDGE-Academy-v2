@@ -139,7 +139,7 @@
             const teacherId = urlParams.get('teacherId');
             
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const studentGrade = currentUser ? currentUser.grade : null;
+            const studentGrade = currentUser?.role === 'student' ? currentUser.grade : null;
 
             let isFollowing = false;
 

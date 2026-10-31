@@ -33,6 +33,21 @@ async function authenticate(req, res, next) {
     }
 }
 
+// Attach the current user when a valid session exists, without blocking
+// public catalogue requests for visitors who are not logged in.
+async function optionalAuthenticate(req, res, next) {
+    try {
+        const token = readToken(req);
+        if (!token) return next();
+        const payload = jwt.verify(token, secret(), { issuer: 'edge-academy', audience: 'edge-academy-web' });
+        const user = await User.findById(payload.sub).select('-password').lean();
+        if (user) req.user = user;
+    } catch (_) {
+        // An expired optional session is treated as a guest request.
+    }
+    next();
+}
+
 const allowRoles = (...roles) => (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) return res.status(403).json({ success: false, message: 'ليس لديك صلاحية لهذا الإجراء' });
     next();
@@ -43,4 +58,4 @@ const ownUserOr = (...roles) => (req, res, next) => {
     return res.status(403).json({ success: false, message: 'لا تملك صلاحية الوصول إلى هذا الحساب' });
 };
 
-module.exports = { COOKIE_NAME, signSession, authenticate, allowRoles, ownUserOr };
+module.exports = { COOKIE_NAME, signSession, authenticate, optionalAuthenticate, allowRoles, ownUserOr };

@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const courseController = require('../controllers/course.controller');
 const upload = require('../middleware/upload');
-const { authenticate, allowRoles } = require('../middleware/auth');
+const { authenticate, optionalAuthenticate, allowRoles } = require('../middleware/auth');
 
-router.get('/', courseController.getCourses);
-router.get('/:id', courseController.getCourseById);
+router.get('/', optionalAuthenticate, courseController.getCourses);
+router.get('/:id', optionalAuthenticate, courseController.getCourseById);
 router.get('/:id/videos', authenticate, courseController.getCourseVideosForStudent);
 router.get('/:id/students', authenticate, allowRoles('admin', 'teacher'), courseController.getCourseStudents);
 router.post('/:id/buy', authenticate, courseController.subscribeToCourse);

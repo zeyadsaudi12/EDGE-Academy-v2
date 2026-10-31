@@ -84,8 +84,9 @@ exports.likeVideo = async (req, res, next) => {
 
 exports.getAllVideos = async (req, res, next) => {
     try {
-        const videos = await Video.find({ hidden: { $ne: true } }).sort({ createdAt: -1 }).lean();
-        if (req.query.includeHidden === 'true' && req.user?.role === 'admin') return res.json(videos);
+        const isAdminCatalogue = req.query.includeHidden === 'true' && req.user?.role === 'admin';
+        const videos = await Video.find(isAdminCatalogue ? {} : { hidden: { $ne: true } }).sort({ createdAt: -1 }).lean();
+        if (isAdminCatalogue) return res.json(videos);
         const visibleTeacherIds = new Set((await Teacher.find({ hidden: { $ne: true } }).select('_id').lean()).map(t => String(t._id)));
         res.json(videos.filter(video => !video.teacherId || visibleTeacherIds.has(String(video.teacherId))).map(({ link, videoPath, bookletFiles, homeworkFiles, ...safeVideo }) => safeVideo));
     } catch (err) {

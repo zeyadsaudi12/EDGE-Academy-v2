@@ -616,7 +616,11 @@ async function initSubjectsDirectoryPage() {
         currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     } catch (e) {}
 
-    studentRegisteredGrade = (currentUser && currentUser.grade) ? currentUser.grade.trim() : null;
+    // Grade filtering is for students only. Administrators and staff need the
+    // complete platform catalogue regardless of their profile's grade field.
+    studentRegisteredGrade = (currentUser && currentUser.role === 'student' && currentUser.grade)
+        ? currentUser.grade.trim()
+        : null;
 
     // Check if subject is requested via URL query param
     const urlParams = new URLSearchParams(window.location.search);

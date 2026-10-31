@@ -7272,7 +7272,7 @@
                 let course = (_allAdminCourses || []).find(c => c && (c._id == courseId || c.id == courseId || String(c._id) === String(courseId)));
                 if (!course) {
                     try {
-                        const res = await fetch(`${API}/api/courses/${courseId}`);
+                        const res = await fetch(`${API}/api/courses/${courseId}?includeHidden=true`);
                         const d = await res.json();
                         course = d.course || d;
                     } catch (e) {

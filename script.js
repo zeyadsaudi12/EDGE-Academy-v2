@@ -55,6 +55,10 @@ function cardGradesMarkup(grades) {
     return items.slice(0, 3).map(grade => `<span class="course-grade-pill"><i class="fas fa-graduation-cap"></i> ${escapeCardHtml(formatGradeLabel(grade))}</span>`).join('');
 }
 
+function getStudentGrade(user) {
+    return user?.role === 'student' && user.grade ? String(user.grade).trim() : null;
+}
+
 let videos = [];
 window._allVideos = videos; // مشاركة القائمة مع watchVideo لكشف الفيديوهات المجانية
 
@@ -2646,7 +2650,7 @@ function renderVideos() {
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    const studentGrade = currentUser && currentUser.grade ? currentUser.grade : null;
+    const studentGrade = getStudentGrade(currentUser);
 
     // Courses and standalone lectures may coexist.  Do not hide a teacher's
     // standalone lecture merely because another course exists on the platform.
@@ -2767,7 +2771,7 @@ function renderCoursesLibrary() {
     if (!grid) return; // not on courses page
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const studentGrade = currentUser && currentUser.grade ? currentUser.grade : null;
+    const studentGrade = getStudentGrade(currentUser);
 
     // Filter visible courses by grade
     _coursesLibraryData = (courses || []).filter(c => {
@@ -3291,7 +3295,7 @@ function renderTeachers() {
     if (!teachersGrid) return;
 
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    const studentGrade = currentUser?.grade || null;
+    const studentGrade = getStudentGrade(currentUser);
 
     let teachersList = [];
     if (studentGrade) {
@@ -3499,7 +3503,7 @@ function renderSubjects() {
         currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     } catch (e) { }
 
-    const studentGrade = currentUser && currentUser.grade ? currentUser.grade.trim() : null;
+    const studentGrade = getStudentGrade(currentUser);
 
     // فلترة المعلمين حسب مرحلة الطالب إذا كان مسجلاً
     let filteredTeachers = teachers;
