@@ -2266,29 +2266,49 @@ body:not(.auth-body) {
 }
 
 .subject-view-btn {
-    margin-top: 4px;
-    padding: 6px 14px;
-    background: linear-gradient(135deg, var(--primary-red), #e63946);
+    width: min(100%, 190px);
+    min-height: 42px;
+    margin-top: auto;
+    padding: 9px 16px;
+    box-sizing: border-box;
+    justify-content: center;
+    background: linear-gradient(105deg, #1b65cf 0%, #287fdf 56%, #17af9c 100%);
     color: #fff !important;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 700;
+    border: 0;
+    border-radius: 12px;
+    font-size: 0.84rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 6px;
     transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(231, 111, 81, 0.25);
+    box-shadow: 0 8px 16px rgba(27, 101, 207, 0.22);
 }
 
 .subject-view-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(231, 111, 81, 0.4);
-    opacity: 0.95;
+    background: linear-gradient(105deg, #1458bc 0%, #226ec8 56%, #109481 100%);
+    box-shadow: 0 11px 20px rgba(27, 101, 207, 0.3);
+}
+
+.subject-view-btn:focus-visible {
+    outline: 3px solid rgba(23, 175, 156, 0.35);
+    outline-offset: 3px;
 }
 
 .dark-mode .subject-view-btn {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.38);
+}
+
+@media (max-width: 600px) {
+    .subject-view-btn {
+        width: 100%;
+        min-height: 44px;
+        font-size: 0.88rem;
+    }
 }
 
 .subjects-controls {
@@ -2297,6 +2317,27 @@ body:not(.auth-body) {
     justify-content: center;
     gap: 20px;
     margin-top: 30px;
+}
+
+.subjects-controls .nav-btn {
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(27, 101, 207, 0.16);
+    background: rgba(255, 255, 255, 0.78);
+    color: #1b65cf;
+    box-shadow: 0 8px 18px rgba(27, 101, 207, 0.1);
+}
+
+.subjects-controls .nav-btn:hover {
+    background: linear-gradient(135deg, #1b65cf, #17af9c);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 11px 22px rgba(27, 101, 207, 0.25);
+}
+
+.subjects-controls .nav-btn:focus-visible {
+    outline: 3px solid rgba(23, 175, 156, 0.35);
+    outline-offset: 3px;
 }
 
 .teachers-controls {
