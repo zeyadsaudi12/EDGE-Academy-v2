@@ -3613,6 +3613,14 @@ function renderSubjects() {
 
         const countLabel = count === 1 ? 'معلم واحد' : count === 2 ? 'معلمان' : `${count} معلمين`;
 
+        const courseCount = (courses || []).filter(course => {
+            const courseTeacher = teachers.find(teacher => String(teacher._id) === String(course.teacherId));
+            const courseSubjects = String(course.teacherSubject || courseTeacher?.subjectAr || '')
+                .split('|').map(value => value.trim());
+            const gradeMatches = !studentGrade || !Array.isArray(course.grades) || !course.grades.length || course.grades.includes(studentGrade);
+            return gradeMatches && courseSubjects.includes(subject);
+        }).length;
+
         const iconClass = subjectVisuals[subject] || "fa-book";
 
         const subjectUrl = `subjects?subject=${encodeURIComponent(subject)}${studentGrade ? `&grade=${encodeURIComponent(studentGrade)}` : ''}`;
@@ -3621,20 +3629,18 @@ function renderSubjects() {
 
             <div class="subject-card" onclick="window.location.href='${subjectUrl}'" style="cursor: pointer;" title="استعراض معلمي ${subject}">
 
-                <div class="subject-icon-container">
-
-                    <i class="fas ${iconClass}"></i>
-
+                <div class="subject-icon-container"><i class="fas ${iconClass}"></i></div>
+                <div class="subject-card-content">
+                    <h3>${escapeCardHtml(subject)}</h3>
+                    <div class="subject-stats" aria-label="إحصاءات المادة">
+                        <span><strong>${count}</strong><small>${countLabel}</small></span>
+                        <span><strong>${courseCount}</strong><small>${courseCount === 1 ? 'كورس' : 'كورسات'}</small></span>
+                    </div>
+                    <a href="${subjectUrl}" class="subject-view-btn" onclick="event.stopPropagation();">
+                        <span>اعرف أكثر</span>
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    </a>
                 </div>
-
-                <h3>${subject}</h3>
-
-                <span class="teacher-count">${countLabel}</span>
-
-                <a href="${subjectUrl}" class="subject-view-btn" onclick="event.stopPropagation();">
-                    <span>عرض المعلمين</span>
-                    <i class="fas fa-chevron-left" style="font-size: 0.72rem;"></i>
-                </a>
 
             </div>
 
