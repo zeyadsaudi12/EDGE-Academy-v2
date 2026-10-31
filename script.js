@@ -59,6 +59,19 @@ function getStudentGrade(user) {
     return user?.role === 'student' && user.grade ? String(user.grade).trim() : null;
 }
 
+function getStoredCurrentUser() {
+    try {
+        const rawUser = localStorage.getItem('currentUser');
+        if (!rawUser) return null;
+        const user = JSON.parse(rawUser);
+        return user && typeof user === 'object' ? user : null;
+    } catch (_) {
+        // A corrupted local entry must not stop the whole page or navbar.
+        localStorage.removeItem('currentUser');
+        return null;
+    }
+}
+
 function getCatalogueGrade(user) {
     const studentGrade = getStudentGrade(user);
     if (studentGrade) return studentGrade;
@@ -119,7 +132,14 @@ let heroSliderTimer = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-    if (localStorage.getItem('currentUser') && !localStorage.getItem('masar_device_id')) {
+    const currentUser = getStoredCurrentUser();
+
+    // Keep the header accurate even if catalogue requests are slow or fail.
+    // Authentication UI must never depend on the courses/teachers API.
+    updateNavbarAuth(currentUser);
+    initGuestGradeFilters(currentUser);
+
+    if (currentUser && !localStorage.getItem('masar_device_id')) {
         const randomDevId = 'dev_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         localStorage.setItem('masar_device_id', randomDevId);
     }
@@ -136,13 +156,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     initAuthCanvas();
 
-    // Load data from backend database
-
+    // Load catalogue data separately from the session UI.
     await loadDataFromDB();
-
-    // Init specific pages depending on active elements in DOM
-
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     // Heartbeat to keep user online
 
@@ -153,12 +168,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         initRealtimeSync(currentUser);
 
     }
-
-    // Update navbar actions depending on auth state
-
-    updateNavbarAuth(currentUser);
-
-    initGuestGradeFilters(currentUser);
 
     // Initializations for student page elements
 
