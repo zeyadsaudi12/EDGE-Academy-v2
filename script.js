@@ -1481,28 +1481,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             birthDateInput.value = `${fullYear}-${month}-${day}`;
 
-            const today = new Date();
-
-            let age = today.getFullYear() - parseInt(fullYear);
-
-            if (
-
-                today.getMonth() + 1 < parseInt(month) ||
-
-                (today.getMonth() + 1 === parseInt(month) && today.getDate() < parseInt(day))
-
-            ) age--;
-
-            if (age < 10 || age > 21) {
-
-                alert(`❌ سنك ${age} عاماً. المنصة مخصصة للطلاب من سن 10 إلى 21 عاماً.`);
-
-                nationalIdInput.value = '';
-
-                birthDateInput.value = '';
-
-            }
-
         } else {
 
             birthDateInput.value = '';
