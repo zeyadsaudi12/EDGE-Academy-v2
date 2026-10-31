@@ -4669,7 +4669,7 @@ body:not(.auth-body) {
 .home-page .teachers-section .teacher-card {
     flex-basis: 296px;
     min-height: 392px;
-    padding: 28px 22px 22px;
+    padding: 0 20px 22px;
     border: 1px solid rgba(44, 114, 209, .15);
     border-radius: 24px;
     background:
@@ -4685,6 +4685,42 @@ body:not(.auth-body) {
     left: 0;
     height: 5px;
     background: linear-gradient(90deg, #16b9a5, #286fd9 54%, #f4b342);
+}
+
+/* اجعل صورة المعلم غلافاً أعلى الكارت بدلاً من الصورة الدائرية */
+.home-page .teachers-section .teacher-avatar-container {
+    width: calc(100% + 40px);
+    height: 190px;
+    margin: 0 -20px 19px;
+    overflow: hidden;
+    border-radius: 23px 23px 16px 16px;
+    background: linear-gradient(135deg, #1b67cc, #16aa9a);
+}
+
+.home-page .teachers-section .teacher-avatar {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.home-page .teachers-section .teacher-avatar img {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+    object-fit: cover;
+    object-position: center;
+}
+
+.home-page .teachers-section .teacher-avatar::after {
+    display: none;
+}
+
+.home-page .teachers-section .teacher-card:hover .teacher-avatar img {
+    transform: scale(1.035);
 }
 
 .home-page .teachers-section .teacher-card:hover {
@@ -4783,6 +4819,10 @@ body:not(.auth-body) {
     .home-page .teachers-section .teacher-card {
         flex-basis: 278px;
         min-height: 375px;
+    }
+
+    .home-page .teachers-section .teacher-avatar-container {
+        height: 172px;
     }
 }
 
