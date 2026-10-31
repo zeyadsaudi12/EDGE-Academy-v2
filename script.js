@@ -100,6 +100,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     initLanguageSwitcher();
 
+    initArabicNameInputs();
+
     // Init 3D canvas animation on auth pages (login/register)
 
     initAuthCanvas();
@@ -1189,6 +1191,8 @@ function validateStep(step) {
 
     if (step === 1) {
 
+        if (!validateArabicNameFields(form)) return false;
+
         const phone = form.querySelector('input[name="phone"]').value;
 
         const parentPhone = form.querySelector('input[name="parentPhone"]').value;
@@ -1275,11 +1279,41 @@ function validateStep(step) {
 
 }
 
+function validateArabicNameFields(form) {
+    const fields = [...form.querySelectorAll('[data-arabic-name]')];
+    const arabicNamePattern = /^[\u0621-\u063A\u0641-\u064A\u0670\u0649\s]+$/;
+
+    for (const field of fields) {
+        const value = field.value.trim().replace(/\s+/g, ' ');
+        field.value = value;
+        const isValid = Boolean(value) && arabicNamePattern.test(value);
+        field.classList.toggle('input-language-error', !isValid && Boolean(value));
+        field.setAttribute('aria-invalid', String(!isValid && Boolean(value)));
+        if (!isValid) {
+            alert('❌ الاسم يُكتب باللغة العربية فقط، ولا يمكن استخدام الحروف الإنجليزية أو الأرقام.');
+            field.focus();
+            return false;
+        }
+    }
+    return true;
+}
+
+function initArabicNameInputs() {
+    document.querySelectorAll('[data-arabic-name]').forEach(field => {
+        field.addEventListener('input', () => {
+            const containsNonArabic = /[^\u0621-\u063A\u0641-\u064A\u0670\u0649\s]/.test(field.value);
+            field.classList.toggle('input-language-error', containsNonArabic);
+            field.setAttribute('aria-invalid', String(containsNonArabic));
+            field.title = containsNonArabic ? 'الاسم يُكتب باللغة العربية فقط' : '';
+        });
+    });
+}
+
 function handleRegister(event) {
 
     event.preventDefault();
 
-    if (!validateStep(3)) return false;
+    if (!validateStep(1) || !validateStep(2) || !validateStep(3)) return false;
 
     const form = event.target;
 
@@ -1288,6 +1322,10 @@ function handleRegister(event) {
     const password = form.querySelector('input[name="password"]').value;
 
     const firstName = form.querySelector('input[name="firstName"]').value;
+
+    const secondName = form.querySelector('input[name="secondName"]').value;
+
+    const thirdName = form.querySelector('input[name="thirdName"]').value;
 
     const lastName = form.querySelector('input[name="lastName"]').value;
 
@@ -1315,7 +1353,7 @@ function handleRegister(event) {
 
         body: JSON.stringify({
 
-            username, firstName, lastName, birthDate, phone, parentPhone,
+            username, firstName, secondName, thirdName, lastName, birthDate, phone, parentPhone,
 
             nationalId, governorate, grade, section, secondLanguage, password
 
@@ -3726,7 +3764,7 @@ async function loadFullProfile() {
     if (modalQrCodeVal) modalQrCodeVal.textContent = studentEmail;
 
     // Set ID Pass Details
-    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'طالب المنصة';
+    const fullName = `${user.firstName || ''} ${user.secondName || ''} ${user.thirdName || ''} ${user.lastName || ''}`.replace(/\s+/g, ' ').trim() || 'طالب المنصة';
     const idName = document.getElementById('id-card-student-name');
     const idGrade = document.getElementById('id-card-student-grade');
     const idPhone = document.getElementById('id-card-student-phone');
@@ -5328,7 +5366,7 @@ const platformTranslations = {
     'شخصي': 'Personal', 'أكاديمي': 'Academic', 'السابق': 'Back', 'التالي': 'Next',
     'إنشاء الحساب': 'Create Account', 'إنشاء حساب جديد': 'Create New Account',
     'هل لديك حساب بالفعل؟': 'Already have an account?', 'قم بتسجيل الدخول من هنا': 'Log in here',
-    'الاسم الأول*': 'First Name*', 'الاسم الأخير*': 'Last Name*',
+    'الاسم الأول*': 'First Name*', 'الاسم الثاني*': 'Second Name*', 'الاسم الثالث*': 'Third Name*', 'الاسم الأخير*': 'Last Name*',
     'الرقم القومي* (14 رقم)': 'National ID* (14 digits)', 'تاريخ الميلاد*': 'Date of Birth*',
     'رقم الهاتف*': 'Phone Number*', 'رقم هاتف ولي الأمر*': 'Parent Phone Number*', 'المحافظة*': 'Governorate*',
     'الصف الدراسي*': 'Grade*', 'الشعبة*': 'Track*', 'اللغة الثانية*': 'Second Language*',

@@ -4309,6 +4309,12 @@ body:not(.auth-body) {
     box-shadow: 0 0 0 4px rgba(33, 118, 223, .11);
 }
 
+.auth-body .form-group input.input-language-error,
+.auth-body .form-group input.input-language-error:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, .12);
+}
+
 .auth-body .btn-fill.auth-submit {
     display: flex;
     align-items: center;

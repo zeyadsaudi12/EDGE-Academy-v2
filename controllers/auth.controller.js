@@ -14,10 +14,16 @@ const sessionCookie = () => ({
 
 exports.register = async (req, res, next) => {
     try {
-        const { username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password } = req.body;
+        const { username, firstName, secondName, thirdName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password } = req.body;
 
-        if (!username || !firstName || !lastName || !birthDate || !phone || !parentPhone || !nationalId || !governorate || !grade || !password) {
+        if (!username || !firstName || !secondName || !thirdName || !lastName || !birthDate || !phone || !parentPhone || !nationalId || !governorate || !grade || !password) {
             return res.status(400).json({ success: false, message: 'الرجاء ملء جميع الحقول المطلوبة' });
+        }
+
+        const arabicNamePattern = /^[\u0621-\u063A\u0641-\u064A\u0670\u0649\s]+$/;
+        const nameParts = [firstName, secondName, thirdName, lastName].map(name => String(name).trim().replace(/\s+/g, ' '));
+        if (nameParts.some(name => !arabicNamePattern.test(name))) {
+            return res.status(400).json({ success: false, message: 'الاسم الأول والثاني والثالث والأخير يجب كتابتهم باللغة العربية فقط' });
         }
 
         const phoneRegex = /^01[0125]\d{8}$/;
@@ -35,7 +41,7 @@ exports.register = async (req, res, next) => {
         }
         const hashedPassword = await bcrypt.hash(String(password), 12);
         const newUser = new User({
-            username, firstName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password: hashedPassword,
+            username, firstName: nameParts[0], secondName: nameParts[1], thirdName: nameParts[2], lastName: nameParts[3], birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password: hashedPassword,
             devices: []
         });
 
