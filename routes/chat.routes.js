@@ -1,6 +1,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const chatController = require('../controllers/chat.controller');
+const { optionalAuthenticate } = require('../middleware/auth');
 
 const router = express.Router();
 router.post('/', rateLimit({
@@ -9,6 +10,6 @@ router.post('/', rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
     message: { success: false, message: 'أرسلت رسائل كثيرة، جرّب مرة أخرى بعد قليل.' }
-}), chatController.reply);
+}), optionalAuthenticate, chatController.reply);
 
 module.exports = router;

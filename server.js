@@ -83,8 +83,8 @@ try {
     }
 } catch (e) {}
 
-// The public chat assistant does not need database access. Keeping it before
-// the DB gate lets it remain available if Atlas is temporarily unavailable.
+// The chat assistant can enrich replies with catalogue data when Atlas is
+// available, but remains reachable with a safe fallback if it is not.
 const chatRoutes = require('./routes/chat.routes');
 app.use('/api/chat', chatRoutes);
 
