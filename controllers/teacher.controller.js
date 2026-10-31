@@ -58,7 +58,7 @@ exports.getFollowerCounts = async (req, res, next) => {
 
 exports.getAllTeachers = async (req, res, next) => {
     try {
-        const includeHidden = req.query.includeHidden === 'true';
+        const includeHidden = req.query.includeHidden === 'true' && req.user?.role === 'admin';
         const teachers = await Teacher.find(includeHidden ? {} : { hidden: { $ne: true } }).lean();
         res.json(teachers);
     } catch (err) {
@@ -73,7 +73,8 @@ exports.getTeacherById = async (req, res, next) => {
         }
 
         const teacher = await Teacher.findById(req.params.id);
-        if (!teacher || (teacher.hidden && req.query.includeHidden !== 'true')) {
+        const canViewHidden = req.query.includeHidden === 'true' && req.user?.role === 'admin';
+        if (!teacher || (teacher.hidden && !canViewHidden)) {
             return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
         }
 

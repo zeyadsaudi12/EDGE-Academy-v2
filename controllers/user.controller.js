@@ -6,6 +6,19 @@ const Attendance = require('../models/attendance.model');
 const mongoose = require('mongoose');
 const { cloudinary } = require('../middleware/upload');
 
+const SELF_UPDATE_FIELDS = new Set([
+    'firstName', 'secondName', 'thirdName', 'lastName', 'parentPhone',
+    'governorate', 'section', 'secondLanguage'
+]);
+const ADMIN_UPDATE_FIELDS = new Set([
+    ...SELF_UPDATE_FIELDS, 'phone', 'nationalId', 'birthDate', 'grade',
+    'balance', 'role', 'isTeacherAccount', 'teacherId'
+]);
+
+function pickAllowedUpdates(payload, allowedFields) {
+    return Object.fromEntries(Object.entries(payload || {}).filter(([key]) => allowedFields.has(key)));
+}
+
 function extractCloudinaryPublicId(url) {
     if (!url || !url.includes('cloudinary.com')) return null;
     try {
@@ -26,6 +39,14 @@ exports.follow = async (req, res, next) => {
         const { teacherId } = req.body;
         if (!mongoose.Types.ObjectId.isValid(req.params.id) || req.params.id === 'admin-master-id') {
             return res.status(400).json({ success: false, message: 'معرف مستخدم غير صالح' });
+        }
+        if (!mongoose.Types.ObjectId.isValid(teacherId)) {
+            return res.status(400).json({ success: false, message: 'معرف المعلم غير صالح' });
+        }
+        const Teacher = require('../models/teacher.model');
+        const teacher = await Teacher.findById(teacherId).select('hidden').lean();
+        if (!teacher || teacher.hidden) {
+            return res.status(404).json({ success: false, message: 'المعلم غير موجود' });
         }
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
@@ -55,9 +76,18 @@ exports.subscribe = async (req, res, next) => {
         if (!mongoose.Types.ObjectId.isValid(req.params.id) || req.params.id === 'admin-master-id') {
             return res.status(400).json({ success: false, message: 'معرف مستخدم غير صالح' });
         }
+        if (!mongoose.Types.ObjectId.isValid(videoId)) {
+            return res.status(400).json({ success: false, message: 'معرف المحاضرة غير صالح' });
+        }
 
+        const [video, code] = await Promise.all([
+            Video.findById(videoId).select('hidden grades closed').lean(),
+            Code.findOne({ code: codeStr, videoId })
+        ]);
+        if (!video || video.hidden || video.closed) {
+            return res.status(404).json({ success: false, message: 'المحاضرة غير متاحة' });
+        }
         // 1. التحقق من كود الشحن وصلاحيته لهذا الفيديو
-        const code = await Code.findOne({ code: codeStr, videoId });
         if (!code) {
             return res.status(404).json({ success: false, message: 'كود الشحن غير صحيح أو لا يخص هذه المحاضرة' });
         }
@@ -71,6 +101,9 @@ exports.subscribe = async (req, res, next) => {
         // 2. تحديث بيانات المستخدم (إضافة المحاضرة لكورسات الطالب)
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+        if (user.role === 'student' && Array.isArray(video.grades) && video.grades.length && !video.grades.includes(user.grade)) {
+            return res.status(403).json({ success: false, message: 'هذه المحاضرة غير متاحة لصفك الدراسي' });
+        }
 
         if (!user.subscribedVideos) user.subscribedVideos = [];
         if (!user.subscribedVideos.includes(videoId)) {
@@ -108,8 +141,11 @@ exports.subscribeFree = async (req, res, next) => {
             Code.countDocuments({ videoId })
         ]);
         if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
-        if (!video) return res.status(404).json({ success: false, message: 'المحاضرة غير موجودة' });
+        if (!video || video.hidden) return res.status(404).json({ success: false, message: 'المحاضرة غير موجودة' });
         if (video.closed) return res.status(403).json({ success: false, message: 'هذه المحاضرة مغلقة حالياً' });
+        if (user.role === 'student' && Array.isArray(video.grades) && video.grades.length && !video.grades.includes(user.grade)) {
+            return res.status(403).json({ success: false, message: 'هذه المحاضرة غير متاحة لصفك الدراسي' });
+        }
 
         // A zero/blank price with no generated codes is a free lecture.
         if (Number(video.price || 0) !== 0 || codeCount > 0) {
@@ -135,7 +171,12 @@ exports.subscribeCourse = async (req, res, next) => {
         if (!mongoose.Types.ObjectId.isValid(studentId) || studentId === 'admin-master-id') {
             return res.status(400).json({ success: false, message: 'معرف طالب غير صالح' });
         }
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({ success: false, message: 'معرف الكورس غير صالح' });
+        }
 
+        const course = await Course.findById(courseId).select('hidden grades').lean();
+        if (!course || course.hidden) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
         const code = await Code.findOne({ code: codeStr, videoId: courseId });
         if (!code) {
             return res.status(404).json({ success: false, message: 'كود الاشتراك غير صحيح أو لا يخص هذا الكورس' });
@@ -146,6 +187,9 @@ exports.subscribeCourse = async (req, res, next) => {
 
         const user = await User.findById(studentId);
         if (!user) return res.status(404).json({ success: false, message: 'الطالب غير موجود' });
+        if (user.role === 'student' && Array.isArray(course.grades) && course.grades.length && !course.grades.includes(user.grade)) {
+            return res.status(403).json({ success: false, message: 'هذا الكورس غير متاح لصفك الدراسي.' });
+        }
 
         if (!user.subscribedCourses) user.subscribedCourses = [];
         const alreadySubscribed = user.subscribedCourses.some(c => c.courseId === courseId);
@@ -178,12 +222,18 @@ exports.buyCourseBalance = async (req, res, next) => {
         if (!mongoose.Types.ObjectId.isValid(studentId) || studentId === 'admin-master-id') {
             return res.status(400).json({ success: false, message: 'معرف طالب غير صالح' });
         }
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            return res.status(400).json({ success: false, message: 'معرف الكورس غير صالح' });
+        }
 
         const course = await Course.findById(courseId);
-        if (!course) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
+        if (!course || course.hidden) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
 
         const user = await User.findById(studentId);
         if (!user) return res.status(404).json({ success: false, message: 'الطالب غير موجود' });
+        if (user.role === 'student' && Array.isArray(course.grades) && course.grades.length && !course.grades.includes(user.grade)) {
+            return res.status(403).json({ success: false, message: 'هذا الكورس غير متاح لصفك الدراسي.' });
+        }
 
         if (!user.subscribedCourses) user.subscribedCourses = [];
         const alreadySubscribed = user.subscribedCourses.some(c => c.courseId === courseId);
@@ -266,12 +316,23 @@ exports.deleteUser = async (req, res, next) => {
 
 exports.updateUser = async (req, res, next) => {
     try {
-        const updateData = { ...req.body };
-        delete updateData._id;
-        delete updateData.password;
-        if (updateData.lastActive) delete updateData.lastActive;
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ success: false, message: 'معرف المستخدم غير صالح' });
+        }
+        const allowedFields = req.user.role === 'admin' ? ADMIN_UPDATE_FIELDS : SELF_UPDATE_FIELDS;
+        const updateData = pickAllowedUpdates(req.body, allowedFields);
+        if (Object.prototype.hasOwnProperty.call(updateData, 'balance')) {
+            updateData.balance = Math.max(0, Number(updateData.balance) || 0);
+        }
+        if (Object.prototype.hasOwnProperty.call(updateData, 'role') && !['student', 'admin', 'teacher', 'assistant'].includes(updateData.role)) {
+            return res.status(400).json({ success: false, message: 'صلاحية المستخدم غير صحيحة' });
+        }
+        if (!Object.keys(updateData).length) {
+            return res.status(400).json({ success: false, message: 'لا توجد بيانات مسموح بتحديثها' });
+        }
 
         const updated = await User.findByIdAndUpdate(req.params.id, updateData, { new: true }).select('-password');
+        if (!updated) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
         res.json({ success: true, user: updated });
     } catch (err) {
         next(err);

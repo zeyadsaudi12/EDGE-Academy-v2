@@ -264,7 +264,7 @@ exports.subscribeToCourse = async (req, res, next) => {
         }
 
         const course = await Course.findById(courseId);
-        if (!course) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
+        if (!course || course.hidden) return res.status(404).json({ success: false, message: 'الكورس غير موجود' });
 
         // التحقق من الكود
         const code = await Code.findOne({ code: codeStr, videoId: courseId });
@@ -277,6 +277,9 @@ exports.subscribeToCourse = async (req, res, next) => {
 
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+        if (user.role === 'student' && Array.isArray(course.grades) && course.grades.length && !course.grades.includes(user.grade)) {
+            return res.status(403).json({ success: false, message: 'هذا الكورس غير متاح لصفك الدراسي.' });
+        }
 
         // التحقق إذا الطالب مشترك بالفعل
         const alreadyEnrolled = user.subscribedCourses && user.subscribedCourses.some(e => e.courseId === courseId);

@@ -137,14 +137,11 @@ exports.logout = (req, res) => {
 
 exports.ping = async (req, res, next) => {
     try {
-        const { userId, deviceId } = req.body;
-        if (!userId) return res.status(400).json({ success: false, message: 'ID required' });
-
-        if (!mongoose.Types.ObjectId.isValid(userId) || userId === 'admin-master-id') {
-            return res.json({ success: true, note: 'Skipped invalid student ID' });
-        }
-
-        const user = await User.findById(userId);
+        const { deviceId } = req.body;
+        // The signed session is the only trusted identity.  Never accept a
+        // user id from the browser here, otherwise one account can update
+        // another account's device/online state.
+        const user = await User.findById(req.user._id);
         if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
         if (user.role === 'student' && deviceId) {

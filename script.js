@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (currentUser && currentUser._id) {
 
-        initHeartbeat(currentUser._id);
+        initHeartbeat();
 
         initRealtimeSync(currentUser);
 
@@ -873,13 +873,13 @@ function setNavActive(activeLink) {
 
 // ==========================================
 
-function initHeartbeat(userId) {
+function initHeartbeat() {
     const sendPing = () => {
         const deviceId = localStorage.getItem('masar_device_id') || '';
         fetch(`${API_URL}/api/users/ping`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId, deviceId })
+            body: JSON.stringify({ deviceId })
         })
             .then(async res => {
                 if (res.status === 403) {
