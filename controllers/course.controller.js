@@ -27,23 +27,50 @@ function extractCloudinaryPublicId(url) {
 exports.getCourses = async (req, res, next) => {
     try {
         const includeHidden = req.query.includeHidden === 'true' && req.user?.role === 'admin';
-        let courses = await Course.find(includeHidden ? {} : { hidden: { $ne: true } }).sort({ createdAt: -1 }).lean();
+        let courses = await Course.find(includeHidden ? {} : { hidden: { $ne: true } })
+            .sort({ createdAt: -1 })
+            .lean();
+
+        // The old implementation did two database requests *per course*
+        // (video count + teacher lookup), which made the catalogue take many
+        // seconds to load. Fetch the needed teachers and video counts once.
+        const courseIds = courses.map(course => String(course._id));
+        const teacherIds = [...new Set(courses
+            .map(course => String(course.teacherId || ''))
+            .filter(teacherId => mongoose.Types.ObjectId.isValid(teacherId)))];
+
+        const [teachers, videoCounts] = await Promise.all([
+            teacherIds.length
+                ? Teacher.find(includeHidden ? { _id: { $in: teacherIds } } : {
+                    _id: { $in: teacherIds }, hidden: { $ne: true }
+                }).select('name imagePath subjectAr').lean()
+                : [],
+            courseIds.length
+                ? Video.aggregate([
+                    { $match: { courseId: { $in: courseIds } } },
+                    { $group: { _id: '$courseId', count: { $sum: 1 } } }
+                ])
+                : []
+        ]);
+
+        const teachersById = new Map(teachers.map(teacher => [String(teacher._id), teacher]));
+        const videoCountsByCourseId = new Map(videoCounts.map(row => [String(row._id), row.count]));
+
+        // Public users must not receive courses that belong to a hidden or
+        // deleted teacher. Admins retain the full catalogue view.
         if (!includeHidden) {
-            const visibleTeacherIds = new Set((await Teacher.find({ hidden: { $ne: true } }).select('_id').lean()).map(t => String(t._id)));
-            courses = courses.filter(course => !course.teacherId || visibleTeacherIds.has(String(course.teacherId)));
+            courses = courses.filter(course => !course.teacherId || teachersById.has(String(course.teacherId)));
         }
-        for (let course of courses) {
-            const count = await Video.countDocuments({ courseId: course._id.toString() });
-            course.videoCount = count;
-            if (course.teacherId && mongoose.Types.ObjectId.isValid(course.teacherId)) {
-                const teacher = await Teacher.findById(course.teacherId).lean();
-                if (teacher) {
-                    course.teacherName = teacher.name;
-                    course.teacherImage = teacher.imagePath;
-                    course.teacherSubject = teacher.subjectAr;
-                }
+
+        courses.forEach(course => {
+            course.videoCount = videoCountsByCourseId.get(String(course._id)) || 0;
+            const teacher = teachersById.get(String(course.teacherId));
+            if (teacher) {
+                course.teacherName = teacher.name;
+                course.teacherImage = teacher.imagePath;
+                course.teacherSubject = teacher.subjectAr;
             }
-        }
+        });
         res.json(courses);
     } catch (err) {
         next(err);

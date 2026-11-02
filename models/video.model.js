@@ -33,4 +33,7 @@ const videoSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+// Used by course catalogue counts and course-page video loading.
+videoSchema.index({ courseId: 1 });
+
 module.exports = mongoose.model('Video', videoSchema);

@@ -10,4 +10,7 @@ const courseSchema = new mongoose.Schema({
     hidden: { type: Boolean, default: false }
 }, { timestamps: true });
 
+// Supports the public catalogue order/filter without scanning all courses.
+courseSchema.index({ hidden: 1, createdAt: -1 });
+
 module.exports = mongoose.model('Course', courseSchema);
