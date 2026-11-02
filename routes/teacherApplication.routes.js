@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/teacherApplication.controller');
 const { authenticate, allowRoles } = require('../middleware/auth');
+const upload = require('../middleware/upload');
 
-router.post('/', controller.createApplication);
+router.post('/', upload.single('photo'), controller.createApplication);
 router.get('/', authenticate, allowRoles('admin'), controller.listApplications);
 router.put('/:id/approve', authenticate, allowRoles('admin'), controller.approveApplication);
 router.put('/:id/reject', authenticate, allowRoles('admin'), controller.rejectApplication);

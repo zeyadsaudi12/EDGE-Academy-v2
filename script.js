@@ -1391,6 +1391,7 @@ async function handleTeacherApplication(event) {
     const grades = Array.from(form.querySelectorAll('input[name="teacherGrades"]:checked')).map(input => input.value);
     const phone = form.elements.phone.value.trim();
     const whatsapp = form.elements.whatsapp.value.trim();
+    const photo = form.elements.photo.files[0];
     const phonePattern = /^01[0125]\d{8}$/;
     const namePattern = /^[A-Za-z\u0621-\u063A\u0641-\u064A\u0670\u0649\s.'-]+$/u;
     const submitButton = form.querySelector('button[type="submit"]');
@@ -1408,6 +1409,14 @@ async function handleTeacherApplication(event) {
         showRegistrationMessage('أدخل رقم هاتف ورقم واتساب مصريين صحيحين.', 'error');
         return false;
     }
+    if (!photo || !['image/jpeg', 'image/png', 'image/webp'].includes(photo.type)) {
+        showRegistrationMessage('ارفع صورة شخصية واضحة بصيغة JPG أو PNG أو WEBP.', 'error');
+        return false;
+    }
+    if (photo.size > 8 * 1024 * 1024) {
+        showRegistrationMessage('حجم الصورة يجب ألا يتجاوز 8 ميجابايت.', 'error');
+        return false;
+    }
 
     try {
         if (submitButton) {
@@ -1415,10 +1424,16 @@ async function handleTeacherApplication(event) {
             submitButton.dataset.originalText = submitButton.innerHTML;
             submitButton.innerHTML = '<i class="ti ti-loader-2"></i> جارٍ إرسال الطلب...';
         }
+        const formData = new FormData();
+        formData.append('fullName', fullName);
+        formData.append('subject', subject);
+        grades.forEach(grade => formData.append('grades', grade));
+        formData.append('phone', phone);
+        formData.append('whatsapp', whatsapp);
+        formData.append('photo', photo);
         const response = await fetch(`${API_URL}/api/teacher-applications`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullName, subject, grades, phone, whatsapp })
+            body: formData
         });
         const data = await response.json().catch(() => ({}));
         if (!response.ok || !data.success) throw new Error(data.message || 'تعذر إرسال طلب الانضمام.');

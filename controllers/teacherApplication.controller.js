@@ -1,5 +1,6 @@
 const TeacherApplication = require('../models/teacherApplication.model');
 const Teacher = require('../models/teacher.model');
+const { cloudinary } = require('../middleware/upload');
 
 const ALLOWED_SUBJECTS = new Set([
     'اللغة العربية', 'اللغة الإنجليزية', 'الرياضيات', 'العلوم', 'الفيزياء',
@@ -18,6 +19,15 @@ const NAME_PATTERN = /^[A-Za-z\u0621-\u063A\u0641-\u064A\u0670\u0649\s.'-]+$/u;
 
 function normalizeName(value) {
     return String(value || '').trim().replace(/\s+/g, ' ');
+}
+
+async function removeUploadedPhoto(file) {
+    if (!file?.public_id) return;
+    try {
+        await cloudinary.uploader.destroy(file.public_id, { resource_type: 'image' });
+    } catch (_) {
+        // The validation response is more important than a best-effort cleanup.
+    }
 }
 
 function validApplication({ fullName, subject, grades, phone, whatsapp }) {
@@ -42,17 +52,29 @@ exports.createApplication = async (req, res, next) => {
     try {
         const fullName = normalizeName(req.body.fullName);
         const subject = String(req.body.subject || '').trim();
-        const grades = Array.isArray(req.body.grades) ? req.body.grades : [];
+        const rawGrades = req.body.grades || req.body['grades[]'];
+        const grades = Array.isArray(rawGrades) ? rawGrades : (rawGrades ? [rawGrades] : []);
         const phone = String(req.body.phone || '').trim();
         const whatsapp = String(req.body.whatsapp || '').trim();
         const validation = validApplication({ fullName, subject, grades, phone, whatsapp });
-        if (validation.error) return res.status(400).json({ success: false, message: validation.error });
+        if (validation.error) {
+            await removeUploadedPhoto(req.file);
+            return res.status(400).json({ success: false, message: validation.error });
+        }
+        if (!req.file || !String(req.file.mimetype || '').startsWith('image/')) {
+            return res.status(400).json({ success: false, message: 'ارفع صورة شخصية واضحة بصيغة JPG أو PNG أو WEBP.' });
+        }
+        if (req.file.size > 8 * 1024 * 1024) {
+            await removeUploadedPhoto(req.file);
+            return res.status(400).json({ success: false, message: 'حجم الصورة يجب ألا يتجاوز 8 ميجابايت.' });
+        }
 
         const existing = await TeacherApplication.findOne({
             status: 'pending',
             $or: [{ phone }, { whatsapp }]
         });
         if (existing) {
+            await removeUploadedPhoto(req.file);
             return res.status(409).json({ success: false, message: 'يوجد طلب انضمام قيد المراجعة بهذا الرقم بالفعل.' });
         }
 
@@ -61,7 +83,9 @@ exports.createApplication = async (req, res, next) => {
             subject,
             grades: validation.selectedGrades,
             phone,
-            whatsapp
+            whatsapp,
+            photoPath: req.file.path,
+            photoPublicId: req.file.public_id || ''
         });
         return res.status(201).json({ success: true, message: 'تم إرسال طلب الانضمام بنجاح. سنراجع بياناتك ونتواصل معك قريبًا.' });
     } catch (error) {

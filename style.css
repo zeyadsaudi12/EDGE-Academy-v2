@@ -4748,6 +4748,24 @@ body:not(.auth-body) {
 .teacher-application-intro strong, .teacher-application-intro span { display: block; }
 .teacher-application-intro span { margin-top: 3px; color: var(--txt2, #61718f); font-size: .78rem; line-height: 1.55; }
 .teacher-application-form small { display: block; margin-top: 5px; color: var(--txt2, #61718f); font-size: .72rem; }
+.teacher-photo-upload input[type="file"] {
+    padding: 11px 12px;
+    cursor: pointer;
+    border-style: dashed;
+    background: linear-gradient(135deg, rgba(21, 105, 218, .05), rgba(18, 175, 165, .08));
+}
+.teacher-photo-upload input[type="file"]::file-selector-button {
+    margin-inline-end: 10px;
+    padding: 7px 11px;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    background: #176cda;
+    font: inherit;
+    font-size: .78rem;
+    font-weight: 700;
+    cursor: pointer;
+}
 .teacher-grade-fieldset {
     margin: 0;
     padding: 13px;
