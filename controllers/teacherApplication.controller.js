@@ -1,6 +1,8 @@
 const TeacherApplication = require('../models/teacherApplication.model');
 const Teacher = require('../models/teacher.model');
+const User = require('../models/user.model');
 const { cloudinary } = require('../middleware/upload');
+const crypto = require('crypto');
 
 const ALLOWED_SUBJECTS = new Set([
     'اللغة العربية', 'اللغة الإنجليزية', 'الرياضيات', 'العلوم', 'الفيزياء',
@@ -28,6 +30,14 @@ async function removeUploadedPhoto(file) {
     } catch (_) {
         // The validation response is more important than a best-effort cleanup.
     }
+}
+
+async function generateAssistantPhone() {
+    let phone;
+    do {
+        phone = `05${crypto.randomInt(100000000, 1000000000)}`;
+    } while (await User.exists({ phone }));
+    return phone;
 }
 
 function validApplication({ fullName, subject, grades, phone, whatsapp }) {
@@ -106,10 +116,14 @@ exports.listApplications = async (req, res, next) => {
 };
 
 exports.approveApplication = async (req, res, next) => {
+    let application;
+    let teacher;
+    let teacherAccount;
+    let assistantAccount;
     try {
         // Claim a pending request atomically, so two admin clicks cannot
         // create two teacher profiles for the same application.
-        const application = await TeacherApplication.findOneAndUpdate(
+        application = await TeacherApplication.findOneAndUpdate(
             { _id: req.params.id, status: 'pending' },
             { $set: { status: 'approved', reviewedAt: new Date(), reviewedBy: req.user._id } },
             { new: true }
@@ -119,28 +133,82 @@ exports.approveApplication = async (req, res, next) => {
             return res.status(exists ? 409 : 404).json({ success: false, message: exists ? 'تمت مراجعة هذا الطلب بالفعل.' : 'طلب الانضمام غير موجود.' });
         }
 
-        let teacher;
-        try {
-            teacher = await Teacher.create({
-                name: application.fullName,
-                subjectAr: application.subject,
-                grades: application.grades,
-                bio: 'مدرس جديد على منصة EDGE Academy',
-                contactPhone: application.phone,
-                whatsapp: application.whatsapp
-            });
-            application.teacherId = teacher._id;
-            await application.save();
-        } catch (error) {
-            // Do not leave a request marked approved when profile creation failed.
-            await TeacherApplication.updateOne({ _id: application._id, teacherId: null }, {
+        const usedPhone = await User.exists({ phone: application.phone });
+        if (usedPhone) {
+            await TeacherApplication.updateOne({ _id: application._id }, {
                 $set: { status: 'pending', reviewedAt: null, reviewedBy: null }
             });
-            throw error;
+            return res.status(409).json({
+                success: false,
+                message: 'رقم تواصل المدرس مستخدم في حساب آخر. غيّر الرقم في الطلب ثم أعد القبول.'
+            });
         }
 
-        res.json({ success: true, message: 'تم قبول الطلب وإضافة المدرس إلى المنصة.', teacher });
+        teacher = await Teacher.create({
+            name: application.fullName,
+            subjectAr: application.subject,
+            grades: application.grades,
+            bio: 'مدرس جديد على منصة EDGE Academy',
+            contactPhone: application.phone,
+            whatsapp: application.whatsapp
+        });
+
+        const teacherPassword = crypto.randomBytes(6).toString('base64url');
+        const assistantPhone = await generateAssistantPhone();
+        const assistantPassword = crypto.randomBytes(6).toString('base64url');
+        const accountData = {
+            teacherId: teacher._id,
+            grade: 'All',
+            governorate: 'الكل',
+            birthDate: new Date()
+        };
+
+        teacherAccount = await User.create({
+            ...accountData,
+            phone: application.phone,
+            parentPhone: application.phone,
+            password: teacherPassword,
+            role: 'teacher',
+            isTeacherAccount: true,
+            firstName: application.fullName,
+            lastName: 'المدرس',
+            username: `teacher_${application.phone}`,
+            nationalId: `teacher_${application.phone}`
+        });
+        assistantAccount = await User.create({
+            ...accountData,
+            phone: assistantPhone,
+            parentPhone: assistantPhone,
+            password: assistantPassword,
+            role: 'assistant',
+            firstName: `مساعد ${application.fullName}`,
+            lastName: 'التعليمي',
+            username: `helper_${assistantPhone}`,
+            nationalId: `helper_${assistantPhone}`
+        });
+
+        teacher.teacherAccountPhone = application.phone;
+        await teacher.save();
+        application.teacherId = teacher._id;
+        await application.save();
+
+        res.json({
+            success: true,
+            message: 'تم قبول الطلب وإنشاء حساب المدرس وحساب المساعد.',
+            teacher,
+            teacherAccount: { phone: application.phone, password: teacherPassword },
+            assistantAccount: { phone: assistantPhone, password: assistantPassword }
+        });
     } catch (error) {
+        // Make acceptance all-or-nothing if account creation fails midway.
+        await Promise.allSettled([
+            teacherAccount ? User.deleteOne({ _id: teacherAccount._id }) : Promise.resolve(),
+            assistantAccount ? User.deleteOne({ _id: assistantAccount._id }) : Promise.resolve(),
+            teacher ? Teacher.deleteOne({ _id: teacher._id }) : Promise.resolve(),
+            application ? TeacherApplication.updateOne({ _id: application._id, teacherId: null }, {
+                $set: { status: 'pending', reviewedAt: null, reviewedBy: null }
+            }) : Promise.resolve()
+        ]);
         next(error);
     }
 };

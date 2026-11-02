@@ -4481,7 +4481,7 @@
             window.reviewTeacherApplication = function (id, action) {
                 const approving = action === 'approve';
                 const title = approving ? 'قبول طلب المدرس' : 'رفض طلب المدرس';
-                const message = approving ? 'سيُنشأ ملف المدرس على المنصة. يمكنك بعد ذلك إضافة الصورة وحساب المدرس من قائمة تعديل المعلمين.' : 'سيتم نقل الطلب إلى قائمة الطلبات المرفوضة.';
+                const message = approving ? 'سيُنشأ ملف المدرس تلقائيًا مع حساب للوحة التحكم وحساب مساعد للحضور. ستظهر بيانات الدخول مرة واحدة بعد القبول.' : 'سيتم نقل الطلب إلى قائمة الطلبات المرفوضة.';
                 showModal(title, message, async () => {
                     try {
                         const response = await fetch(`${API}/api/teacher-applications/${id}/${action}`, { method: 'PUT' });
@@ -4489,11 +4489,36 @@
                         if (!response.ok || !data.success) throw new Error(data.message || 'تعذر تحديث الطلب.');
                         toast(data.message, 'success');
                         await loadAll();
+                        if (approving && data.teacherAccount && data.assistantAccount) {
+                            showTeacherAccountsCreated(data.teacher?.name || 'المدرس', data.teacherAccount, data.assistantAccount);
+                        }
                     } catch (error) { toast(error.message || 'تعذر الاتصال بالخادم.', 'error'); }
                 });
             };
 
-            // تعبئة فلتر المعلمين داخل صفحة التحكم بالفيديوهات
+            function showTeacherAccountsCreated(teacherName, teacherAccount, assistantAccount) {
+                document.querySelector('.security-overlay')?.remove();
+                const overlay = document.createElement('div');
+                overlay.className = 'security-overlay';
+                overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:99999;backdrop-filter:blur(8px);font-family:Cairo,sans-serif;direction:rtl;padding:18px;';
+                const accounts = [
+                    ['حساب المدرس — لوحة التحكم', teacherAccount],
+                    ['حساب المساعد — الحضور', assistantAccount]
+                ];
+                const accountMarkup = accounts.map(([title, account]) => `
+                    <div style="background:var(--bg3);padding:14px;border-radius:10px;border:1px solid var(--border2);text-align:right;margin-top:10px">
+                        <strong style="display:block;color:var(--accent);margin-bottom:8px">${title}</strong>
+                        <div style="font-family:monospace;font-size:.95rem;line-height:1.9">الهاتف: ${account.phone}<br>كلمة المرور: ${account.password}</div>
+                    </div>`).join('');
+                overlay.innerHTML = `<div style="width:min(440px,100%);padding:28px;border:2px solid var(--accent);border-radius:16px;background:var(--bg2);box-shadow:0 10px 30px rgba(0,0,0,.5);text-align:center"><span style="font-size:2.8rem">🎉</span><h3 style="margin:8px 0;color:var(--accent)">تم قبول ${teacherName}</h3><p style="color:var(--txt2);font-size:.84rem;line-height:1.6">انسخ بيانات الحسابين الآن؛ كلمات المرور لا تُعرض مرة أخرى.</p>${accountMarkup}<button id="copy-teacher-accounts" class="btn-primary" style="width:100%;margin-top:16px;padding:11px;border:0;border-radius:8px;cursor:pointer;font-family:inherit">نسخ الحسابين وإغلاق</button><button id="close-teacher-accounts" class="btn-ghost" style="width:100%;margin-top:8px;padding:11px;border-radius:8px;cursor:pointer;font-family:inherit">إغلاق</button></div>`;
+                document.body.appendChild(overlay);
+                const copyText = `حسابات ${teacherName}\n\nحساب المدرس (لوحة التحكم)\nالهاتف: ${teacherAccount.phone}\nكلمة المرور: ${teacherAccount.password}\n\nحساب المساعد (الحضور)\nالهاتف: ${assistantAccount.phone}\nكلمة المرور: ${assistantAccount.password}`;
+                document.getElementById('copy-teacher-accounts').onclick = async () => {
+                    try { await navigator.clipboard.writeText(copyText); toast('تم نسخ بيانات الحسابين بنجاح', 'success'); overlay.remove(); }
+                    catch (_) { toast('تعذر النسخ تلقائيًا؛ انسخ البيانات يدويًا.', 'error'); }
+                };
+                document.getElementById('close-teacher-accounts').onclick = () => overlay.remove();
+            }
 
             // تعبئة فلتر المعلمين داخل صفحة التحكم بالفيديوهات
             function populateManageFilters() {
