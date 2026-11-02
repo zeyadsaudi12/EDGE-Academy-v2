@@ -2156,6 +2156,11 @@
                             <i class="ti ti-users"></i>
                             تعديل معلمين
                         </button>
+                        <button class="nav-sub-item" id="nav-sub-teacher-applications" onclick="showTeacherSubSection('teacher-applications', this)">
+                            <i class="ti ti-hourglass"></i>
+                            طلبات الانضمام
+                            <span class="nav-badge" id="nav-teacher-applications-count">0</span>
+                        </button>
                     </div>
                 </div>
 
@@ -2879,6 +2884,24 @@
                             </div>
                         </div>
                         <div id="teachers-list-admin"></div>
+                    </div>
+                </div>
+
+                <div id="section-teacher-applications" class="section">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <div>
+                                <h3>طلبات انضمام المدرسين</h3>
+                                <p>راجع بيانات المتقدم ثم اقبل الطلب لإضافة ملف المدرس للمنصة.</p>
+                            </div>
+                            <select id="teacher-application-status" class="filter-select" onchange="renderTeacherApplications()">
+                                <option value="pending">قيد الانتظار</option>
+                                <option value="all">كل الطلبات</option>
+                                <option value="approved">المقبولة</option>
+                                <option value="rejected">المرفوضة</option>
+                            </select>
+                        </div>
+                        <div id="teacher-applications-list"></div>
                     </div>
                 </div>
 
@@ -4040,7 +4063,7 @@
             }
             localStorage.removeItem('apiUrl');
             const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
-        let _users = [], _codes = [], _videos = [], _teachers = [], _courses = [], _violations = [];
+        let _users = [], _codes = [], _videos = [], _teachers = [], _courses = [], _violations = [], _teacherApplications = [];
         let _followerCounts = {}; // { teacherId: followerCount }
             let _activeCodeTab = 'active';
             let _userFilter = '', _gradeFilter = '';
@@ -4360,12 +4383,13 @@
             // ===== LOAD DATA =====
         async function loadAll() {
         try {
-            const [uR, cR, vR, tR, fcR, crsR, violR] = await Promise.all([
+            const [uR, cR, vR, tR, fcR, crsR, violR, appR] = await Promise.all([
                 fetch(`${API}/api/users`), fetch(`${API}/api/codes`),
                 fetch(`${API}/api/videos?includeHidden=true`), fetch(`${API}/api/teachers?includeHidden=true`),
                 fetch(`${API}/api/teachers/follower-counts`),
                 fetch(`${API}/api/courses?includeHidden=true`).catch(() => null),
-                fetch(`${API}/api/security/reports`).catch(() => null)
+                fetch(`${API}/api/security/reports`).catch(() => null),
+                fetch(`${API}/api/teacher-applications`).catch(() => null)
             ]);
             _users = await uR.json();
             _codes = await cR.json();
@@ -4379,6 +4403,10 @@
                 const violData = await violR.json();
                 _violations = violData.reports || [];
             }
+            if (appR && appR.ok) {
+                const appData = await appR.json();
+                _teacherApplications = appData.applications || [];
+            }
         } catch (e) {
             _users = JSON.parse(localStorage.getItem('users')) || [];
             _codes = JSON.parse(localStorage.getItem('codes')) || [];
@@ -4387,6 +4415,7 @@
             _courses = [];
             _followerCounts = {};
             _violations = [];
+            _teacherApplications = [];
             toast('تعذّر الاتصال بالخادم، البيانات محلية', 'error');
         }
         updateAll();
@@ -4405,6 +4434,7 @@
         populateCodesFilters();
         renderCodesPanels();
         renderTeachersAdmin();
+        renderTeacherApplications();
         populateVideoSelectAdmin();
         populateTeacherSelectAdmin();
         populateCourseSelectAdmin();
@@ -4420,7 +4450,49 @@
         // Update courses nav badge
         const cBadge = document.getElementById('nav-courses-count');
         if (cBadge) cBadge.textContent = (_courses || []).length;
+        const applicationsBadge = document.getElementById('nav-teacher-applications-count');
+        if (applicationsBadge) applicationsBadge.textContent = _teacherApplications.filter(application => application.status === 'pending').length;
     }
+
+            function escapeAdminHtml(value) {
+                return String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+            }
+
+            function renderTeacherApplications() {
+                const container = document.getElementById('teacher-applications-list');
+                if (!container) return;
+                const status = document.getElementById('teacher-application-status')?.value || 'pending';
+                const items = _teacherApplications.filter(application => status === 'all' || application.status === status);
+                if (!items.length) {
+                    container.innerHTML = '<div class="empty-state" style="padding:42px 20px"><i class="ti ti-inbox"></i><h3>لا توجد طلبات هنا</h3><p>ستظهر طلبات انضمام المدرسين الجديدة في هذه القائمة.</p></div>';
+                    return;
+                }
+                const labels = { pending: ['قيد المراجعة', '#e09b20'], approved: ['تم القبول', '#10b981'], rejected: ['تم الرفض', '#ef4444'] };
+                container.innerHTML = items.map(application => {
+                    const [statusLabel, color] = labels[application.status] || labels.pending;
+                    const grades = (application.grades || []).map(grade => `<span class="teacher-grade-tag">${escapeAdminHtml(String(grade).replace('الصف ', ''))}</span>`).join('');
+                    const created = application.createdAt ? new Date(application.createdAt).toLocaleDateString('ar-EG', { dateStyle: 'medium' }) : '—';
+                    const actionButtons = application.status === 'pending' ? `<div class="action-btns"><button class="action-btn" style="color:#10b981" onclick="reviewTeacherApplication('${application._id}', 'approve')" title="قبول"><i class="ti ti-check"></i></button><button class="action-btn danger" onclick="reviewTeacherApplication('${application._id}', 'reject')" title="رفض"><i class="ti ti-x"></i></button></div>` : '';
+                    return `<div class="teacher-row" style="align-items:center"><div class="teacher-avatar-placeholder" style="background:linear-gradient(135deg,var(--accent),var(--teal));color:#fff"><i class="ti ti-user-plus"></i></div><div class="teacher-info"><div class="teacher-name-text">${escapeAdminHtml(application.fullName)}</div><div class="teacher-meta"><i class="ti ti-book"></i> ${escapeAdminHtml(application.subject)} · <i class="ti ti-calendar"></i> ${created}</div><div class="teacher-grades" style="margin-top:7px">${grades}</div><div class="teacher-meta" style="margin-top:8px"><i class="ti ti-phone"></i> ${escapeAdminHtml(application.phone)} &nbsp; <i class="ti ti-brand-whatsapp"></i> ${escapeAdminHtml(application.whatsapp)}</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:center;min-width:120px"><span class="badge" style="background:${color}1a;color:${color}">${statusLabel}</span>${actionButtons}</div></div>`;
+                }).join('');
+            }
+
+            window.reviewTeacherApplication = function (id, action) {
+                const approving = action === 'approve';
+                const title = approving ? 'قبول طلب المدرس' : 'رفض طلب المدرس';
+                const message = approving ? 'سيُنشأ ملف المدرس على المنصة. يمكنك بعد ذلك إضافة الصورة وحساب المدرس من قائمة تعديل المعلمين.' : 'سيتم نقل الطلب إلى قائمة الطلبات المرفوضة.';
+                showModal(title, message, async () => {
+                    try {
+                        const response = await fetch(`${API}/api/teacher-applications/${id}/${action}`, { method: 'PUT' });
+                        const data = await response.json().catch(() => ({}));
+                        if (!response.ok || !data.success) throw new Error(data.message || 'تعذر تحديث الطلب.');
+                        toast(data.message, 'success');
+                        await loadAll();
+                    } catch (error) { toast(error.message || 'تعذر الاتصال بالخادم.', 'error'); }
+                });
+            };
+
+            // تعبئة فلتر المعلمين داخل صفحة التحكم بالفيديوهات
 
             // تعبئة فلتر المعلمين داخل صفحة التحكم بالفيديوهات
             function populateManageFilters() {

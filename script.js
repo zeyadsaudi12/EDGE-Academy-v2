@@ -1350,6 +1350,93 @@ function initArabicNameInputs() {
     });
 }
 
+// ==========================================
+// Teacher application (separate from student accounts)
+// ==========================================
+function setRegistrationType(type, button) {
+    const isTeacher = type === 'teacher';
+    const studentForm = document.getElementById('registrationForm');
+    const teacherForm = document.getElementById('teacherApplicationForm');
+    const progress = document.querySelector('.register-progress');
+    const steps = document.querySelector('.steps-indicator');
+    const subtitle = document.querySelector('.form-subtitle');
+
+    if (!studentForm || !teacherForm) return;
+    studentForm.hidden = isTeacher;
+    teacherForm.hidden = !isTeacher;
+    if (progress) progress.hidden = isTeacher;
+    if (steps) steps.hidden = isTeacher;
+    if (subtitle) subtitle.textContent = isTeacher ? 'طلب الانضمام كمدرس' : 'إنشاء حساب جديد';
+
+    document.querySelectorAll('.registration-type').forEach(item => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-selected', String(active));
+    });
+}
+
+function showRegistrationMessage(message, icon = 'success') {
+    if (window.Swal) {
+        return window.Swal.fire({ icon, title: icon === 'success' ? 'تم بنجاح' : 'تعذر الإرسال', text: message, confirmButtonText: 'حسنًا' });
+    }
+    alert(message);
+    return Promise.resolve();
+}
+
+async function handleTeacherApplication(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const fullName = form.elements.fullName.value.trim().replace(/\s+/g, ' ');
+    const subject = form.elements.subject.value;
+    const grades = Array.from(form.querySelectorAll('input[name="teacherGrades"]:checked')).map(input => input.value);
+    const phone = form.elements.phone.value.trim();
+    const whatsapp = form.elements.whatsapp.value.trim();
+    const phonePattern = /^01[0125]\d{8}$/;
+    const namePattern = /^[A-Za-z\u0621-\u063A\u0641-\u064A\u0670\u0649\s.'-]+$/u;
+    const submitButton = form.querySelector('button[type="submit"]');
+
+    if (fullName.split(' ').filter(Boolean).length < 4 || !namePattern.test(fullName)) {
+        showRegistrationMessage('اكتب الاسم الرباعي بحروف عربية أو إنجليزية فقط.', 'error');
+        form.elements.fullName.focus();
+        return false;
+    }
+    if (!subject || !grades.length) {
+        showRegistrationMessage('اختر المادة الدراسية ومرحلة واحدة على الأقل.', 'error');
+        return false;
+    }
+    if (!phonePattern.test(phone) || !phonePattern.test(whatsapp)) {
+        showRegistrationMessage('أدخل رقم هاتف ورقم واتساب مصريين صحيحين.', 'error');
+        return false;
+    }
+
+    try {
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.dataset.originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="ti ti-loader-2"></i> جارٍ إرسال الطلب...';
+        }
+        const response = await fetch(`${API_URL}/api/teacher-applications`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fullName, subject, grades, phone, whatsapp })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) throw new Error(data.message || 'تعذر إرسال طلب الانضمام.');
+
+        form.reset();
+        await showRegistrationMessage(data.message, 'success');
+        setRegistrationType('student', document.querySelector('.registration-type'));
+    } catch (error) {
+        showRegistrationMessage(error.message || 'تعذر الاتصال بالخادم. حاول مرة أخرى.', 'error');
+    } finally {
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = submitButton.dataset.originalText || '<i class="ti ti-send"></i> إرسال طلب الانضمام';
+        }
+    }
+    return false;
+}
+
 function handleRegister(event) {
 
     event.preventDefault();

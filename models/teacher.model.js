@@ -10,6 +10,9 @@ const teacherSchema = new mongoose.Schema({
     // The password is deliberately never stored here; it is stored in the
     // linked User account.  This field is only a safe indicator for admin UI.
     teacherAccountPhone: { type: String, default: '' },
+    // Contact details supplied when a teacher applies to join the platform.
+    contactPhone: { type: String, default: '' },
+    whatsapp: { type: String, default: '' },
     // الإخفاء يعطّل ظهور المدرس وكل محتواه للطلاب دون حذف البيانات.
     hidden: { type: Boolean, default: false },
     grades: [{ type: String }],

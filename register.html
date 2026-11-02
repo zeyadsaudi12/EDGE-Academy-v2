@@ -157,6 +157,14 @@
                     <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="auth-brand-logo auth-brand-logo-dark">
                 </div>
                 <p class="form-subtitle">إنشاء حساب جديد</p>
+                <div class="registration-type-switch" role="tablist" aria-label="نوع التسجيل">
+                    <button type="button" class="registration-type active" role="tab" aria-selected="true" onclick="setRegistrationType('student', this)">
+                        <i class="ti ti-school"></i> تسجيل كطالب
+                    </button>
+                    <button type="button" class="registration-type" role="tab" aria-selected="false" onclick="setRegistrationType('teacher', this)">
+                        <i class="ti ti-chalkboard-teacher"></i> التقديم كمدرس
+                    </button>
+                </div>
                 
                 <!-- مؤشر الخطوات -->
                 <div class="steps-indicator" aria-hidden="true">
@@ -175,6 +183,48 @@
                         <span class="step-label">كلمة المرور</span>
                     </div>
                 </div>
+
+                <form id="teacherApplicationForm" class="teacher-application-form" hidden onsubmit="return handleTeacherApplication(event)">
+                    <div class="teacher-application-intro">
+                        <i class="ti ti-user-check"></i>
+                        <div><strong>انضم لفريق EDGE Academy</strong><span>أرسل بياناتك، وسيتم التواصل معك بعد مراجعة طلبك.</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label>الاسم الرباعي *</label>
+                        <input type="text" name="fullName" placeholder="مثال: محمد أحمد علي إبراهيم" autocomplete="name" required>
+                        <small>يمكن كتابة الاسم بالعربية أو الإنجليزية.</small>
+                    </div>
+                    <div class="form-group">
+                        <label>المادة الدراسية *</label>
+                        <select name="subject" required>
+                            <option value="">اختر المادة</option>
+                            <option value="اللغة العربية">اللغة العربية</option><option value="اللغة الإنجليزية">اللغة الإنجليزية</option>
+                            <option value="الرياضيات">الرياضيات</option><option value="العلوم">العلوم</option>
+                            <option value="الفيزياء">الفيزياء</option><option value="الكيمياء">الكيمياء</option>
+                            <option value="الأحياء">الأحياء</option><option value="الجيولوجيا">الجيولوجيا</option>
+                            <option value="التاريخ">التاريخ</option><option value="الجغرافيا">الجغرافيا</option>
+                            <option value="الفلسفة والمنطق">الفلسفة والمنطق</option><option value="علم النفس والاجتماع">علم النفس والاجتماع</option>
+                            <option value="اللغة الفرنسية">اللغة الفرنسية</option><option value="اللغة الألمانية">اللغة الألمانية</option>
+                            <option value="اللغة الإيطالية">اللغة الإيطالية</option><option value="البرمجة">البرمجة</option>
+                        </select>
+                    </div>
+                    <fieldset class="teacher-grade-fieldset">
+                        <legend>المراحل التي تدرّس لها *</legend>
+                        <div class="teacher-grade-options">
+                            <label><input type="checkbox" name="teacherGrades" value="الصف الأول الإعدادي"> أولى إعدادي</label>
+                            <label><input type="checkbox" name="teacherGrades" value="الصف الثاني الإعدادي"> ثانية إعدادي</label>
+                            <label><input type="checkbox" name="teacherGrades" value="الصف الثالث الإعدادي"> ثالثة إعدادي</label>
+                            <label><input type="checkbox" name="teacherGrades" value="الصف الأول الثانوي"> أولى ثانوي</label>
+                            <label><input type="checkbox" name="teacherGrades" value="الصف الثاني الثانوي"> ثانية ثانوي</label>
+                            <label><input type="checkbox" name="teacherGrades" value="الصف الثالث الثانوي"> ثالثة ثانوي</label>
+                        </div>
+                    </fieldset>
+                    <div class="form-row">
+                        <div class="form-group"><label>رقم التواصل *</label><input type="tel" name="phone" inputmode="numeric" maxlength="11" placeholder="01xxxxxxxxx" required></div>
+                        <div class="form-group"><label>رقم واتساب *</label><input type="tel" name="whatsapp" inputmode="numeric" maxlength="11" placeholder="01xxxxxxxxx" required></div>
+                    </div>
+                    <button type="submit" class="btn-red teacher-application-submit"><i class="ti ti-send"></i> إرسال طلب الانضمام</button>
+                </form>
 
                 <form id="registrationForm" onsubmit="return handleRegister(event)">
                     <!-- الخطوة الأولى: البيانات الشخصية -->
