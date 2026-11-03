@@ -40,7 +40,12 @@
             font-family: 'Tajawal', 'Cairo', sans-serif;
             min-height: 100vh;
             margin: 0;
-            padding: 0;
+            padding-top: 104px !important;
+        }
+
+        /* Hide any stray background shapes on profile page */
+        .vortex-bg, .shape {
+            display: none !important;
         }
 
         /* ── Master Grid Layout ── */
@@ -50,7 +55,7 @@
             gap: 28px;
             max-width: 1320px;
             width: calc(100% - 48px);
-            margin: 20px auto 60px;
+            margin: 24px auto 60px;
             padding: 0;
             align-items: start;
             box-sizing: border-box;
@@ -64,7 +69,7 @@
             padding: 20px 14px !important;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
             position: sticky;
-            top: 110px;
+            top: 120px;
             box-sizing: border-box;
             z-index: 80;
         }
@@ -881,10 +886,7 @@
 </header>
 
 
-<!-- الخلفية المتحركة -->
-<div class="vortex-bg">
-    <div class="shape s1"></div><div class="shape s2"></div><div class="shape s3"></div>
-</div>
+
 
 <div class="royal-wrapper">
     <!-- القائمة الجانبية الموحدة -->
