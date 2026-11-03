@@ -213,6 +213,34 @@ exports.startQuiz = async (req, res) => {
             });
         }
 
+        // Strict verification: Student must choose a lecture they actually watched
+        if (!videoId) {
+            return res.status(400).json({
+                success: false,
+                message: 'يجب تحديد محاضرة قمت بمشاهدتها أولاً لبدء التحدي!'
+            });
+        }
+
+        const user = await User.findById(userId).lean();
+        const watchedSet = new Set();
+        if (user && Array.isArray(user.watchedVideos)) {
+            user.watchedVideos.forEach(wv => {
+                if (wv.videoId) watchedSet.add(String(wv.videoId));
+            });
+        }
+        if (user && Array.isArray(user.subscribedVideos)) {
+            user.subscribedVideos.forEach(sv => {
+                if (sv) watchedSet.add(String(sv));
+            });
+        }
+
+        if (!watchedSet.has(String(videoId))) {
+            return res.status(403).json({
+                success: false,
+                message: 'لا يمكنك خوض التحدي على محاضرة لم تشاهدها بعد على المنصة!'
+            });
+        }
+
         let selectedLecture = null;
         let pool = [];
 

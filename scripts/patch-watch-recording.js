@@ -23,3 +23,4 @@ if (!watchHtml.includes('/api/play-study/mark-watched')) {
 } else {
     console.log('ℹ️ mark-watched already present in watch.html');
 }
+

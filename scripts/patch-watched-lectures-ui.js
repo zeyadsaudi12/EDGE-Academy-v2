@@ -180,3 +180,4 @@ html = html.replace(
 
 fs.writeFileSync('play-study.html', html, 'utf8');
 console.log('🎉 Successfully tied Play & Study directly to watched lectures!');
+
