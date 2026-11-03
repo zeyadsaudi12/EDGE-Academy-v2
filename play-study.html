@@ -524,7 +524,7 @@
                     <div class="rule-pill"><i class="fas fa-battery-half"></i> 4 محاولات يومياً</div>
                 </div>
 
-                <h4 style="margin:0 0 12px; font-weight:800; font-size:0.95rem; color:var(--ps-text);">اختر مادة التحدي:</h4>
+                <h4 style="margin:0 0 12px; font-weight:800; font-size:0.95rem; color:var(--ps-text);">1. اختر مادة التحدي:</h4>
                 <div class="subject-pick-grid">
                     <button class="subject-btn active" data-sub="الكل" onclick="pickSubject('الكل', this)">🎲 مكس شامل</button>
                     <button class="subject-btn" data-sub="اللغة العربية" onclick="pickSubject('اللغة العربية', this)">📖 عربي</button>
@@ -533,6 +533,21 @@
                     <button class="subject-btn" data-sub="الفيزياء" onclick="pickSubject('الفيزياء', this)">⚡ فيزياء</button>
                     <button class="subject-btn" data-sub="العلوم والكيمياء" onclick="pickSubject('العلوم والكيمياء', this)">🧪 كيمياء</button>
                     <button class="subject-btn" data-sub="الأحياء" onclick="pickSubject('الأحياء', this)">🧬 أحياء</button>
+                </div>
+
+                <!-- Topic / Unit Selector: Ensures student only gets tested on what they studied! -->
+                <div id="topicSelectionArea" style="margin-bottom:24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <h4 style="margin:0; font-weight:800; font-size:0.95rem; color:var(--ps-text);">2. حدد الباب أو الجزء الذي درسته:</h4>
+                        <span style="font-size:0.78rem; color:#10b981; font-weight:800; background:rgba(16,185,129,0.1); padding:2px 10px; border-radius:50px;">
+                            🎯 الأسئلة على ما درسته فقط
+                        </span>
+                    </div>
+                    <div id="topicsChipsList" style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button class="subject-btn active" style="padding:8px 16px; font-size:0.85rem;" data-topic="الكل" onclick="pickTopic('الكل', this)">
+                            🌟 شامل كل ما درسته
+                        </button>
+                    </div>
                 </div>
 
                 <button class="btn-launch-quiz" id="btnLaunchQuiz" onclick="startPlayStudyQuiz()">
@@ -641,6 +656,8 @@
 (() => {
     let currentUser = null;
     let selectedSubject = 'الكل';
+    let selectedTopic = 'الكل';
+    let availableTopicsMap = {};
     let currentQuiz = null;
     let currentQIndex = 0;
     let userAnswers = [];
@@ -702,6 +719,8 @@
                 }
 
                 // Render Leaderboard
+                availableTopicsMap = d.availableTopics || {};
+                updateTopicsUI();
                 const lb = d.leaderboard || [];
                 const lbContainer = document.getElementById('leaderboardList');
                 if (lb.length === 0) {
@@ -726,10 +745,34 @@
         }
     }
 
+    
+    function updateTopicsUI() {
+        const container = document.getElementById('topicsChipsList');
+        if (!container) return;
+        
+        let chipsHtml = `<button class="subject-btn ${selectedTopic === 'الكل' ? 'active' : ''}" style="padding:8px 16px; font-size:0.85rem;" data-topic="الكل" onclick="pickTopic('الكل', this)">🌟 شامل كل ما درسته</button>`;
+        
+        if (selectedSubject !== 'الكل' && availableTopicsMap[selectedSubject]) {
+            availableTopicsMap[selectedSubject].forEach(t => {
+                chipsHtml += `<button class="subject-btn ${selectedTopic === t ? 'active' : ''}" style="padding:8px 16px; font-size:0.85rem;" data-topic="${t}" onclick="pickTopic('${t}', this)">📌 ${t}</button>`;
+            });
+        }
+        
+        container.innerHTML = chipsHtml;
+    }
+
+    window.pickTopic = (topic, btn) => {
+        selectedTopic = topic;
+        document.querySelectorAll('#topicsChipsList .subject-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+    };
+
     window.pickSubject = (sub, btn) => {
         selectedSubject = sub;
-        document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+        selectedTopic = 'الكل';
+        document.querySelectorAll('.subject-pick-grid .subject-btn').forEach(b => b.classList.remove('active'));
         if (btn) btn.classList.add('active');
+        updateTopicsUI();
     };
 
     window.startPlayStudyQuiz = async () => {
@@ -740,7 +783,7 @@
             const res = await fetch('/api/play-study/start', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, subject: selectedSubject })
+                body: JSON.stringify({ userId, subject: selectedSubject, topic: selectedTopic })
             });
             const data = await res.json();
             if (!data.success) {
@@ -921,3 +964,4 @@
 
 </body>
 </html>
+
