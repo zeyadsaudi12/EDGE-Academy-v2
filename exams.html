@@ -11,46 +11,77 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap');
 
+        /* ═══════════════════════════════════════════════
+           🎨 ثيم صفحة الامتحانات المتوافق مع المنصة
+        ═══════════════════════════════════════════════ */
         :root {
-            --bg: #0b0c10;
-            --bg2: #12141c;
-            --bg3: #1a1c26;
-            --surface: #222533;
-            --accent: #dda852;
-            --accent-glow: rgba(221, 168, 82, 0.15);
-            --gold: #f4a261;
-            --teal: #2ec4b6;
-            --blue: #4361ee;
-            --green: #06d6a0;
-            --red: #ff6b6b;
-            --txt: #f1f3f9;
-            --txt2: #a2a8c3;
-            --txt3: #626987;
-            --border: rgba(255, 255, 255, 0.05);
-            --border2: rgba(255, 255, 255, 0.1);
-            --radius: 16px;
-            --radius-lg: 24px;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        /* ===== LIGHT MODE ===== */
-        body.light-mode {
+            /* ☀️ الوضع النهاري الافتراضي (Light Mode) */
             --bg: #f0f4ff;
             --bg2: #ffffff;
-            --bg3: #e8effe;
-            --surface: #e8effe;
+            --bg3: #f1f5fd;
+            --surface: #ffffff;
+            --surface-alt: #e8effe;
             --accent: #1a6bdb;
             --accent-glow: rgba(26, 107, 219, 0.12);
-            --gold: #f39c12;
+            --gold: #f59e0b;
             --teal: #00b894;
             --blue: #1a6bdb;
             --green: #00b894;
+            --red: #ef4444;
             --txt: #1a2744;
             --txt2: #5a6a8a;
             --txt3: #8392b0;
             --border: rgba(26, 107, 219, 0.12);
-            --border2: rgba(26, 107, 219, 0.20);
-            --shadow: 0 8px 32px rgba(26, 107, 219, 0.10);
+            --border2: rgba(26, 107, 219, 0.22);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --shadow: 0 10px 30px rgba(26, 107, 219, 0.08);
+        }
+
+        /* 🌙 الوضع الليلي الموحد (Dark Mode) */
+        body.dark-mode,
+        .dark-mode,
+        html.dark-mode {
+            --bg: #0d1526;
+            --bg2: #152038;
+            --bg3: #1c2e50;
+            --surface: #152038;
+            --surface-alt: #1c2e50;
+            --accent: #3d8ef0;
+            --accent-glow: rgba(61, 142, 240, 0.20);
+            --gold: #fbbf24;
+            --teal: #2dd4bf;
+            --blue: #3d8ef0;
+            --green: #10b981;
+            --red: #f87171;
+            --txt: #f1f5f9;
+            --txt2: #94a3b8;
+            --txt3: #64748b;
+            --border: rgba(255, 255, 255, 0.08);
+            --border2: rgba(255, 255, 255, 0.16);
+            --shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* التوافق مع أي استدعاء legacy للـ light-mode */
+        body.light-mode {
+            --bg: #f0f4ff;
+            --bg2: #ffffff;
+            --bg3: #f1f5fd;
+            --surface: #ffffff;
+            --surface-alt: #e8effe;
+            --accent: #1a6bdb;
+            --accent-glow: rgba(26, 107, 219, 0.12);
+            --gold: #f59e0b;
+            --teal: #00b894;
+            --blue: #1a6bdb;
+            --green: #00b894;
+            --red: #ef4444;
+            --txt: #1a2744;
+            --txt2: #5a6a8a;
+            --txt3: #8392b0;
+            --border: rgba(26, 107, 219, 0.12);
+            --border2: rgba(26, 107, 219, 0.22);
+            --shadow: 0 10px 30px rgba(26, 107, 219, 0.08);
         }
 
         /* ===== نافبار المنصة الموحّد — يُدار بـ style.css وscript.js ===== */
@@ -492,25 +523,36 @@
         }
 
         .btn {
-            background: linear-gradient(135deg, var(--accent), var(--gold));
-            color: #000;
+            background: linear-gradient(135deg, #1a6bdb, #0d54b8);
+            color: #ffffff !important;
             border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 700;
+            padding: 10px 22px;
+            border-radius: 12px;
+            font-weight: 800;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.30);
         }
 
         .btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 4px 15px var(--accent-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 107, 219, 0.45);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .btn,
+        .dark-mode .btn {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff !important;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45);
         }
 
         .btn.secondary {
@@ -913,6 +955,75 @@
             font-size: 0.85rem;
             margin-top: auto;
         }
+    
+        /* تحسينات كروت وتفاصيل الامتحانات للوضعين النهاري والليلي */
+        .exam-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .exam-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 32px var(--shadow), 0 0 15px var(--accent-glow);
+        }
+        .exam-card-subject {
+            font-size: 0.78rem;
+            color: #1a6bdb;
+            font-weight: 800;
+            background: rgba(26, 107, 219, 0.08);
+            border: 1px solid rgba(26, 107, 219, 0.20);
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        body.dark-mode .exam-card-subject,
+        .dark-mode .exam-card-subject {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.15);
+            border-color: rgba(96, 165, 250, 0.30);
+        }
+        .exam-card-grade-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: #059669;
+            background: rgba(16, 185, 129, 0.10);
+            border: 1px solid rgba(16, 185, 129, 0.20);
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        body.dark-mode .exam-card-grade-badge,
+        .dark-mode .exam-card-grade-badge {
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.15);
+            border-color: rgba(52, 211, 153, 0.30);
+        }
+        .welcome-hero {
+            background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%) !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: var(--shadow) !important;
+        }
+        .filter-section {
+            background: var(--bg2) !important;
+            border: 1px solid var(--border) !important;
+            box-shadow: var(--shadow) !important;
+        }
+        .search-input, .filter-select {
+            background: var(--bg3) !important;
+            border: 1px solid var(--border2) !important;
+            color: var(--txt) !important;
+        }
+        .search-input:focus, .filter-select:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px var(--accent-glow) !important;
+        }
+
     </style>
 </head>
 
@@ -1312,9 +1423,7 @@
                         <div class="exam-card-header">
                             <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
                                 <span class="exam-card-subject">${exam.subject || 'مادة دراسية'}</span>
-                                <span style="font-size:11px; font-weight:600; color:var(--accent); background:rgba(221,168,82,0.12); padding:2px 8px; border-radius:6px;">
-                                    <i class="ti ti-school"></i> ${gradesLabel}
-                                </span>
+                                <span class="exam-card-grade-badge"><i class="ti ti-school"></i> ${gradesLabel}</span>
                             </div>
                             <h3 class="exam-card-title">${exam.title || 'امتحان بدون عنوان'}</h3>
                             <p class="exam-card-desc">${exam.description || 'امتحان شامل لقياس مستوى الفهم واستيعاب الدروس'}</p>
@@ -1793,20 +1902,23 @@
 
         // ===== THEME FUNCTIONS =====
         function applyExamsTheme(theme) {
-            document.body.classList.toggle('light-mode', theme === 'light');
-            document.querySelectorAll('.platform-theme-btn').forEach(btn => {
-                const isLightButton = btn.textContent.trim() === '☀';
-                btn.classList.toggle('active', (theme === 'light') === isLightButton);
-            });
-            localStorage.setItem('examsTheme', theme);
-            localStorage.setItem('theme', theme);
+            if (typeof applyTheme === 'function') {
+                applyTheme(theme);
+            } else {
+                document.body.classList.toggle('dark-mode', theme === 'dark');
+                document.body.classList.toggle('light-mode', theme === 'light');
+                document.querySelectorAll('.theme-switcher').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.theme === theme);
+                });
+                localStorage.setItem('theme', theme);
+            }
         }
 
         window.setExamsTheme = function(theme) { applyExamsTheme(theme); };
 
         function toggleExamsTheme() {
-            const isLight = document.body.classList.contains('light-mode');
-            applyExamsTheme(isLight ? 'dark' : 'light');
+            const isDark = document.body.classList.contains('dark-mode');
+            applyExamsTheme(isDark ? 'light' : 'dark');
         }
 
         function updateExamNavbar() {

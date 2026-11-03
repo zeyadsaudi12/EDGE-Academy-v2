@@ -21,3 +21,4 @@ if (code.includes(target) && !code.includes('edge-robot-script')) {
 } else {
     console.log('⚠️ Target already contains robot injection or not found');
 }
+

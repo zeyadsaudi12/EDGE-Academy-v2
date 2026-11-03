@@ -18,3 +18,4 @@ if (html.includes(target)) {
     fs.writeFileSync('admin.html', html, 'utf8');
     console.log('✅ Added EDGE robot stat badge to admin table');
 }
+
