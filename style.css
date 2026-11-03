@@ -250,8 +250,8 @@ body:not(.auth-body) {
     color: var(--text-dark);
     text-decoration: none;
     font-weight: 700;
-    font-size: 1rem;
-    padding: 10px 20px;
+    font-size: 0.94rem;
+    padding: 8px 15px;
     border-radius: 999px;
     transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
@@ -5936,4 +5936,105 @@ html[dir="ltr"] .footer-col {
     .course-card-featured .course-thumb-wrap { height: 170px; }
     .subject-card { flex-basis: 252px; min-width: 252px; min-height: 305px; }
     .subject-icon-container { height: 112px; }
+}
+
+
+.nav-link-item {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.94rem;
+    padding: 8px 15px;
+    border-radius: 999px;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    white-space: nowrap;
+}
+
+/* زر Play & Study المميز والمصقول في النافبار */
+.nav-link-item.play-study-nav-btn {
+    color: #d97706 !important;
+    background: rgba(245, 158, 11, 0.08) !important;
+    border: 1px solid rgba(245, 158, 11, 0.22) !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 7px 14px !important;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.nav-link-item.play-study-nav-btn:hover {
+    color: #b45309 !important;
+    background: rgba(245, 158, 11, 0.16) !important;
+    border-color: rgba(245, 158, 11, 0.4) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.18) !important;
+}
+
+.nav-link-item.play-study-nav-btn.active {
+    background: linear-gradient(135deg, #f59e0b, #10b981) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35) !important;
+}
+
+.dark-mode .nav-link-item.play-study-nav-btn {
+    color: #fbbf24 !important;
+    background: rgba(245, 158, 11, 0.14) !important;
+    border-color: rgba(245, 158, 11, 0.28) !important;
+}
+
+.dark-mode .nav-link-item.play-study-nav-btn:hover {
+    color: #fde68a !important;
+    background: rgba(245, 158, 11, 0.24) !important;
+    border-color: rgba(245, 158, 11, 0.48) !important;
+}
+
+.dark-mode .nav-link-item.play-study-nav-btn.active {
+    background: linear-gradient(135deg, #d97706, #059669) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+}
+
+.mobile-nav-link.play-study-nav-btn {
+    color: #d97706 !important;
+    background: rgba(245, 158, 11, 0.08) !important;
+    border: 1px solid rgba(245, 158, 11, 0.18) !important;
+    font-weight: 800 !important;
+    border-radius: 12px !important;
+}
+
+.dark-mode .mobile-nav-link.play-study-nav-btn {
+    color: #fbbf24 !important;
+    background: rgba(245, 158, 11, 0.12) !important;
+    border-color: rgba(245, 158, 11, 0.28) !important;
+}
+/* تكييف النافبار للشاشات المتوسطة واللابتوب (1051px - 1260px) */
+@media (min-width: 1051px) and (max-width: 1260px) {
+    .header-inner {
+        padding: 8px 18px !important;
+        gap: 10px !important;
+    }
+    .header-center {
+        gap: 3px !important;
+    }
+    .nav-link-item {
+        padding: 6px 11px !important;
+        font-size: 0.88rem !important;
+    }
+    .admin-portal-nav-btn,
+    .nav-link-item.play-study-nav-btn {
+        padding: 5px 10px !important;
+        font-size: 0.84rem !important;
+    }
+    .header-brand .logo-img {
+        max-width: 120px !important;
+    }
+    .header-actions .btn-fill,
+    .header-actions .btn-outline {
+        padding: 8px 14px !important;
+        font-size: 0.86rem !important;
+    }
 }

@@ -444,32 +444,96 @@
 <!-- Header الموحد للمنصة -->
 <header>
     <div class="header-inner">
+        <!-- اليمين: شعار المنصة وزر تبديل اللغة بجانبه -->
         <div class="header-right">
             <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
-            <button type="button" class="language-switcher" aria-label="تبديل اللغة">
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
                 <span>EN</span>
+                <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
             </button>
         </div>
 
+        <!-- المنتصف: روابط التنقل -->
         <div class="header-center">
             <a href="/" class="nav-link-item">الرئيسية</a>
             <a href="teachers" class="nav-link-item">المعلمين</a>
             <a href="subjects" class="nav-link-item">المواد الدراسية</a>
             <a href="courses" class="nav-link-item">الكورسات</a>
             <a href="exams" class="nav-link-item">الامتحانات</a>
-            <a href="play-study" class="nav-link-item active" style="background:linear-gradient(135deg, #f59e0b, #10b981); color:#fff; border-radius:50px; padding:6px 16px; font-weight:800;">
-                🎮 Play & Study
+            <a href="play-study" class="nav-link-item play-study-nav-btn active">🎮 Play & Study</a>
+            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="admin" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none;">
+                <i class="fas fa-crown"></i> صفحة الادمن
             </a>
         </div>
 
+        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
         <div class="header-left">
-            <div id="authActions"></div>
-            <button class="theme-toggle-btn" onclick="toggleDarkMode()" aria-label="تبديل الوضع">
-                <i class="fas fa-moon"></i>
+            <!-- أزرار الزائر -->
+            <nav class="header-actions" id="authActions">
+                <a href="login" class="btn-outline">تسجيل الدخول</a>
+                <a href="register" class="btn-fill">سجل الآن</a>
+            </nav>
+
+            <!-- قائمة الطالب عند تسجيل الدخول -->
+            <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <span id="navUserName">الطالب</span>
+                    <div class="user-icon-circle">👤</div>
+                </button>
+                <div class="user-dropdown-menu" id="userMenu">
+                    <a href="admin" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
+                        👑 صفحة الادمن
+                    </a>
+                    <a href="profile" class="menu-item">👤 البروفايل</a>
+                    <div class="menu-item balance-item">
+                        <span>💰 الرصيد:</span>
+                        <span id="userPoints">0</span> ج.م
+                    </div>
+                    <hr>
+                    <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+                </div>
+            </div>
+
+            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) -->
+            <div class="theme-capsule" aria-label="تبديل المظهر">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
+            </div>
+
+            <!-- زر الهامبرغر للموبايل -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+                <i class="fas fa-bars"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="admin" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
+            👑 صفحة الادمن
+        </a>
+        <a href="/" class="mobile-nav-link">🏠 الرئيسية</a>
+        <a href="teachers" class="mobile-nav-link">👨‍🏫 المعلمين</a>
+        <a href="subjects" class="mobile-nav-link">📚 المواد الدراسية</a>
+        <a href="courses" class="mobile-nav-link">🎥 الكورسات</a>
+        <a href="exams" class="mobile-nav-link">📝 الامتحانات</a>
+        <a href="play-study" class="mobile-nav-link play-study-nav-btn active">🎮 Play & Study</a>
+        <div class="mobile-menu-auth" id="mobileAuthGuest">
+            <a href="login" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
+            <a href="register" class="btn-fill" style="text-align:center;">سجل الآن</a>
+        </div>
+        <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
+            <a href="profile" class="mobile-nav-link">👤 البروفايل</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
         </div>
     </div>
 </header>

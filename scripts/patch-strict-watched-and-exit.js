@@ -163,3 +163,4 @@ html = html.replace(`window.returnToLobby = () => {`, `${exitQuizFunction}\n    
 
 fs.writeFileSync('play-study.html', html, 'utf8');
 console.log('🎉 Successfully applied strict watched-only lock and exit with consumed attempt!');
+
