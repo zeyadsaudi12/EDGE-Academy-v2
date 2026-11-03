@@ -1873,7 +1873,7 @@ function initMasarChatbot(currentUser) {
                 max-width: calc(100vw - 32px);
                 height: 520px;
                 max-height: calc(100vh - 130px);
-                background: rgba(255, 255, 255, 0.92);
+                background: rgba(255, 255, 255, 0.94);
                 backdrop-filter: blur(24px) saturate(180%);
                 -webkit-backdrop-filter: blur(24px) saturate(180%);
                 border: 1px solid rgba(26, 107, 219, 0.20);
@@ -1990,6 +1990,13 @@ function initMasarChatbot(currentUser) {
                 align-self: flex-end;
                 border-top-left-radius: 4px;
                 box-shadow: 0 4px 12px rgba(26, 107, 219, 0.25);
+            }
+
+            .chat-msg.typing {
+                font-style: italic;
+                color: #1a6bdb;
+                background: #eef2ff;
+                border: 1px dashed rgba(26, 107, 219, 0.3);
             }
 
             .chatbot-faq-container {
@@ -2205,9 +2212,9 @@ function initMasarChatbot(currentUser) {
                 </div>
             </div>
         </div>
-        <form class="chatbot-input-area" id="chatbotForm" onsubmit="handleBotSendMessage(event)">
+        <form class="chatbot-input-area" id="chatbotForm">
             <input type="text" id="chatbotInput" placeholder="اكتب سؤالك هنا لروبوت EDGE..." autocomplete="off">
-            <button type="submit">إرسال</button>
+            <button type="button" id="chatbotSendBtn">إرسال</button>
         </form>
     `;
 
@@ -2244,10 +2251,13 @@ function initMasarChatbot(currentUser) {
     // Direct Form and Input Listeners (Foolproof binding)
     const form = botWindow.querySelector('#chatbotForm');
     const input = botWindow.querySelector('#chatbotInput');
-    const sendBtn = botWindow.querySelector('#chatbotForm button');
+    const sendBtn = botWindow.querySelector('#chatbotSendBtn');
 
     function doSubmitChat(e) {
-        if (e) e.preventDefault();
+        if (e) {
+            if (e.preventDefault) e.preventDefault();
+            if (e.stopPropagation) e.stopPropagation();
+        }
         if (!input) return;
         const msg = String(input.value || '').trim();
         if (!msg) return;
@@ -2284,7 +2294,7 @@ window.sendFaqRequest = function (faqText) {
 };
 
 window.handleBotSendMessage = function (event) {
-    if (event) event.preventDefault();
+    if (event && event.preventDefault) event.preventDefault();
     const input = document.getElementById('chatbotInput');
     if (!input) return;
     const msgText = String(input.value || '').trim();
@@ -2295,7 +2305,7 @@ window.handleBotSendMessage = function (event) {
 
 async function sendBotMessage(message) {
     const input = document.getElementById('chatbotInput');
-    const sendButton = document.querySelector('#chatbotForm button');
+    const sendButton = document.getElementById('chatbotSendBtn') || document.querySelector('#chatbotForm button');
     if (!message) return;
 
     // 1. Immediately append user message to UI
@@ -2309,14 +2319,14 @@ async function sendBotMessage(message) {
     const q = String(message).trim().toLowerCase();
     if (/^(ازيك|عامل ايه|شخبارك|أهلاً|اهلا|مرحبا|سلام عليكم|السلام عليكم|صباح الخير|مساء الخير|هلا|هاي|hi|hello)$/.test(q)) {
         setTimeout(() => {
-            typing.remove();
+            if (typing && typing.parentNode) typing.remove();
             appendChatMessage('أهلاً بك يا بطل! 👋 أنا روبوت EDGE، مساعدك الذكي في منصة EDGE Academy.. أنا هنا لمساعدتك في أي سؤال عن الكورسات، المحاضرات، الامتحانات، وشحن الأكواد!', 'bot');
         }, 200);
         return;
     }
     if (/^(شكرا|شكراً|تسلم|الله يخليك|تمام)$/.test(q)) {
         setTimeout(() => {
-            typing.remove();
+            if (typing && typing.parentNode) typing.remove();
             appendChatMessage('العفو يا بطل! 🚀✨ أنا في خدمتك دايماً وأتمنى لك درجات ممتازة والتفوق دائماً.', 'bot');
         }, 200);
         return;
@@ -2339,7 +2349,7 @@ async function sendBotMessage(message) {
         });
         clearTimeout(timeoutId);
         const data = await response.json().catch(() => ({}));
-        typing.remove();
+        if (typing && typing.parentNode) typing.remove();
         if (response.ok && data && data.success && data.reply) {
             appendChatMessage(data.reply, 'bot');
             window.masarChatHistory = [...window.masarChatHistory, { role: 'assistant', content: data.reply }].slice(-10);
@@ -2348,7 +2358,7 @@ async function sendBotMessage(message) {
         }
     } catch (error) {
         clearTimeout(timeoutId);
-        typing.remove();
+        if (typing && typing.parentNode) typing.remove();
         appendChatMessage(getLocalChatFallback(message), 'bot');
     } finally {
         if (input) {
@@ -2378,7 +2388,7 @@ function appendChatMessage(text, sender) {
     if (!container) return;
     const div = document.createElement('div');
     div.className = `chat-msg ${sender}`;
-    div.textContent = text;
+    div.innerHTML = String(text || '').replace(/\n/g, '<br>');
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
     return div;
