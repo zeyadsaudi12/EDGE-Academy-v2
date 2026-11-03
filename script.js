@@ -1650,538 +1650,532 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 
 function initMasarChatbot(currentUser) {
-
     const path = window.location.pathname.toLowerCase();
-
-    const isAllowed = path.endsWith('index.html') || path.endsWith('/') || path.includes('teachers') || path.includes('profile');
-
-    if (!isAllowed) return;
+    // Exclude on admin dashboard and video watch room to keep focused experience
+    if (path.includes('/admin') || path.includes('/watch')) return;
 
     if (!document.getElementById('masarChatbotStyles')) {
-
         const style = document.createElement('style');
-
         style.id = 'masarChatbotStyles';
-
         style.textContent = `
-
+            /* ═══════════════════════════════════════════════
+               🤖 روبوت EDGE — المساعد الذكي العائم
+            ═══════════════════════════════════════════════ */
             .masar-chatbot-btn {
-
                 position: fixed;
-
-                bottom: 24px;
-
+                bottom: 22px;
                 right: 24px;
-
-                width: 60px;
-
-                height: 60px;
-
-                background: linear-gradient(135deg, #65fc5f, #22c55e);
-
-                border-radius: 50%;
-
-                display: flex;
-
-                align-items: center;
-
-                justify-content: center;
-
-                box-shadow: 0 8px 30px rgba(101, 252, 95, 0.45);
-
-                cursor: pointer;
-
                 z-index: 10000;
+                cursor: pointer;
+                user-select: none;
+                touch-action: manipulation;
+                transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                filter: drop-shadow(0 10px 24px rgba(26, 107, 219, 0.45));
+                animation: edgeRobotFloat 3.2s ease-in-out infinite;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
 
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
+            @keyframes edgeRobotFloat {
+                0%, 100% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-8px) rotate(2deg); }
             }
 
             .masar-chatbot-btn:hover {
-
-                transform: scale(1.1) translateY(-3px);
-
-                box-shadow: 0 12px 35px rgba(101, 252, 95, 0.6);
-
+                transform: scale(1.1) translateY(-4px);
             }
 
-            .masar-chatbot-btn i {
-
-                font-size: 26px;
-
-                color: #ffffff;
-
+            .masar-chatbot-btn:active {
+                transform: scale(0.96);
             }
 
-            .masar-chatbot-pulse {
-
-                position: absolute;
-
-                top: 0; right: 0;
-
-                width: 14px; height: 14px;
-
-                background: #10b981;
-
-                border-radius: 50%;
-
-                border: 2px solid #fff;
-
-            }
-
-            .masar-chatbot-window {
-
-                position: fixed;
-
-                bottom: 96px;
-
-                right: 24px;
-
-                width: 360px;
-
-                height: 500px;
-
-                background: rgba(255, 255, 255, 0.85);
-
-                backdrop-filter: blur(24px) saturate(180%);
-
-                -webkit-backdrop-filter: blur(24px) saturate(180%);
-
-                border: 1px solid rgba(15, 23, 42, 0.08);
-
-                border-radius: 24px;
-
-                box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
-
-                z-index: 10000;
-
+            /* Robot Body */
+            .edge-robot-inner {
+                position: relative;
+                width: 76px;
+                height: 92px;
                 display: flex;
-
                 flex-direction: column;
+                align-items: center;
+            }
 
+            /* Antenna with Pulsing Glow */
+            .edge-robot-antenna {
+                width: 5px;
+                height: 13px;
+                background: linear-gradient(180deg, #94a3b8, #475569);
+                border-radius: 3px;
+                position: relative;
+            }
+            .edge-robot-antenna::before {
+                content: '';
+                position: absolute;
+                top: -9px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 13px;
+                height: 13px;
+                background: #f59e0b;
+                border-radius: 50%;
+                box-shadow: 0 0 12px #f59e0b, 0 0 20px #fbbf24;
+                animation: edgeAntennaPulse 1.2s ease-in-out infinite alternate;
+            }
+
+            @keyframes edgeAntennaPulse {
+                from { transform: translateX(-50%) scale(0.9); opacity: 0.85; box-shadow: 0 0 8px #f59e0b; }
+                to { transform: translateX(-50%) scale(1.25); opacity: 1; box-shadow: 0 0 18px #f59e0b, 0 0 28px #fbbf24; }
+            }
+
+            /* Robot Head */
+            .edge-robot-head {
+                width: 68px;
+                height: 44px;
+                background: linear-gradient(145deg, #1e293b, #0f172a);
+                border: 2px solid #38bdf8;
+                border-radius: 17px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: inset 0 2px 4px rgba(255,255,255,0.2), 0 4px 10px rgba(0,0,0,0.4);
+                margin-top: 1px;
+            }
+
+            /* Robot Visor & Eyes */
+            .edge-robot-screen {
+                width: 52px;
+                height: 26px;
+                background: #020617;
+                border-radius: 9px;
+                border: 1px solid rgba(56, 189, 248, 0.45);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
                 overflow: hidden;
+                position: relative;
+            }
 
-                font-family: 'Tajawal', sans-serif;
+            .edge-robot-eye {
+                width: 9px;
+                height: 11px;
+                background: #00f2fe;
+                border-radius: 4px;
+                box-shadow: 0 0 8px #00f2fe, 0 0 14px #38bdf8;
+                animation: edgeBlink 4s infinite;
+            }
 
-                direction: rtl;
+            @keyframes edgeBlink {
+                0%, 94%, 98%, 100% { transform: scaleY(1); }
+                96% { transform: scaleY(0.12); }
+            }
 
-                opacity: 0;
+            /* Robot Torso */
+            .edge-robot-torso {
+                width: 52px;
+                height: 30px;
+                background: linear-gradient(145deg, #1a6bdb, #0c4a9e);
+                border: 2px solid #60a5fa;
+                border-radius: 10px 10px 14px 14px;
+                margin-top: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                box-shadow: 0 4px 10px rgba(26, 107, 219, 0.4);
+            }
 
-                transform: translateY(20px) scale(0.95);
+            /* EDGE Chest Emblem */
+            .edge-robot-badge {
+                background: rgba(0, 0, 0, 0.6);
+                border: 1px solid #38bdf8;
+                border-radius: 5px;
+                padding: 1px 5px;
+                font-size: 9.5px;
+                font-weight: 900;
+                color: #38bdf8;
+                letter-spacing: 1px;
+                font-family: monospace;
+                text-shadow: 0 0 6px #38bdf8;
+            }
 
+            /* Tiny Hovering Jets */
+            .edge-robot-thruster {
+                width: 16px;
+                height: 8px;
+                background: linear-gradient(180deg, #f59e0b, #ef4444);
+                border-radius: 0 0 50% 50%;
+                margin-top: -1px;
+                box-shadow: 0 4px 10px #f59e0b, 0 6px 16px #ef4444;
+                animation: edgeThrust 0.4s ease-in-out infinite alternate;
+            }
+
+            @keyframes edgeThrust {
+                from { height: 5px; opacity: 0.8; }
+                to { height: 10px; opacity: 1; }
+            }
+
+            /* Speech Tooltip Bubble */
+            .edge-robot-bubble {
+                position: absolute;
+                bottom: calc(100% + 10px);
+                right: 50%;
+                transform: translateX(50%);
+                background: #ffffff;
+                color: #0f172a;
+                font-size: 11.5px;
+                font-weight: 800;
+                padding: 6px 12px;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+                white-space: nowrap;
                 pointer-events: none;
+                opacity: 0.95;
+                transition: all 0.25s ease;
+                border: 1.5px solid #1a6bdb;
+                animation: edgeBounceBubble 2.5s infinite ease-in-out;
+                font-family: 'Cairo', sans-serif;
+                direction: rtl;
+            }
 
+            .edge-robot-bubble::after {
+                content: '';
+                position: absolute;
+                top: 100%;
+                right: 50%;
+                transform: translateX(50%);
+                border-width: 5px;
+                border-style: solid;
+                border-color: #1a6bdb transparent transparent transparent;
+            }
+
+            @keyframes edgeBounceBubble {
+                0%, 100% { transform: translateX(50%) translateY(0); }
+                50% { transform: translateX(50%) translateY(-3px); }
+            }
+
+            .masar-chatbot-btn:hover .edge-robot-bubble {
+                background: #fef08a;
+                color: #854d0e;
+                border-color: #f59e0b;
+                opacity: 1;
+            }
+
+            /* ═══════════════════════════════════════════════
+               💬 نافذة الشات بوت المساعد الذكي
+            ═══════════════════════════════════════════════ */
+            .masar-chatbot-window {
+                position: fixed;
+                bottom: 110px;
+                right: 24px;
+                width: 370px;
+                max-width: calc(100vw - 32px);
+                height: 520px;
+                max-height: calc(100vh - 130px);
+                background: rgba(255, 255, 255, 0.92);
+                backdrop-filter: blur(24px) saturate(180%);
+                -webkit-backdrop-filter: blur(24px) saturate(180%);
+                border: 1px solid rgba(26, 107, 219, 0.20);
+                border-radius: 24px;
+                box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22), 0 0 25px rgba(26, 107, 219, 0.15);
+                z-index: 10001;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                font-family: 'Cairo', 'Tajawal', sans-serif;
+                direction: rtl;
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+                pointer-events: none;
                 transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15);
-
             }
 
             .masar-chatbot-window.active {
-
                 opacity: 1;
-
                 transform: translateY(0) scale(1);
-
-                pointer-events: auto;
-
+                pointer-events: all;
             }
 
             .chatbot-header {
-
-                background: #0f172a;
-
+                padding: 14px 18px;
+                background: linear-gradient(135deg, #1a6bdb, #0c4a9e);
                 color: #ffffff;
-
-                padding: 18px 20px;
-
                 display: flex;
-
-                justify-content: space-between;
-
                 align-items: center;
-
-                border-bottom: 2px solid #65fc5f;
-
+                justify-content: space-between;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
 
             .chatbot-header-info {
-
                 display: flex;
-
                 align-items: center;
-
-                gap: 10px;
-
+                gap: 12px;
             }
 
-            .chatbot-header-info img {
-
-                width: 32px; height: 32px;
-
-                object-fit: contain;
-
+            .chatbot-avatar-mini {
+                width: 38px;
+                height: 38px;
+                background: #0f172a;
+                border: 1.5px solid #38bdf8;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.25rem;
+                box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
             }
 
             .chatbot-status {
-
-                width: 8px; height: 8px;
-
-                background: #10b981;
-
-                border-radius: 50%;
-
                 display: inline-block;
-
+                width: 8px;
+                height: 8px;
+                background: #22c55e;
+                border-radius: 50%;
                 margin-left: 6px;
-
+                box-shadow: 0 0 8px #22c55e;
             }
 
             .chatbot-close-btn {
-
-                background: none;
-
+                background: rgba(255, 255, 255, 0.15);
                 border: none;
-
-                color: #94a3b8;
-
-                font-size: 1.2rem;
-
+                color: #ffffff;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 cursor: pointer;
-
-                transition: color 0.2s;
-
+                transition: all 0.2s;
+                font-size: 1.1rem;
             }
 
             .chatbot-close-btn:hover {
-
-                color: #ffffff;
-
+                background: rgba(255, 255, 255, 0.3);
+                transform: rotate(90deg);
             }
 
             .chatbot-messages {
-
                 flex: 1;
-
-                padding: 20px;
-
+                padding: 16px;
                 overflow-y: auto;
-
                 display: flex;
-
                 flex-direction: column;
-
                 gap: 12px;
-
-                background: rgba(241, 245, 249, 0.5);
-
+                background: rgba(241, 245, 249, 0.6);
             }
 
             .chat-msg {
-
-                max-width: 85%;
-
+                max-width: 86%;
                 padding: 12px 16px;
-
                 border-radius: 16px;
-
                 font-size: 0.88rem;
-
-                line-height: 1.5;
-
+                line-height: 1.55;
                 font-weight: 500;
-
             }
 
             .chat-msg.bot {
-
                 background: #ffffff;
-
                 color: #1e293b;
-
                 align-self: flex-start;
-
                 border-top-right-radius: 4px;
-
-                border: 1px solid rgba(15, 23, 42, 0.08);
-
-                box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
-
+                border: 1px solid rgba(26, 107, 219, 0.12);
+                box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
             }
 
             .chat-msg.user {
-
-                background: linear-gradient(135deg, #65fc5f, #22c55e);
-
-                color: #0f172a; /* Dark text for readability on bright neon green */
-
+                background: linear-gradient(135deg, #1a6bdb, #0c4a9e);
+                color: #ffffff;
                 align-self: flex-end;
-
                 border-top-left-radius: 4px;
-
-                font-weight: 700;
-
-                box-shadow: 0 4px 12px rgba(101, 252, 95, 0.18);
-
-            }
-
-            .chat-msg.typing {
-                color: #64748b;
-                font-style: italic;
-            }
-
-            .chatbot-input-area button:disabled,
-            .chatbot-input-area input:disabled {
-                opacity: 0.65;
-                cursor: wait;
-            }
-
-            @media (max-width: 600px) {
-                .masar-chatbot-btn {
-                    right: 16px;
-                    bottom: 16px;
-                    width: 56px;
-                    height: 56px;
-                    z-index: 10001;
-                }
-                .masar-chatbot-window {
-                    right: 12px;
-                    left: 12px;
-                    bottom: 84px;
-                    width: auto;
-                    height: min(560px, calc(100dvh - 100px));
-                    z-index: 10001;
-                }
-                .chatbot-messages { padding: 14px; }
-                .chatbot-input-area { padding: 10px 12px; }
+                box-shadow: 0 4px 12px rgba(26, 107, 219, 0.25);
             }
 
             .chatbot-faq-container {
-
                 display: flex;
-
                 flex-wrap: wrap;
-
                 gap: 6px;
-
                 margin-top: 10px;
-
             }
 
             .faq-pill {
-
-                background: rgba(101, 252, 95, 0.08);
-
-                border: 1px solid rgba(101, 252, 95, 0.25);
-
-                color: #1e293b;
-
-                padding: 6px 12px;
-
-                border-radius: 20px;
-
-                font-size: 0.78rem;
-
+                background: #eef2ff;
+                color: #1a6bdb;
+                border: 1px solid rgba(26, 107, 219, 0.25);
+                padding: 5px 11px;
+                border-radius: 12px;
+                font-size: 0.76rem;
                 font-weight: 700;
-
                 cursor: pointer;
-
                 transition: all 0.2s ease;
-
             }
 
             .faq-pill:hover {
-
-                background: #65fc5f;
-
-                color: #0f172a; /* Dark text for readability */
-
-                border-color: #65fc5f;
-
-                box-shadow: 0 4px 10px rgba(101, 252, 95, 0.25);
-
+                background: #1a6bdb;
+                color: #ffffff;
+                border-color: #1a6bdb;
+                box-shadow: 0 4px 10px rgba(26, 107, 219, 0.25);
             }
 
             .chatbot-input-area {
-
-                padding: 14px 20px;
-
+                padding: 12px 16px;
                 background: #ffffff;
-
                 border-top: 1px solid rgba(15, 23, 42, 0.08);
-
                 display: flex;
-
-                gap: 10px;
-
+                gap: 8px;
             }
 
             .chatbot-input-area input {
-
                 flex: 1;
-
                 background: #f1f5f9;
-
                 border: 1px solid #cbd5e1;
-
                 border-radius: 12px;
-
                 padding: 10px 14px;
-
                 font-family: inherit;
-
                 color: #1e293b;
-
                 font-size: 0.88rem;
-
                 outline: none;
-
                 transition: all 0.2s;
-
             }
 
             .chatbot-input-area input:focus {
-
-                border-color: #65fc5f;
-
+                border-color: #1a6bdb;
                 background: #ffffff;
-
-                box-shadow: 0 0 0 3px rgba(101, 252, 95, 0.15);
-
+                box-shadow: 0 0 0 3px rgba(26, 107, 219, 0.15);
             }
 
             .chatbot-input-area button {
-
-                background: #0f172a;
-
+                background: #1a6bdb;
                 color: #ffffff;
-
                 border: none;
-
                 border-radius: 12px;
-
                 padding: 0 18px;
-
-                font-weight: 700;
-
+                font-weight: 800;
                 font-family: inherit;
-
                 cursor: pointer;
-
                 transition: all 0.2s;
-
             }
 
             .chatbot-input-area button:hover {
-
-                background: #1e293b;
-
+                background: #0c4a9e;
                 transform: translateY(-1px);
-
             }
 
             /* Dark Mode Overrides */
-
             .dark-mode .masar-chatbot-window {
-
-                background: rgba(17, 24, 39, 0.85);
-
-                border-color: rgba(255, 255, 255, 0.05);
-
-                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-
+                background: rgba(17, 24, 39, 0.94);
+                border-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 25px rgba(26, 107, 219, 0.2);
             }
 
             .dark-mode .chatbot-messages {
-
-                background: rgba(15, 23, 42, 0.3);
-
+                background: rgba(15, 23, 42, 0.5);
             }
 
             .dark-mode .chat-msg.bot {
-
                 background: #1f2937;
-
                 color: #f3f4f6;
-
-                border-color: rgba(255, 255, 255, 0.05);
-
+                border-color: rgba(255, 255, 255, 0.08);
             }
 
             .dark-mode .faq-pill {
-
-                color: #f3f4f6;
-
-                background: rgba(101, 252, 95, 0.12);
-
-                border-color: rgba(101, 252, 95, 0.35);
-
+                color: #93c5fd;
+                background: rgba(26, 107, 219, 0.18);
+                border-color: rgba(96, 165, 250, 0.35);
             }
 
             .dark-mode .faq-pill:hover {
-
-                background: #65fc5f;
-
-                color: #0f172a;
-
+                background: #1a6bdb;
+                color: #ffffff;
             }
 
             .dark-mode .chatbot-input-area {
-
                 background: #111827;
-
-                border-top-color: rgba(255, 255, 255, 0.05);
-
+                border-top-color: rgba(255, 255, 255, 0.08);
             }
 
             .dark-mode .chatbot-input-area input {
-
                 background: #1f2937;
-
                 border-color: #374151;
-
                 color: #f3f4f6;
-
             }
 
             .dark-mode .chatbot-input-area input:focus {
-
                 background: #111827;
-
-                border-color: #65fc5f;
-
+                border-color: #38bdf8;
             }
 
             .dark-mode .chatbot-input-area button {
-
-                background: #f3f4f6;
-
-                color: #090d16;
-
+                background: #1a6bdb;
+                color: #ffffff;
             }
 
             .dark-mode .chatbot-input-area button:hover {
-
-                background: #ffffff;
-
+                background: #2563eb;
             }
 
+            /* Mobile adjustment */
+            @media (max-width: 600px) {
+                .masar-chatbot-btn {
+                    bottom: 16px;
+                    right: 16px;
+                }
+                .edge-robot-inner {
+                    width: 64px;
+                    height: 78px;
+                }
+                .edge-robot-head {
+                    width: 58px;
+                    height: 38px;
+                }
+                .edge-robot-screen {
+                    width: 44px;
+                    height: 22px;
+                }
+                .edge-robot-torso {
+                    width: 44px;
+                    height: 26px;
+                }
+                .edge-robot-bubble {
+                    display: none;
+                }
+                .masar-chatbot-window {
+                    bottom: 95px;
+                    right: 10px;
+                    left: 10px;
+                    width: auto;
+                    height: 72vh;
+                }
+            }
         `;
-
         document.head.appendChild(style);
-
     }
 
+    // 🤖 Create Robot Chatbot Launcher
     const botBtn = document.createElement('div');
-
     botBtn.className = 'masar-chatbot-btn';
-
     botBtn.id = 'masarChatbotBtn';
-
-    botBtn.innerHTML = `<i class="fas fa-comment-dots"></i><span class="masar-chatbot-pulse"></span>`;
+    botBtn.setAttribute('title', 'المساعد الذكي EDGE');
+    botBtn.innerHTML = `
+        <div class="edge-robot-bubble" id="edgeRobotBubble">مساعد EDGE الذكي 💬</div>
+        <div class="edge-robot-inner">
+            <div class="edge-robot-antenna"></div>
+            <div class="edge-robot-head">
+                <div class="edge-robot-screen">
+                    <div class="edge-robot-eye"></div>
+                    <div class="edge-robot-eye"></div>
+                </div>
+            </div>
+            <div class="edge-robot-torso">
+                <span class="edge-robot-badge">EDGE</span>
+            </div>
+            <div class="edge-robot-thruster"></div>
+        </div>
+    `;
 
     const botWindow = document.createElement('div');
-
     botWindow.className = 'masar-chatbot-window';
-
     botWindow.id = 'masarChatbotWindow';
 
     const userName = currentUser ? currentUser.firstName : 'طالبنا العزيز';
@@ -2189,81 +2183,61 @@ function initMasarChatbot(currentUser) {
     window.masarChatHistory = [];
 
     botWindow.innerHTML = `
-
         <div class="chatbot-header">
-
             <div class="chatbot-header-info">
-
-                <div style="width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">🤖</div>
-
+                <div class="chatbot-avatar-mini">🤖</div>
                 <div>
-
-                    <h4 style="margin:0; font-size:0.95rem; font-weight:800;">مساعد EDGE Academy الذكي</h4>
-
-                    <span style="font-size:0.72rem; opacity:0.8;"><span class="chatbot-status"></span>متصل الآن</span>
-
+                    <h4 style="margin:0; font-size:0.95rem; font-weight:800;">روبوت EDGE — المساعد الذكي</h4>
+                    <span style="font-size:0.72rem; opacity:0.85;"><span class="chatbot-status"></span>جاهز لمساعدتك فوراً</span>
                 </div>
-
             </div>
-
-            <button class="chatbot-close-btn" id="chatbotCloseBtn">✖</button>
-
+            <button class="chatbot-close-btn" id="chatbotCloseBtn" title="إغلاق">✕</button>
         </div>
-
         <div class="chatbot-messages" id="chatbotMessages">
-
             <div class="chat-msg bot">
-
-                أهلاً بك يا <b>${safeUserName}</b> في منصة EDGE Academy التعليمية! 👋<br>
-
-                أنا مساعدك الذكي لمنصة EDGE Academy، كيف يمكنني إرشادك وتسهيل دراستك اليوم؟
-
+                أهلاً بك يا <b>${safeUserName}</b> في منصة EDGE Academy! 🤖✨<br>
+                أنا <b>روبوت EDGE</b>، مساعدك الذكي في المنصة.. اسألني عن الكورسات، شحن الأكواد، الامتحانات، أو أي شيء تحتاجه!
                 <div class="chatbot-faq-container">
-
-                    <span class="faq-pill" onclick="sendFaqRequest('كيف أشحن كود؟')">🔑 كيف أشحن كود؟</span>
-
+                    <span class="faq-pill" onclick="sendFaqRequest('كيف أشحن كود؟')">💳 كيف أشحن كود؟</span>
                     <span class="faq-pill" onclick="sendFaqRequest('كيف أدخل الامتحان؟')">📝 كيف أدخل الامتحان؟</span>
-
                     <span class="faq-pill" onclick="sendFaqRequest('المحاضرة لا تعمل')">🎬 المحاضرة لا تعمل</span>
-
-                    <span class="faq-pill" onclick="sendFaqRequest('رقم الدعم الفني')">💚 رقم الدعم الفني</span>
-
+                    <span class="faq-pill" onclick="sendFaqRequest('رقم الدعم الفني')">📞 رقم الدعم الفني</span>
                 </div>
-
             </div>
-
         </div>
-
         <form class="chatbot-input-area" id="chatbotForm" onsubmit="handleBotSendMessage(event)">
-
-            <input type="text" id="chatbotInput" placeholder="اكتب سؤالك هنا..." autocomplete="off">
-
+            <input type="text" id="chatbotInput" placeholder="اكتب سؤالك هنا لروبوت EDGE..." autocomplete="off">
             <button type="submit">إرسال</button>
-
         </form>
-
     `;
 
     document.body.appendChild(botBtn);
-
     document.body.appendChild(botWindow);
 
-    botBtn.addEventListener('click', () => {
-
-        botWindow.classList.toggle('active');
-
-        const pulse = botBtn.querySelector('.masar-chatbot-pulse');
-
-        if (pulse) pulse.style.display = 'none';
-
+    botBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = botWindow.classList.toggle('active');
+        const bubble = document.getElementById('edgeRobotBubble');
+        if (bubble) {
+            bubble.textContent = isOpen ? 'إغلاق المساعد ✕' : 'مساعد EDGE الذكي 💬';
+        }
     });
 
-    document.getElementById('chatbotCloseBtn').addEventListener('click', () => {
-
+    document.getElementById('chatbotCloseBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
         botWindow.classList.remove('active');
-
+        const bubble = document.getElementById('edgeRobotBubble');
+        if (bubble) bubble.textContent = 'مساعد EDGE الذكي 💬';
     });
 
+    // Close when clicking outside on document
+    document.addEventListener('click', (e) => {
+        if (botWindow.classList.contains('active') && !botWindow.contains(e.target) && !botBtn.contains(e.target)) {
+            botWindow.classList.remove('active');
+            const bubble = document.getElementById('edgeRobotBubble');
+            if (bubble) bubble.textContent = 'مساعد EDGE الذكي 💬';
+        }
+    });
 }
 
 window.sendFaqRequest = function (faqText) {

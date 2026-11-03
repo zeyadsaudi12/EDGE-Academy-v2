@@ -459,69 +459,16 @@ exports.redeemPoints = async (req, res) => {
 
 // 4. Find Secret Robot "EDGE" Scavenger Hunt Reward (+15 Points)
 exports.findEdgeRobot = async (req, res) => {
-    try {
-        const userId = req.user ? req.user.id || req.user._id : req.body.userId;
-        if (!userId) {
-            return res.status(401).json({
-                success: false,
-                message: 'يجب تسجيل الدخول أولاً لتسجيل مكافأة روبوت EDGE!'
-            });
-        }
-
-        const ps = await getOrCreatePlayStudy(userId);
-
-        if (ps.isBanned) {
-            return res.status(403).json({
-                success: false,
-                isBanned: true,
-                message: ps.banReason || 'لقد تم حظرك بسبب الغش!'
-            });
-        }
-
-        // Daily Cooldown: 1 reward claim per day
-        const now = new Date();
-        const lastFound = ps.lastEdgeRobotFound ? new Date(ps.lastEdgeRobotFound) : null;
-        const isSameDay = lastFound && (lastFound.toDateString() === now.toDateString());
-
-        if (isSameDay) {
-            return res.status(400).json({
-                success: false,
-                alreadyFoundToday: true,
-                message: 'لقد عثرت على روبوت EDGE اليوم بالفعل يا بطل! 🤖 تم تسجيل نقاطك مسبقاً، انتظرني غداً في مكان سري جديد!'
-            });
-        }
-
-        // Award +15 Points
-        const REWARD_POINTS = 15;
-        ps.points += REWARD_POINTS;
-        ps.lastEdgeRobotFound = now;
-        ps.edgeRobotFindsCount = (ps.edgeRobotFindsCount || 0) + 1;
-
-        ps.history.push({
-            subject: '🤖 مكافأة العثور على روبوت EDGE',
-            score: 100,
-            percentage: 100,
-            pointsEarned: REWARD_POINTS,
-            date: now
-        });
-
-        await ps.save();
-
-        res.json({
-            success: true,
-            message: '🎉 رائع يا بطل! لقد عثرت على روبوت EDGE السري وحصلت على 15 نقطة!',
-            pointsEarned: REWARD_POINTS,
-            totalPoints: ps.points
-        });
-    } catch (err) {
-        console.error('findEdgeRobot error:', err);
-        res.status(500).json({ success: false, message: 'حدث خطأ في استلام مكافأة روبوت EDGE' });
-    }
+    // Deprecated: Robot EDGE is now the permanent AI Smart Assistant
+    return res.json({
+        success: false,
+        message: 'تم إيقاف مسابقة البحث عن الروبوت، وأصبح روبوت EDGE رسمياً هو المساعد الذكي للمنصة!'
+    });
 };
 
-// ══════════════════════════════════════════════════════
-// 🛡️ ADMIN MANAGEMENT CONTROLLERS FOR PLAY & STUDY
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
+// 5. ADMIN CONTROL PANEL ENDPOINTS (Play & Study Monitoring)
+// ══════════════════════════════════════════════════════════════════
 
 exports.adminGetAllPlayers = async (req, res) => {
     try {
