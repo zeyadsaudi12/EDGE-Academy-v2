@@ -157,3 +157,4 @@ if (oldSectionPlayStudyRegex.test(html)) {
 
 fs.writeFileSync('admin.html', html, 'utf8');
 console.log('🎉 Done updating admin.html!');
+

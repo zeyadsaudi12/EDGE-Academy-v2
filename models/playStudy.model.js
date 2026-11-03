@@ -15,6 +15,10 @@ const playStudySchema = new mongoose.Schema({
     banReason: { type: String, default: 'لقد تم حظرك من نظام Play & Study بسبب انتهاك القواعد أو محاولات الغش.' },
     bannedAt: { type: Date },
 
+    // Robot EDGE Scavenger Hunt Feature:
+    lastEdgeRobotFound: { type: Date },
+    edgeRobotFindsCount: { type: Number, default: 0 },
+
     history: [{
         subject: { type: String, default: 'عام' },
         score: { type: Number, required: true },

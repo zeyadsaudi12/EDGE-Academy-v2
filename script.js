@@ -152,6 +152,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     initArabicNameInputs();
 
+    // Init Secret Robot EDGE Scavenger Hunt (+15 Points)
+    if (!document.getElementById('edge-robot-script') && !window.location.pathname.includes('/admin')) {
+        const rScript = document.createElement('script');
+        rScript.id = 'edge-robot-script';
+        rScript.src = 'edge-robot.js?v=20261103';
+        rScript.defer = true;
+        document.body.appendChild(rScript);
+    }
+
     // Init 3D canvas animation on auth pages (login/register)
 
     initAuthCanvas();

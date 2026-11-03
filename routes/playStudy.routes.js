@@ -8,6 +8,7 @@ router.post('/mark-watched', playStudyController.markVideoWatched);
 router.post('/start', playStudyController.startQuiz);
 router.post('/submit', playStudyController.submitQuiz);
 router.post('/redeem', playStudyController.redeemPoints);
+router.post('/find-edge-robot', playStudyController.findEdgeRobot);
 
 // Admin Management routes
 router.get('/admin/players', playStudyController.adminGetAllPlayers);

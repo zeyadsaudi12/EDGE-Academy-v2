@@ -8116,7 +8116,10 @@ function renderAdminPlayStudyTable(players) {
                     <span style="font-weight:800; color:${p.dailyEnergy > 0 ? '#10b981' : '#ef4444'};">${p.dailyEnergy} / 4</span>
                 </td>
                 <td style="padding:14px 18px; font-weight:700; color:var(--txt2);">
-                    🥇 ${p.perfectWins} مرة
+                    <div>🥇 ${p.perfectWins} مرة</div>
+                    <small style="color:#0ea5e9; font-weight:800; display:inline-flex; align-items:center; gap:4px; margin-top:3px;">
+                        🤖 روبوت EDGE: ${p.edgeRobotFinds || 0}
+                    </small>
                 </td>
                 <td style="padding:14px 18px;">
                     ${statusBadge}
