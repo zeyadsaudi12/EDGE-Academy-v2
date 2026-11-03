@@ -982,6 +982,16 @@ body.secure-video-page {
             const parts = video.parts || [];
 
             // تحديث العناوين
+            
+            // ── تسجيل استماع ومشاهدة المحاضرة لتفعيل أسئلتها في Play & Study ──
+            if (!isAdmin && currentUser && currentUser._id && currentVideoId) {
+                fetch('/api/play-study/mark-watched', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser._id, videoId: currentVideoId })
+                }).catch(err => console.error('Failed to mark video watched for Play & Study:', err));
+            }
+
             document.getElementById('videoTitle').textContent = video.title;
             document.getElementById('topbarTitle').textContent = video.title;
             currentVideoTitle = video.title;

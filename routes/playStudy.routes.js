@@ -4,6 +4,7 @@ const playStudyController = require('../controllers/playStudy.controller');
 
 // Student Play & Study routes
 router.get('/profile', playStudyController.getProfile);
+router.post('/mark-watched', playStudyController.markVideoWatched);
 router.post('/start', playStudyController.startQuiz);
 router.post('/submit', playStudyController.submitQuiz);
 router.post('/redeem', playStudyController.redeemPoints);
