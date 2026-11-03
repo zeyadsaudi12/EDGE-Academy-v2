@@ -18,3 +18,4 @@ css = css.replace(
 
 fs.writeFileSync('style.css', css, 'utf8');
 console.log('✅ Cleaned up .nav-link-item in style.css');
+

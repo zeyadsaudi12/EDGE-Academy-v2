@@ -465,29 +465,34 @@ exports.adminGetAllPlayers = async (req, res) => {
     try {
         const records = await PlayStudy.find()
             .populate('userId', 'firstName lastName phone grade')
-            .sort({ points: -1 });
+            .sort({ points: -1 })
+            .lean();
 
-        const players = records.map(r => ({
-            id: r._id,
-            userId: r.userId ? r.userId._id : null,
-            name: r.userId ? `${r.userId.firstName} ${r.userId.lastName}` : 'مستخدم محذوف',
-            phone: r.userId ? r.userId.phone : '-',
-            grade: r.userId ? r.userId.grade : '-',
-            points: r.points,
-            dailyEnergy: r.dailyEnergy,
-            totalAttempts: r.totalAttempts,
-            totalWins: r.totalWins,
-            perfectWins: r.perfectWins,
-            isBanned: r.isBanned || false,
-            banReason: r.banReason || '',
-            bannedAt: r.bannedAt,
-            couponsCount: (r.redeemedCoupons || []).length
-        }));
+        const players = records.map(r => {
+            const u = r.userId;
+            const fullName = u ? `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'طالب' : 'مستخدم محذوف';
+            return {
+                id: String(r._id),
+                userId: u ? String(u._id) : null,
+                name: fullName,
+                phone: u && u.phone ? u.phone : '-',
+                grade: u && u.grade ? u.grade : '-',
+                points: Number(r.points) || 0,
+                dailyEnergy: r.dailyEnergy !== undefined ? Number(r.dailyEnergy) : 4,
+                totalAttempts: Number(r.totalAttempts) || 0,
+                totalWins: Number(r.totalWins) || 0,
+                perfectWins: Number(r.perfectWins) || 0,
+                isBanned: Boolean(r.isBanned),
+                banReason: r.banReason || '',
+                bannedAt: r.bannedAt,
+                couponsCount: (r.redeemedCoupons || []).length
+            };
+        });
 
         res.json({ success: true, players });
     } catch (err) {
         console.error('Admin getAllPlayers error:', err);
-        res.status(500).json({ success: false, message: 'تعذر جلب سجلات الطلاب' });
+        res.status(500).json({ success: false, message: 'تعذر جلب سجلات الطلاب', error: err.message });
     }
 };
 

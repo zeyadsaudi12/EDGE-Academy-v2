@@ -3808,7 +3808,7 @@
                 </div>
         
                 <!-- ===== PLAY & STUDY ADMIN MANAGEMENT SECTION ===== -->
-                <div id="section-play-study" class="section" style="padding: 28px 32px;">
+                <div id="section-play-study" class="section">
                     <div class="section-header" style="margin-bottom: 24px;">
                         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
                             <div>
@@ -4324,6 +4324,7 @@
                     exams: ['إدارة الامتحانات', 'عرض وتعديل وحذف الامتحانات ونتائج الطلاب'],
                     'manage-exams': ['إدارة الامتحانات', 'عرض وتعديل وحذف الامتحانات ونتائج الطلاب'],
                     banners: ['إعلانات الهيرو', 'إدارة الصور الإعلانية على الصفحة الرئيسية'],
+                    'play-study': ['لوحة تحكم ومراقبة Play & Study', 'مراقبة محاولات ونقاط الطلاب، التصدي لمحاولات الغش، إيقاف اللعبة وحظر الطلاب المخالفين، وتعديل النقاط ورصيد الطاقة'],
                     'add-course': ['إضافة كورس', 'أضف كورساً جديداً للمنصة'],
                     'manage-courses': ['عرض وإدارة الكورسات', 'تعديل وإخفاء وحذف الكورسات وفيديوهاتها']
                 };
@@ -8034,6 +8035,16 @@
      🎮 PLAY & STUDY ADMIN MANAGEMENT CONTROLLER JS
 ═══════════════════════════════════════════════════ -->
 <script>
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 let _adminPlayStudyData = [];
 
 async function loadAdminPlayStudy() {
@@ -8042,7 +8053,8 @@ async function loadAdminPlayStudy() {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:35px; color:var(--txt3);"><i class="ti ti-loader fa-spin"></i> جاري تحميل السجلات...</td></tr>';
 
     try {
-        const res = await fetch('/api/play-study/admin/players');
+        const apiBase = typeof API !== 'undefined' ? API : '';
+        const res = await fetch(`${apiBase}/api/play-study/admin/players`);
         const data = await res.json();
         if (data.success) {
             _adminPlayStudyData = data.players || [];
@@ -8157,7 +8169,8 @@ async function adminTogglePlayerBan(recordId, banState, playerName) {
     }
 
     try {
-        const res = await fetch('/api/play-study/admin/toggle-ban', {
+        const apiBase = typeof API !== 'undefined' ? API : '';
+        const res = await fetch(`${apiBase}/api/play-study/admin/toggle-ban`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recordId, isBanned: banState, reason })
@@ -8191,7 +8204,8 @@ async function adminPromptAdjustPoints(recordId, playerName, currentPoints) {
     if (!res.isConfirmed) return;
 
     try {
-        const resApi = await fetch('/api/play-study/admin/adjust-points', {
+        const apiBase = typeof API !== 'undefined' ? API : '';
+        const resApi = await fetch(`${apiBase}/api/play-study/admin/adjust-points`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recordId, newPoints: res.value })
@@ -8221,7 +8235,8 @@ async function adminResetPlayerEnergy(recordId, playerName) {
     if (!res.isConfirmed) return;
 
     try {
-        const resApi = await fetch('/api/play-study/admin/reset-energy', {
+        const apiBase = typeof API !== 'undefined' ? API : '';
+        const resApi = await fetch(`${apiBase}/api/play-study/admin/reset-energy`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recordId })

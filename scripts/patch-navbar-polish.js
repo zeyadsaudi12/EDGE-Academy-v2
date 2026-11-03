@@ -297,3 +297,4 @@ ${buildMobileNav('play-study')}
 });
 
 console.log('🎉 All navbars standardized and polished successfully!');
+
