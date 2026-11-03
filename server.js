@@ -169,6 +169,7 @@ const courseRoutes = require('./routes/course.routes');
 const videoQuestionRoutes = require('./routes/videoQuestion.routes');
 const attendanceRoutes = require('./routes/attendance.routes');
 const teacherApplicationRoutes = require('./routes/teacherApplication.routes');
+const playStudyRoutes = require('./routes/playStudy.routes');
 
 app.use('/api', authRoutes);
 app.use('/api/users', userRoutes);
@@ -182,6 +183,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/video-questions', videoQuestionRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/teacher-applications', teacherApplicationRoutes);
+app.use('/api/play-study', playStudyRoutes);
 
 // Smart Page Router: Supports Clean URLs, .html, and legacy .php requests
 app.use((req, res, next) => {

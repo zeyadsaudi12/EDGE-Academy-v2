@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css?v=20261004-v10">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Play & Study | العب واتعلم واكسب جوائز - EDGE Academy</title>
+    <style>
+        :root {
+            --ps-primary: #1a6bdb;
+            --ps-primary-light: #e8f1fc;
+            --ps-accent: #00b894;
+            --ps-gold: #f59e0b;
+            --ps-card: #ffffff;
+            --ps-card-alt: #f8fafc;
+            --ps-border: rgba(26, 107, 219, 0.12);
+            --ps-text: #1a2744;
+            --ps-muted: #64748b;
+        }
+
+        .dark-mode {
+            --ps-card: #152038;
+            --ps-card-alt: #1c2e50;
+            --ps-border: rgba(26, 107, 219, 0.22);
+            --ps-text: #f1f5f9;
+            --ps-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg) !important;
+            color: var(--ps-text);
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            min-height: 100vh;
+        }
+
+        .ps-hero-banner {
+            background: linear-gradient(135deg, #0d1e3d 0%, #153265 50%, #1a6bdb 100%);
+            color: #ffffff;
+            padding: 38px 24px;
+            border-radius: 28px;
+            margin: 20px auto 32px;
+            max-width: 1240px;
+            box-shadow: 0 14px 40px rgba(26, 107, 219, 0.25);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .ps-hero-banner::after {
+            content: "🎮";
+            position: absolute;
+            left: -20px;
+            bottom: -30px;
+            font-size: 13rem;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .ps-title-wrap h1 {
+            font-size: 2.1rem;
+            font-weight: 900;
+            margin: 0 0 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ps-title-wrap p {
+            margin: 0;
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            font-weight: 600;
+            max-width: 580px;
+            line-height: 1.6;
+        }
+
+        /* ── HUD Widgets (Points & Energy) ── */
+        .ps-hud-cards {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            z-index: 2;
+        }
+
+        .hud-card {
+            background: rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 14px 22px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hud-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+        }
+
+        .hud-icon.gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
+        .hud-icon.energy { background: linear-gradient(135deg, #3b82f6, #00b894); color: #fff; }
+
+        .hud-info small {
+            display: block;
+            font-size: 0.76rem;
+            color: #cbd5e1;
+            font-weight: 800;
+        }
+
+        .hud-info strong {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        /* ── Master Grid Container ── */
+        .ps-container {
+            max-width: 1240px;
+            margin: 0 auto 60px;
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* ── Main Arena Card ── */
+        .ps-arena-card {
+            background: var(--ps-card);
+            border: 1px solid var(--ps-border);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.03);
+        }
+
+        .arena-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--ps-border);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .arena-header h2 {
+            margin: 0;
+            font-size: 1.35rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--ps-text);
+        }
+
+        /* Rules Box */
+        .rules-badge-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .rule-pill {
+            background: var(--ps-card-alt);
+            border: 1px solid var(--ps-border);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--ps-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .rule-pill.highlight {
+            background: rgba(26, 107, 219, 0.08);
+            border-color: var(--ps-primary);
+            color: var(--ps-primary);
+        }
+
+        /* Subject Selector Grid */
+        .subject-pick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .subject-btn {
+            background: var(--ps-card-alt);
+            border: 1.5px solid var(--ps-border);
+            padding: 12px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 0.88rem;
+            color: var(--ps-text);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .subject-btn:hover, .subject-btn.active {
+            background: #1a6bdb !important;
+            color: #fff !important;
+            border-color: #1a6bdb !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(26, 107, 219, 0.25);
+        }
+
+        /* Start Button */
+        .btn-launch-quiz {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1a6bdb, #00b894);
+            color: #fff;
+            border: none;
+            font-weight: 900;
+            font-size: 1.15rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(26, 107, 219, 0.35);
+            transition: all 0.25s ease;
+        }
+
+        .btn-launch-quiz:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 184, 148, 0.4);
+        }
+
+        /* ── Quiz Playing View ── */
+        #quizPlayView {
+            display: none;
+        }
+
+        .quiz-progress-bar-wrap {
+            height: 8px;
+            background: var(--ps-card-alt);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .quiz-progress-bar-fill {
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(90deg, #1a6bdb, #00b894);
+            transition: width 0.3s ease;
+        }
+
+        .quiz-question-box {
+            background: var(--ps-card-alt);
+            border: 1px solid var(--ps-border);
+            padding: 24px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            line-height: 1.6;
+            margin: 0 0 16px;
+            color: var(--ps-text);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-choice-btn {
+            background: var(--ps-card);
+            border: 2px solid var(--ps-border);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--ps-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            text-align: right;
+        }
+
+        .option-choice-btn:hover {
+            border-color: #1a6bdb;
+            background: rgba(26, 107, 219, 0.04);
+        }
+
+        .option-choice-btn.selected {
+            background: rgba(26, 107, 219, 0.1) !important;
+            border-color: #1a6bdb !important;
+            color: #1a6bdb !important;
+        }
+
+        /* ── Sidebar (Redeem Store & Leaderboard) ── */
+        .ps-side-col {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .side-widget-card {
+            background: var(--ps-card);
+            border: 1px solid var(--ps-border);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.03);
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin: 0 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ps-text);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--ps-border);
+        }
+
+        /* Redeem Card */
+        .redeem-box {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(26,107,219,0.06), rgba(0,184,148,0.06));
+            border: 1.5px dashed rgba(26,107,219,0.3);
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .redeem-box h4 {
+            margin: 0 0 6px;
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--ps-primary);
+        }
+
+        .redeem-progress-bar {
+            height: 10px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 12px 0 6px;
+        }
+
+        .redeem-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #10b981);
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+
+        .btn-redeem {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            background: #f59e0b;
+            color: #fff;
+            border: none;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-redeem:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Leaderboard List */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .lb-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: var(--ps-card-alt);
+            border-radius: 12px;
+            font-size: 0.88rem;
+            font-weight: 800;
+        }
+
+        .lb-rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.06);
+        }
+
+        .lb-rank.r1 { background: #f59e0b; color: #fff; }
+        .lb-rank.r2 { background: #94a3b8; color: #fff; }
+        .lb-rank.r3 { background: #d97706; color: #fff; }
+
+        @media (max-width: 992px) {
+            .ps-container {
+                grid-template-columns: 1fr;
+            }
+            .ps-hero-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body class="royal-dashboard">
+
+<!-- Header الموحد للمنصة -->
+<header>
+    <div class="header-inner">
+        <div class="header-right">
+            <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+                <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
+                <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
+            </a>
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة">
+                <span>EN</span>
+            </button>
+        </div>
+
+        <div class="header-center">
+            <a href="/" class="nav-link-item">الرئيسية</a>
+            <a href="teachers" class="nav-link-item">المعلمين</a>
+            <a href="subjects" class="nav-link-item">المواد الدراسية</a>
+            <a href="courses" class="nav-link-item">الكورسات</a>
+            <a href="exams" class="nav-link-item">الامتحانات</a>
+            <a href="play-study" class="nav-link-item active" style="background:linear-gradient(135deg, #f59e0b, #10b981); color:#fff; border-radius:50px; padding:6px 16px; font-weight:800;">
+                🎮 Play & Study
+            </a>
+        </div>
+
+        <div class="header-left">
+            <div id="authActions"></div>
+            <button class="theme-toggle-btn" onclick="toggleDarkMode()" aria-label="تبديل الوضع">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main style="max-width:1280px; margin:0 auto; padding:0 16px;">
+    <!-- Hero Banner with HUD -->
+    <div class="ps-hero-banner">
+        <div class="ps-title-wrap">
+            <h1>🎮 Play & Study | العب، اتعلم واكسب</h1>
+            <p>تحدَّ نفسك في كويزات سريعة من 5 أسئلة، اجمع النقاط يومياً واستبدل كل 200 نقطة بكود مجاني بقيمة 100 جنيه لأي محاضرة تختارها!</p>
+        </div>
+        
+        <div class="ps-hud-cards">
+            <!-- Points Card -->
+            <div class="hud-card">
+                <div class="hud-icon gold"><i class="fas fa-coins"></i></div>
+                <div class="hud-info">
+                    <small>رصيد النقاط</small>
+                    <strong id="hudPoints">0</strong>
+                </div>
+            </div>
+
+            <!-- Energy Card -->
+            <div class="hud-card">
+                <div class="hud-icon energy"><i class="fas fa-bolt"></i></div>
+                <div class="hud-info">
+                    <small>المحاولات اليومية</small>
+                    <strong id="hudEnergy">4 / 4</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="ps-container">
+        
+        <!-- Left: Arena Area -->
+        <section class="ps-arena-card">
+            
+            <!-- VIEW 1: Lobby / Subject Select -->
+            <div id="quizLobbyView">
+                <div class="arena-header">
+                    <h2><i class="fas fa-gamepad" style="color:#1a6bdb;"></i> ساحة التحدي السريع</h2>
+                    <span style="font-weight:800; font-size:0.88rem; color:var(--ps-muted);">5 أسئلة • اختيار من متعدد</span>
+                </div>
+
+                <!-- Rules Pill Row -->
+                <div class="rules-badge-row">
+                    <div class="rule-pill highlight"><i class="fas fa-crown"></i> 100% الدرجة النهائية = <b>+10 نقاط</b></div>
+                    <div class="rule-pill"><i class="fas fa-star-half-alt"></i> من 70% إلى 99% = <b>+5 نقاط</b></div>
+                    <div class="rule-pill"><i class="fas fa-times-circle"></i> أقل من 70% = 0 نقطة</div>
+                    <div class="rule-pill"><i class="fas fa-battery-half"></i> 4 محاولات يومياً</div>
+                </div>
+
+                <h4 style="margin:0 0 12px; font-weight:800; font-size:0.95rem; color:var(--ps-text);">اختر مادة التحدي:</h4>
+                <div class="subject-pick-grid">
+                    <button class="subject-btn active" data-sub="الكل" onclick="pickSubject('الكل', this)">🎲 مكس شامل</button>
+                    <button class="subject-btn" data-sub="اللغة العربية" onclick="pickSubject('اللغة العربية', this)">📖 عربي</button>
+                    <button class="subject-btn" data-sub="اللغة الإنجليزية" onclick="pickSubject('اللغة الإنجليزية', this)">🇬🇧 إنجليزي</button>
+                    <button class="subject-btn" data-sub="الرياضيات" onclick="pickSubject('الرياضيات', this)">📐 رياضيات</button>
+                    <button class="subject-btn" data-sub="الفيزياء" onclick="pickSubject('الفيزياء', this)">⚡ فيزياء</button>
+                    <button class="subject-btn" data-sub="العلوم والكيمياء" onclick="pickSubject('العلوم والكيمياء', this)">🧪 كيمياء</button>
+                    <button class="subject-btn" data-sub="الأحياء" onclick="pickSubject('الأحياء', this)">🧬 أحياء</button>
+                </div>
+
+                <button class="btn-launch-quiz" id="btnLaunchQuiz" onclick="startPlayStudyQuiz()">
+                    <i class="fas fa-play"></i> ابدأ التحدي الآن (يستهلك 1 طاقة)
+                </button>
+            </div>
+
+            <!-- VIEW 2: Active Quiz Playing -->
+            <div id="quizPlayView">
+                <div class="arena-header">
+                    <h2><i class="fas fa-question-circle" style="color:#00b894;"></i> السؤال <span id="qCurrentIndex">1</span> من 5</h2>
+                    <div id="quizTimer" style="font-weight:900; color:#e11d48; font-size:1.1rem;"><i class="fas fa-stopwatch"></i> <span id="timerVal">20</span> ث</div>
+                </div>
+
+                <div class="quiz-progress-bar-wrap">
+                    <div class="quiz-progress-bar-fill" id="quizProgressFill"></div>
+                </div>
+
+                <div class="quiz-question-box">
+                    <h3 class="quiz-question-title" id="qTitle">جاري تحميل السؤال...</h3>
+                    <div class="options-list" id="qOptionsList">
+                        <!-- Options injected dynamically -->
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.85rem; color:var(--ps-muted); font-weight:700;" id="quizSubjectLabel">مادة: عام</span>
+                    <button id="btnNextQuestion" onclick="nextQuestion()" style="background:#1a6bdb; color:#fff; border:none; padding:12px 28px; border-radius:12px; font-weight:800; font-size:1rem; cursor:pointer;" disabled>
+                        التالي <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 3: Result Summary -->
+            <div id="quizResultView" style="display:none; text-align:center; padding:20px 0;">
+                <div id="resultIcon" style="font-size:4rem; margin-bottom:12px;">🎉</div>
+                <h2 id="resultHeading" style="margin:0 0 8px; font-weight:900;">نتيجة التحدي</h2>
+                <p id="resultMsg" style="font-size:1.05rem; color:var(--ps-muted); font-weight:700; margin:0 0 20px;">لقد حصلت على 5 من 5</p>
+                
+                <div style="display:inline-flex; align-items:center; gap:20px; background:var(--ps-card-alt); padding:16px 30px; border-radius:20px; margin-bottom:24px;">
+                    <div>
+                        <small style="display:block; color:var(--ps-muted); font-weight:800;">النسبة المئوية</small>
+                        <strong id="resPercentage" style="font-size:1.4rem; color:#1a6bdb;">100%</strong>
+                    </div>
+                    <div style="width:1px; height:36px; background:var(--ps-border);"></div>
+                    <div>
+                        <small style="display:block; color:var(--ps-muted); font-weight:800;">النقاط المكتسبة</small>
+                        <strong id="resEarnedPoints" style="font-size:1.4rem; color:#f59e0b;">+10 نقاط</strong>
+                    </div>
+                </div>
+
+                <div>
+                    <button onclick="returnToLobby()" style="background:#1a6bdb; color:#fff; border:none; padding:12px 30px; border-radius:50px; font-weight:800; font-size:1rem; cursor:pointer;">
+                        <i class="fas fa-redo"></i> العودة للساحة
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Right Sidebar: Redeem Store & Leaderboard -->
+        <aside class="ps-side-col">
+            
+            <!-- 1. Redeem Store -->
+            <div class="side-widget-card">
+                <h3 class="widget-title"><i class="fas fa-gift" style="color:#f59e0b;"></i> متجر استبدال الجوائز</h3>
+                
+                <div class="redeem-box">
+                    <h4>🎁 كود بقيمة 100 جنيه</h4>
+                    <p style="margin:0; font-size:0.84rem; color:var(--ps-muted); font-weight:700;">صالح لتفعيل أي فيديو أو محاضرة من اختيارك على المنصة.</p>
+                    <div class="redeem-progress-bar">
+                        <div class="redeem-progress-fill" id="redeemFill" style="width:0%;"></div>
+                    </div>
+                    <small style="font-weight:800; color:var(--ps-muted); font-size:0.78rem;" id="redeemText">0 / 200 نقطة</small>
+                </div>
+
+                <button class="btn-redeem" id="btnRedeem" onclick="redeemCoupon()" disabled>
+                    <i class="fas fa-exchange-alt"></i> استبدال 200 نقطة بكود 100 ج
+                </button>
+
+                <!-- List of Redeemed Coupons -->
+                <div id="myCouponsList" style="margin-top:16px; display:none;">
+                    <h5 style="margin:0 0 8px; font-size:0.85rem; font-weight:800; color:var(--ps-muted);">أكوادك المستبدلة:</h5>
+                    <div id="couponsContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
+                </div>
+            </div>
+
+            <!-- 2. Leaderboard -->
+            <div class="side-widget-card">
+                <h3 class="widget-title"><i class="fas fa-trophy" style="color:#f59e0b;"></i> أبطال التحدي (المتصدرون)</h3>
+                <div class="leaderboard-list" id="leaderboardList">
+                    <div style="text-align:center; padding:15px; color:var(--ps-muted); font-size:0.85rem; font-weight:700;">
+                        جاري تحميل لوحة الشرف...
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js?v=20261031-v11" defer></script>
+<script>
+(() => {
+    let currentUser = null;
+    let selectedSubject = 'الكل';
+    let currentQuiz = null;
+    let currentQIndex = 0;
+    let userAnswers = [];
+    let timerInterval = null;
+    let timeLeft = 20;
+
+    function getUserId() {
+        try {
+            currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            return currentUser ? currentUser._id : null;
+        } catch (_) {
+            return null;
+        }
+    }
+
+    async function loadPlayStudyProfile() {
+        const userId = getUserId();
+        if (!userId) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'تسجيل الدخول مطلوب',
+                text: 'يجب تسجيل الدخول كطالب لتتمكن من اللعب وجمع النقاط واستبدالها.',
+                confirmButtonText: 'تسجيل الدخول'
+            }).then(() => window.location.href = 'login');
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/play-study/profile?userId=${encodeURIComponent(userId)}`);
+            const json = await res.json();
+            if (json.success) {
+                const d = json.data;
+                document.getElementById('hudPoints').textContent = d.points;
+                document.getElementById('hudEnergy').textContent = `${d.dailyEnergy} / 4`;
+
+                // Update Redeem progress
+                const pct = Math.min(100, Math.round((d.points / 200) * 100));
+                document.getElementById('redeemFill').style.width = pct + '%';
+                document.getElementById('redeemText').textContent = `${d.points} / 200 نقطة`;
+                
+                const btnRedeem = document.getElementById('btnRedeem');
+                if (d.points >= 200) {
+                    btnRedeem.disabled = false;
+                    btnRedeem.style.background = '#10b981';
+                } else {
+                    btnRedeem.disabled = true;
+                    btnRedeem.style.background = '#94a3b8';
+                }
+
+                // Render redeemed coupons if any
+                if (Array.isArray(d.redeemedCoupons) && d.redeemedCoupons.length > 0) {
+                    document.getElementById('myCouponsList').style.display = 'block';
+                    document.getElementById('couponsContainer').innerHTML = d.redeemedCoupons.map(c => `
+                        <div style="background:var(--ps-card-alt); border:1px solid var(--ps-border); padding:8px 12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;">
+                            <span style="font-family:monospace; font-weight:900; color:#1a6bdb;">${c.code}</span>
+                            <span style="font-weight:800; color:#10b981;">100 ج</span>
+                        </div>
+                    `).join('');
+                }
+
+                // Render Leaderboard
+                const lb = d.leaderboard || [];
+                const lbContainer = document.getElementById('leaderboardList');
+                if (lb.length === 0) {
+                    lbContainer.innerHTML = '<div style="text-align:center; padding:15px; color:var(--ps-muted); font-size:0.85rem;">لا يوجد متصدرين بعد. كن الأول!</div>';
+                } else {
+                    lbContainer.innerHTML = lb.map((p, idx) => {
+                        const rankClass = idx === 0 ? 'r1' : idx === 1 ? 'r2' : idx === 2 ? 'r3' : '';
+                        return `
+                            <div class="lb-item">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span class="lb-rank ${rankClass}">${p.rank}</span>
+                                    <span>${p.name}</span>
+                                </div>
+                                <span style="color:#f59e0b; font-weight:900;">${p.points} نقطة</span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        } catch (err) {
+            console.error('Failed to load play study profile:', err);
+        }
+    }
+
+    window.pickSubject = (sub, btn) => {
+        selectedSubject = sub;
+        document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+    };
+
+    window.startPlayStudyQuiz = async () => {
+        const userId = getUserId();
+        if (!userId) return;
+
+        try {
+            const res = await fetch('/api/play-study/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, subject: selectedSubject })
+            });
+            const data = await res.json();
+            if (!data.success) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'تنبيه الطاقة',
+                    text: data.message
+                });
+                return;
+            }
+
+            currentQuiz = data;
+            currentQIndex = 0;
+            userAnswers = [];
+
+            document.getElementById('quizLobbyView').style.display = 'none';
+            document.getElementById('quizResultView').style.display = 'none';
+            document.getElementById('quizPlayView').style.display = 'block';
+
+            document.getElementById('hudEnergy').textContent = `${data.remainingEnergy} / 4`;
+            renderQuestion();
+        } catch (err) {
+            console.error('Start quiz error:', err);
+            Swal.fire({ icon: 'error', title: 'خطأ', text: 'تعذر بدء التحدي، حاول مجدداً.' });
+        }
+    };
+
+    function renderQuestion() {
+        if (!currentQuiz || !currentQuiz.questions[currentQIndex]) return;
+        const q = currentQuiz.questions[currentQIndex];
+        
+        document.getElementById('qCurrentIndex').textContent = currentQIndex + 1;
+        document.getElementById('qTitle').textContent = q.text;
+        document.getElementById('quizSubjectLabel').textContent = `مادة: ${q.subject || selectedSubject}`;
+        
+        // Progress fill
+        const pct = ((currentQIndex + 1) / currentQuiz.questions.length) * 100;
+        document.getElementById('quizProgressFill').style.width = pct + '%';
+
+        // Options
+        const container = document.getElementById('qOptionsList');
+        container.innerHTML = q.options.map((opt, idx) => `
+            <button class="option-choice-btn" onclick="selectOption('${idx}', this)">
+                <span style="width:24px; height:24px; border-radius:50%; background:rgba(0,0,0,0.06); display:grid; place-items:center; font-size:0.8rem; font-weight:800;">${idx + 1}</span>
+                <span>${opt}</span>
+            </button>
+        `).join('');
+
+        document.getElementById('btnNextQuestion').disabled = true;
+
+        // Reset timer
+        clearInterval(timerInterval);
+        timeLeft = 25;
+        document.getElementById('timerVal').textContent = timeLeft;
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timerVal').textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                nextQuestion(); // auto advance
+            }
+        }, 1000);
+    }
+
+    window.selectOption = (optIndex, btn) => {
+        document.querySelectorAll('.option-choice-btn').forEach(b => b.classList.remove('selected'));
+        if (btn) btn.classList.add('selected');
+        userAnswers[currentQIndex] = optIndex;
+        document.getElementById('btnNextQuestion').disabled = false;
+    };
+
+    window.nextQuestion = () => {
+        clearInterval(timerInterval);
+        if (userAnswers[currentQIndex] === undefined) {
+            userAnswers[currentQIndex] = '-1'; // timeout / skipped
+        }
+
+        currentQIndex++;
+        if (currentQIndex < currentQuiz.questions.length) {
+            renderQuestion();
+        } else {
+            submitQuizResults();
+        }
+    };
+
+    async function submitQuizResults() {
+        const userId = getUserId();
+        try {
+            const res = await fetch('/api/play-study/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId,
+                    quizToken: currentQuiz.quizToken,
+                    userAnswers
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('quizPlayView').style.display = 'none';
+                document.getElementById('quizResultView').style.display = 'block';
+
+                document.getElementById('resPercentage').textContent = data.percentage + '%';
+                document.getElementById('resEarnedPoints').textContent = `+${data.pointsEarned} نقطة`;
+
+                if (data.percentage === 100) {
+                    document.getElementById('resultIcon').textContent = '🥇';
+                    document.getElementById('resultHeading').textContent = 'علامة كاملة خارقة! مبروك!';
+                    document.getElementById('resultMsg').textContent = `أجبت على ${data.score} من ${data.totalCount} أسئلة بشكل صحيح تماماً وكسبت 10 نقاط كاملة!`;
+                } else if (data.percentage >= 70) {
+                    document.getElementById('resultIcon').textContent = '🥈';
+                    document.getElementById('resultHeading').textContent = 'أداء رائع ومتميز!';
+                    document.getElementById('resultMsg').textContent = `أجبت على ${data.score} من ${data.totalCount} أسئلة صحيحة وتجاوزت نسبة 70% وكسبت 5 نقاط!`;
+                } else {
+                    document.getElementById('resultIcon').textContent = '💪';
+                    document.getElementById('resultHeading').textContent = 'محاولة جيدة، حظ أفضل في المرة القادمة!';
+                    document.getElementById('resultMsg').textContent = `حصلت على ${data.percentage}%. تحتاج إلى 70% على الأقل لكسب النقاط.`;
+                }
+
+                loadPlayStudyProfile();
+            }
+        } catch (err) {
+            console.error('Submit quiz error:', err);
+        }
+    }
+
+    window.returnToLobby = () => {
+        document.getElementById('quizResultView').style.display = 'none';
+        document.getElementById('quizLobbyView').style.display = 'block';
+    };
+
+    window.redeemCoupon = async () => {
+        const userId = getUserId();
+        if (!userId) return;
+
+        const confirm = await Swal.fire({
+            title: 'استبدال 200 نقطة؟',
+            text: 'سيتم خصم 200 نقطة وتوليد كود خصم بقيمة 100 جنيه فوري تستخدمه في أي فيديو.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'نعم، استبدل الآن',
+            cancelButtonText: 'إلغاء'
+        });
+
+        if (!confirm.isConfirmed) return;
+
+        try {
+            const res = await fetch('/api/play-study/redeem', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId })
+            });
+            const data = await res.json();
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'مبروك يا بطل! 🎉',
+                    html: `
+                        <p style="font-size:1rem; margin-bottom:12px;">كود الخصم الخاص بك هو:</p>
+                        <div style="background:#f1f5f9; padding:12px 18px; border-radius:12px; font-family:monospace; font-size:1.3rem; font-weight:900; color:#1a6bdb; letter-spacing:1px; user-select:all;">
+                            ${data.code}
+                        </div>
+                        <p style="font-size:0.85rem; color:#64748b; margin-top:12px;">قيمة الكود: <b>100 جنيه</b>، يمكنك استخدامه مباشرة عند شحن أي فيديو من اختيارك.</p>
+                    `
+                });
+                loadPlayStudyProfile();
+            } else {
+                Swal.fire({ icon: 'error', title: 'تعذر الاستبدال', text: data.message });
+            }
+        } catch (err) {
+            console.error('Redeem error:', err);
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', loadPlayStudyProfile);
+})();
+</script>
+
+</body>
+</html>
