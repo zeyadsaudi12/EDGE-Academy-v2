@@ -9,6 +9,12 @@ const playStudySchema = new mongoose.Schema({
     totalAttempts: { type: Number, default: 0 },
     totalWins: { type: Number, default: 0 }, // >= 70%
     perfectWins: { type: Number, default: 0 }, // 100%
+    
+    // Admin Controls & Anti-Cheat:
+    isBanned: { type: Boolean, default: false },
+    banReason: { type: String, default: 'لقد تم حظرك من نظام Play & Study بسبب انتهاك القواعد أو محاولات الغش.' },
+    bannedAt: { type: Date },
+
     history: [{
         subject: { type: String, default: 'عام' },
         score: { type: Number, required: true },
