@@ -2214,6 +2214,7 @@ function initMasarChatbot(currentUser) {
     document.body.appendChild(botBtn);
     document.body.appendChild(botWindow);
 
+    // Robot Toggle Button
     botBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = botWindow.classList.toggle('active');
@@ -2221,14 +2222,49 @@ function initMasarChatbot(currentUser) {
         if (bubble) {
             bubble.textContent = isOpen ? 'إغلاق المساعد ✕' : 'مساعد EDGE الذكي 💬';
         }
+        if (isOpen) {
+            setTimeout(() => {
+                const inp = document.getElementById('chatbotInput');
+                if (inp) inp.focus();
+            }, 100);
+        }
     });
 
-    document.getElementById('chatbotCloseBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        botWindow.classList.remove('active');
-        const bubble = document.getElementById('edgeRobotBubble');
-        if (bubble) bubble.textContent = 'مساعد EDGE الذكي 💬';
-    });
+    // Close Button
+    const closeBtn = document.getElementById('chatbotCloseBtn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            botWindow.classList.remove('active');
+            const bubble = document.getElementById('edgeRobotBubble');
+            if (bubble) bubble.textContent = 'مساعد EDGE الذكي 💬';
+        });
+    }
+
+    // Direct Form and Input Listeners (Foolproof binding)
+    const form = botWindow.querySelector('#chatbotForm');
+    const input = botWindow.querySelector('#chatbotInput');
+    const sendBtn = botWindow.querySelector('#chatbotForm button');
+
+    function doSubmitChat(e) {
+        if (e) e.preventDefault();
+        if (!input) return;
+        const msg = String(input.value || '').trim();
+        if (!msg) return;
+        input.value = '';
+        sendBotMessage(msg);
+    }
+
+    if (form) form.addEventListener('submit', doSubmitChat);
+    if (sendBtn) sendBtn.addEventListener('click', doSubmitChat);
+    if (input) {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                doSubmitChat(e);
+            }
+        });
+    }
 
     // Close when clicking outside on document
     document.addEventListener('click', (e) => {
@@ -2240,14 +2276,18 @@ function initMasarChatbot(currentUser) {
     });
 }
 
+// Global hook for FAQ pill buttons
 window.sendFaqRequest = function (faqText) {
-    sendBotMessage(faqText);
+    if (typeof sendBotMessage === 'function') {
+        sendBotMessage(faqText);
+    }
 };
 
 window.handleBotSendMessage = function (event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     const input = document.getElementById('chatbotInput');
-    const msgText = input.value.trim();
+    if (!input) return;
+    const msgText = String(input.value || '').trim();
     if (!msgText) return;
     input.value = '';
     sendBotMessage(msgText);
@@ -2256,42 +2296,81 @@ window.handleBotSendMessage = function (event) {
 async function sendBotMessage(message) {
     const input = document.getElementById('chatbotInput');
     const sendButton = document.querySelector('#chatbotForm button');
-    if (!message || !input || input.disabled) return;
+    if (!message) return;
+
+    // 1. Immediately append user message to UI
     appendChatMessage(message, 'user');
     window.masarChatHistory = [...(window.masarChatHistory || []), { role: 'user', content: message }].slice(-10);
-    input.disabled = true;
+
+    // 2. Typing indicator
+    const typing = appendChatMessage('روبوت EDGE يفكر... 🤖', 'bot typing');
+
+    // 3. Instant client-side response for common greetings & fast questions
+    const q = String(message).trim().toLowerCase();
+    if (/^(ازيك|عامل ايه|شخبارك|أهلاً|اهلا|مرحبا|سلام عليكم|السلام عليكم|صباح الخير|مساء الخير|هلا|هاي|hi|hello)$/.test(q)) {
+        setTimeout(() => {
+            typing.remove();
+            appendChatMessage('أهلاً بك يا بطل! 👋 أنا روبوت EDGE، مساعدك الذكي في منصة EDGE Academy.. أنا هنا لمساعدتك في أي سؤال عن الكورسات، المحاضرات، الامتحانات، وشحن الأكواد!', 'bot');
+        }, 200);
+        return;
+    }
+    if (/^(شكرا|شكراً|تسلم|الله يخليك|تمام)$/.test(q)) {
+        setTimeout(() => {
+            typing.remove();
+            appendChatMessage('العفو يا بطل! 🚀✨ أنا في خدمتك دايماً وأتمنى لك درجات ممتازة والتفوق دائماً.', 'bot');
+        }, 200);
+        return;
+    }
+
+    if (input) input.disabled = true;
     if (sendButton) sendButton.disabled = true;
-    const typing = appendChatMessage('يفكر المساعد…', 'bot typing');
+
+    // Call server with 5s timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     try {
         const response = await fetch(`${API_URL}/api/chat`, {
             method: 'POST',
+            signal: controller.signal,
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message, history: window.masarChatHistory.slice(0, -1) })
         });
-        const data = await response.json();
+        clearTimeout(timeoutId);
+        const data = await response.json().catch(() => ({}));
         typing.remove();
-        if (!response.ok || !data.success) throw new Error(data.message || 'تعذر الوصول للمساعد');
-        appendChatMessage(data.reply, 'bot');
-        window.masarChatHistory = [...window.masarChatHistory, { role: 'assistant', content: data.reply }].slice(-10);
+        if (response.ok && data && data.success && data.reply) {
+            appendChatMessage(data.reply, 'bot');
+            window.masarChatHistory = [...window.masarChatHistory, { role: 'assistant', content: data.reply }].slice(-10);
+        } else {
+            appendChatMessage(getLocalChatFallback(message), 'bot');
+        }
     } catch (error) {
+        clearTimeout(timeoutId);
         typing.remove();
         appendChatMessage(getLocalChatFallback(message), 'bot');
     } finally {
-        input.disabled = false;
+        if (input) {
+            input.disabled = false;
+            input.focus();
+        }
         if (sendButton) sendButton.disabled = false;
-        input.focus();
     }
 }
 
 function getLocalChatFallback(message) {
     const text = String(message || '').toLowerCase();
+    if (/(ازيك|عامل ايه|شخبارك|أهلاً|اهلا|مرحبا|سلام عليكم|السلام عليكم)/.test(text)) {
+        return 'أهلاً بك يا بطل! 👋 أنا روبوت EDGE، مساعدك الذكي في منصة EDGE Academy.. اسألني عن أي حاجة تحتاجها!';
+    }
     if (/(نكت|نكتة|اضحك|ضحكني)/.test(text)) {
         return 'مرة طالب قال للمدرس: ينفع أتعلم من غير ما أذاكر؟ قاله: ينفع، بس النتيجة مش هتتعلم معاك 😄';
     }
-    if (/(كود|شحن|تفعيل)/.test(text)) return 'جرّب فتح المحاضرة من صفحة الكورسات ثم أدخل كود الشحن في المكان المخصص.';
-    if (/(امتحان|اختبار|درجات)/.test(text)) return 'هتلاقي الامتحانات المتاحة في قسم «الامتحانات». تأكد من اتصال الإنترنت قبل البدء.';
-    return 'أنا موجود لمساعدتك في الكورسات والامتحانات، أو ممكن نحكي نكتة خفيفة 😄';
+    if (/(كود|شحن|تفعيل)/.test(text)) return 'لتفعيل كود محاضرة، افتح صفحة الكورسات ثم اختَر المحاضرة وأدخل كود الشحن في الحقل المخصص.';
+    if (/(امتحان|اختبار|درجات)/.test(text)) return 'هتلاقي كافة الامتحانات المتاحة في قسم «الامتحانات» في القائمة العلوية.';
+    if (/(دعم|فني|تواصل|واتس)/.test(text)) return 'يمكنك التواصل مع الدعم الفني عبر زر الواتساب أو رقم الدعم الموجود أسفل الصفحة الرئيسية.';
+    return 'أنا روبوت EDGE، مساعدك الذكي! جاهز لمساعدتك في الكورسات والامتحانات وأكواد المنصة، اسألني في أي وقت 🤖✨';
 }
 
 function appendChatMessage(text, sender) {

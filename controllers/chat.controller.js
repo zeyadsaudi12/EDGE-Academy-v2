@@ -92,7 +92,16 @@ async function buildPlatformContext(user) {
 }
 
 function fallbackReply(message, platformContext = '') {
-    const text = message.toLowerCase();
+    const text = message.toLowerCase().trim();
+    if (/(ازيك|عامل ايه|شخبارك|أهلاً|اهلا|مرحبا|سلام عليكم|السلام عليكم|صباح الخير|مساء الخير|هلا)/.test(text)) {
+        return 'أهلاً بك يا بطل! 👋 أنا روبوت EDGE، مساعدك الذكي في منصة EDGE Academy. أنا هنا لمساعدتك في أي سؤال عن الكورسات، المحاضرات، الامتحانات، وشحن الأكواد.. اسألني أي وقت!';
+    }
+    if (/(شكرا|شكراً|تسلم|الله يخليك|تمام)/.test(text)) {
+        return 'العفو، أنا في خدمتك دايماً وبتمنى لك أعلى درجات التفوق! 🚀✨ لو احتجت أي مساعدة تانية ناديني.';
+    }
+    if (/(مين انت|اسمك ايه|انت مين|عرفني بيك)/.test(text)) {
+        return 'أنا روبوت EDGE، المساعد الذكي الرسمي لمنصة EDGE Academy التعليمية! 🤖✨ تم برمجتي لمساعدتك في الوصول لدروسك، حل مشاكلك، وإرشادك لكل ما تحتاجه في المنصة.';
+    }
     if (/(نكت|نكتة|اضحك|ضحكني)/.test(text)) {
         const jokes = [
             'مرة طالب قال للمدرس: ينفع أتعلم من غير ما أذاكر؟ قاله: ينفع، بس النتيجة مش هتتعلم معاك 😄',
@@ -126,7 +135,10 @@ exports.reply = async (req, res) => {
     if (!message) return res.status(400).json({ success: false, message: 'اكتب رسالة أولاً' });
 
     const history = normaliseHistory(req.body.history);
-    const platformContext = await buildPlatformContext(req.user);
+    const platformContext = await Promise.race([
+        buildPlatformContext(req.user),
+        new Promise(resolve => setTimeout(() => resolve('سياق المنصة جاهز'), 2000))
+    ]).catch(() => 'سياق المنصة جاهز');
     if (!process.env.OPENAI_API_KEY) {
         return res.json({ success: true, reply: fallbackReply(message, platformContext), provider: 'fallback' });
     }
