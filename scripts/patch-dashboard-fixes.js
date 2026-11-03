@@ -100,3 +100,4 @@ if (h.includes('function scrollToSection(targetId, btn)')) {
 
 fs.writeFileSync('teacher-dashboard.html', h, 'utf8');
 console.log('🎉 Done updating teacher-dashboard.html');
+
