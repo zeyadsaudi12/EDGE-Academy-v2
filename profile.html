@@ -46,29 +46,26 @@
         /* ── Master Grid Layout ── */
         .royal-wrapper {
             display: grid;
-            grid-template-columns: 290px 1fr;
-            gap: 24px;
-            max-width: 1360px;
-            width: calc(100% - 40px);
-            margin: 28px auto 60px;
+            grid-template-columns: 280px minmax(0, 1fr);
+            gap: 28px;
+            max-width: 1320px;
+            width: calc(100% - 48px);
+            margin: 20px auto 60px;
             padding: 0;
             align-items: start;
             box-sizing: border-box;
-            transition: all 0.3s ease;
         }
 
-        /* ── Sidebar (شريط الأدوات الجانبي للبروفايل) ── */
+        /* ── Sidebar (شريط الأدوات الجانبي العصري للبروفايل) ── */
         .royal-sidebar {
             background: var(--profile-card) !important;
             border: 1px solid var(--profile-border) !important;
-            border-radius: 24px !important;
-            padding: 24px 16px !important;
-            box-shadow: var(--profile-shadow) !important;
+            border-radius: 20px !important;
+            padding: 20px 14px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
             position: sticky;
-            top: 96px;
-            height: fit-content;
+            top: 110px;
             box-sizing: border-box;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 80;
         }
 
@@ -76,8 +73,8 @@
             display: none;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 14px;
-            margin-bottom: 16px;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
             border-bottom: 1px solid var(--profile-border);
         }
 
@@ -92,13 +89,13 @@
 
         .sidebar-close-btn {
             display: none;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: var(--profile-card-alt);
             border: 1px solid var(--profile-border);
             color: var(--profile-muted);
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             align-items: center;
             justify-content: center;
@@ -111,52 +108,55 @@
             border-color: #fca5a5;
         }
 
+        /* User Header in Sidebar (Compact & Elegant) */
         .sidebar-user-header {
             text-align: center;
-            margin-bottom: 20px;
+            padding-bottom: 16px;
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--profile-border);
             position: relative;
         }
 
         .avatar-container {
             position: relative;
-            width: 92px;
-            height: 92px;
-            margin: 0 auto 12px;
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 10px;
         }
 
         .sidebar-avatar {
             width: 100%;
             height: 100%;
-            border-radius: 22px;
+            border-radius: 50%;
             border: 3px solid var(--profile-primary) !important;
-            box-shadow: 0 4px 18px rgba(26, 107, 219, 0.25);
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.2);
             object-fit: cover;
+            background: var(--profile-card-alt);
         }
 
         .online-pulse {
             position: absolute;
-            bottom: -3px;
-            right: -3px;
-            width: 18px;
-            height: 18px;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
             background: var(--profile-accent) !important;
-            border: 3px solid var(--profile-card) !important;
+            border: 2.5px solid var(--profile-card) !important;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0, 184, 148, 0.5);
         }
 
         .avatar-hover-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.55);
-            border-radius: 22px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.2s ease;
             color: #ffffff;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
         }
 
         .avatar-container:hover .avatar-hover-overlay {
@@ -164,7 +164,7 @@
         }
 
         .sidebar-user-header h4 {
-            font-size: 1.12rem;
+            font-size: 1.05rem;
             font-weight: 900;
             color: var(--profile-text);
             margin: 0 0 6px 0;
@@ -172,30 +172,27 @@
 
         .sidebar-user-header p {
             display: inline-block;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 800;
             color: var(--profile-primary);
-            background: rgba(26, 107, 219, 0.1);
+            background: rgba(26, 107, 219, 0.08);
             padding: 3px 12px;
-            border-radius: 999px;
+            border-radius: 50px;
             margin: 0;
         }
 
         /* ── Sidebar Navigation Items ── */
-        
-        /* ── Sidebar Category Title ── */
         .sidebar-category-header {
-            font-size: 0.76rem;
+            font-size: 0.72rem;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
             color: var(--profile-muted);
-            padding: 10px 14px 4px;
-            margin-top: 6px;
-            opacity: 0.85;
+            padding: 8px 10px 4px;
+            margin-top: 4px;
+            opacity: 0.75;
             display: flex;
             align-items: center;
             gap: 8px;
+            user-select: none;
         }
 
         .sidebar-category-header::after {
@@ -208,28 +205,28 @@
 
         .sidebar-category-header:first-of-type {
             margin-top: 0;
-            padding-top: 4px;
+            padding-top: 0;
         }
 
         .sidebar-nav {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .side-item {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: none;
             background: transparent;
             color: var(--profile-muted);
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 800;
-            font-size: 0.94rem;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
             text-align: right;
             font-family: inherit;
@@ -237,67 +234,75 @@
         }
 
         .side-item i {
-            font-size: 1.15rem;
-            transition: transform 0.2s ease;
-            width: 22px;
+            font-size: 1.05rem;
+            width: 20px;
             text-align: center;
+            color: var(--profile-muted);
+            transition: color 0.2s;
         }
 
         .side-item:hover {
-            background: rgba(26, 107, 219, 0.08) !important;
+            background: rgba(26, 107, 219, 0.06) !important;
             color: var(--profile-primary) !important;
-            transform: translateX(-3px);
+        }
+
+        .side-item:hover i {
+            color: var(--profile-primary) !important;
         }
 
         .side-item.active {
-            background: linear-gradient(135deg, var(--profile-primary), var(--profile-primary-dark)) !important;
+            background: #1a6bdb !important;
             color: #ffffff !important;
-            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.35) !important;
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.25) !important;
         }
 
-        /* ── Main Content Area ── */
+        .side-item.active i {
+            color: #ffffff !important;
+        }
+
+        /* ── Main Content Area (Clean & Modern Card) ── */
         .royal-content {
             background: var(--profile-card) !important;
             border: 1px solid var(--profile-border) !important;
-            border-radius: 24px !important;
-            padding: 32px !important;
-            box-shadow: var(--profile-shadow) !important;
-            min-height: 480px;
+            border-radius: 20px !important;
+            padding: 28px !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+            min-height: 520px;
             box-sizing: border-box;
-            overflow-x: hidden;
         }
 
         .glass-section-title {
-            border-bottom: 2px solid var(--profile-border) !important;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
+            border-bottom: 1px solid var(--profile-border) !important;
+            margin-bottom: 22px;
+            padding-bottom: 10px;
         }
 
         .glass-section-title h3 {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: 900;
             color: var(--profile-text);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             margin: 0;
         }
 
         .glass-section-title h3 i {
             color: var(--profile-primary);
+            font-size: 1.1rem;
         }
 
-        /* ── Mobile Section Header Card (تبديل القسم بسهولة على الموبايل) ── */
+        /* ── Mobile Section Header Card ── */
         .mobile-section-header-card {
             display: none;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            background: linear-gradient(135deg, rgba(26, 107, 219, 0.08), rgba(0, 184, 148, 0.08));
-            border: 1.5px solid rgba(26, 107, 219, 0.22);
-            border-radius: 18px;
-            padding: 13px 18px;
-            margin-bottom: 22px;
+            background: var(--profile-card-alt);
+            border: 1px solid var(--profile-border);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
             cursor: pointer;
             box-sizing: border-box;
             transition: all 0.2s ease;
@@ -305,7 +310,7 @@
 
         .mobile-section-header-card:hover,
         .mobile-section-header-card:active {
-            background: linear-gradient(135deg, rgba(26, 107, 219, 0.15), rgba(0, 184, 148, 0.12));
+            background: rgba(26, 107, 219, 0.06);
             border-color: var(--profile-primary);
         }
 
@@ -317,14 +322,14 @@
         }
 
         .mobile-section-label {
-            font-size: 0.74rem;
+            font-size: 0.72rem;
             font-weight: 800;
             color: var(--profile-muted);
         }
 
         .mobile-section-current {
             margin: 0;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 900;
             color: var(--profile-primary);
             display: flex;
@@ -336,15 +341,14 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 8px 14px;
-            border-radius: 999px;
+            padding: 6px 14px;
+            border-radius: 50px;
             background: var(--profile-primary);
             color: #ffffff;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 800;
             border: none;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(26, 107, 219, 0.3);
         }
 
         /* ── Mobile Sidebar Backdrop ── */
@@ -368,8 +372,8 @@
         .user-info-display {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 28px;
+            gap: 14px;
+            margin-bottom: 26px;
         }
 
         .info-item {
@@ -957,32 +961,20 @@
                 <div class="info-item"><span>الصف الدراسي:</span> <b id="u-grade">-</b></div>
             </div>
 
-            <!-- كارت QR الطالب لحضور الحصص بالسنتر -->
-            <div class="glass-section-title"><h3><i class="fas fa-qrcode"></i> كارت الحضور الذكي (QR Code)</h3></div>
-            <div class="student-qr-card">
-                <div class="student-qr-img-wrapper">
-                    <img id="student-qr-img" src="" alt="كود QR حضور الطالب" class="student-qr-image" onerror="this.src='imges/man.png'">
-                    <span style="font-size:0.75rem; color:#6b7280; display:block; margin-top:6px; font-weight:700;">باركود الطالب الرسمي</span>
-                </div>
-                <div class="student-qr-info">
-                    <span class="student-qr-badge"><i class="fas fa-bolt"></i> مخصص لحضور السنتر</span>
-                    <h4 class="student-qr-title">كارت الطالب لتسجيل الحضور وتفعيل الحصص</h4>
-                    <p class="student-qr-desc">
-                        استخدم هذا الكود عند الحضور في السنتر؛ يقوم المساعد بمسح الرمز ضوئياً لتسجيل حضورك الفوري وتفعيل المحاضرات والكورسات على حسابك مباشرة.
-                    </p>
-                    <div class="student-qr-code-box">
-                        <span style="color:#6b7280;">كود البريد:</span>
-                        <b id="student-qr-code-val">جاري توليد الرمز...</b>
+            <!-- كارت تذكير الحضور السريع -->
+            <div style="background:linear-gradient(135deg, rgba(26,107,219,0.06), rgba(0,184,148,0.06)); border:1px solid rgba(26,107,219,0.18); border-radius:16px; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:26px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="width:44px; height:44px; border-radius:12px; background:#1a6bdb; color:#fff; display:grid; place-items:center; font-size:1.3rem; flex-shrink:0;">
+                        <i class="fas fa-qrcode"></i>
                     </div>
-                    <div class="student-qr-buttons">
-                        <button onclick="downloadStudentQR()" class="btn-qr-download" type="button">
-                            <i class="fas fa-download"></i> تنزيل كارت QR (حفظ الصورة)
-                        </button>
-                        <button onclick="openQRModal()" class="btn-qr-download" style="background:#2563eb; box-shadow:0 4px 14px rgba(37,99,235,0.3);" type="button">
-                            <i class="fas fa-expand"></i> عرض مكبر للشاشة
-                        </button>
+                    <div>
+                        <h4 style="margin:0 0 2px; font-size:0.98rem; font-weight:900; color:var(--profile-text);">كارت حضور السنتر الذكي (QR Pass)</h4>
+                        <p style="margin:0; font-size:0.82rem; color:var(--profile-muted); font-weight:700;">رمز الحضور الفوري والباركود المخصص لحضور الحصص والسناتر.</p>
                     </div>
                 </div>
+                <button type="button" onclick="switchTab('tab-qr-card', this)" style="background:#1a6bdb; color:#fff; border:none; padding:8px 18px; border-radius:50px; font-weight:800; font-size:0.85rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:0.2s;">
+                    عرض كارت الحضور <i class="fas fa-arrow-left"></i>
+                </button>
             </div>
 
             <div class="glass-section-title"><h3><i class="fas fa-chart-pie"></i> إحصائيات التعلم</h3></div>
