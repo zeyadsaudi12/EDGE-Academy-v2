@@ -434,6 +434,30 @@ exports.registerAttendance = async (req, res, next) => {
 
         // استخراج اسم المستخدم (username) من البريد الإلكتروني أو كود الطالب
         // يقبل QR أو البريد الأكاديمي (username@...) أو اسم المستخدم أو رقم الهاتف.
+        const isAdmin = req.user.role === 'admin';
+        const accountTeacherId = req.user.teacherId ? String(req.user.teacherId) : null;
+        if (!isAdmin && !accountTeacherId) {
+            return res.status(403).json({ success: false, message: 'حساب المدرس أو المساعد غير مرتبط بمدرس' });
+        }
+
+        // Attendance belongs to the lecture owner. The browser cannot choose it.
+        let attendanceTeacherId = accountTeacherId;
+        if (videoId !== 'pending') {
+            if (!mongoose.Types.ObjectId.isValid(videoId)) {
+                return res.status(400).json({ success: false, message: 'بيانات المحاضرة غير صالحة' });
+            }
+            const video = await Video.findById(videoId).select('teacherId').lean();
+            if (!video || !video.teacherId) {
+                return res.status(404).json({ success: false, message: 'المحاضرة أو مدرسها غير موجود' });
+            }
+            attendanceTeacherId = String(video.teacherId);
+            if (!isAdmin && attendanceTeacherId !== accountTeacherId) {
+                return res.status(403).json({ success: false, message: 'لا تملك صلاحية تسجيل حضور لمحاضرة مدرس آخر' });
+            }
+        } else if (isAdmin) {
+            return res.status(400).json({ success: false, message: 'يجب اختيار محاضرة لتسجيل الحضور' });
+        }
+
         const normalizedScannedData = String(scannedData).trim().toLowerCase();
         const username = normalizedScannedData.includes('@') ? normalizedScannedData.split('@')[0] : normalizedScannedData;
 
@@ -461,6 +485,7 @@ exports.registerAttendance = async (req, res, next) => {
             studentPhone: user.phone || '',
             studentEmail: `${user.username}@edgeacademy.edu`,
             videoId: videoId === 'pending' ? 'pending' : videoId,
+            teacherId: attendanceTeacherId,
             center: center || '—',
             day: day || '—',
             grade: grade || '—',
@@ -482,8 +507,15 @@ exports.registerAttendance = async (req, res, next) => {
 
 exports.pendingSessions = async (req, res, next) => {
     try {
+        const match = { videoId: 'pending' };
+        if (req.user.role !== 'admin') {
+            if (!req.user.teacherId) {
+                return res.status(403).json({ success: false, message: 'حساب المدرس أو المساعد غير مرتبط بمدرس' });
+            }
+            match.teacherId = String(req.user.teacherId);
+        }
         const results = await Attendance.aggregate([
-            { $match: { videoId: 'pending' } },
+            { $match: match },
             {
                 $group: {
                     _id: {

@@ -2887,6 +2887,7 @@
                     </div>
                 </div>
 
+                <!-- ===== CONTROL & MANAGE VIDEOS ===== -->
                 <div id="section-teacher-applications" class="section">
                     <div class="table-card">
                         <div class="table-header">
@@ -2905,7 +2906,6 @@
                     </div>
                 </div>
 
-                <!-- ===== CONTROL & MANAGE VIDEOS ===== -->
                 <div id="section-manage-videos" class="section">
                     <div class="table-card">
                         <div class="table-header">
@@ -5269,6 +5269,8 @@
                             <span style="font-size:11px; color:var(--txt2);">متابع</span>
                         </div>
                         <div class="action-btns">
+                            <a href="teacher-profile?id=${t._id}" target="_blank" class="action-btn" title="معاينة بروفايل المعلم للطلاب"><i class="ti ti-external-link"></i></a>
+                            <a href="teacher-dashboard?teacherId=${t._id}" target="_blank" class="action-btn" title="فتح لوحة متابعة المعلم"><i class="ti ti-chart-bar"></i></a>
                             <button class="action-btn" onclick="openEditTeacherModal('${t._id}')" title="تعديل"><i class="ti ti-edit"></i></button>
                             <button class="action-btn" onclick="toggleTeacherVisibility('${t._id}', ${!!t.hidden})" title="${t.hidden ? 'إظهار للطلاب' : 'إخفاء عن الطلاب'}"><i class="ti ${t.hidden ? 'ti-eye' : 'ti-eye-off'}"></i></button>
                             <button class="action-btn danger" onclick="confirmDeleteTeacher('${t._id}','${t.name}')" title="حذف"><i class="ti ti-trash"></i></button>

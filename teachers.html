@@ -137,6 +137,11 @@
             const API_URL = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
             const urlParams = new URLSearchParams(window.location.search);
             const teacherId = urlParams.get('teacherId');
+            const targetId = urlParams.get('id') || teacherId;
+            if (targetId) {
+                window.location.replace('teacher-profile?id=' + encodeURIComponent(targetId));
+                return;
+            }
             
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             const studentGrade = currentUser?.role === 'student' ? currentUser.grade : null;
@@ -260,7 +265,7 @@
                     return;
                 }
 
-                document.getElementById('teacherAvatar').src = teacher.imagePath || 'imges/1.png';
+                document.getElementById('teacherAvatar').src = teacher.imagePath || 'imges/man.png';
                 document.getElementById('teacherName').textContent = teacher.name;
                 document.getElementById('teacherSubject').textContent = teacher.subjectAr;
                 document.getElementById('teacherBio').textContent = teacher.bio;

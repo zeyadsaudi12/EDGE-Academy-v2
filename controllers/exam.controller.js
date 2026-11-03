@@ -5,6 +5,21 @@ const path = require('path');
 const { PDFParse } = require('pdf-parse');
 const mammoth = require('mammoth');
 
+function staffTeacherId(req, res) {
+    if (req.user.role === 'admin') return null;
+    if (!['teacher', 'assistant'].includes(req.user.role) || !req.user.teacherId) {
+        res.status(403).json({ success: false, message: 'هذا الحساب غير مرتبط بمدرس' });
+        return undefined;
+    }
+    return String(req.user.teacherId);
+}
+
+function ownsExam(req, exam, res) {
+    if (req.user.role === 'admin') return true;
+    const teacherId = staffTeacherId(req, res);
+    return teacherId !== undefined && String(exam.teacherId) === teacherId;
+}
+
 // ملفات الامتحانات تُرفع إلى Cloudinary، ولذلك يكون file.path رابطاً في الإنتاج
 // وليس مساراً محلياً يمكن قراءته بـ fs مباشرة.
 async function readUploadedFile(filePath) {
@@ -222,7 +237,13 @@ function parseAnswersText(text) {
 exports.getStudentResults = async (req, res, next) => {
     try {
         const { studentId } = req.params;
-        const exams = await Exam.find({ "results.studentId": studentId }).select('title subject teacherName totalMarks results');
+        const filter = { "results.studentId": studentId };
+        if (['teacher', 'assistant'].includes(req.user.role)) {
+            const teacherId = staffTeacherId(req, res);
+            if (teacherId === undefined) return;
+            filter.teacherId = teacherId;
+        }
+        const exams = await Exam.find(filter).select('title subject teacherName totalMarks results');
         const studentResults = [];
         exams.forEach(exam => {
             const result = exam.results.find(r => r.studentId === studentId);
@@ -253,6 +274,11 @@ exports.getAllExams = async (req, res, next) => {
         let filter = (all === 'true' || all === true) ? {} : { isActive: true };
         if (grade && grade !== 'all') filter.grades = grade;
         if (teacherId && teacherId !== 'all') filter.teacherId = teacherId;
+        if (['teacher', 'assistant'].includes(req.user.role)) {
+            const scopedTeacherId = staffTeacherId(req, res);
+            if (scopedTeacherId === undefined) return;
+            filter.teacherId = scopedTeacherId;
+        }
 
         const exams = await Exam.find(filter).sort({ createdAt: -1 });
 
@@ -283,6 +309,7 @@ exports.resetStudentExam = async (req, res, next) => {
         const exam = await Exam.findById(examId);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
 
+        if (!ownsExam(req, exam, res)) return;
         exam.results = exam.results.filter(r => r.studentId !== studentId);
         await exam.save();
 
@@ -294,7 +321,9 @@ exports.resetStudentExam = async (req, res, next) => {
 
 exports.getAllExamsForAdmin = async (req, res, next) => {
     try {
-        const exams = await Exam.find().sort({ createdAt: -1 });
+        const teacherId = req.user.role === 'admin' ? null : staffTeacherId(req, res);
+        if (teacherId === undefined) return;
+        const exams = await Exam.find(teacherId ? { teacherId } : {}).sort({ createdAt: -1 });
         res.json({ success: true, exams });
     } catch (err) {
         next(err);
@@ -305,6 +334,7 @@ exports.getExamById = async (req, res, next) => {
     try {
         const exam = await Exam.findById(req.params.id);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        if (['teacher', 'assistant'].includes(req.user.role) && !ownsExam(req, exam, res)) return;
         const examObject = exam.toObject();
         if (req.user.role === 'student') {
             examObject.questions = examObject.questions.map(({ correctAnswer, ...question }) => question);
@@ -322,7 +352,9 @@ exports.createExam = async (req, res, next) => {
         if (!title || !questions || questions.length === 0) {
             return res.status(400).json({ success: false, message: 'العنوان والأسئلة مطلوبة' });
         }
-        const exam = new Exam({ title, description, teacherId, teacherName, subject, grades, duration, totalMarks: totalMarks || questions.length, questions });
+        const scopedTeacherId = req.user.role === 'admin' ? teacherId : staffTeacherId(req, res);
+        if (scopedTeacherId === undefined) return;
+        const exam = new Exam({ title, description, teacherId: scopedTeacherId, teacherName, subject, grades, duration, totalMarks: totalMarks || questions.length, questions });
         await exam.save();
         res.status(201).json({ success: true, exam });
     } catch (err) {
@@ -332,8 +364,16 @@ exports.createExam = async (req, res, next) => {
 
 exports.updateExam = async (req, res, next) => {
     try {
-        const exam = await Exam.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        const existing = await Exam.findById(req.params.id);
+        if (!existing) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        if (!ownsExam(req, existing, res)) return;
+        const updates = { ...req.body };
+        if (req.user.role !== 'admin') {
+            delete updates.teacherId;
+            delete updates.teacherName;
+            delete updates.results;
+        }
+        const exam = await Exam.findByIdAndUpdate(req.params.id, updates, { new: true });
         res.json({ success: true, exam });
     } catch (err) {
         next(err);
@@ -342,7 +382,10 @@ exports.updateExam = async (req, res, next) => {
 
 exports.deleteExam = async (req, res, next) => {
     try {
-        await Exam.findByIdAndDelete(req.params.id);
+        const exam = await Exam.findById(req.params.id);
+        if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        if (!ownsExam(req, exam, res)) return;
+        await exam.deleteOne();
         res.json({ success: true });
     } catch (err) {
         next(err);
@@ -351,6 +394,9 @@ exports.deleteExam = async (req, res, next) => {
 
 exports.submitExam = async (req, res, next) => {
     try {
+        if (req.user.role !== 'student') {
+            return res.status(403).json({ success: false, message: 'تسليم الامتحان متاح للطلاب فقط' });
+        }
         const { answers } = req.body;
         const studentId = String(req.user._id);
         const studentName = `${req.user.firstName || ''} ${req.user.lastName || ''}`.trim();
@@ -418,6 +464,7 @@ exports.gradeEssay = async (req, res, next) => {
         const exam = await Exam.findById(req.params.examId);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
 
+        if (!ownsExam(req, exam, res)) return;
         const resultIndex = exam.results.findIndex(r => r.studentId === studentId);
         if (resultIndex === -1) return res.status(404).json({ success: false, message: 'نتيجة الطالب غير موجودة' });
 
@@ -532,6 +579,7 @@ exports.getExamResults = async (req, res, next) => {
     try {
         const exam = await Exam.findById(req.params.id);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        if (!ownsExam(req, exam, res)) return;
         res.json({ success: true, results: exam.results, examTitle: exam.title });
     } catch (err) {
         next(err);

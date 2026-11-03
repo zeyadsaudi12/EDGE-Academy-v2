@@ -65,15 +65,14 @@
             width: 100%;
         }
 
-        /* ── Sidebar (شريط الأدوات الجانبي) ── */
+        /* ── Sidebar (شريط الأدوات الجانبي المحسن) ── */
         .dash-sidebar {
             width: var(--sidebar-width);
             background: var(--dash-card);
             border-left: 1px solid var(--dash-border);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 24px 16px;
+            padding: 20px 14px;
             position: sticky;
             top: 84px;
             height: calc(100vh - 84px);
@@ -84,45 +83,58 @@
             z-index: 99;
         }
 
+        .dash-sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .dash-sidebar::-webkit-scrollbar-thumb {
+            background: var(--dash-border);
+            border-radius: 10px;
+        }
+
         /* Teacher Profile Mini Card in Sidebar */
         .sidebar-teacher-card {
             background: linear-gradient(135deg, rgba(26, 107, 219, 0.08), rgba(0, 191, 166, 0.08));
             border: 1px solid var(--dash-border);
-            border-radius: 18px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 14px 12px;
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
         .sidebar-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             background: linear-gradient(135deg, var(--dash-primary), #00bfa6);
             color: #fff;
             display: grid;
             place-items: center;
             font-weight: 900;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.22);
             flex-shrink: 0;
         }
 
         .sidebar-teacher-name {
             font-weight: 900;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--dash-text);
             line-height: 1.3;
             margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 155px;
         }
 
         .sidebar-teacher-sub {
             display: inline-block;
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             font-weight: 800;
             color: var(--dash-primary);
             background: var(--dash-primary-light);
@@ -134,59 +146,91 @@
         .sidebar-menu {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
+        }
+
+        /* Sidebar Section Category Titles */
+        .sidebar-section-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--dash-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 10px 10px 4px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.85;
+            user-select: none;
+        }
+        .sidebar-section-title::after {
+            content: "";
             flex: 1;
+            height: 1px;
+            background: var(--dash-border);
+            opacity: 0.6;
         }
 
         .sidebar-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
-            border-radius: 14px;
+            padding: 10px 14px;
+            border-radius: 12px;
             color: var(--dash-muted);
             text-decoration: none;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
             cursor: pointer;
-            border: none;
+            border: 1px solid transparent;
             background: transparent;
             width: 100%;
             text-align: right;
+            box-sizing: border-box;
         }
 
         .sidebar-link-content {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .sidebar-link i {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             transition: transform 0.2s ease;
+            flex-shrink: 0;
         }
 
         .sidebar-link:hover {
             color: var(--dash-primary);
             background: var(--dash-primary-light);
+            border-color: rgba(26, 107, 219, 0.12);
             transform: translateX(-3px);
         }
 
         .sidebar-link.active {
             background: var(--dash-primary);
             color: #ffffff !important;
-            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.35);
+            border-color: var(--dash-primary);
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.32);
         }
 
         .sidebar-badge {
             font-family: 'Outfit', sans-serif;
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 900;
             padding: 2px 8px;
             border-radius: 999px;
-            background: rgba(0, 0, 0, 0.08);
+            background: rgba(0, 0, 0, 0.06);
             color: inherit;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .dark-mode .sidebar-badge {
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .sidebar-link.active .sidebar-badge {
@@ -194,11 +238,57 @@
             color: #fff;
         }
 
+        .sidebar-badge.badge-currency {
+            background: rgba(16, 185, 129, 0.15);
+            color: #059669;
+        }
+        .dark-mode .sidebar-badge.badge-currency {
+            background: rgba(16, 185, 129, 0.25);
+            color: #34d399;
+        }
+        .sidebar-link.active .sidebar-badge.badge-currency {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        .sidebar-badge.badge-warning {
+            background: rgba(239, 68, 68, 0.12);
+            color: #dc2626;
+        }
+        .dark-mode .sidebar-badge.badge-warning {
+            background: rgba(239, 68, 68, 0.22);
+            color: #f87171;
+        }
+        .sidebar-link.active .sidebar-badge.badge-warning {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
         /* Sidebar Footer */
         .sidebar-footer {
-            padding-top: 16px;
+            padding-top: 14px;
             border-top: 1px solid var(--dash-border);
-            margin-top: 16px;
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-footer-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            color: var(--dash-muted);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+        }
+        .sidebar-footer-link:hover {
+            color: var(--dash-primary);
+            background: var(--dash-primary-light);
         }
 
         .sidebar-logout-btn {
@@ -206,14 +296,14 @@
             align-items: center;
             gap: 10px;
             width: 100%;
-            padding: 11px 14px;
+            padding: 10px 14px;
             border-radius: 12px;
             border: 1px solid #fee2e2;
             background: #fff5f5;
             color: #dc2626;
             font-family: inherit;
             font-weight: 800;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -1243,76 +1333,95 @@
     <div class="dash-layout">
         <!-- ── SIDEBAR (شريط الأدوات الجانبي) ── -->
         <aside class="dash-sidebar" id="dashSidebar">
-            <div>
-                <!-- Teacher Profile Card -->
-                <div class="sidebar-teacher-card">
-                    <img id="sidebarAvatarImg" class="sidebar-avatar" src="" alt="المدرس" style="display:none;">
-                    <div id="sidebarAvatarFallback" class="sidebar-avatar">م</div>
-                    <div style="min-width:0;">
-                        <div class="sidebar-teacher-name" id="sidebarTeacherName">حساب المعلم</div>
-                        <span class="sidebar-teacher-sub" id="sidebarTeacherSubject">المادة الدراسية</span>
+            <!-- Teacher Profile Card -->
+            <div class="sidebar-teacher-card">
+                <img id="sidebarAvatarImg" class="sidebar-avatar" src="" alt="المدرس" style="display:none;" onerror="this.onerror=null; this.src='imges/edge-square.jpg';">
+                <div id="sidebarAvatarFallback" class="sidebar-avatar">م</div>
+                <div style="min-width:0; flex:1;">
+                    <div class="sidebar-teacher-name" id="sidebarTeacherName">حساب المعلم</div>
+                    <span class="sidebar-teacher-sub" id="sidebarTeacherSubject">المادة الدراسية</span>
+                </div>
+            </div>
+
+            <!-- Navigation Menu with Categories -->
+            <div class="sidebar-menu">
+                <!-- Group 1: الرئيسية والمالية -->
+                <div class="sidebar-section-title">
+                    <span>الرئيسية والمالية</span>
+                </div>
+
+                <button class="sidebar-link active" onclick="activateTab('overview', this)">
+                    <div class="sidebar-link-content">
+                        <i class="ti ti-layout-dashboard"></i>
+                        <span>نظرة عامة والنسب</span>
                     </div>
+                </button>
+
+                <button class="sidebar-link" onclick="activateTab('sales', this)">
+                    <div class="sidebar-link-content">
+                        <i class="ti ti-chart-line"></i>
+                        <span>المبيعات والإحصائيات</span>
+                    </div>
+                    <span class="sidebar-badge badge-currency" id="sideBadgeSales">0 ج</span>
+                </button>
+
+                <!-- Group 2: المحتوى والامتحانات -->
+                <div class="sidebar-section-title">
+                    <span>المحتوى والامتحانات</span>
                 </div>
 
-                <!-- Navigation Menu -->
-                <div class="sidebar-menu">
-                    <button class="sidebar-link active" onclick="activateTab('overview', this)">
-                        <div class="sidebar-link-content">
-                            <i class="ti ti-dashboard"></i>
-                            <span>نظرة عامة والنسب</span>
-                        </div>
-                    </button>
+                <button class="sidebar-link" onclick="activateTab('videos', this)">
+                    <div class="sidebar-link-content">
+                        <i class="ti ti-video"></i>
+                        <span>الفيديوهات والمشاهدات</span>
+                    </div>
+                    <span class="sidebar-badge" id="sideBadgeVideos">0</span>
+                </button>
 
-                    <button class="sidebar-link" onclick="scrollToSection('tableInactiveStudentsWrap', this)">
-                        <div class="sidebar-link-content">
-                            <i class="ti ti-user-x"></i>
-                            <span>الطلبة غير المفعلين</span>
-                        </div>
-                        <span class="sidebar-badge" id="sideBadgeInactive">0</span>
-                    </button>
+                <button class="sidebar-link" onclick="activateTab('exams', this)">
+                    <div class="sidebar-link-content">
+                        <i class="ti ti-file-certificate"></i>
+                        <span>الامتحانات والدرجات</span>
+                    </div>
+                    <span class="sidebar-badge" id="sideBadgeExams">0</span>
+                </button>
 
-                    <button class="sidebar-link" onclick="scrollToSection('salesSummaryWrap', this)">
-                        <div class="sidebar-link-content">
-                            <i class="ti ti-chart-arrows-vertical"></i>
-                            <span>المبيعات والإحصائيات</span>
-                        </div>
-                    </button>
-                    <button class="sidebar-link" onclick="activateTab('centers', this)">
-                        <div class="sidebar-link-content">
-                            <i class="ti ti-map-pin"></i>
-                            <span>أماكن وسناتر الطلاب</span>
-                        </div>
-                        <span class="sidebar-badge" id="sideBadgeCenters">0</span>
-                    </button>
+                <button class="sidebar-link" onclick="activateTab('questions', this)">
+                    <div class="sidebar-link-content">
+                        <i class="ti ti-messages"></i>
+                        <span>استفسارات الطلاب</span>
+                    </div>
+                    <span class="sidebar-badge" id="sideBadgeQuestions">0</span>
+                </button>
 
-                    <button class="sidebar-link" onclick="activateTab('videos', this)">
-                        <div class="sidebar-link-content">
-                            <i class="ti ti-video"></i>
-                            <span>الفيديوهات والمشاهدات</span>
-                        </div>
-                        <span class="sidebar-badge" id="sideBadgeVideos">0</span>
-                    </button>
-
-                    <button class="sidebar-link" onclick="activateTab('exams', this)">
-                        <div class="sidebar-link-content">
-                            <i class="ti ti-file-certificate"></i>
-                            <span>الامتحانات والدرجات</span>
-                        </div>
-                        <span class="sidebar-badge" id="sideBadgeExams">0</span>
-                    </button>
-
-                    <button class="sidebar-link" onclick="activateTab('questions', this)">
-                        <div class="sidebar-link-content">
-                            <i class="ti ti-messages"></i>
-                            <span>استفسارات الطلاب</span>
-                        </div>
-                        <span class="sidebar-badge" id="sideBadgeQuestions">0</span>
-                    </button>
+                <!-- Group 3: شؤون الطلاب والسناتر -->
+                <div class="sidebar-section-title">
+                    <span>الطلاب والسناتر</span>
                 </div>
+
+                <button class="sidebar-link" onclick="activateTab('centers', this)">
+                    <div class="sidebar-link-content">
+                        <i class="ti ti-map-pin"></i>
+                        <span>أماكن وسناتر الطلاب</span>
+                    </div>
+                    <span class="sidebar-badge" id="sideBadgeCenters">0</span>
+                </button>
+
+                <button class="sidebar-link" onclick="activateTab('students', this)">
+                    <div class="sidebar-link-content">
+                        <i class="ti ti-user-x"></i>
+                        <span>الطلبة غير المفعلين</span>
+                    </div>
+                    <span class="sidebar-badge badge-warning" id="sideBadgeInactive">0</span>
+                </button>
             </div>
 
             <!-- Sidebar Footer -->
             <div class="sidebar-footer">
+                <a href="/" class="sidebar-footer-link" title="المنصة الرئيسية">
+                    <i class="ti ti-home"></i>
+                    <span>المنصة الرئيسية</span>
+                </a>
                 <button class="sidebar-logout-btn" onclick="logout()">
                     <i class="ti ti-logout"></i>
                     <span>تسجيل الخروج</span>
@@ -1334,6 +1443,14 @@
                     <div>
                         <h1 class="hero-welcome-h1" id="heroGreeting">مرحباً بك أستاذنا ✨</h1>
                         <p class="hero-welcome-p" id="heroSubjectText">متابعة تفاعلية لحضور الطلاب والسناتر والامتحانات والمشاهدات</p>
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:12px;">
+                            <div id="heroProfileLinkWrap"></div>
+                            <div id="adminTeacherSwitcherArea" style="display:none; background:rgba(0,0,0,0.2); padding:6px 14px; border-radius:50px; border:1px solid rgba(255,255,255,0.2);">
+                                <span style="font-size:0.85rem; font-weight:800; color:#cbd5e1; margin-left:6px;"><i class="ti ti-switch-horizontal"></i> تبديل المعلم:</span>
+                                <select id="adminTeacherSelect" onchange="location.href='teacher-dashboard?teacherId=' + this.value" style="background:#1e293b; color:#fff; border:1px solid #475569; padding:4px 10px; border-radius:8px; font-weight:700; font-family:inherit; outline:none; cursor:pointer;">
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="hero-stat-badge">
                         <i class="ti ti-activity" style="font-size:1.8rem; color:#38bdf8;"></i>
@@ -1425,86 +1542,49 @@
 
                 <!-- ════ TAB 1: OVERVIEW & CHARTS ════ -->
                 <div id="tab-overview" class="tab-content-area active">
-                    <!-- ════ 5. FOURTH ROW (آخر المحاضرات + آخر المدرسين + آخر الطلبة) ════ -->
-                    <div class="dash-charts-grid-1">
-                        <!-- Recent Lectures -->
+                    <!-- Platform Overview Donut & Active vs Inactive -->
+                    <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
                         <div class="dash-widget-box">
                             <div class="widget-header">
-                                <h3>آخر المحاضرات المضافة</h3>
-                                <a href="#" onclick="activateTab('videos'); return false;" class="widget-header-link">عرض الكل</a>
+                                <h3><i class="ti ti-chart-pie"></i> نظرة عامة على المنصة</h3>
                             </div>
-                            <div class="widget-body" style="padding: 12px 16px;">
-                                <div class="recent-items-list" id="recentLecturesList">
-                                    <!-- Populated dynamically -->
+                            <div class="widget-body">
+                                <div class="platform-donut-wrap" style="height: 200px;">
+                                    <canvas id="chartPlatformOverview"></canvas>
+                                </div>
+                                <div class="platform-donut-legend">
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#6366f1"></span>المدرسين</span>
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#f87171"></span>الطلبة</span>
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#14b8a6"></span>الكورسات</span>
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#f59e0b"></span>المحاضرات</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- ════ 6. FIFTH ROW (جدول الطلبة غير المفعلين) ════ -->
-                    <div class="dash-widget-box" id="tableInactiveStudentsWrap" style="margin-bottom: 28px;">
-                        <div class="widget-header" style="padding: 18px 24px; border-bottom: 1px solid var(--dash-border); flex-wrap: wrap; gap: 12px;">
-                            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dash-text);">الطلبة غير المفعلين</h3>
-                            <div class="table-search-box">
-                                <i class="ti ti-search"></i>
-                                <input type="text" id="inactiveSearchInput" placeholder="بحث باسم الطالب أو الهاتف..." oninput="filterInactiveStudentsTable()">
+                        <div class="dash-widget-box">
+                            <div class="widget-header">
+                                <h3><i class="ti ti-user-check"></i> نسبة الطلاب الفعّالين مقابل غير الفعّالين</h3>
                             </div>
-                        </div>
-                        <div class="dash-table-wrap" style="border:none; border-radius:0;">
-                            <table class="dash-table inactive-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px; text-align: center;">م</th>
-                                        <th>الاسم</th>
-                                        <th>رقم الهاتف</th>
-                                        <th>المحافظة</th>
-                                        <th>السنة الدراسية</th>
-                                        <th>تاريخ الانشاء</th>
-                                        <th style="text-align: center;">الحالة</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="inactiveStudentsTbody">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- ════ CIRCULAR CENTERS / LOCATION ATTENDANCE SECTION ════ -->
-                    <div class="centers-attendance-section">
-                        <div class="section-header-flex">
-                            <div class="section-title-wrap">
-                                <h2>
-                                    <i class="ti ti-chart-donut-filled" style="color:var(--dash-primary)"></i>
-                                    مؤشر توزيع ونسب حضور الطلاب بالأماكن والسناتر
-                                </h2>
-                                <p>مخطط دائري يوضح نسبة الطلاب الحاضرين في كل سنتر ومحافظة بلون مميز</p>
-                            </div>
-                            <div class="toggle-group">
-                                <button class="toggle-btn active" id="btnToggleCenters" onclick="setAttendanceViewMode('centers')">حسب السناتر</button>
-                                <button class="toggle-btn" id="btnToggleGovs" onclick="setAttendanceViewMode('govs')">حسب المحافظات</button>
-                            </div>
-                        </div>
-
-                        <div class="centers-grid-layout">
-                            <!-- Circular Donut Gauge -->
-                            <div class="center-chart-box">
-                                <canvas id="chartCentersDonut"></canvas>
-                                <div class="chart-center-cutout">
-                                    <div class="cutout-number" id="cutoutTotalCount">0</div>
-                                    <div class="cutout-label" id="cutoutLabelText">طالب مسجل</div>
+                            <div class="widget-body">
+                                <div style="position:relative; height: 200px;">
+                                    <canvas id="chartActiveVsInactive"></canvas>
                                 </div>
-                            </div>
-
-                            <!-- Centers Breakdown Grid -->
-                            <div class="centers-breakdown-list" id="centersBreakdownGrid">
-                                <!-- Populated dynamically -->
+                                <div class="active-students-pills-row">
+                                    <div class="active-pill-box">
+                                        <span class="active-num-badge teal" id="badgeActiveCount">0</span>
+                                        <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">اشتروا اشتراكات</span>
+                                    </div>
+                                    <div class="active-pill-box">
+                                        <span class="active-num-badge" style="background:rgba(148,163,184,0.2); color:var(--dash-text);" id="badgeInactiveCount">0</span>
+                                        <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">مسجلين فقط</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Top Performing Students Leaderboard -->
-                    <div class="centers-attendance-section" style="padding:24px;">
+                    <div class="centers-attendance-section" style="padding:24px; margin-bottom: 24px;">
                         <div class="section-header-flex" style="margin-bottom:16px;">
                             <div class="section-title-wrap">
                                 <h2>
@@ -1519,7 +1599,57 @@
                         </div>
                     </div>
 
-                    <!-- ════ SALES & COMPREHENSIVE ANALYTICS SECTION ════ -->
+                    <!-- Top Grades & Top Governorates -->
+                    <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
+                        <div class="dash-widget-box">
+                            <div class="widget-header">
+                                <h3><i class="ti ti-school"></i> توزيع الصفوف الدراسية (Top 3)</h3>
+                            </div>
+                            <div class="widget-body">
+                                <div style="height: 180px;">
+                                    <canvas id="chartTopGrades"></canvas>
+                                </div>
+                                <div id="gradesLegendContainer" style="margin-top: 12px; display:flex; flex-direction:column; gap:6px; padding:0 8px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="dash-widget-box">
+                            <div class="widget-header">
+                                <h3><i class="ti ti-map-pins"></i> أعلى 10 محافظات تسجيلاً</h3>
+                            </div>
+                            <div class="widget-body" style="height: 280px;">
+                                <canvas id="chartTopGovs"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activities: Lectures & Students -->
+                    <div class="dash-charts-grid-2">
+                        <div class="dash-widget-box">
+                            <div class="widget-header">
+                                <h3><i class="ti ti-video"></i> آخر المحاضرات المضافة</h3>
+                                <a href="#" onclick="activateTab('videos'); return false;" class="widget-header-link">عرض الكل</a>
+                            </div>
+                            <div class="widget-body" style="padding: 12px 16px;">
+                                <div class="recent-items-list" id="recentLecturesList">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dash-widget-box">
+                            <div class="widget-header">
+                                <h3><i class="ti ti-user-plus"></i> آخر الطلاب المسجلين</h3>
+                            </div>
+                            <div class="widget-body" style="padding: 12px 16px;">
+                                <div class="recent-items-list" id="recentStudentsList"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ════ TAB 2: SALES & FINANCIAL ANALYTICS ════ -->
+                <div id="tab-sales" class="tab-content-area">
                     <div id="salesSummaryWrap" style="margin-bottom: 24px;">
                         <!-- Sales Summary Box -->
                         <div class="dash-widget-box" style="margin-bottom: 24px; padding: 24px;">
@@ -1560,136 +1690,6 @@
                                 <canvas id="chartMonthlySales"></canvas>
                             </div>
                         </div>
-
-                        <!-- Platform Overview Donut & Active vs Inactive -->
-                        <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
-                            <div class="dash-widget-box">
-                                <div class="widget-header">
-                                    <h3><i class="ti ti-chart-pie"></i> نظرة عامة على المنصة</h3>
-                                </div>
-                                <div class="widget-body">
-                                    <div class="platform-donut-wrap" style="height: 200px;">
-                                        <canvas id="chartPlatformOverview"></canvas>
-                                    </div>
-                                    <div class="platform-donut-legend">
-                                        <span class="p-legend-item"><span class="p-dot" style="background:#6366f1"></span>المدرسين</span>
-                                        <span class="p-legend-item"><span class="p-dot" style="background:#f87171"></span>الطلبة</span>
-                                        <span class="p-legend-item"><span class="p-dot" style="background:#14b8a6"></span>الكورسات</span>
-                                        <span class="p-legend-item"><span class="p-dot" style="background:#f59e0b"></span>المحاضرات</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="dash-widget-box">
-                                <div class="widget-header">
-                                    <h3><i class="ti ti-user-check"></i> نسبة الطلاب الفعّالين مقابل غير الفعّالين</h3>
-                                </div>
-                                <div class="widget-body">
-                                    <div style="position:relative; height: 200px;">
-                                        <canvas id="chartActiveVsInactive"></canvas>
-                                    </div>
-                                    <div class="active-students-pills-row">
-                                        <div class="active-pill-box">
-                                            <span class="active-num-badge teal" id="badgeActiveCount">0</span>
-                                            <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">اشتروا اشتراكات</span>
-                                        </div>
-                                        <div class="active-pill-box">
-                                            <span class="active-num-badge" style="background:rgba(148,163,184,0.2); color:var(--dash-text);" id="badgeInactiveCount">0</span>
-                                            <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">مسجلين فقط</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Top Interactive Students & Top Grades -->
-                        <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
-                            <div class="dash-widget-box">
-                                <div class="widget-header">
-                                    <h3><i class="ti ti-flame"></i> أكثر الطلاب تفاعلاً (مشاهدات المحاضرات)</h3>
-                                </div>
-                                <div class="widget-body" style="height: 260px;">
-                                    <canvas id="chartTopInteractiveStudents"></canvas>
-                                </div>
-                            </div>
-
-                            <div class="dash-widget-box">
-                                <div class="widget-header">
-                                    <h3><i class="ti ti-school"></i> توزيع الصفوف الدراسية (Top 3)</h3>
-                                </div>
-                                <div class="widget-body">
-                                    <div style="height: 180px;">
-                                        <canvas id="chartTopGrades"></canvas>
-                                    </div>
-                                    <div id="gradesLegendContainer" style="margin-top: 12px; display:flex; flex-direction:column; gap:6px; padding:0 8px;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Top 10 Governorates -->
-                        <div class="dash-widget-box" style="margin-bottom: 24px;">
-                            <div class="widget-header">
-                                <h3><i class="ti ti-map-pins"></i> أعلى 10 محافظات تسجيلاً</h3>
-                            </div>
-                            <div class="widget-body" style="height: 280px;">
-                                <canvas id="chartTopGovs"></canvas>
-                            </div>
-                        </div>
-
-                        <!-- Recent Teachers & Recent Students -->
-                        <div class="dash-charts-grid-2">
-                            <div class="dash-widget-box">
-                                <div class="widget-header">
-                                    <h3><i class="ti ti-users"></i> آخر المعلمين المضافين</h3>
-                                </div>
-                                <div class="widget-body" style="padding: 12px 16px;">
-                                    <div id="recentTeachersList"></div>
-                                </div>
-                            </div>
-
-                            <div class="dash-widget-box">
-                                <div class="widget-header">
-                                    <h3><i class="ti ti-user-plus"></i> آخر الطلاب المسجلين</h3>
-                                </div>
-                                <div class="widget-body" style="padding: 12px 16px;">
-                                    <div class="recent-items-list" id="recentStudentsList"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ════ TAB 2: CENTERS & ATTENDANCE LOG ════ -->
-                <div id="tab-centers" class="tab-content-area">
-                    <div class="dash-filter-row">
-                        <div class="search-box-input">
-                            <i class="ti ti-search"></i>
-                            <input type="text" id="attendanceSearchInput" placeholder="ابحث باسم الطالب أو السنتر..." oninput="filterAttendanceLogs()">
-                        </div>
-                        <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
-                            إجمالي المسجلين بالحضور: <b id="totalAttendRecords">0</b>
-                        </div>
-                    </div>
-
-                    <div class="dash-table-wrap">
-                        <table class="dash-table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>اسم الطالب</th>
-                                    <th>السنتر / المقر</th>
-                                    <th>اليوم</th>
-                                    <th>الميعاد</th>
-                                    <th>الصف الدراسي</th>
-                                    <th>وقت التسجيل</th>
-                                    <th>هاتف الطالب</th>
-                                    <th>تواصل واتساب</th>
-                                </tr>
-                            </thead>
-                            <tbody id="attendanceTableBody">
-                                <!-- Populated dynamically -->
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
@@ -1760,6 +1760,113 @@
                     </div>
                     <div id="questionsCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px;">
                         <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- ════ TAB 6: CENTERS & ATTENDANCE LOG ════ -->
+                <div id="tab-centers" class="tab-content-area">
+                    <!-- Circular Centers / Location Gauge -->
+                    <div class="centers-attendance-section" style="margin-bottom: 24px;">
+                        <div class="section-header-flex">
+                            <div class="section-title-wrap">
+                                <h2>
+                                    <i class="ti ti-chart-donut-filled" style="color:var(--dash-primary)"></i>
+                                    مؤشر توزيع ونسب حضور الطلاب بالأماكن والسناتر
+                                </h2>
+                                <p>مخطط دائري يوضح نسبة الطلاب الحاضرين في كل سنتر ومحافظة بلون مميز</p>
+                            </div>
+                            <div class="toggle-group">
+                                <button class="toggle-btn active" id="btnToggleCenters" onclick="setAttendanceViewMode('centers')">حسب السناتر</button>
+                                <button class="toggle-btn" id="btnToggleGovs" onclick="setAttendanceViewMode('govs')">حسب المحافظات</button>
+                            </div>
+                        </div>
+
+                        <div class="centers-grid-layout">
+                            <div class="center-chart-box">
+                                <canvas id="chartCentersDonut"></canvas>
+                                <div class="chart-center-cutout">
+                                    <div class="cutout-number" id="cutoutTotalCount">0</div>
+                                    <div class="cutout-label" id="cutoutLabelText">طالب مسجل</div>
+                                </div>
+                            </div>
+                            <div class="centers-breakdown-list" id="centersBreakdownGrid">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Table -->
+                    <div class="dash-filter-row">
+                        <div class="search-box-input">
+                            <i class="ti ti-search"></i>
+                            <input type="text" id="attendanceSearchInput" placeholder="ابحث باسم الطالب أو السنتر..." oninput="filterAttendanceLogs()">
+                        </div>
+                        <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
+                            إجمالي المسجلين بالحضور: <b id="totalAttendRecords">0</b>
+                        </div>
+                    </div>
+
+                    <div class="dash-table-wrap">
+                        <table class="dash-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم الطالب</th>
+                                    <th>السنتر / المقر</th>
+                                    <th>اليوم</th>
+                                    <th>الميعاد</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>وقت التسجيل</th>
+                                    <th>هاتف الطالب</th>
+                                    <th>تواصل واتساب</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ════ TAB 7: STUDENTS & INACTIVE TABLE ════ -->
+                <div id="tab-students" class="tab-content-area">
+                    <!-- Top Interactive Students Chart -->
+                    <div class="dash-widget-box" style="margin-bottom: 24px;">
+                        <div class="widget-header">
+                            <h3><i class="ti ti-flame"></i> أكثر الطلاب تفاعلاً (مشاهدات المحاضرات)</h3>
+                        </div>
+                        <div class="widget-body" style="height: 260px;">
+                            <canvas id="chartTopInteractiveStudents"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Inactive Students Table -->
+                    <div class="dash-widget-box" id="tableInactiveStudentsWrap" style="margin-bottom: 28px;">
+                        <div class="widget-header" style="padding: 18px 24px; border-bottom: 1px solid var(--dash-border); flex-wrap: wrap; gap: 12px;">
+                            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dash-text);"><i class="ti ti-user-x"></i> الطلبة غير المفعلين (مسجلين دون اشتراكات)</h3>
+                            <div class="table-search-box">
+                                <i class="ti ti-search"></i>
+                                <input type="text" id="inactiveSearchInput" placeholder="بحث باسم الطالب أو الهاتف..." oninput="filterInactiveStudentsTable()">
+                            </div>
+                        </div>
+                        <div class="dash-table-wrap" style="border:none; border-radius:0;">
+                            <table class="dash-table inactive-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px; text-align: center;">م</th>
+                                        <th>الاسم</th>
+                                        <th>رقم الهاتف</th>
+                                        <th>المحافظة</th>
+                                        <th>السنة الدراسية</th>
+                                        <th>تاريخ الانشاء</th>
+                                        <th style="text-align: center;">الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inactiveStudentsTbody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1858,11 +1965,25 @@
             loadDashboard();
         }
 
+        let allTeachersListForAdmin = [];
+
         async function loadDashboard() {
             try {
-                const targetTeacherId = (currentUser.role === 'admin' && _urlParams.get('teacherId'))
+                let targetTeacherId = (currentUser.role === 'admin' && _urlParams.get('teacherId'))
                     ? _urlParams.get('teacherId')
                     : currentUser.teacherId;
+
+                if (!targetTeacherId && currentUser.role === 'admin') {
+                    try {
+                        const tRes = await fetch(`${API}/api/teachers?includeHidden=true`);
+                        allTeachersListForAdmin = await tRes.json();
+                        if (Array.isArray(allTeachersListForAdmin) && allTeachersListForAdmin.length > 0) {
+                            targetTeacherId = allTeachersListForAdmin[0]._id;
+                        }
+                    } catch (e) {
+                        console.error('Failed to auto-select teacher for admin:', e);
+                    }
+                }
 
                 if (!targetTeacherId) {
                     throw new Error('يرجى تحديد المعلم المطلوب عرض لوحته الإحصائية');
@@ -2143,6 +2264,7 @@
             // 5. Sales Summary Box (Strictly Real)
             const ss = an.salesSummary || {};
             setSafeText('salesGrandVal', (ss.totalSales || 0) + ' ج');
+            setSafeText('sideBadgeSales', (ss.totalSales || 0) + ' ج');
             setSafeText('subSalesCoursesVal', ss.courses?.amount || 0);
             setSafeText('subSalesCoursesOps', (ss.courses?.count || 0) + ' عملية');
             setSafeText('subSalesPackagesVal', ss.packages?.amount || 0);
@@ -2358,6 +2480,15 @@
             alert(`تم تطبيق فلتر المبيعات من ${from} إلى ${to}`);
         }
 
+        
+        function resolveImg(path) {
+            if (!path) return 'imges/edge-square.jpg';
+            if (path.startsWith('http')) return path;
+            if (path.startsWith('/uploads/')) return API + path;
+            if (path.startsWith('uploads/')) return API + '/' + path;
+            return path;
+        }
+    
         function renderTeacherDashboard(d) {
             document.getElementById('dashLoader').style.display = 'none';
             document.getElementById('dashContent').style.display = 'block';
@@ -2384,6 +2515,30 @@
 
             // Hero Details
             setSafeText('heroGreeting', `مرحباً بك يا أستاذ ${t.name || ''} 👋`);
+            
+            // Link to view teacher profile
+            const profileLinkWrap = document.getElementById('heroProfileLinkWrap');
+            if (profileLinkWrap) {
+                profileLinkWrap.innerHTML = `<a href="teacher-profile?id=${t._id}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.18); color:#fff; text-decoration:none; padding:7px 16px; border-radius:50px; font-weight:800; font-size:0.85rem; border:1px solid rgba(255,255,255,0.25); transition:all 0.2s;"><i class="ti ti-external-link"></i> معاينة البروفايل للطلاب</a>`;
+            }
+
+            // Populate admin teacher switcher if user is admin
+            if (currentUser && currentUser.role === 'admin') {
+                const adminSwitcherWrap = document.getElementById('adminTeacherSwitcherArea');
+                if (adminSwitcherWrap) {
+                    adminSwitcherWrap.style.display = 'block';
+                    fetch(`${API}/api/teachers?includeHidden=true`)
+                        .then(r => r.json())
+                        .then(teachers => {
+                            if (!Array.isArray(teachers)) return;
+                            const selectEl = document.getElementById('adminTeacherSelect');
+                            if (selectEl) {
+                                selectEl.innerHTML = teachers.map(tc => `<option value="${tc._id}" ${String(tc._id) === String(t._id) ? 'selected' : ''}>${escapeHtml(tc.name)} (${escapeHtml(tc.subjectAr || '')})</option>`).join('');
+                            }
+                        })
+                        .catch(err => console.error('Failed to load teachers for switcher:', err));
+                }
+            }
             setSafeText('heroSubjectText', `لوحة متابعة طلاب مادة ${t.subjectAr || ''} والسناتر والامتحانات والمشاهدات اللحظية`);
 
             // Active Students & Percentage calculations (strictly real data)
@@ -2497,6 +2652,17 @@
             if (window.innerWidth <= 992) {
                 document.getElementById('dashSidebar')?.classList.remove('open');
             }
+
+            // Trigger Chart.js redraws when tab changes
+            setTimeout(() => {
+                if (chartPlatformInstance) chartPlatformInstance.resize();
+                if (chartActiveInactiveInstance) chartActiveInactiveInstance.resize();
+                if (chartMonthlySalesInstance) chartMonthlySalesInstance.resize();
+                if (chartTopInteractiveInstance) chartTopInteractiveInstance.resize();
+                if (chartTopGradesInstance) chartTopGradesInstance.resize();
+                if (chartTopGovsInstance) chartTopGovsInstance.resize();
+                window.dispatchEvent(new Event('resize'));
+            }, 60);
         }
 
         // ════ CENTERS & LOCATIONS CIRCULAR DONUT GAUGE ════

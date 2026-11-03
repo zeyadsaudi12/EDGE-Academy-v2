@@ -158,13 +158,10 @@ exports.getTeacherDashboard = async (req, res, next) => {
         const uniqueViewers = new Set(videoRows.flatMap(video => video.watchers.map(watcher => watcher.id)));
         const resultsCount = examRows.reduce((count, exam) => count + exam.results.length, 0);
 
-        const queryConditions = [];
-        if (videoIds.length) queryConditions.push({ videoId: { $in: videoIds } });
-        const relevantStudentIds = [...new Set([...uniqueViewers, ...resultStudentIds])];
-        if (relevantStudentIds.length) queryConditions.push({ studentId: { $in: relevantStudentIds } });
-
-        const attendances = queryConditions.length
-            ? await Attendance.find({ $or: queryConditions }).sort({ scannedAt: -1 }).lean()
+        // Scope attendance by this teacher's lectures only. Including records
+        // for a shared student would expose another teacher's attendance.
+        const attendances = videoIds.length
+            ? await Attendance.find({ videoId: { $in: videoIds } }).sort({ scannedAt: -1 }).lean()
             : [];
 
         // Real students strictly associated with this teacher (followers, video viewers, exam takers, attendees)
@@ -179,27 +176,17 @@ exports.getTeacherDashboard = async (req, res, next) => {
         ]);
 
         // ── Comprehensive Real Analytics for Teacher Dashboard ──
-        const [
-            allTeachersList,
-            teacherCourses,
-            allStudentsList,
-            allUsedCodes
-        ] = await Promise.all([
-            Teacher.find({ hidden: { $ne: true } }).select('_id name subjectAr imagePath phone whatsapp createdAt').sort({ createdAt: -1 }).lean(),
+        const [teacherCourses, teacherStudents, allUsedCodes] = await Promise.all([
             Course.find({ teacherId: String(req.params.id) }).lean(),
-            User.find({ role: 'student' }).select('_id firstName lastName username phone parentPhone grade governorate createdAt subscribedVideos subscribedCourses balance lastActive').sort({ createdAt: -1 }).lean(),
+            User.find({
+                role: 'student',
+                _id: { $in: [...allRealTeacherStudents].filter(id => mongoose.Types.ObjectId.isValid(id)) }
+            }).select('_id firstName lastName username phone parentPhone grade governorate createdAt subscribedVideos subscribedCourses balance lastActive').sort({ createdAt: -1 }).lean(),
             Code.find({ videoId: { $in: videoIds }, used: true }).sort({ updatedAt: -1 }).lean()
         ]);
 
         // 1. Demographics & Groups — only THIS teacher's students
-        // Build a lookup map for fast access to student objects by ID
-        const allStudentsMap = Object.fromEntries(allStudentsList.map(s => [String(s._id), s]));
-
-        // Only students who interacted with this teacher (viewed, attended, took exam, follow)
-        const teacherStudentIds = [...allRealTeacherStudents];
-        const teacherStudents = teacherStudentIds
-            .map(id => allStudentsMap[id])
-            .filter(Boolean);
+        // teacherStudents contains only students associated with this teacher.
 
         const gradesCounts = {};
         const govsCounts = {};
@@ -315,14 +302,14 @@ exports.getTeacherDashboard = async (req, res, next) => {
             price: v.price != null ? v.price : 0
         }));
 
-        const recentTeachers = allTeachersList.slice(0, 5).map(t => ({
-            _id: t._id,
-            name: t.name,
-            subjectAr: t.subjectAr,
-            imagePath: t.imagePath || '',
-            phone: t.phone || '',
-            whatsapp: t.whatsapp || t.phone || ''
-        }));
+        const recentTeachers = [{
+            _id: teacher._id,
+            name: teacher.name,
+            subjectAr: teacher.subjectAr,
+            imagePath: teacher.imagePath || '',
+            phone: teacher.phone || '',
+            whatsapp: teacher.whatsapp || teacher.phone || ''
+        }];
 
         // 5. Monthly Sales & Timeline (Strictly Real Last 6 Months)
         const now = new Date();
@@ -340,7 +327,7 @@ exports.getTeacherDashboard = async (req, res, next) => {
             });
             const lecturesAmount = codesInMonth.reduce((sum, c) => sum + (Number(c.value) || 0), 0);
 
-            const regsInMonth = allStudentsList.filter(s => {
+            const regsInMonth = teacherStudents.filter(s => {
                 const sd = new Date(s.createdAt);
                 return sd >= d && sd < nextD;
             }).length;
@@ -366,9 +353,9 @@ exports.getTeacherDashboard = async (req, res, next) => {
             resultsCount,
             attendancesCount: attendances.length,
             totalStudentsCount: allRealTeacherStudents.size,
-            teachersCount: allTeachersList.length,
+            teachersCount: 1,
             coursesCount: teacherCourses.length,
-            studentsCount: allStudentsList.length
+            studentsCount: teacherStudents.length
         };
 
         res.json({
@@ -376,13 +363,13 @@ exports.getTeacherDashboard = async (req, res, next) => {
             teacher: { _id: teacher._id, name: teacher.name, subjectAr: teacher.subjectAr, imagePath: teacher.imagePath, grades: teacher.grades },
             stats: realStats,
             analytics: {
-                teachersCount: allTeachersList.length,
-                studentsCount: allStudentsList.length,
+                teachersCount: 1,
+                studentsCount: teacherStudents.length,
                 coursesCount: teacherCourses.length,
                 lecturesCount: videoRows.length,
                 platformOverview: {
-                    teachers: allTeachersList.length,
-                    students: allStudentsList.length,
+                    teachers: 1,
+                    students: teacherStudents.length,
                     courses: teacherCourses.length,
                     lectures: videoRows.length
                 },
@@ -400,7 +387,7 @@ exports.getTeacherDashboard = async (req, res, next) => {
                 activeStudentsStats: {
                     activeCount: activeStudentObjects.length,
                     inactiveCount: inactiveStudentObjects.length,
-                    totalCount: allStudentsList.length
+                    totalCount: teacherStudents.length
                 },
                 inactiveStudents: inactiveStudentsTable,
                 recentLectures,

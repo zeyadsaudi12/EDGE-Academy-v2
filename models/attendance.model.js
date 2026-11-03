@@ -21,6 +21,12 @@ const attendanceSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed, // Supports ObjectId or 'pending'
         default: 'pending'
     },
+    // Stored server-side from the lecture owner; never trusted from the browser.
+    teacherId: {
+        type: String,
+        default: null,
+        index: true
+    },
     center: {
         type: String,
         default: '—'
