@@ -761,7 +761,7 @@
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="script.js?v=20261103-v3" defer></script>
+<script src="script.js?v=20261110-v1" defer></script>
 <script src="disable-inspect.js" defer></script>
 <script>
 /* Course details page: kept here so this page can load independently of the
@@ -837,7 +837,12 @@
         const isDatabaseUser = user && user._id && /^[a-f\d]{24}$/i.test(String(user._id));
         const query = isDatabaseUser ? `?userId=${encodeURIComponent(user._id)}` : '';
         try {
-            const response = await fetch(`${apiUrl}/api/courses/${encodeURIComponent(courseId)}/videos${query}`);
+            const headers = {};
+        if (user && user._id) headers['x-user-id'] = user._id;
+        const response = await fetch(`${apiUrl}/api/courses/${encodeURIComponent(courseId)}/videos${query}`, {
+            credentials: 'same-origin',
+            headers
+        });
             const data = await response.json();
             if (!response.ok || !data.success) throw new Error(data.message || 'تعذّر تحميل الكورس.');
             courseData = data.course;
@@ -868,7 +873,14 @@
         const button = document.getElementById('cvModalSubmitBtn');
         button.disabled = true;
         try {
-            const response = await fetch(`${apiUrl}/api/courses/${encodeURIComponent(courseId)}/buy`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codeStr, userId: user._id }) });
+            const buyHeaders = { 'Content-Type': 'application/json' };
+            if (user && user._id) buyHeaders['x-user-id'] = user._id;
+            const response = await fetch(`${apiUrl}/api/courses/${encodeURIComponent(courseId)}/buy`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: buyHeaders,
+                body: JSON.stringify({ codeStr, userId: user._id })
+            });
             const data = await response.json();
             if (!response.ok || !data.success) throw new Error(data.message || 'تعذّر تفعيل الكورس.');
             user.subscribedCourses = [...(user.subscribedCourses || []), { courseId, purchasedAt: new Date().toISOString(), codeUsed: codeStr }];

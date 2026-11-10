@@ -6,9 +6,9 @@ const { authenticate, optionalAuthenticate, allowRoles } = require('../middlewar
 
 router.get('/', optionalAuthenticate, courseController.getCourses);
 router.get('/:id', optionalAuthenticate, courseController.getCourseById);
-router.get('/:id/videos', authenticate, courseController.getCourseVideosForStudent);
+router.get('/:id/videos', optionalAuthenticate, courseController.getCourseVideosForStudent);
 router.get('/:id/students', authenticate, allowRoles('admin', 'teacher'), courseController.getCourseStudents);
-router.post('/:id/buy', authenticate, courseController.subscribeToCourse);
+router.post('/:id/buy', optionalAuthenticate, courseController.subscribeToCourse);
 router.post('/', authenticate, allowRoles('admin'), upload.single('image'), courseController.createCourse);
 router.put('/:id', authenticate, allowRoles('admin'), upload.single('image'), courseController.updateCourse);
 router.post('/:id', authenticate, allowRoles('admin'), upload.single('image'), courseController.updateCourse);

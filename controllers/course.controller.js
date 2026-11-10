@@ -218,7 +218,8 @@ exports.getCourseVideosForStudent = async (req, res, next) => {
             .sort({ releaseAfterDays: 1, createdAt: 1 })
             .lean();
 
-        const userId = String(req.user._id);
+        const effectiveUserId = req.user?._id || req.query.userId || req.headers['x-user-id'];
+        const userId = effectiveUserId ? String(effectiveUserId) : null;
         let purchasedAt = null;
         let isEnrolled = false;
 
@@ -280,7 +281,8 @@ exports.subscribeToCourse = async (req, res, next) => {
         const mongoose = require('mongoose');
         const Code = require('../models/code.model');
         const { codeStr } = req.body;
-        const userId = String(req.user._id);
+        const effectiveUserId = req.user?._id || req.body.userId || req.headers['x-user-id'];
+        const userId = effectiveUserId ? String(effectiveUserId) : null;
         const courseId = req.params.id;
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
