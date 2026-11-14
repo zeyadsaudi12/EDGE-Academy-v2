@@ -218,7 +218,7 @@ exports.getCourseVideosForStudent = async (req, res, next) => {
             .sort({ releaseAfterDays: 1, createdAt: 1 })
             .lean();
 
-        const effectiveUserId = req.user?._id || req.query.userId || req.headers['x-user-id'];
+        const effectiveUserId = req.user?._id;
         const userId = effectiveUserId ? String(effectiveUserId) : null;
         let purchasedAt = null;
         let isEnrolled = false;
@@ -281,7 +281,7 @@ exports.subscribeToCourse = async (req, res, next) => {
         const mongoose = require('mongoose');
         const Code = require('../models/code.model');
         const { codeStr } = req.body;
-        const effectiveUserId = req.user?._id || req.body.userId || req.headers['x-user-id'];
+        const effectiveUserId = req.user?._id;
         const userId = effectiveUserId ? String(effectiveUserId) : null;
         const courseId = req.params.id;
 
@@ -303,6 +303,9 @@ exports.subscribeToCourse = async (req, res, next) => {
         if (code.views >= 1) {
             return res.status(400).json({ success: false, message: 'هذا الكود مستخدم بالفعل' });
         }
+        if (code.studentId && String(code.studentId) !== userId) {
+            return res.status(403).json({ success: false, message: 'هذا الكود مستخدم بالفعل بواسطة طالب آخر' });
+        }
 
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
@@ -316,16 +319,25 @@ exports.subscribeToCourse = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'أنت مشترك في هذا الكورس بالفعل' });
         }
 
+        // Claim the code atomically so two students cannot spend it at once.
+        const claimed = await Code.findOneAndUpdate(
+            {
+                _id: code._id,
+                views: { $lt: 1 },
+                $or: [{ studentId: { $exists: false } }, { studentId: null }, { studentId: userId }]
+            },
+            { $inc: { views: 1 }, $set: { used: true, studentId: userId } },
+            { new: true }
+        );
+        if (!claimed) {
+            return res.status(400).json({ success: false, message: 'هذا الكود مستخدم بالفعل' });
+        }
+
         // إضافة الاشتراك
         if (!user.subscribedCourses) user.subscribedCourses = [];
         user.subscribedCourses.push({ courseId, purchasedAt: new Date(), codeUsed: codeStr });
 
-        // تحديث الكود
-        code.views += 1;
-        code.used = true;
-        code.studentId = userId;
-
-        await Promise.all([user.save(), code.save()]);
+        await user.save();
 
         res.json({ success: true, message: `تم الاشتراك في كورس "${course.title}" بنجاح! 🎉` });
     } catch (err) {

@@ -3,7 +3,12 @@ const Exam = require('../models/exam.model');
 const Video = require('../models/video.model');
 const Code = require('../models/code.model');
 const User = require('../models/user.model');
+const QuizSession = require('../models/quizSession.model');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
+
+const QUIZ_TOKEN_TTL_MS = 15 * 60 * 1000;
+const QUIZ_TOKEN_BYTES = 32;
 
 // Fallback curated questions per subject
 const FALLBACK_QUESTIONS = {
@@ -55,16 +60,27 @@ const FALLBACK_QUESTIONS = {
 async function getOrCreatePlayStudy(userId) {
     let ps = await PlayStudy.findOne({ userId });
     if (!ps) {
-        ps = new PlayStudy({
-            userId,
-            points: 0,
-            dailyEnergy: 4,
-            lastEnergyReset: new Date()
-        });
-        await ps.save();
+        try {
+            ps = new PlayStudy({
+                userId,
+                points: 0,
+                dailyEnergy: 4,
+                lastEnergyReset: new Date()
+            });
+            await ps.save();
+        } catch (err) {
+            // Two parallel first requests can race on the unique userId index.
+            // The loser simply reuses the record created by the winner.
+            if (err && err.code === 11000) {
+                ps = await PlayStudy.findOne({ userId });
+            } else {
+                throw err;
+            }
+        }
     } else {
+        const before = ps.dailyEnergy;
         ps.checkDailyEnergy();
-        await ps.save();
+        if (ps.dailyEnergy !== before) await ps.save();
     }
     return ps;
 }
@@ -72,13 +88,23 @@ async function getOrCreatePlayStudy(userId) {
 // 1. Mark Video as Watched by Student (Invoked when watching video)
 exports.markVideoWatched = async (req, res) => {
     try {
-        const { userId, videoId } = req.body;
-        if (!userId || !videoId) {
+        const userId = String(req.user._id);
+        const { videoId } = req.body;
+        if (!videoId) {
             return res.status(400).json({ success: false, message: 'بيانات غير مكتملة' });
         }
+        if (!mongoose.Types.ObjectId.isValid(videoId)) {
+            return res.status(400).json({ success: false, message: 'معرف المحاضرة غير صالح' });
+        }
 
-        const user = await User.findById(userId);
+        const [user, video] = await Promise.all([
+            User.findById(userId),
+            Video.findById(videoId).select('_id hidden').lean()
+        ]);
         if (!user) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
+        if (!video || video.hidden) {
+            return res.status(404).json({ success: false, message: 'المحاضرة غير موجودة' });
+        }
 
         if (!Array.isArray(user.watchedVideos)) {
             user.watchedVideos = [];
@@ -107,7 +133,7 @@ exports.markVideoWatched = async (req, res) => {
 // 2. Get Profile & Watched Videos List Ready for Quiz
 exports.getProfile = async (req, res) => {
     try {
-        const userId = req.user ? req.user.id || req.user._id : req.query.userId;
+        const userId = String(req.user._id);
         if (!userId) {
             return res.status(401).json({ success: false, message: 'يجب تسجيل الدخول' });
         }
@@ -190,7 +216,7 @@ exports.getProfile = async (req, res) => {
 // 3. Start Quiz on a Specific Watched Lecture
 exports.startQuiz = async (req, res) => {
     try {
-        const userId = req.user ? req.user.id || req.user._id : req.body.userId;
+        const userId = String(req.user._id);
         const { videoId, subject } = req.body;
         if (!userId) {
             return res.status(401).json({ success: false, message: 'يجب تسجيل الدخول' });
@@ -277,10 +303,19 @@ exports.startQuiz = async (req, res) => {
             pool = pool.concat(basePool);
         }
 
-        // Deduct 1 energy
-        ps.dailyEnergy = Math.max(0, ps.dailyEnergy - 1);
-        ps.totalAttempts += 1;
-        await ps.save();
+        // Deduct one attempt atomically so two parallel requests cannot spend
+        // the same daily energy unit.
+        const charged = await PlayStudy.findOneAndUpdate(
+            { userId, dailyEnergy: { $gt: 0 }, isBanned: { $ne: true } },
+            { $inc: { dailyEnergy: -1, totalAttempts: 1 } },
+            { new: true }
+        );
+        if (!charged) {
+            return res.status(400).json({
+                success: false,
+                message: 'نفدت محاولاتك اليومية (4/4)! ستتجدد الطاقة تلقائياً غداً ⏳'
+            });
+        }
 
         pool.sort(() => 0.5 - Math.random());
         const selectedQuestions = pool.slice(0, 5);
@@ -292,19 +327,26 @@ exports.startQuiz = async (req, res) => {
             subject: selectedLecture ? selectedLecture.title : (subject || 'عام')
         }));
 
-        const rawAnswers = selectedQuestions.map(q => q.correctAnswer);
-        const quizToken = Buffer.from(JSON.stringify({
+        const rawAnswers = selectedQuestions.map(q => String(q.correctAnswer));
+        const lectureTitle = selectedLecture ? selectedLecture.title : (subject || 'عام');
+
+        // The answer key stays server-side. The browser only receives an opaque,
+        // single-use token that expires quickly.
+        const quizToken = crypto.randomBytes(QUIZ_TOKEN_BYTES).toString('hex');
+        await QuizSession.create({
+            token: quizToken,
             userId,
             answers: rawAnswers,
-            lectureTitle: selectedLecture ? selectedLecture.title : (subject || 'عام'),
-            timestamp: Date.now()
-        })).toString('base64');
+            lectureTitle,
+            subject: subject || lectureTitle,
+            expiresAt: new Date(Date.now() + QUIZ_TOKEN_TTL_MS)
+        });
 
         res.json({
             success: true,
             quizToken,
-            remainingEnergy: ps.dailyEnergy,
-            lectureTitle: selectedLecture ? selectedLecture.title : (subject || 'عام'),
+            remainingEnergy: charged.dailyEnergy,
+            lectureTitle,
             questions: clientQuestions
         });
     } catch (err) {
@@ -316,27 +358,41 @@ exports.startQuiz = async (req, res) => {
 // 4. Submit Answers and Calculate Points
 exports.submitQuiz = async (req, res) => {
     try {
-        const userId = req.user ? req.user.id || req.user._id : req.body.userId;
+        const userId = String(req.user._id);
         const { quizToken, userAnswers } = req.body;
         if (!userId) {
             return res.status(401).json({ success: false, message: 'يجب تسجيل الدخول' });
         }
-        if (!quizToken || !Array.isArray(userAnswers)) {
+        if (!quizToken || typeof quizToken !== 'string' || !Array.isArray(userAnswers)) {
             return res.status(400).json({ success: false, message: 'بيانات التحدي غير مكتملة' });
         }
+        if (userAnswers.length > 20) {
+            return res.status(400).json({ success: false, message: 'بيانات التحدي غير صالحة' });
+        }
 
-        let tokenData;
+        // Atomic single-use check: the same token can never be submitted twice,
+        // even by two parallel requests.
+        let session;
         try {
-            tokenData = JSON.parse(Buffer.from(quizToken, 'base64').toString('utf8'));
+            session = await QuizSession.findOneAndUpdate(
+                {
+                    token: quizToken,
+                    userId,
+                    consumed: false,
+                    expiresAt: { $gt: new Date() }
+                },
+                { $set: { consumed: true, consumedAt: new Date() } },
+                { new: false }
+            );
         } catch (_) {
-            return res.status(400).json({ success: false, message: 'رمز التحدي غير صالح' });
+            session = null;
         }
 
-        if (String(tokenData.userId) !== String(userId)) {
-            return res.status(403).json({ success: false, message: 'رمز التحدي غير مطابق للمستخدم' });
+        if (!session) {
+            return res.status(400).json({ success: false, message: 'رمز التحدي غير صالح أو منتهي الصلاحية' });
         }
 
-        const correctAnswers = tokenData.answers || [];
+        const correctAnswers = session.answers || [];
         const totalCount = correctAnswers.length || 5;
         let score = 0;
 
@@ -366,7 +422,7 @@ exports.submitQuiz = async (req, res) => {
         if (percentage === 100) ps.perfectWins += 1;
 
         ps.history.push({
-            subject: tokenData.lectureTitle || 'محاضرة تعليمية',
+            subject: session.lectureTitle || 'محاضرة تعليمية',
             score,
             percentage,
             pointsEarned,
@@ -394,7 +450,7 @@ exports.submitQuiz = async (req, res) => {
 // 5. Redeem 200 Points for a 100 EGP Voucher / Code on Video of Choice
 exports.redeemPoints = async (req, res) => {
     try {
-        const userId = req.user ? req.user.id || req.user._id : req.body.userId;
+        const userId = String(req.user._id);
         const { videoId } = req.body;
         if (!userId) {
             return res.status(401).json({ success: false, message: 'يجب تسجيل الدخول' });
@@ -410,14 +466,25 @@ exports.redeemPoints = async (req, res) => {
         }
 
         let targetVideo = null;
-        if (videoId) {
+        if (videoId && mongoose.Types.ObjectId.isValid(videoId)) {
             targetVideo = await Video.findById(videoId);
         }
 
-        // Deduct 200 points
-        ps.points -= 200;
+        // Deduct 200 points atomically so two parallel redemption requests
+        // cannot both spend the same balance.
+        const charged = await PlayStudy.findOneAndUpdate(
+            { userId, points: { $gte: 200 } },
+            { $inc: { points: -200 } },
+            { new: true }
+        );
+        if (!charged) {
+            return res.status(400).json({
+                success: false,
+                message: 'رصيد نقاطك غير كافٍ لاستبدال الكوبون.'
+            });
+        }
 
-        const rawCode = 'EDGE-PLAY-' + crypto.randomBytes(3).toString('hex').toUpperCase();
+        const rawCode = 'EDGE-PLAY-' + crypto.randomBytes(4).toString('hex').toUpperCase();
 
         if (targetVideo) {
             try {
@@ -440,15 +507,17 @@ exports.redeemPoints = async (req, res) => {
             createdAt: new Date()
         };
 
-        ps.redeemedCoupons.push(couponRecord);
-        await ps.save();
+        await PlayStudy.updateOne(
+            { _id: charged._id },
+            { $push: { redeemedCoupons: couponRecord } }
+        );
 
         res.json({
             success: true,
             message: '🎉 تهانينا! تم استبدال 200 نقطة بكود خصم بقيمة 100 جنيه بنجاح!',
             code: rawCode,
             value: 100,
-            remainingPoints: ps.points,
+            remainingPoints: charged.points,
             videoTitle: couponRecord.videoTitle
         });
     } catch (err) {
