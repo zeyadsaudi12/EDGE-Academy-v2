@@ -26,12 +26,19 @@ exports.register = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'الاسم الأول والثاني والثالث والأخير يجب كتابتهم باللغة العربية فقط' });
         }
 
+        // Usernames are displayed in admin tables and used in attendance
+        // lookups, so keep them to a predictable, safe character set.
+        const normalizedUsername = String(username).trim();
+        if (!/^[A-Za-z0-9._-]{3,40}$/.test(normalizedUsername)) {
+            return res.status(400).json({ success: false, message: 'اسم المستخدم يجب أن يكون من 3 إلى 40 حرفاً إنجليزياً أو رقماً (._- مسموحة)' });
+        }
+
         const phoneRegex = /^01[0125]\d{8}$/;
         if (!phoneRegex.test(phone) || (parentPhone && !phoneRegex.test(parentPhone))) {
             return res.status(400).json({ success: false, message: 'رقم الهاتف غير صحيح' });
         }
 
-        const existingUser = await User.findOne({ $or: [{ phone }, { nationalId }, { username }] });
+        const existingUser = await User.findOne({ $or: [{ phone }, { nationalId }, { username: normalizedUsername }] });
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'رقم الهاتف، الرقم القومي أو اسم المستخدم مسجل مسبقاً' });
         }
@@ -41,7 +48,7 @@ exports.register = async (req, res, next) => {
         }
         const hashedPassword = await bcrypt.hash(String(password), 12);
         const newUser = new User({
-            username, firstName: nameParts[0], secondName: nameParts[1], thirdName: nameParts[2], lastName: nameParts[3], birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password: hashedPassword,
+            username: normalizedUsername, firstName: nameParts[0], secondName: nameParts[1], thirdName: nameParts[2], lastName: nameParts[3], birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password: hashedPassword,
             devices: []
         });
 
@@ -79,6 +86,11 @@ exports.login = async (req, res, next) => {
             
             if (!deviceId) {
                 deviceId = 'dev_' + crypto.randomBytes(16).toString('hex');
+            } else {
+                deviceId = String(deviceId).trim();
+                if (!/^[A-Za-z0-9_-]{8,128}$/.test(deviceId)) {
+                    deviceId = 'dev_' + crypto.randomBytes(16).toString('hex');
+                }
             }
 
             const foundIndex = user.devices.findIndex(d => d.deviceId === deviceId);
@@ -145,13 +157,14 @@ exports.ping = async (req, res, next) => {
         if (!user) return res.status(404).json({ success: false, message: 'User not found' });
 
         if (user.role === 'student' && deviceId) {
+            const safeDeviceId = String(deviceId).trim();
             const devices = user.devices || [];
-            const found = devices.some(d => d.deviceId === deviceId);
+            const found = /^[A-Za-z0-9_-]{8,128}$/.test(safeDeviceId) && devices.some(d => d.deviceId === safeDeviceId);
 
             if (!found) {
-                if (devices.length === 0) {
+                if (devices.length === 0 && /^[A-Za-z0-9_-]{8,128}$/.test(safeDeviceId)) {
                     user.devices.push({
-                        deviceId,
+                        deviceId: safeDeviceId,
                         deviceName: 'جهاز مسجل تلقائياً',
                         ip: req.ip || 'unknown',
                         lastUsed: new Date()

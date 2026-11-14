@@ -15,6 +15,43 @@ const ADMIN_UPDATE_FIELDS = new Set([
     'balance', 'role', 'isTeacherAccount', 'teacherId'
 ]);
 
+// Letters (any language), combining marks, spaces, dot and hyphen only. This
+// deliberately rejects quotes, angle brackets, semicolons, parentheses and
+// backticks, which are the characters used to break out of inline JavaScript
+// handlers in the admin UI.
+const SAFE_NAME_PATTERN = /^[\p{L}\p{M}\s.-]+$/u;
+const NAME_FIELDS = ['firstName', 'secondName', 'thirdName', 'lastName'];
+
+function normalizeName(value) {
+    return String(value).trim().replace(/\s+/g, ' ');
+}
+
+function validateNames(payload) {
+    for (const field of NAME_FIELDS) {
+        if (!Object.prototype.hasOwnProperty.call(payload, field)) continue;
+        const normalized = normalizeName(payload[field] ?? '');
+        const optionalMiddleName = field === 'secondName' || field === 'thirdName';
+        // Middle names are optional on existing records, so an empty value is
+        // accepted there. First/last names must still be real names.
+        if (optionalMiddleName && normalized === '') {
+            payload[field] = '';
+            continue;
+        }
+        if (normalized.length > 60 || !SAFE_NAME_PATTERN.test(normalized)) {
+            return { error: 'يجب أن يحتوي الاسم على حروف فقط بدون رموز أو علامات' };
+        }
+        if ((field === 'firstName' || field === 'lastName') && normalized.length < 2) {
+            return { error: 'الاسم الأول واسم العائلة مطلوبان' };
+        }
+        payload[field] = normalized;
+    }
+    return null;
+}
+
+function escapeRegExp(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function pickAllowedUpdates(payload, allowedFields) {
     return Object.fromEntries(Object.entries(payload || {}).filter(([key]) => allowedFields.has(key)));
 }
@@ -105,18 +142,27 @@ exports.subscribe = async (req, res, next) => {
             return res.status(403).json({ success: false, message: 'هذه المحاضرة غير متاحة لصفك الدراسي' });
         }
 
-        if (!user.subscribedVideos) user.subscribedVideos = [];
-        if (!user.subscribedVideos.includes(videoId)) {
-            user.subscribedVideos.push(videoId);
+        // Claim the code atomically so two students cannot spend it at once.
+        const claimed = await Code.findOneAndUpdate(
+            {
+                _id: code._id,
+                views: { $lt: 1 },
+                $or: [{ studentId: { $exists: false } }, { studentId: null }, { studentId: req.params.id }]
+            },
+            { $inc: { views: 1 }, $set: { used: true, studentId: req.params.id } },
+            { new: true }
+        );
+        if (!claimed) {
+            return res.status(400).json({ success: false, message: 'هذا الكود مستخدم بالفعل (صالح للاستخدام مرة واحدة فقط)' });
         }
 
-        // 3. ربط الكود بالطالب وزيادة الـ views
-        code.views += 1;
-        code.used = true;
-        code.studentId = req.params.id;
-
-        await Promise.all([user.save(), code.save()]);
-        res.json({ success: true, remainingViews: 1 - code.views, user });
+        if (!user.subscribedVideos) user.subscribedVideos = [];
+        const alreadySubscribed = user.subscribedVideos.map(String).includes(String(videoId));
+        if (!alreadySubscribed) {
+            user.subscribedVideos.push(videoId);
+        }
+        await user.save();
+        res.json({ success: true, remainingViews: 0, user });
     } catch (err) {
         next(err);
     }
@@ -190,24 +236,31 @@ exports.subscribeCourse = async (req, res, next) => {
         if (user.role === 'student' && Array.isArray(course.grades) && course.grades.length && !course.grades.includes(user.grade)) {
             return res.status(403).json({ success: false, message: 'هذا الكورس غير متاح لصفك الدراسي.' });
         }
-
-        if (!user.subscribedCourses) user.subscribedCourses = [];
-        const alreadySubscribed = user.subscribedCourses.some(c => c.courseId === courseId);
-        if (alreadySubscribed) {
+        if (user.subscribedCourses && user.subscribedCourses.some(c => String(c.courseId) === String(courseId))) {
             return res.status(400).json({ success: false, message: 'أنت مشترك بالفعل في هذا الكورس' });
         }
 
+        // Claim the code atomically so two students cannot spend it at once.
+        const claimed = await Code.findOneAndUpdate(
+            {
+                _id: code._id,
+                views: { $lt: 1 },
+                $or: [{ studentId: { $exists: false } }, { studentId: null }, { studentId }]
+            },
+            { $inc: { views: 1 }, $set: { used: true, studentId } },
+            { new: true }
+        );
+        if (!claimed) {
+            return res.status(400).json({ success: false, message: 'هذا الكود مستخدم بالفعل' });
+        }
+
+        if (!user.subscribedCourses) user.subscribedCourses = [];
         user.subscribedCourses.push({
             courseId,
             purchasedAt: new Date(),
             codeUsed: codeStr
         });
-
-        code.views += 1;
-        code.used = true;
-        code.studentId = studentId;
-
-        await Promise.all([user.save(), code.save()]);
+        await user.save();
         res.json({ success: true, message: 'تم الاشتراك في الكورس بنجاح 🎉', user });
     } catch (err) {
         next(err);
@@ -321,6 +374,10 @@ exports.updateUser = async (req, res, next) => {
         }
         const allowedFields = req.user.role === 'admin' ? ADMIN_UPDATE_FIELDS : SELF_UPDATE_FIELDS;
         const updateData = pickAllowedUpdates(req.body, allowedFields);
+        const nameError = validateNames(updateData);
+        if (nameError) {
+            return res.status(400).json({ success: false, message: nameError.error });
+        }
         if (Object.prototype.hasOwnProperty.call(updateData, 'balance')) {
             updateData.balance = Math.max(0, Number(updateData.balance) || 0);
         }
@@ -331,7 +388,7 @@ exports.updateUser = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'لا توجد بيانات مسموح بتحديثها' });
         }
 
-        const updated = await User.findByIdAndUpdate(req.params.id, updateData, { new: true }).select('-password');
+        const updated = await User.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true }).select('-password');
         if (!updated) return res.status(404).json({ success: false, message: 'المستخدم غير موجود' });
         res.json({ success: true, user: updated });
     } catch (err) {
@@ -409,14 +466,16 @@ exports.studentAttendance = async (req, res, next) => {
 
         const username = user.username || '';
         const phone = user.phone || '';
+        const conditions = [{ studentId: id }];
+        if (phone) conditions.push({ studentPhone: phone });
+        if (username) {
+            // Escape the username before building the prefix expression;
+            // otherwise a crafted username turns the query into a wildcard
+            // that returns every student's attendance records.
+            conditions.push({ studentEmail: new RegExp('^' + escapeRegExp(username) + '@', 'i') });
+        }
 
-        const records = await Attendance.find({
-            $or: [
-                { studentId: id },
-                { studentPhone: phone },
-                { studentEmail: new RegExp('^' + username + '@', 'i') }
-            ]
-        }).sort({ scannedAt: -1 });
+        const records = await Attendance.find({ $or: conditions }).sort({ scannedAt: -1 });
 
         res.json({ success: true, attendance: records });
     } catch (err) {

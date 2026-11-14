@@ -4257,9 +4257,9 @@
                         const agoText = secondsAgo < 60 ? `منذ ${secondsAgo} ثانية` : `منذ ${Math.round(secondsAgo/60)} دقيقة`;
                         return `
                     <tr>
-                        <td style="font-weight: 700; color: var(--accent);">${u.firstName || ''} ${u.lastName || ''}</td>
-                        <td>${u.phone || '—'}</td>
-                        <td><span class="badge" style="background: var(--bg3); color: var(--txt1);">${u.grade || '—'}</span></td>
+                        <td style="font-weight: 700; color: var(--accent);">${escapeAdminHtml(u.firstName || '')} ${escapeAdminHtml(u.lastName || '')}</td>
+                        <td>${escapeAdminHtml(u.phone || '—')}</td>
+                        <td><span class="badge" style="background: var(--bg3); color: var(--txt1);">${escapeAdminHtml(u.grade || '—')}</span></td>
                         <td style="direction: ltr;">${agoText} (${lastActiveTime})</td>
                         <td>
                             <span style="display: inline-flex; align-items: center; gap: 6px; color: #2ca772; font-weight: 700; font-size: 0.85rem;">
@@ -4848,12 +4848,12 @@
                 tb.innerHTML = recent.map(u => `
             <tr>
                 <td><div style="display:flex;align-items:center;gap:10px">
-                    <div class="avatar-circle">${(u.firstName || '؟')[0]}</div>
-                    <span>${u.firstName || ''} ${u.lastName || ''}</span>
+                    <div class="avatar-circle">${escapeAdminHtml((u.firstName || '؟')[0])}</div>
+                    <span>${escapeAdminHtml(u.firstName || '')} ${escapeAdminHtml(u.lastName || '')}</span>
                 </div></td>
-                <td style="direction:ltr">${u.phone || '—'}</td>
-                <td><span class="badge badge-blue">${u.grade || '—'}</span></td>
-                <td>${u.governorate || '—'}</td>
+                <td style="direction:ltr">${escapeAdminHtml(u.phone || '—')}</td>
+                <td><span class="badge badge-blue">${escapeAdminHtml(u.grade || '—')}</span></td>
+                <td>${escapeAdminHtml(u.governorate || '—')}</td>
             </tr>
         `).join('');
             }
@@ -4896,27 +4896,29 @@
             <tr>
                 <td style="cursor:pointer" onclick="openStudentFullProfile('${u._id}')">
                   <div style="display:flex;align-items:center;gap:10px">
-                    <div class="avatar-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff">${(u.firstName || '؟')[0]}</div>
+                    <div class="avatar-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff">${escapeAdminHtml((u.firstName || '؟')[0])}</div>
                     <div>
-                        <div style="font-weight:600;color:var(--txt)">${u.firstName || ''} ${u.lastName || ''}</div>
-                        <div style="font-size:11px;color:var(--txt3)">${u.username || ''}</div>
+                        <div style="font-weight:600;color:var(--txt)">${escapeAdminHtml(u.firstName || '')} ${escapeAdminHtml(u.lastName || '')}</div>
+                        <div style="font-size:11px;color:var(--txt3)">${escapeAdminHtml(u.username || '')}</div>
                     </div>
                   </div>
                 </td>
-                <td style="direction:ltr;font-family:monospace">${u.phone || '—'}</td>
-                <td><span class="badge badge-blue">${u.grade || '—'}</span></td>
-                <td>${u.governorate || '—'}</td>
-                <td>${u.section || '—'}</td>
+                <td style="direction:ltr;font-family:monospace">${escapeAdminHtml(u.phone || '—')}</td>
+                <td><span class="badge badge-blue">${escapeAdminHtml(u.grade || '—')}</span></td>
+                <td>${escapeAdminHtml(u.governorate || '—')}</td>
+                <td>${escapeAdminHtml(u.section || '—')}</td>
                 <td><div class="action-btns">
                     <button class="action-btn" onclick="openStudentFullProfile('${u._id}')" title="ملف الطالب الشامل" style="background:#2563eb;color:#fff;"><i class="ti ti-chart-bar"></i></button>
-                    <button class="action-btn warning" onclick="showUserDevices('${u._id}','${u.firstName} ${u.lastName}')" title="الأجهزة المرتبطة" style="background-color: var(--warning);"><i class="ti ti-device-mobile"></i></button>
-                    <button class="action-btn danger" onclick="confirmDeleteUser('${u._id}','${u.firstName}')" title="حذف"><i class="ti ti-trash"></i></button>
+                    <button class="action-btn warning" onclick="showUserDevices('${u._id}')" title="الأجهزة المرتبطة" style="background-color: var(--warning);"><i class="ti ti-device-mobile"></i></button>
+                    <button class="action-btn danger" onclick="confirmDeleteUser('${u._id}')" title="حذف"><i class="ti ti-trash"></i></button>
                 </div></td>
             </tr>
         `).join('');
             }
 
-            function confirmDeleteUser(id, name) {
+            function confirmDeleteUser(id) {
+                const student = _users.find(u => String(u._id) === String(id));
+                const name = student ? `${student.firstName || ''} ${student.lastName || ''}`.trim() : '';
                 showModal('حذف الطالب', `هل تريد حذف الطالب "${name}"؟ لا يمكن التراجع.`, () => {
                     fetch(`${API}/api/users/${id}`, { method: 'DELETE' })
                         .then(r => r.json()).then(d => {
@@ -4926,12 +4928,13 @@
                 });
             }
 
-            window.showUserDevices = async function(userId, userName) {
+            window.showUserDevices = async function(userId) {
                 const user = _users.find(u => u._id === userId);
                 if (!user) {
                     toast('الطالب غير موجود', 'error');
                     return;
                 }
+                const userName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
 
                 const devices = user.devices || [];
                 if (devices.length === 0) {
@@ -6528,8 +6531,8 @@
 
                     return `
                         <tr>
-                            <td style="font-weight:700; color:var(--accent);">${r.studentName || '—'}</td>
-                            <td style="direction:ltr;">${r.studentPhone || '—'}</td>
+                            <td style="font-weight:700; color:var(--accent);">${escapeAdminHtml(r.studentName || '—')}</td>
+                            <td style="direction:ltr;">${escapeAdminHtml(r.studentPhone || '—')}</td>
                             <td style="font-weight:700;">${r.score}</td>
                             <td>
                                 <span style="color:${r.percentage >= 50 ? 'var(--green)' : 'var(--accent2)'}; font-weight:700;">
@@ -6540,10 +6543,10 @@
                             <td>${new Date(r.submittedAt).toLocaleDateString('ar-EG')}</td>
                             <td>
                                 <div style="display:flex; gap:6px;">
-                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px;" onclick="openGradeEssayModal('${examId}', '${r.studentId}', '${r.studentName}')">
+                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px;" onclick="openGradeEssayModal('${examId}', '${r.studentId}')">
                                         <i class="ti ti-checklist"></i> تصحيح المقالي
                                     </button>
-                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px; color:var(--accent2); border-color:rgba(230,57,70,0.3);" onclick="resetStudentAttempt('${examId}', '${r.studentId}', '${r.studentName}')">
+                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px; color:var(--accent2); border-color:rgba(230,57,70,0.3);" onclick="resetStudentAttempt('${examId}', '${r.studentId}')">
                                         <i class="ti ti-refresh"></i> إعادة الامتحان
                                     </button>
                                 </div>
@@ -6554,7 +6557,9 @@
             }
 
         // مسار حذف وإعادة تعيين محاولة الطالب البرمجية من المشرف (نسخة آمنة ومطورة)
-            function resetStudentAttempt(examId, studentId, studentName) {
+            function resetStudentAttempt(examId, studentId) {
+                const result = (_currentResults || []).find(r => String(r.studentId) === String(studentId));
+                const studentName = result?.studentName || '—';
                 showModal(
                     'إعادة تعيين الامتحان', 
                     `هل أنت متأكد من حذف محاولة الطالب "${studentName}" والسماح له بإعادة هذا الامتحان مرة أخرى؟`, 
@@ -6613,7 +6618,9 @@
                 document.getElementById('gradeEssayModal').classList.remove('open');
             }
 
-            async function openGradeEssayModal(examId, studentId, studentName) {
+            async function openGradeEssayModal(examId, studentId) {
+                const result = (_currentResults || []).find(r => String(r.studentId) === String(studentId));
+                const studentName = result?.studentName || '—';
                 document.getElementById('grade-student-name').textContent = studentName;
                 document.getElementById('grade-exam-id').value = examId;
                 document.getElementById('grade-student-id').value = studentId;
@@ -6780,8 +6787,8 @@
                             html += `
                                 <tr>
                                     <td>
-                                        <strong style="color: var(--txt);">${q.studentName}</strong>
-                                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${q.studentPhone}</div>
+                                        <strong style="color: var(--txt);">${escapeAdminHtml(q.studentName)}</strong>
+                                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${escapeAdminHtml(q.studentPhone)}</div>
                                     </td>
                                     <td>
                                         <div style="white-space: pre-wrap; font-size: 0.95rem; color: var(--txt);">${q.question}</div>
@@ -6962,8 +6969,8 @@
             tableHTML += `
                 <tr>
                     <td>
-                        <strong style="color: var(--txt);">${v.studentName || 'طالب مجهول'}</strong>
-                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${v.studentPhone || '—'}</div>
+                        <strong style="color: var(--txt);">${escapeAdminHtml(v.studentName || 'طالب مجهول')}</strong>
+                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${escapeAdminHtml(v.studentPhone || '—')}</div>
                     </td>
                     <td style="font-weight: 700; color: var(--txt);">${v.videoTitle || '—'}</td>
                     <td>
@@ -7225,10 +7232,10 @@
 
             tbody.innerHTML = filtered.map(w => `
                 <tr>
-                    <td style="font-weight:700; color:var(--accent); padding:10px;">${w.name || `${w.firstName || ''} ${w.lastName || ''}`.trim() || '—'}</td>
-                    <td style="direction:ltr; padding:10px;">${w.phone || '—'}</td>
-                    <td style="padding:10px;"><span class="badge badge-blue" style="font-size:10px;">${(w.grade || '—').replace('الصف ', '')}</span></td>
-                    <td style="padding:10px;">${w.governorate || '—'}</td>
+                    <td style="font-weight:700; color:var(--accent); padding:10px;">${escapeAdminHtml(w.name || `${w.firstName || ''} ${w.lastName || ''}`.trim() || '—')}</td>
+                    <td style="direction:ltr; padding:10px;">${escapeAdminHtml(w.phone || '—')}</td>
+                    <td style="padding:10px;"><span class="badge badge-blue" style="font-size:10px;">${escapeAdminHtml((w.grade || '—').replace('الصف ', ''))}</span></td>
+                    <td style="padding:10px;">${escapeAdminHtml(w.governorate || '—')}</td>
                 </tr>
             `).join('');
         };
@@ -8132,19 +8139,19 @@ function renderAdminPlayStudyTable(players) {
                 <td style="padding:14px 18px; text-align:center;">
                     <div style="display:inline-flex; align-items:center; gap:8px;">
                         <!-- تعديل / خصم النقاط -->
-                        <button onclick="adminPromptAdjustPoints('${p.id}', '${escapeHtml(p.name)}', ${p.points})" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="تعديل النقاط">
+                        <button onclick="adminPromptAdjustPoints('${p.id}')" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="تعديل النقاط">
                             <i class="ti ti-coins" style="color:#f59e0b;"></i> تعديل
                         </button>
                         
                         <!-- استعادة الطاقة -->
-                        <button onclick="adminResetPlayerEnergy('${p.id}', '${escapeHtml(p.name)}')" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="إعادة شحن المحاولات">
+                        <button onclick="adminResetPlayerEnergy('${p.id}')" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="إعادة شحن المحاولات">
                             <i class="ti ti-bolt" style="color:#3b82f6;"></i> طاقة
                         </button>
 
                         <!-- حظر أو فك الحظر -->
                         ${isBanned 
-                            ? `<button onclick="adminTogglePlayerBan('${p.id}', false, '${escapeHtml(p.name)}')" class="btn-primary" style="background:#10b981; padding:6px 12px; font-size:12px; border-radius:8px;">فك الحظر</button>`
-                            : `<button onclick="adminTogglePlayerBan('${p.id}', true, '${escapeHtml(p.name)}')" class="btn-primary" style="background:#ef4444; padding:6px 12px; font-size:12px; border-radius:8px;"><i class="ti ti-ban"></i> حظر الغش</button>`
+                            ? `<button onclick="adminTogglePlayerBan('${p.id}', false)" class="btn-primary" style="background:#10b981; padding:6px 12px; font-size:12px; border-radius:8px;">فك الحظر</button>`
+                            : `<button onclick="adminTogglePlayerBan('${p.id}', true)" class="btn-primary" style="background:#ef4444; padding:6px 12px; font-size:12px; border-radius:8px;"><i class="ti ti-ban"></i> حظر الغش</button>`
                         }
                     </div>
                 </td>
@@ -8166,7 +8173,9 @@ function filterAdminPlayStudy() {
     renderAdminPlayStudyTable(filtered);
 }
 
-async function adminTogglePlayerBan(recordId, banState, playerName) {
+async function adminTogglePlayerBan(recordId, banState) {
+    const player = (_adminPlayStudyData || []).find(p => String(p.id) === String(recordId));
+    const playerName = player?.name || 'الطالب';
     let reason = '';
     if (banState) {
         const res = await Swal.fire({
@@ -8213,7 +8222,10 @@ async function adminTogglePlayerBan(recordId, banState, playerName) {
     }
 }
 
-async function adminPromptAdjustPoints(recordId, playerName, currentPoints) {
+async function adminPromptAdjustPoints(recordId) {
+    const player = (_adminPlayStudyData || []).find(p => String(p.id) === String(recordId));
+    const playerName = player?.name || 'الطالب';
+    const currentPoints = Number(player?.points) || 0;
     const res = await Swal.fire({
         title: `تعديل نقاط ${playerName}`,
         html: `
@@ -8248,7 +8260,9 @@ async function adminPromptAdjustPoints(recordId, playerName, currentPoints) {
     }
 }
 
-async function adminResetPlayerEnergy(recordId, playerName) {
+async function adminResetPlayerEnergy(recordId) {
+    const player = (_adminPlayStudyData || []).find(p => String(p.id) === String(recordId));
+    const playerName = player?.name || 'الطالب';
     const res = await Swal.fire({
         title: `إعادة شحن محاولات ${playerName}`,
         text: 'هل تريد إعادة شحن طاقة الطالب إلى 4 محاولات كاملة لليوم؟',
