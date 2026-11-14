@@ -1223,10 +1223,10 @@
                     <td style="color:var(--txt3); font-weight:700;">${index + 1}</td>
                     <td>
                         <div class="student-cell">
-                            <div class="student-avatar">${(r.studentName || 'ط')[0]}</div>
+                            <div class="student-avatar">${escapeHtml((r.studentName || 'ط')[0])}</div>
                             <div>
-                                <div style="font-weight:700;">${r.studentName || 'طالب مجهول'}</div>
-                                <div style="font-size:0.75rem; color:var(--txt3);">${r.studentId || ''}</div>
+                                <div style="font-weight:700;">${escapeHtml(r.studentName || 'طالب مجهول')}</div>
+                                <div style="font-size:0.75rem; color:var(--txt3);">${escapeHtml(r.studentId || '')}</div>
                             </div>
                         </div>
                     </td>

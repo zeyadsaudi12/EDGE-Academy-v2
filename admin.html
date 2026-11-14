@@ -4614,7 +4614,7 @@
                 if (!sel) return;
                 sel.innerHTML = '<option value="">كل المعلمين</option>';
                 _teachers.forEach(t => {
-                    sel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
+                    sel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
                 });
             }
 
@@ -4805,7 +4805,7 @@
                 if (!sel) return;
                 sel.innerHTML = '<option value="">-- اختر معلماً --</option>';
                 _teachers.forEach(t => {
-                    sel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
+                    sel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
                 });
             }
 
@@ -5036,7 +5036,7 @@
                 if (teacherSel.options.length <= 1) {
                     teacherSel.innerHTML = '<option value="">كل المعلمين</option>';
                     _teachers.forEach(t => {
-                        teacherSel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
+                        teacherSel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
                     });
                 }
 
@@ -5347,11 +5347,11 @@
                     const followers = _followerCounts[t._id] || 0;
 
                     return `<div class="teacher-row">
-                        <div class="teacher-avatar-placeholder">${initials}</div>
+                        <div class="teacher-avatar-placeholder">${escapeAdminHtml(initials)}</div>
                         <div class="teacher-info">
-                            <div class="teacher-name-text">${t.name}</div>
+                            <div class="teacher-name-text">${escapeAdminHtml(t.name)}</div>
                             ${t.hidden ? '<span class="badge" style="background:rgba(239,68,68,.15);color:#ef4444;margin-top:5px;display:inline-flex;">مخفي عن الطلاب</span>' : '<span class="badge" style="background:rgba(16,185,129,.15);color:#10b981;margin-top:5px;display:inline-flex;">ظاهر للطلاب</span>'}
-                            <div class="teacher-meta">${t.subjectAr || ''} · ${t.bio || ''}</div>
+                            <div class="teacher-meta">${escapeAdminHtml(t.subjectAr || '')} · ${escapeAdminHtml(t.bio || '')}</div>
                             <div class="teacher-grades" style="margin-top:6px">${grades}</div>
                             ${scheduleCount > 0 ? `<div style="font-size:11px; color:var(--teal); margin-top:4px;"><i class="ti ti-calendar"></i> ${scheduleCount} ميعاد بالسنتر</div>` : ''}
                         </div>
@@ -5364,7 +5364,7 @@
                             <a href="teacher-dashboard?teacherId=${t._id}" target="_blank" class="action-btn" title="فتح لوحة متابعة المعلم"><i class="ti ti-chart-bar"></i></a>
                             <button class="action-btn" onclick="openEditTeacherModal('${t._id}')" title="تعديل"><i class="ti ti-edit"></i></button>
                             <button class="action-btn" onclick="toggleTeacherVisibility('${t._id}', ${!!t.hidden})" title="${t.hidden ? 'إظهار للطلاب' : 'إخفاء عن الطلاب'}"><i class="ti ${t.hidden ? 'ti-eye' : 'ti-eye-off'}"></i></button>
-                            <button class="action-btn danger" onclick="confirmDeleteTeacher('${t._id}','${t.name}')" title="حذف"><i class="ti ti-trash"></i></button>
+                            <button class="action-btn danger" onclick="confirmDeleteTeacher('${escapeAdminHtml(String(t._id))}')" title="حذف"><i class="ti ti-trash"></i></button>
                         </div>
                     </div>`;
                 }).join('');
@@ -5483,7 +5483,9 @@
                     overlay.remove();
                 };
             }
-            function confirmDeleteTeacher(id, name) {
+            function confirmDeleteTeacher(id) {
+                const teacher = (_teachers || []).find(item => String(item._id) === String(id));
+                const name = teacher?.name || '';
                 showModal('حذف المعلم', `هل تريد حذف المعلم "${name}"؟`, () => {
                     fetch(`${API}/api/teachers/${id}`, { method: 'DELETE' })
                         .then(r => r.json()).then(d => {
@@ -6395,7 +6397,7 @@
                 tSel.innerHTML = '<option value="">-- كل المعلمين --</option>';
                 if (_teachers && Array.isArray(_teachers)) {
                     _teachers.forEach(t => {
-                        tSel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
+                        tSel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
                     });
                 }
                 if (prev) tSel.value = prev;
@@ -6417,7 +6419,7 @@
                 if (grade) filtered = filtered.filter(e => e.grades && Array.isArray(e.grades) && e.grades.includes(grade));
 
                 filtered.forEach(e => {
-                    examSel.innerHTML += `<option value="${e._id}">${e.title} (${e.teacherName || '—'})</option>`;
+                    examSel.innerHTML += `<option value="${escapeAdminHtml(String(e._id))}">${escapeAdminHtml(e.title)} (${escapeAdminHtml(e.teacherName || '-')})</option>`;
                 });
 
                 if (currentVal && filtered.some(e => e._id === currentVal)) {
@@ -6706,7 +6708,7 @@
                 if (!sel) return;
                 sel.innerHTML = '<option value="">-- اختر المعلم --</option>';
                 _teachers.forEach(t => {
-                    sel.innerHTML += `<option value="${t._id}">${t.name} - ${t.subjectAr}</option>`;
+                    sel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)} - ${escapeAdminHtml(t.subjectAr)}</option>`;
                 });
             }
 
@@ -6783,7 +6785,7 @@
 
                         let html = '';
                         questions.forEach(q => {
-                            const waLink = `https://wa.me/2${q.studentPhone}?text=${encodeURIComponent(`أهلاً ${q.studentName}، بخصوص سؤالك عن فيديو (${q.videoTitle}):\n"${q.question}"\n\nالرد:\n`)}`;
+                            const waLink = `https://wa.me/2${encodeURIComponent(q.studentPhone || '')}?text=${encodeURIComponent(`أهلاً ${q.studentName}، بخصوص سؤالك عن فيديو (${q.videoTitle}):\n"${q.question}"\n\nالرد:\n`)}`;
                             html += `
                                 <tr>
                                     <td>
@@ -6791,7 +6793,7 @@
                                         <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${escapeAdminHtml(q.studentPhone)}</div>
                                     </td>
                                     <td>
-                                        <div style="white-space: pre-wrap; font-size: 0.95rem; color: var(--txt);">${q.question}</div>
+                                        <div style="white-space: pre-wrap; font-size: 0.95rem; color: var(--txt);">${escapeAdminHtml(q.question)}</div>
                                     </td>
                                     <td style="font-size: 12px; color: var(--txt3);">${q.createdAt || '—'}</td>
                                     <td>
@@ -6972,16 +6974,16 @@
                         <strong style="color: var(--txt);">${escapeAdminHtml(v.studentName || 'طالب مجهول')}</strong>
                         <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${escapeAdminHtml(v.studentPhone || '—')}</div>
                     </td>
-                    <td style="font-weight: 700; color: var(--txt);">${v.videoTitle || '—'}</td>
+                    <td style="font-weight: 700; color: var(--txt);">${escapeAdminHtml(v.videoTitle || '—')}</td>
                     <td>
                         <span class="badge badge-red" style="font-size: 11px; font-weight: 800; padding: 4px 10px;">
-                            ${v.reason || 'محاولة تصوير'}
+                            ${escapeAdminHtml(v.reason || 'محاولة تصوير')}
                         </span>
                     </td>
                     <td style="font-size: 12px; color: var(--txt2);">${dateStr}</td>
                     <td style="font-size: 12px; font-family: monospace; color: var(--txt3);">${v.screenSize || '—'}</td>
                     <td>
-                        <button onclick="unlockStudentVideo('${v.studentPhone}', '${v.videoId}', this)" class="topbar-btn" style="background: rgba(44,167,114,0.12); color: var(--green); border-color: rgba(44,167,114,0.3); font-weight: 700; padding: 6px 14px; font-size: 12px; font-family: inherit;">
+                        <button onclick="unlockStudentVideo('${escapeAdminHtml(String(v._id || ''))}', this)" class="topbar-btn" style="background: rgba(44,167,114,0.12); color: var(--green); border-color: rgba(44,167,114,0.3); font-weight: 700; padding: 6px 14px; font-size: 12px; font-family: inherit;">
                             🔓 إلغاء الحظر وتفعيل الفيديو
                         </button>
                     </td>
@@ -6998,7 +7000,16 @@
         container.innerHTML += tableHTML;
     }
 
-    async function unlockStudentVideo(studentPhone, videoId, btnElement) {
+    async function unlockStudentVideo(reportId, btnElement) {
+        // Only the report id travels through the inline handler; the student
+        // phone and video id come from data the server already returned.
+        const report = (_violations || []).find(item => String(item._id) === String(reportId));
+        if (!report) {
+            toast('تعذر العثور على تقرير المخالفة', 'error');
+            return;
+        }
+        const studentPhone = String(report.studentPhone || '');
+        const videoId = String(report.videoId || '');
         if (!confirm('تأكيد إلغاء الحظر وإعادة السماح بمشاهدة الفيديو لهذا الطالب؟')) return;
 
         if (btnElement) {
@@ -7498,7 +7509,7 @@
                 if (tSel) {
                     if (Array.isArray(_teachers) && _teachers.length > 0 && tSel.children.length <= 1) {
                         tSel.innerHTML = '<option value="">-- اختر معلماً --</option>' +
-                            _teachers.map(t => `<option value="${t._id || t.id}">${t.name}</option>`).join('');
+                            _teachers.map(t => `<option value="${escapeAdminHtml(String(t._id || t.id))}">${escapeAdminHtml(t.name)}</option>`).join('');
                     }
                     const tId = course.teacherId || course.teacher?._id || '';
                     if (tId) tSel.value = tId;

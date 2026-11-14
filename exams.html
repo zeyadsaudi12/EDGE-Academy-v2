@@ -1251,6 +1251,11 @@
 
     <script>
         const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+        // Exam text/options are authored by staff; escape before innerHTML so a
+        // compromised staff account cannot script every student's browser.
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+        }
         let _student = null;
         let _isAdmin = false;
         let _exams = [];
@@ -1489,7 +1494,7 @@
                             ${q.options.map((opt, oIdx) => `
                                 <label class="mcq-option-label" id="lbl-q-${i}-o-${oIdx}">
                                     <input type="radio" name="q-${i}" value="${oIdx}" onchange="selectOption(${i}, ${oIdx})">
-                                    <span>${opt}</span>
+                                    <span>${escapeHtml(opt)}</span>
                                 </label>
                             `).join('')}
                         </div>`;
@@ -1514,7 +1519,7 @@
                         <div class="q-item-box" id="exam-question-${i}" data-question-index="${i}">
                             <div class="q-item-header">
                                 <div class="q-num">${i + 1}</div>
-                                <div class="q-text">${q.text}</div>
+                                <div class="q-text">${escapeHtml(q.text)}</div>
                             </div>
                             ${answersHTML}
                         </div>
@@ -1834,15 +1839,15 @@
                 return `
                     <div class="corrected-item" style="${borderStyle}">
                         <div class="corrected-item-header">
-                            <span>س${i+1}: ${q.question}</span>
+                            <span>س${i+1}: ${escapeHtml(q.question)}</span>
                             ${statusHTML}
                         </div>
                         <div style="font-size:12px; color:var(--txt2); margin-top:5px;">
-                            <strong>إجابتك:</strong> ${q.isEssay ? q.studentAnswer : (q.options[q.studentAnswer] || q.studentAnswer || 'لا توجد إجابة')}
+                            <strong>إجابتك:</strong> ${escapeHtml(q.isEssay ? q.studentAnswer : (q.options[q.studentAnswer] || q.studentAnswer || 'لا توجد إجابة'))}
                         </div>
                         ${!q.isEssay && !q.isCorrect ? `
                         <div style="font-size:12px; color:var(--green); margin-top:2px;">
-                            <strong>الإجابة الصحيحة:</strong> ${q.options[q.correctAnswer] || q.correctAnswer}
+                            <strong>الإجابة الصحيحة:</strong> ${escapeHtml(q.options[q.correctAnswer] || q.correctAnswer)}
                         </div>
                         ` : ''}
                     </div>

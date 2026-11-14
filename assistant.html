@@ -377,6 +377,12 @@
     const SESSION_KEY = 'assistantLoggedIn';
     const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
 
+    // Student questions, names and lecture titles are user supplied. Escape
+    // them before inserting into innerHTML.
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+    }
+
     let allQuestions = [];
     let resolvedIds = JSON.parse(localStorage.getItem('resolvedQuestions') || '[]');
 
@@ -481,20 +487,20 @@
             const initial = (q.studentName || 'ط')[0];
             const isResolved = resolvedIds.includes(q._id);
             const waText = encodeURIComponent(`أهلاً ${q.studentName}، بخصوص سؤالك عن محاضرة (${q.videoTitle}):\n"${q.question}"\n\nالرد:\n`);
-            const waLink = `https://wa.me/2${q.studentPhone}?text=${waText}`;
+            const waLink = `https://wa.me/2${encodeURIComponent(q.studentPhone || '')}?text=${waText}`;
 
             return `
             <div class="q-card ${isResolved ? 'resolved' : ''}" id="card-${q._id}">
                 <div class="q-card-header">
-                    <div class="q-avatar">${initial}</div>
+                    <div class="q-avatar">${escapeHtml(initial)}</div>
                     <div style="flex:1; min-width:0;">
-                        <div class="q-name">${q.studentName || 'طالب مجهول'} ${isResolved ? '<span class="badge-done">✔ تم الرد</span>' : ''}</div>
-                        <div class="q-phone">${q.studentPhone || '—'}</div>
+                        <div class="q-name">${escapeHtml(q.studentName || 'طالب مجهول')} ${isResolved ? '<span class="badge-done">✔ تم الرد</span>' : ''}</div>
+                        <div class="q-phone">${escapeHtml(q.studentPhone || '—')}</div>
                     </div>
                     <div class="q-time">${q.createdAt || ''}</div>
                 </div>
-                <div class="q-video-tag"><i class="ti ti-video"></i> ${q.videoTitle || '—'}</div>
-                <div class="q-text">${q.question}</div>
+                <div class="q-video-tag"><i class="ti ti-video"></i> ${escapeHtml(q.videoTitle || '—')}</div>
+                <div class="q-text">${escapeHtml(q.question)}</div>
                 <div class="q-actions">
                     <a class="btn-wa" href="${waLink}" target="_blank" onclick="markResolved('${q._id}')">
                         <i class="fab fa-whatsapp" style="font-size:1rem;"></i> رد عبر الواتساب
