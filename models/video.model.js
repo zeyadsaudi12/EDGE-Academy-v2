@@ -35,5 +35,9 @@ const videoSchema = new mongoose.Schema({
 
 // Used by course catalogue counts and course-page video loading.
 videoSchema.index({ courseId: 1 });
+videoSchema.index({ hidden: 1, createdAt: -1 });
+videoSchema.index({ teacherId: 1 });
+videoSchema.index({ grades: 1 });
+videoSchema.index({ playlistName: 1 });
 
 module.exports = mongoose.model('Video', videoSchema);

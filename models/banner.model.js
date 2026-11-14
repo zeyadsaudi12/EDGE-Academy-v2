@@ -8,4 +8,6 @@ const bannerSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+bannerSchema.index({ order: 1, createdAt: 1 });
+
 module.exports = mongoose.model('Banner', bannerSchema);

@@ -49,4 +49,10 @@ const attendanceSchema = new mongoose.Schema({
     }
 }, { collection: 'attendances', timestamps: true });
 
+attendanceSchema.index({ studentId: 1, scannedAt: -1 });
+attendanceSchema.index({ studentPhone: 1, scannedAt: -1 });
+attendanceSchema.index({ studentEmail: 1 });
+attendanceSchema.index({ teacherId: 1, scannedAt: -1 });
+attendanceSchema.index({ videoId: 1 });
+
 module.exports = mongoose.model('Attendance', attendanceSchema);

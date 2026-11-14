@@ -15,4 +15,7 @@ const securityReportSchema = new mongoose.Schema({
     timestamps: true
 });
 
+securityReportSchema.index({ serverTimestamp: -1 });
+securityReportSchema.index({ userId: 1, serverTimestamp: -1 });
+
 module.exports = mongoose.model('SecurityReport', securityReportSchema);

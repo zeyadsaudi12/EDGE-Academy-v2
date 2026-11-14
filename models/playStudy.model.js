@@ -37,6 +37,10 @@ const playStudySchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
+// Leaderboard and admin player list both sort by points.
+playStudySchema.index({ points: -1 });
+playStudySchema.index({ isBanned: 1 });
+
 // Method to check and reset daily energy if 24 hours or new calendar day has passed
 playStudySchema.methods.checkDailyEnergy = function() {
     const now = new Date();

@@ -42,4 +42,8 @@ const videoQuestionSchema = new mongoose.Schema({
     }
 }, { collection: 'video_questions' });
 
+videoQuestionSchema.index({ videoId: 1, createdAt: -1 });
+videoQuestionSchema.index({ teacherId: 1, status: 1, createdAt: -1 });
+videoQuestionSchema.index({ studentId: 1 });
+
 module.exports = mongoose.model('VideoQuestion', videoQuestionSchema);

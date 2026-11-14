@@ -24,4 +24,7 @@ const teacherSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
+teacherSchema.index({ hidden: 1, name: 1 });
+teacherSchema.index({ hidden: 1, subjectAr: 1 });
+
 module.exports = mongoose.model('Teacher', teacherSchema);

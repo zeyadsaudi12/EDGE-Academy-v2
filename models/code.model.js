@@ -10,4 +10,8 @@ const codeSchema = new mongoose.Schema({
     studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
+codeSchema.index({ videoId: 1 });
+codeSchema.index({ studentId: 1 });
+codeSchema.index({ used: 1, views: 1 });
+
 module.exports = mongoose.model('Code', codeSchema);

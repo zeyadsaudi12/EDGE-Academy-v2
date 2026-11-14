@@ -16,4 +16,6 @@ const teacherApplicationSchema = new mongoose.Schema({
     teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'Teacher', default: null }
 }, { timestamps: true });
 
+teacherApplicationSchema.index({ status: 1, createdAt: -1 });
+
 module.exports = mongoose.model('TeacherApplication', teacherApplicationSchema);
