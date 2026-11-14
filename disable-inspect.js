@@ -165,44 +165,10 @@
         console.dir = emptyFunction;
     } catch (_) {}
 
-    // 5. مصيدة المطورين النشطة (Debugger Loop)
-    // إذا فُتح الكونسول بأي طريقة خارجية، يتوقف كود الموقع بالكامل ويعلق تبويب الطالب فوراً
-    const devToolsTrap = function() {
-        function trap() {
-            debugger;
-        }
-        setInterval(trap, 50);
-    };
-    try {
-        devToolsTrap();
-    } catch (_) {}
-
-    // 6. كشف أبعاد الشاشة (في حال تم رسو الكونسول على الجانب أو في الأسفل) - للديسكتوب فقط
-    if (!isMobileDevice) {
-        setInterval(function() {
-            // حساب الفارق بين حجم نافذة المتصفح الخارجية والداخلية
-            const widthThreshold = window.outerWidth - window.innerWidth > 160;
-            const heightThreshold = window.outerHeight - window.innerHeight > 160;
-
-            if (widthThreshold || heightThreshold) {
-                // في حال رصد كونسول مفتوح ومثبت، يتم مسح وعرض شاشة حجب أمنية فورية
-                document.body.innerHTML = `
-                    <div style="
-                        position: fixed; inset: 0; background: #0b0c10; color: #dda852;
-                        display: flex; flex-direction: column; align-items: center; justify-content: center;
-                        font-family: 'Cairo', sans-serif; text-align: center; z-index: 2147483647; direction: rtl;
-                    ">
-                        <span style="font-size: 4rem; margin-bottom: 15px;">🔒</span>
-                        <h2 style="margin: 0 0 10px; font-weight: 800;">عذراً، تم حجب محتوى الصفحة</h2>
-                        <p style="color: #a2a8c3; margin: 0 0 20px; font-size: 0.95rem;">غير مسموح باستخدام أدوات المطور (Inspect Element) أو كشف الأكواد داخل المنصة.</p>
-                        <button onclick="window.location.reload()" style="
-                            background: #dda852; color: #000; border: none; padding: 12px 28px;
-                            border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit;
-                        ">إعادة تحميل الصفحة 🔄</button>
-                    </div>
-                `;
-            }
-        }, 1000);
-    }
+    // Note: the previous implementation ran a 50 ms `debugger` loop and wiped
+    // the whole page when the browser window size changed. That permanently
+    // froze legitimate tabs (dual monitors, zoom, snapped windows) and could
+    // destroy unsaved student work. Shortcut/context-menu blocking above is
+    // kept; destructive anti-debug heuristics are intentionally removed.
 
 })();

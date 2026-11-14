@@ -46,6 +46,16 @@ connectDB();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Vercel terminates TLS and forwards the real client address in
+// X-Forwarded-For. Without this, every visitor shares the proxy IP and the
+// login limiter locks the whole platform out after ten attempts.
+const trustProxyEnv = process.env.TRUST_PROXY;
+if (trustProxyEnv) {
+    app.set('trust proxy', /^\d+$/.test(trustProxyEnv) ? Number(trustProxyEnv) : trustProxyEnv);
+} else if (process.env.VERCEL) {
+    app.set('trust proxy', 1);
+}
+
 // Middlewares
 app.disable('x-powered-by');
 app.use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: 'cross-origin' } }));
@@ -68,8 +78,15 @@ app.use(cookieParser());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(sanitize);
-app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, limit: 500, standardHeaders: true, legacyHeaders: false }));
-app.use('/api/login', rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false, message: { success: false, message: 'محاولات دخول كثيرة، حاول لاحقاً' } }));
+app.use('/api', rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 500,
+    standardHeaders: true,
+    legacyHeaders: false,
+    skip: (req) => req.method === 'OPTIONS'
+}));
+app.use('/api/login', rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false, skipSuccessfulRequests: true, message: { success: false, message: 'محاولات دخول كثيرة، حاول لاحقاً' } }));
+app.use('/api/register', rateLimit({ windowMs: 60 * 60 * 1000, limit: 20, standardHeaders: true, legacyHeaders: false, message: { success: false, message: 'محاولات تسجيل كثيرة، حاول لاحقاً' } }));
 
 // Static uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
@@ -122,7 +139,7 @@ app.use((req, res, next) => {
 });
 
 // Static assets — CSS, JS, images served directly with correct Content-Type
-const privatePaths = /^\/(?:controllers|models|routes|middleware|config|node_modules|scratch|\.git)(?:\/|$)|^\/(?:server\.js|package(?:-lock)?\.json|\.env)/i;
+const privatePaths = /^\/(?:controllers|models|routes|middleware|config|node_modules|scratch|scripts|\.git)(?:\/|$)|^\/(?:server\.js|package(?:-lock)?\.json|\.env[^/]*|vercel\.json|README\.md|push\.bat|auto-sync\.ps1|start-auto-sync\.bat|security-reports\.json)$|\.(?:bat|ps1|cmd)$/i;
 app.use((req, res, next) => {
     if (privatePaths.test(req.path)) return res.status(404).end();
     next();
@@ -137,7 +154,13 @@ app.use(express.static(path.join(__dirname), {
     // can remain cached, but stale JavaScript can keep an old broken page
     // alive in the user's browser for a full day.
     setHeaders: (res, filePath) => {
-        if (/\.(html|js|css|svg)$/i.test(filePath)) { res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0'); }
+        if (/\.html?$/i.test(filePath)) {
+            res.setHeader('Cache-Control', 'no-store');
+        } else if (/\.(js|css|svg)$/i.test(filePath)) {
+            // Revalidate instead of disabling caching entirely; unchanged
+            // assets then return a cheap 304 instead of a full download.
+            res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+        }
     }
 }));
 
@@ -200,7 +223,7 @@ app.use((req, res, next) => {
 
     let reqPath = req.path;
     if (reqPath === '/' || reqPath === '') {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0');
+        res.setHeader('Cache-Control', 'no-cache');
         return res.sendFile(path.join(__dirname, 'index.html'));
     }
 
@@ -212,7 +235,7 @@ app.use((req, res, next) => {
         const htmlEquivalent = cleanPath.replace(/\.php$/, '.html');
         const fullHtmlPath = path.join(__dirname, htmlEquivalent);
         if (fs.existsSync(fullHtmlPath) && fs.statSync(fullHtmlPath).isFile()) {
-            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0');
+            res.setHeader('Cache-Control', 'no-cache');
             return res.sendFile(fullHtmlPath);
         }
     }
@@ -220,7 +243,7 @@ app.use((req, res, next) => {
     // 2. If path is extensionless (e.g. /courses or /admin), check if .html exists
     const candidateHtml = path.join(__dirname, cleanPath + '.html');
     if (fs.existsSync(candidateHtml) && fs.statSync(candidateHtml).isFile()) {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate'); res.setHeader('Pragma', 'no-cache'); res.setHeader('Expires', '0');
+        res.setHeader('Cache-Control', 'no-cache');
         return res.sendFile(candidateHtml);
     }
 

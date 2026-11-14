@@ -16,7 +16,13 @@ const TEACHER_PHONES = [
     { name: 'مسيو سيمون سامي', phone: '01011112210' }
 ];
 
-const DEFAULT_PASSWORD = 'Teacher@123';
+// Passwords must never be hard-coded in the repository. Set
+// TEACHER_DEFAULT_PASSWORD in .env (or the shell) for a repeatable run; when it
+// is absent, a one-off random password is generated and printed once.
+const crypto = require('crypto');
+const DEFAULT_PASSWORD = String(process.env.TEACHER_DEFAULT_PASSWORD || '').trim()
+    || ('T-' + crypto.randomBytes(12).toString('base64url'));
+const PASSWORD_IS_EPHEMERAL = !process.env.TEACHER_DEFAULT_PASSWORD;
 
 async function createAccounts() {
     try {
@@ -53,7 +59,7 @@ async function createAccounts() {
                         birthDate: new Date('1985-01-01')
                     });
                     await teacherUser.save();
-                    console.log(`✅ Created teacher account for: ${teacher.name} | Phone: ${item.phone} | Pass: ${DEFAULT_PASSWORD}`);
+                    console.log(`✅ Created teacher account for: ${teacher.name} | Phone: ${item.phone}`);
                 } else {
                     teacherUser.role = 'teacher';
                     teacherUser.isTeacherAccount = true;
@@ -71,6 +77,10 @@ async function createAccounts() {
         }
 
         console.log('\n🎉 All 10 teachers now have active Teacher accounts for login & dashboard access!');
+        if (PASSWORD_IS_EPHEMERAL) {
+            console.log(`🔑 One-off password for this run: ${DEFAULT_PASSWORD}`);
+            console.log('   Set TEACHER_DEFAULT_PASSWORD to choose your own password next time.');
+        }
         await mongoose.disconnect();
     } catch (err) {
         console.error('❌ Error creating teacher accounts:', err);

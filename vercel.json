@@ -10,7 +10,8 @@
         "includeFiles": [
           "**/*.html",
           "**/*.css",
-          "**/*.js",
+          "*.js",
+          "dashboard/**",
           "img/**",
           "imges/**",
           "uploads/**",

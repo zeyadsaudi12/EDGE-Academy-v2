@@ -606,7 +606,7 @@ body.secure-video-page {
 
                 <div class="watch-meta-bar">
                     <div class="watch-teacher-info">
-                        <img src="imges/1.png" id="teacherAvatar" class="watch-teacher-avatar" alt="المدرس">
+                        <img src="imges/man.png" id="teacherAvatar" class="watch-teacher-avatar" alt="المدرس" onerror="this.onerror=null;this.src='imges/man.png'">
                         <div class="watch-teacher-text">
                             <h4 id="teacherName">-</h4>
                             <span id="teacherSubject">-</span>
@@ -1019,7 +1019,7 @@ body.secure-video-page {
                 const teachers   = await teacherRes.json();
                 const teacher    = teachers.find(t => t._id === currentTeacherId);
                 if (teacher) {
-                    document.getElementById('teacherAvatar').src = resolveImg(teacher.imagePath) || 'imges/1.png';
+                    document.getElementById('teacherAvatar').src = resolveImg(teacher.imagePath) || 'imges/man.png';
                     document.getElementById('teacherName').textContent    = teacher.name;
                     document.getElementById('teacherSubject').textContent = teacher.subjectAr;
                     isFollowing = (currentUser.followedTeachers || []).includes(currentTeacherId);

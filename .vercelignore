@@ -1,0 +1,10 @@
+# Development-only helpers and local automation must never be uploaded.
+scripts/
+*.bat
+*.ps1
+*.cmd
+.env
+.env.*
+scratch/
+.git/
+node_modules/

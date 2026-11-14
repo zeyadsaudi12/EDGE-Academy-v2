@@ -5,6 +5,7 @@ models/
 controllers/
 routes/
 config/
+scripts/
 
 # Dependencies - too large for Cloudflare Workers
 node_modules/
