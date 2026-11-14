@@ -40,7 +40,9 @@ const fs = require('fs');
 
 // Database Connection
 const connectDB = require('./config/db');
-connectDB();
+// The per-request middleware retries the connection, so a transient cold-start
+// failure must never crash the whole process through an unhandled rejection.
+connectDB().catch(err => console.error('❌ Initial MongoDB connection failed:', err.message));
 
 // Express App
 const app = express();
