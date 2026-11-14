@@ -271,7 +271,11 @@ exports.getAllExams = async (req, res, next) => {
     try {
         const { grade, teacherId, all } = req.query;
         const studentId = String(req.user._id);
-        let filter = (all === 'true' || all === true) ? {} : { isActive: true };
+        const isStaff = ['admin', 'teacher', 'assistant'].includes(req.user.role);
+        // Only staff may request inactive exams. Students always receive the
+        // published set, even if they add ?all=true to the URL.
+        const showAll = isStaff && (all === 'true' || all === true);
+        let filter = showAll ? {} : { isActive: true };
         if (grade && grade !== 'all') filter.grades = grade;
         if (teacherId && teacherId !== 'all') filter.teacherId = teacherId;
         if (['teacher', 'assistant'].includes(req.user.role)) {
@@ -288,7 +292,7 @@ exports.getAllExams = async (req, res, next) => {
             if (req.user.role === 'student') {
                 const studentResult = exam.results.find(r => r.studentId === studentId);
                 examObj.results = studentResult ? [studentResult] : [];
-            } else if ((all === 'true' || req.query.withResults === 'true') && ['admin', 'teacher', 'assistant'].includes(req.user.role)) {
+            } else if ((all === 'true' || req.query.withResults === 'true') && isStaff) {
                 // Keep results if explicitly asked
             } else {
                 delete examObj.results;
@@ -334,6 +338,14 @@ exports.getExamById = async (req, res, next) => {
     try {
         const exam = await Exam.findById(req.params.id);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        if (req.user.role === 'student') {
+            if (!exam.isActive) {
+                return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+            }
+            if (Array.isArray(exam.grades) && exam.grades.length && !exam.grades.includes(req.user.grade)) {
+                return res.status(403).json({ success: false, message: 'هذا الامتحان غير متاح لصفك الدراسي' });
+            }
+        }
         if (['teacher', 'assistant'].includes(req.user.role) && !ownsExam(req, exam, res)) return;
         const examObject = exam.toObject();
         if (req.user.role === 'student') {
@@ -403,6 +415,12 @@ exports.submitExam = async (req, res, next) => {
         const studentPhone = req.user.phone || '';
         const exam = await Exam.findById(req.params.id);
         if (!exam) return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        if (!exam.isActive) {
+            return res.status(404).json({ success: false, message: 'الامتحان غير موجود' });
+        }
+        if (Array.isArray(exam.grades) && exam.grades.length && !exam.grades.includes(req.user.grade)) {
+            return res.status(403).json({ success: false, message: 'هذا الامتحان غير متاح لصفك الدراسي' });
+        }
 
         const alreadyDone = exam.results.find(r => r.studentId === studentId);
         if (alreadyDone) {
@@ -422,7 +440,9 @@ exports.submitExam = async (req, res, next) => {
             if (isEssay) {
                 essayScores.push({ questionIndex: i, score: 0 });
             } else {
-                isCorrect = studentAns === q.correctAnswer.toString().trim();
+                // A blank student answer must never match a blank model answer.
+                const correctAnswer = String(q.correctAnswer ?? '').trim();
+                isCorrect = studentAns !== '' && correctAnswer !== '' && studentAns === correctAnswer;
                 if (isCorrect) score++;
             }
 
@@ -436,7 +456,7 @@ exports.submitExam = async (req, res, next) => {
             };
         });
 
-        const percentage = exam.totalMarks > 0 ? Math.round((score / exam.totalMarks) * 100) : 0;
+        const percentage = exam.totalMarks > 0 ? Math.min(100, Math.round((score / exam.totalMarks) * 100)) : 0;
         const result = {
             studentId,
             studentName,
@@ -484,13 +504,14 @@ exports.gradeEssay = async (req, res, next) => {
         exam.questions.forEach((q, i) => {
             if (q.type !== 'essay') {
                 const studentAns = (result.answers[i] || '').toString().trim();
-                const isCorrect = studentAns === q.correctAnswer.toString().trim();
+                const correctAnswer = String(q.correctAnswer ?? '').trim();
+                const isCorrect = studentAns !== '' && correctAnswer !== '' && studentAns === correctAnswer;
                 if (isCorrect) mcqScore++;
             }
         });
 
         result.score = mcqScore + essayScoreSum;
-        result.percentage = Math.round((result.score / exam.totalMarks) * 100);
+        result.percentage = exam.totalMarks > 0 ? Math.min(100, Math.round((result.score / exam.totalMarks) * 100)) : 0;
         result.isGraded = true;
 
         exam.markModified('results');
