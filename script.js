@@ -932,7 +932,7 @@ function initHeartbeat() {
             .catch(() => { });
     };
     sendPing();
-    setInterval(sendPing, 60000);
+    setInterval(sendPing, 30000);
 }
 
 function initRealtimeSync(currentUser) {
@@ -1025,7 +1025,7 @@ function initRealtimeSync(currentUser) {
 
     setTimeout(syncUserData, 2000);
 
-    setInterval(syncUserData, 30000);
+    setInterval(syncUserData, 5000);
 
 }
 
@@ -2329,9 +2329,9 @@ async function sendBotMessage(message) {
     if (input) input.disabled = true;
     if (sendButton) sendButton.disabled = true;
 
-    // Call server with 5s timeout
+    // Call server with 30s timeout for RAG + AI processing
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
 
     try {
         const response = await fetch(`${API_URL}/api/chat`, {
@@ -4650,7 +4650,7 @@ async function renderFollowedTeachers() {
 
                         <div class="teacher-avatar" style="width: 110px; height: 110px;">
 
-                            <img src="${teacher.imagePath || 'imges/man.png'}" alt="${teacher.name}" style="width: 100%; height: 100%; border-radius: 50%;">
+                            <img src="${teacher.imagePath || 'imges/1.png'}" alt="${teacher.name}" style="width: 100%; height: 100%; border-radius: 50%;">
 
                         </div>
 

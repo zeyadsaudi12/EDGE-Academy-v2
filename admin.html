@@ -2242,6 +2242,12 @@
                     <i class="ti ti-photo"></i>
                     إعلانات الهيرو
                 </button>
+
+                <div class="nav-group-title">المساعد الذكي</div>
+                <button class="nav-item" onclick="showSection('ai-assistant', this); loadRagFiles();">
+                    <i class="ti ti-robot"></i>
+                    ملفات المساعد الذكي
+                </button>
             </nav>
 
             <div class="sidebar-footer">
@@ -3782,6 +3788,102 @@
 
             
 
+                <!-- ===== AI ASSISTANT SECTION ===== -->
+                <div id="section-ai-assistant" class="section" style="padding:28px 32px; display:none;">
+                    <h2 style="font-size:20px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+                        <i class="ti ti-robot" style="color:var(--teal);font-size:26px;"></i>
+                        إدارة ملفات المساعد الذكي
+                    </h2>
+
+                    <!-- رفع ملف جديد -->
+                    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;margin-bottom:24px;">
+                        <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;color:var(--txt);">
+                            📤 رفع ملف PDF جديد
+                        </h3>
+                        <p style="font-size:12px;color:var(--txt3);margin-bottom:14px;">
+                            ارفع ملف PDF يحتوي على معلومات المنصة (أسعار، كورسات، مواعيد) — سيتعلم المساعد الذكي منه تلقائياً.
+                        </p>
+                        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                            <label style="
+                                display:inline-flex;align-items:center;gap:8px;
+                                background:var(--bg3);border:1.5px dashed var(--border2);
+                                border-radius:10px;padding:10px 18px;cursor:pointer;
+                                color:var(--txt2);font-size:13px;transition:.2s;
+                            " onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+                                <i class="ti ti-file-upload" style="font-size:18px;color:var(--accent);"></i>
+                                اختر ملف PDF
+                                <input type="file" id="rag-upload-input" accept=".pdf,application/pdf" style="display:none;" onchange="document.getElementById('rag-file-label').textContent=this.files[0]?.name||'اختر ملف PDF'">
+                            </label>
+                            <span id="rag-file-label" style="font-size:12px;color:var(--txt3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                            <button id="rag-upload-btn" onclick="uploadRagPDF()" style="
+                                background:var(--teal);color:#000;border:none;border-radius:10px;
+                                padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;
+                                display:inline-flex;align-items:center;gap:6px;
+                            ">
+                                📤 رفع الملف
+                            </button>
+                        </div>
+                        <div id="rag-upload-status" style="margin-top:12px;font-size:13px;min-height:20px;"></div>
+                    </div>
+
+                    <!-- قائمة الملفات -->
+                    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                            <h3 style="font-size:15px;font-weight:600;color:var(--txt);">
+                                📂 الملفات المرفوعة
+                            </h3>
+                            <button onclick="loadRagFiles()" style="
+                                background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+                                padding:6px 14px;font-size:12px;color:var(--txt2);cursor:pointer;
+                            ">
+                                <i class="ti ti-refresh"></i> تحديث
+                            </button>
+                        </div>
+                        <div id="rag-files-list">
+                            <p style="color:var(--txt3);text-align:center;padding:30px;">📂 اضغط "تحديث" لعرض الملفات</p>
+                        </div>
+                    </div>
+
+                    <!-- ملاحظة -->
+                    <div style="background:rgba(46,196,182,.08);border:1px solid rgba(46,196,182,.3);border-radius:var(--radius-sm);padding:14px 18px;margin-top:20px;">
+                        <p style="font-size:12px;color:var(--teal);margin:0;">
+                            💡 <strong>تلميح:</strong> كلما أضفت ملفات أكثر وأكثر تفصيلاً، كانت إجابات المساعد الذكي أدق وأشمل. يمكنك رفع ملفات متعددة في نفس الوقت.
+                        </p>
+                    </div>
+                </div>
+
+                <style>
+                .rag-file-card {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background: var(--bg3);
+                    border: 1px solid var(--border);
+                    border-radius: 10px;
+                    padding: 14px 18px;
+                    margin-bottom: 10px;
+                    transition: .2s;
+                }
+                .rag-file-card:hover { border-color: var(--border2); }
+                .rag-file-info { display: flex; align-items: center; gap: 12px; }
+                .rag-file-name { font-size: 13px; font-weight: 600; color: var(--txt); }
+                .rag-file-meta { font-size: 11px; color: var(--txt3); margin-top: 2px; }
+                .rag-delete-btn {
+                    background: rgba(239,68,68,.1);
+                    border: 1px solid rgba(239,68,68,.3);
+                    color: #ef4444;
+                    border-radius: 8px;
+                    padding: 6px 14px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    transition: .2s;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+                .rag-delete-btn:hover { background: rgba(239,68,68,.2); }
+                </style>
+
                 <!-- ===== BANNERS SECTION ===== -->
                 <div id="section-banners" class="section" style="padding: 28px 32px;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
@@ -4257,9 +4359,9 @@
                         const agoText = secondsAgo < 60 ? `منذ ${secondsAgo} ثانية` : `منذ ${Math.round(secondsAgo/60)} دقيقة`;
                         return `
                     <tr>
-                        <td style="font-weight: 700; color: var(--accent);">${escapeAdminHtml(u.firstName || '')} ${escapeAdminHtml(u.lastName || '')}</td>
-                        <td>${escapeAdminHtml(u.phone || '—')}</td>
-                        <td><span class="badge" style="background: var(--bg3); color: var(--txt1);">${escapeAdminHtml(u.grade || '—')}</span></td>
+                        <td style="font-weight: 700; color: var(--accent);">${u.firstName || ''} ${u.lastName || ''}</td>
+                        <td>${u.phone || '—'}</td>
+                        <td><span class="badge" style="background: var(--bg3); color: var(--txt1);">${u.grade || '—'}</span></td>
                         <td style="direction: ltr;">${agoText} (${lastActiveTime})</td>
                         <td>
                             <span style="display: inline-flex; align-items: center; gap: 6px; color: #2ca772; font-weight: 700; font-size: 0.85rem;">
@@ -4614,7 +4716,7 @@
                 if (!sel) return;
                 sel.innerHTML = '<option value="">كل المعلمين</option>';
                 _teachers.forEach(t => {
-                    sel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
+                    sel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
                 });
             }
 
@@ -4805,7 +4907,7 @@
                 if (!sel) return;
                 sel.innerHTML = '<option value="">-- اختر معلماً --</option>';
                 _teachers.forEach(t => {
-                    sel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
+                    sel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
                 });
             }
 
@@ -4848,12 +4950,12 @@
                 tb.innerHTML = recent.map(u => `
             <tr>
                 <td><div style="display:flex;align-items:center;gap:10px">
-                    <div class="avatar-circle">${escapeAdminHtml((u.firstName || '؟')[0])}</div>
-                    <span>${escapeAdminHtml(u.firstName || '')} ${escapeAdminHtml(u.lastName || '')}</span>
+                    <div class="avatar-circle">${(u.firstName || '؟')[0]}</div>
+                    <span>${u.firstName || ''} ${u.lastName || ''}</span>
                 </div></td>
-                <td style="direction:ltr">${escapeAdminHtml(u.phone || '—')}</td>
-                <td><span class="badge badge-blue">${escapeAdminHtml(u.grade || '—')}</span></td>
-                <td>${escapeAdminHtml(u.governorate || '—')}</td>
+                <td style="direction:ltr">${u.phone || '—'}</td>
+                <td><span class="badge badge-blue">${u.grade || '—'}</span></td>
+                <td>${u.governorate || '—'}</td>
             </tr>
         `).join('');
             }
@@ -4896,29 +4998,27 @@
             <tr>
                 <td style="cursor:pointer" onclick="openStudentFullProfile('${u._id}')">
                   <div style="display:flex;align-items:center;gap:10px">
-                    <div class="avatar-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff">${escapeAdminHtml((u.firstName || '؟')[0])}</div>
+                    <div class="avatar-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff">${(u.firstName || '؟')[0]}</div>
                     <div>
-                        <div style="font-weight:600;color:var(--txt)">${escapeAdminHtml(u.firstName || '')} ${escapeAdminHtml(u.lastName || '')}</div>
-                        <div style="font-size:11px;color:var(--txt3)">${escapeAdminHtml(u.username || '')}</div>
+                        <div style="font-weight:600;color:var(--txt)">${u.firstName || ''} ${u.lastName || ''}</div>
+                        <div style="font-size:11px;color:var(--txt3)">${u.username || ''}</div>
                     </div>
                   </div>
                 </td>
-                <td style="direction:ltr;font-family:monospace">${escapeAdminHtml(u.phone || '—')}</td>
-                <td><span class="badge badge-blue">${escapeAdminHtml(u.grade || '—')}</span></td>
-                <td>${escapeAdminHtml(u.governorate || '—')}</td>
-                <td>${escapeAdminHtml(u.section || '—')}</td>
+                <td style="direction:ltr;font-family:monospace">${u.phone || '—'}</td>
+                <td><span class="badge badge-blue">${u.grade || '—'}</span></td>
+                <td>${u.governorate || '—'}</td>
+                <td>${u.section || '—'}</td>
                 <td><div class="action-btns">
                     <button class="action-btn" onclick="openStudentFullProfile('${u._id}')" title="ملف الطالب الشامل" style="background:#2563eb;color:#fff;"><i class="ti ti-chart-bar"></i></button>
-                    <button class="action-btn warning" onclick="showUserDevices('${u._id}')" title="الأجهزة المرتبطة" style="background-color: var(--warning);"><i class="ti ti-device-mobile"></i></button>
-                    <button class="action-btn danger" onclick="confirmDeleteUser('${u._id}')" title="حذف"><i class="ti ti-trash"></i></button>
+                    <button class="action-btn warning" onclick="showUserDevices('${u._id}','${u.firstName} ${u.lastName}')" title="الأجهزة المرتبطة" style="background-color: var(--warning);"><i class="ti ti-device-mobile"></i></button>
+                    <button class="action-btn danger" onclick="confirmDeleteUser('${u._id}','${u.firstName}')" title="حذف"><i class="ti ti-trash"></i></button>
                 </div></td>
             </tr>
         `).join('');
             }
 
-            function confirmDeleteUser(id) {
-                const student = _users.find(u => String(u._id) === String(id));
-                const name = student ? `${student.firstName || ''} ${student.lastName || ''}`.trim() : '';
+            function confirmDeleteUser(id, name) {
                 showModal('حذف الطالب', `هل تريد حذف الطالب "${name}"؟ لا يمكن التراجع.`, () => {
                     fetch(`${API}/api/users/${id}`, { method: 'DELETE' })
                         .then(r => r.json()).then(d => {
@@ -4928,13 +5028,12 @@
                 });
             }
 
-            window.showUserDevices = async function(userId) {
+            window.showUserDevices = async function(userId, userName) {
                 const user = _users.find(u => u._id === userId);
                 if (!user) {
                     toast('الطالب غير موجود', 'error');
                     return;
                 }
-                const userName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
 
                 const devices = user.devices || [];
                 if (devices.length === 0) {
@@ -5036,7 +5135,7 @@
                 if (teacherSel.options.length <= 1) {
                     teacherSel.innerHTML = '<option value="">كل المعلمين</option>';
                     _teachers.forEach(t => {
-                        teacherSel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
+                        teacherSel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
                     });
                 }
 
@@ -5347,11 +5446,11 @@
                     const followers = _followerCounts[t._id] || 0;
 
                     return `<div class="teacher-row">
-                        <div class="teacher-avatar-placeholder">${escapeAdminHtml(initials)}</div>
+                        <div class="teacher-avatar-placeholder">${initials}</div>
                         <div class="teacher-info">
-                            <div class="teacher-name-text">${escapeAdminHtml(t.name)}</div>
+                            <div class="teacher-name-text">${t.name}</div>
                             ${t.hidden ? '<span class="badge" style="background:rgba(239,68,68,.15);color:#ef4444;margin-top:5px;display:inline-flex;">مخفي عن الطلاب</span>' : '<span class="badge" style="background:rgba(16,185,129,.15);color:#10b981;margin-top:5px;display:inline-flex;">ظاهر للطلاب</span>'}
-                            <div class="teacher-meta">${escapeAdminHtml(t.subjectAr || '')} · ${escapeAdminHtml(t.bio || '')}</div>
+                            <div class="teacher-meta">${t.subjectAr || ''} · ${t.bio || ''}</div>
                             <div class="teacher-grades" style="margin-top:6px">${grades}</div>
                             ${scheduleCount > 0 ? `<div style="font-size:11px; color:var(--teal); margin-top:4px;"><i class="ti ti-calendar"></i> ${scheduleCount} ميعاد بالسنتر</div>` : ''}
                         </div>
@@ -5364,7 +5463,7 @@
                             <a href="teacher-dashboard?teacherId=${t._id}" target="_blank" class="action-btn" title="فتح لوحة متابعة المعلم"><i class="ti ti-chart-bar"></i></a>
                             <button class="action-btn" onclick="openEditTeacherModal('${t._id}')" title="تعديل"><i class="ti ti-edit"></i></button>
                             <button class="action-btn" onclick="toggleTeacherVisibility('${t._id}', ${!!t.hidden})" title="${t.hidden ? 'إظهار للطلاب' : 'إخفاء عن الطلاب'}"><i class="ti ${t.hidden ? 'ti-eye' : 'ti-eye-off'}"></i></button>
-                            <button class="action-btn danger" onclick="confirmDeleteTeacher('${escapeAdminHtml(String(t._id))}')" title="حذف"><i class="ti ti-trash"></i></button>
+                            <button class="action-btn danger" onclick="confirmDeleteTeacher('${t._id}','${t.name}')" title="حذف"><i class="ti ti-trash"></i></button>
                         </div>
                     </div>`;
                 }).join('');
@@ -5483,9 +5582,7 @@
                     overlay.remove();
                 };
             }
-            function confirmDeleteTeacher(id) {
-                const teacher = (_teachers || []).find(item => String(item._id) === String(id));
-                const name = teacher?.name || '';
+            function confirmDeleteTeacher(id, name) {
                 showModal('حذف المعلم', `هل تريد حذف المعلم "${name}"؟`, () => {
                     fetch(`${API}/api/teachers/${id}`, { method: 'DELETE' })
                         .then(r => r.json()).then(d => {
@@ -6397,7 +6494,7 @@
                 tSel.innerHTML = '<option value="">-- كل المعلمين --</option>';
                 if (_teachers && Array.isArray(_teachers)) {
                     _teachers.forEach(t => {
-                        tSel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)}</option>`;
+                        tSel.innerHTML += `<option value="${t._id}">${t.name}</option>`;
                     });
                 }
                 if (prev) tSel.value = prev;
@@ -6419,7 +6516,7 @@
                 if (grade) filtered = filtered.filter(e => e.grades && Array.isArray(e.grades) && e.grades.includes(grade));
 
                 filtered.forEach(e => {
-                    examSel.innerHTML += `<option value="${escapeAdminHtml(String(e._id))}">${escapeAdminHtml(e.title)} (${escapeAdminHtml(e.teacherName || '-')})</option>`;
+                    examSel.innerHTML += `<option value="${e._id}">${e.title} (${e.teacherName || '—'})</option>`;
                 });
 
                 if (currentVal && filtered.some(e => e._id === currentVal)) {
@@ -6533,8 +6630,8 @@
 
                     return `
                         <tr>
-                            <td style="font-weight:700; color:var(--accent);">${escapeAdminHtml(r.studentName || '—')}</td>
-                            <td style="direction:ltr;">${escapeAdminHtml(r.studentPhone || '—')}</td>
+                            <td style="font-weight:700; color:var(--accent);">${r.studentName || '—'}</td>
+                            <td style="direction:ltr;">${r.studentPhone || '—'}</td>
                             <td style="font-weight:700;">${r.score}</td>
                             <td>
                                 <span style="color:${r.percentage >= 50 ? 'var(--green)' : 'var(--accent2)'}; font-weight:700;">
@@ -6545,10 +6642,10 @@
                             <td>${new Date(r.submittedAt).toLocaleDateString('ar-EG')}</td>
                             <td>
                                 <div style="display:flex; gap:6px;">
-                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px;" onclick="openGradeEssayModal('${examId}', '${r.studentId}')">
+                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px;" onclick="openGradeEssayModal('${examId}', '${r.studentId}', '${r.studentName}')">
                                         <i class="ti ti-checklist"></i> تصحيح المقالي
                                     </button>
-                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px; color:var(--accent2); border-color:rgba(230,57,70,0.3);" onclick="resetStudentAttempt('${examId}', '${r.studentId}')">
+                                    <button class="topbar-btn" style="padding:4px 8px; font-size:11px; color:var(--accent2); border-color:rgba(230,57,70,0.3);" onclick="resetStudentAttempt('${examId}', '${r.studentId}', '${r.studentName}')">
                                         <i class="ti ti-refresh"></i> إعادة الامتحان
                                     </button>
                                 </div>
@@ -6559,9 +6656,7 @@
             }
 
         // مسار حذف وإعادة تعيين محاولة الطالب البرمجية من المشرف (نسخة آمنة ومطورة)
-            function resetStudentAttempt(examId, studentId) {
-                const result = (_currentResults || []).find(r => String(r.studentId) === String(studentId));
-                const studentName = result?.studentName || '—';
+            function resetStudentAttempt(examId, studentId, studentName) {
                 showModal(
                     'إعادة تعيين الامتحان', 
                     `هل أنت متأكد من حذف محاولة الطالب "${studentName}" والسماح له بإعادة هذا الامتحان مرة أخرى؟`, 
@@ -6620,9 +6715,7 @@
                 document.getElementById('gradeEssayModal').classList.remove('open');
             }
 
-            async function openGradeEssayModal(examId, studentId) {
-                const result = (_currentResults || []).find(r => String(r.studentId) === String(studentId));
-                const studentName = result?.studentName || '—';
+            async function openGradeEssayModal(examId, studentId, studentName) {
                 document.getElementById('grade-student-name').textContent = studentName;
                 document.getElementById('grade-exam-id').value = examId;
                 document.getElementById('grade-student-id').value = studentId;
@@ -6708,7 +6801,7 @@
                 if (!sel) return;
                 sel.innerHTML = '<option value="">-- اختر المعلم --</option>';
                 _teachers.forEach(t => {
-                    sel.innerHTML += `<option value="${escapeAdminHtml(String(t._id))}">${escapeAdminHtml(t.name)} - ${escapeAdminHtml(t.subjectAr)}</option>`;
+                    sel.innerHTML += `<option value="${t._id}">${t.name} - ${t.subjectAr}</option>`;
                 });
             }
 
@@ -6785,15 +6878,15 @@
 
                         let html = '';
                         questions.forEach(q => {
-                            const waLink = `https://wa.me/2${encodeURIComponent(q.studentPhone || '')}?text=${encodeURIComponent(`أهلاً ${q.studentName}، بخصوص سؤالك عن فيديو (${q.videoTitle}):\n"${q.question}"\n\nالرد:\n`)}`;
+                            const waLink = `https://wa.me/2${q.studentPhone}?text=${encodeURIComponent(`أهلاً ${q.studentName}، بخصوص سؤالك عن فيديو (${q.videoTitle}):\n"${q.question}"\n\nالرد:\n`)}`;
                             html += `
                                 <tr>
                                     <td>
-                                        <strong style="color: var(--txt);">${escapeAdminHtml(q.studentName)}</strong>
-                                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${escapeAdminHtml(q.studentPhone)}</div>
+                                        <strong style="color: var(--txt);">${q.studentName}</strong>
+                                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${q.studentPhone}</div>
                                     </td>
                                     <td>
-                                        <div style="white-space: pre-wrap; font-size: 0.95rem; color: var(--txt);">${escapeAdminHtml(q.question)}</div>
+                                        <div style="white-space: pre-wrap; font-size: 0.95rem; color: var(--txt);">${q.question}</div>
                                     </td>
                                     <td style="font-size: 12px; color: var(--txt3);">${q.createdAt || '—'}</td>
                                     <td>
@@ -6971,19 +7064,19 @@
             tableHTML += `
                 <tr>
                     <td>
-                        <strong style="color: var(--txt);">${escapeAdminHtml(v.studentName || 'طالب مجهول')}</strong>
-                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${escapeAdminHtml(v.studentPhone || '—')}</div>
+                        <strong style="color: var(--txt);">${v.studentName || 'طالب مجهول'}</strong>
+                        <div style="font-size: 11px; color: var(--txt3); margin-top: 2px;">${v.studentPhone || '—'}</div>
                     </td>
-                    <td style="font-weight: 700; color: var(--txt);">${escapeAdminHtml(v.videoTitle || '—')}</td>
+                    <td style="font-weight: 700; color: var(--txt);">${v.videoTitle || '—'}</td>
                     <td>
                         <span class="badge badge-red" style="font-size: 11px; font-weight: 800; padding: 4px 10px;">
-                            ${escapeAdminHtml(v.reason || 'محاولة تصوير')}
+                            ${v.reason || 'محاولة تصوير'}
                         </span>
                     </td>
                     <td style="font-size: 12px; color: var(--txt2);">${dateStr}</td>
                     <td style="font-size: 12px; font-family: monospace; color: var(--txt3);">${v.screenSize || '—'}</td>
                     <td>
-                        <button onclick="unlockStudentVideo('${escapeAdminHtml(String(v._id || ''))}', this)" class="topbar-btn" style="background: rgba(44,167,114,0.12); color: var(--green); border-color: rgba(44,167,114,0.3); font-weight: 700; padding: 6px 14px; font-size: 12px; font-family: inherit;">
+                        <button onclick="unlockStudentVideo('${v.studentPhone}', '${v.videoId}', this)" class="topbar-btn" style="background: rgba(44,167,114,0.12); color: var(--green); border-color: rgba(44,167,114,0.3); font-weight: 700; padding: 6px 14px; font-size: 12px; font-family: inherit;">
                             🔓 إلغاء الحظر وتفعيل الفيديو
                         </button>
                     </td>
@@ -7000,16 +7093,7 @@
         container.innerHTML += tableHTML;
     }
 
-    async function unlockStudentVideo(reportId, btnElement) {
-        // Only the report id travels through the inline handler; the student
-        // phone and video id come from data the server already returned.
-        const report = (_violations || []).find(item => String(item._id) === String(reportId));
-        if (!report) {
-            toast('تعذر العثور على تقرير المخالفة', 'error');
-            return;
-        }
-        const studentPhone = String(report.studentPhone || '');
-        const videoId = String(report.videoId || '');
+    async function unlockStudentVideo(studentPhone, videoId, btnElement) {
         if (!confirm('تأكيد إلغاء الحظر وإعادة السماح بمشاهدة الفيديو لهذا الطالب؟')) return;
 
         if (btnElement) {
@@ -7243,10 +7327,10 @@
 
             tbody.innerHTML = filtered.map(w => `
                 <tr>
-                    <td style="font-weight:700; color:var(--accent); padding:10px;">${escapeAdminHtml(w.name || `${w.firstName || ''} ${w.lastName || ''}`.trim() || '—')}</td>
-                    <td style="direction:ltr; padding:10px;">${escapeAdminHtml(w.phone || '—')}</td>
-                    <td style="padding:10px;"><span class="badge badge-blue" style="font-size:10px;">${escapeAdminHtml((w.grade || '—').replace('الصف ', ''))}</span></td>
-                    <td style="padding:10px;">${escapeAdminHtml(w.governorate || '—')}</td>
+                    <td style="font-weight:700; color:var(--accent); padding:10px;">${w.name || `${w.firstName || ''} ${w.lastName || ''}`.trim() || '—'}</td>
+                    <td style="direction:ltr; padding:10px;">${w.phone || '—'}</td>
+                    <td style="padding:10px;"><span class="badge badge-blue" style="font-size:10px;">${(w.grade || '—').replace('الصف ', '')}</span></td>
+                    <td style="padding:10px;">${w.governorate || '—'}</td>
                 </tr>
             `).join('');
         };
@@ -7509,7 +7593,7 @@
                 if (tSel) {
                     if (Array.isArray(_teachers) && _teachers.length > 0 && tSel.children.length <= 1) {
                         tSel.innerHTML = '<option value="">-- اختر معلماً --</option>' +
-                            _teachers.map(t => `<option value="${escapeAdminHtml(String(t._id || t.id))}">${escapeAdminHtml(t.name)}</option>`).join('');
+                            _teachers.map(t => `<option value="${t._id || t.id}">${t.name}</option>`).join('');
                     }
                     const tId = course.teacherId || course.teacher?._id || '';
                     if (tId) tSel.value = tId;
@@ -8150,19 +8234,19 @@ function renderAdminPlayStudyTable(players) {
                 <td style="padding:14px 18px; text-align:center;">
                     <div style="display:inline-flex; align-items:center; gap:8px;">
                         <!-- تعديل / خصم النقاط -->
-                        <button onclick="adminPromptAdjustPoints('${p.id}')" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="تعديل النقاط">
+                        <button onclick="adminPromptAdjustPoints('${p.id}', '${escapeHtml(p.name)}', ${p.points})" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="تعديل النقاط">
                             <i class="ti ti-coins" style="color:#f59e0b;"></i> تعديل
                         </button>
                         
                         <!-- استعادة الطاقة -->
-                        <button onclick="adminResetPlayerEnergy('${p.id}')" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="إعادة شحن المحاولات">
+                        <button onclick="adminResetPlayerEnergy('${p.id}', '${escapeHtml(p.name)}')" class="btn-ghost" style="padding:6px 10px; font-size:12px; border-radius:8px; border:1px solid var(--border2);" title="إعادة شحن المحاولات">
                             <i class="ti ti-bolt" style="color:#3b82f6;"></i> طاقة
                         </button>
 
                         <!-- حظر أو فك الحظر -->
                         ${isBanned 
-                            ? `<button onclick="adminTogglePlayerBan('${p.id}', false)" class="btn-primary" style="background:#10b981; padding:6px 12px; font-size:12px; border-radius:8px;">فك الحظر</button>`
-                            : `<button onclick="adminTogglePlayerBan('${p.id}', true)" class="btn-primary" style="background:#ef4444; padding:6px 12px; font-size:12px; border-radius:8px;"><i class="ti ti-ban"></i> حظر الغش</button>`
+                            ? `<button onclick="adminTogglePlayerBan('${p.id}', false, '${escapeHtml(p.name)}')" class="btn-primary" style="background:#10b981; padding:6px 12px; font-size:12px; border-radius:8px;">فك الحظر</button>`
+                            : `<button onclick="adminTogglePlayerBan('${p.id}', true, '${escapeHtml(p.name)}')" class="btn-primary" style="background:#ef4444; padding:6px 12px; font-size:12px; border-radius:8px;"><i class="ti ti-ban"></i> حظر الغش</button>`
                         }
                     </div>
                 </td>
@@ -8184,9 +8268,7 @@ function filterAdminPlayStudy() {
     renderAdminPlayStudyTable(filtered);
 }
 
-async function adminTogglePlayerBan(recordId, banState) {
-    const player = (_adminPlayStudyData || []).find(p => String(p.id) === String(recordId));
-    const playerName = player?.name || 'الطالب';
+async function adminTogglePlayerBan(recordId, banState, playerName) {
     let reason = '';
     if (banState) {
         const res = await Swal.fire({
@@ -8233,10 +8315,7 @@ async function adminTogglePlayerBan(recordId, banState) {
     }
 }
 
-async function adminPromptAdjustPoints(recordId) {
-    const player = (_adminPlayStudyData || []).find(p => String(p.id) === String(recordId));
-    const playerName = player?.name || 'الطالب';
-    const currentPoints = Number(player?.points) || 0;
+async function adminPromptAdjustPoints(recordId, playerName, currentPoints) {
     const res = await Swal.fire({
         title: `تعديل نقاط ${playerName}`,
         html: `
@@ -8271,9 +8350,7 @@ async function adminPromptAdjustPoints(recordId) {
     }
 }
 
-async function adminResetPlayerEnergy(recordId) {
-    const player = (_adminPlayStudyData || []).find(p => String(p.id) === String(recordId));
-    const playerName = player?.name || 'الطالب';
+async function adminResetPlayerEnergy(recordId, playerName) {
     const res = await Swal.fire({
         title: `إعادة شحن محاولات ${playerName}`,
         text: 'هل تريد إعادة شحن طاقة الطالب إلى 4 محاولات كاملة لليوم؟',
@@ -8301,6 +8378,132 @@ async function adminResetPlayerEnergy(recordId) {
         }
     } catch (err) {
         console.error('Reset energy error:', err);
+    }
+}
+</script>
+
+<!-- ==================== قسم المساعد الذكي (RAG) ==================== -->
+<script>
+/* ------------------------------------------------------------------ *
+ *  RAG Admin Panel – رفع وحذف ملفات PDF للمساعد الذكي                *
+ * ------------------------------------------------------------------ */
+
+/** تحميل قائمة الملفات المرفوعة */
+async function loadRagFiles() {
+    const container = document.getElementById('rag-files-list');
+    if (!container) return;
+    container.innerHTML = '<p style="color:var(--txt2);text-align:center;padding:20px;">⏳ جاري التحميل...</p>';
+
+    try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+        const apiBase = typeof API !== 'undefined' ? API : '';
+        const res = await fetch(`${apiBase}/api/admin/rag/list-pdfs`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+
+        if (!data.success || !data.files?.length) {
+            container.innerHTML = '<p style="color:var(--txt3);text-align:center;padding:30px;">📂 لا توجد ملفات مرفوعة بعد</p>';
+            return;
+        }
+
+        container.innerHTML = data.files.map(f => `
+            <div class="rag-file-card" id="ragfile-${f.id}">
+                <div class="rag-file-info">
+                    <i class="ti ti-file-type-pdf" style="color:#ef4444;font-size:22px;"></i>
+                    <div>
+                        <div class="rag-file-name">${f.fileName || f.id}</div>
+                        <div class="rag-file-meta">${f.chunks} مقطع نصي • ${new Date(f.uploadedAt).toLocaleDateString('ar-EG')}</div>
+                    </div>
+                </div>
+                <button class="rag-delete-btn" onclick="deleteRagFile('${f.id}', '${f.fileName || f.id}')">
+                    <i class="ti ti-trash"></i> حذف
+                </button>
+            </div>
+        `).join('');
+    } catch (err) {
+        container.innerHTML = `<p style="color:#ef4444;text-align:center;padding:20px;">❌ خطأ في تحميل الملفات: ${err.message}</p>`;
+    }
+}
+
+/** رفع ملف PDF جديد */
+async function uploadRagPDF() {
+    const fileInput = document.getElementById('rag-upload-input');
+    const statusEl = document.getElementById('rag-upload-status');
+    const uploadBtn = document.getElementById('rag-upload-btn');
+
+    if (!fileInput?.files?.length) {
+        Swal.fire({ icon: 'warning', title: 'اختر ملف PDF أولاً' });
+        return;
+    }
+
+    const file = fileInput.files[0];
+    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+        Swal.fire({ icon: 'error', title: 'يُسمح بملفات PDF فقط' });
+        return;
+    }
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = '⏳ جاري الرفع...';
+    statusEl.textContent = '';
+
+    const formData = new FormData();
+    formData.append('pdf', file);
+
+    try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+        const apiBase = typeof API !== 'undefined' ? API : '';
+        const res = await fetch(`${apiBase}/api/admin/rag/upload-pdf`, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            statusEl.innerHTML = `<span style="color:#06d6a0;">✅ تم الرفع! ${data.chunks} مقطع نصي تم استخراجه</span>`;
+            fileInput.value = '';
+            await loadRagFiles();
+        } else {
+            statusEl.innerHTML = `<span style="color:#ef4444;">❌ ${data.message || 'فشل الرفع'}</span>`;
+        }
+    } catch (err) {
+        statusEl.innerHTML = `<span style="color:#ef4444;">❌ خطأ في الاتصال: ${err.message}</span>`;
+    } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = '📤 رفع الملف';
+    }
+}
+
+/** حذف ملف PDF */
+async function deleteRagFile(fileId, fileName) {
+    const res = await Swal.fire({
+        title: `حذف: ${fileName}`,
+        text: 'سيُحذف الملف وكل المعلومات المستخرجة منه. هل أنت متأكد؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'نعم، احذف',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#ef4444'
+    });
+    if (!res.isConfirmed) return;
+
+    try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token') || '';
+        const apiBase = typeof API !== 'undefined' ? API : '';
+        const r = await fetch(`${apiBase}/api/admin/rag/delete-pdf/${encodeURIComponent(fileId)}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await r.json();
+        if (data.success) {
+            Swal.fire({ icon: 'success', title: 'تم الحذف', timer: 1500, showConfirmButton: false });
+            await loadRagFiles();
+        } else {
+            Swal.fire({ icon: 'error', title: 'فشل الحذف', text: data.message });
+        }
+    } catch (err) {
+        Swal.fire({ icon: 'error', title: 'خطأ', text: err.message });
     }
 }
 </script>

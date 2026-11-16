@@ -106,6 +106,8 @@ try {
 // available, but remains reachable with a safe fallback if it is not.
 const chatRoutes = require('./routes/chat.routes');
 app.use('/api/chat', chatRoutes);
+const ragRoutes = require('./routes/rag.routes');
+app.use('/api/admin/rag', ragRoutes);
 
 // ============================================================
 // CLEAN URLs: Redirect *.html, *.php, /index to clean extensionless URLs
