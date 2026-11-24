@@ -95,9 +95,10 @@ exports.getTeacherDashboard = async (req, res, next) => {
 
         const account = await User.findById(userId).select('role teacherId isTeacherAccount');
         const isAuthorizedTeacher = account && account.role === 'teacher' && String(account.teacherId) === String(req.params.id);
+        const isAuthorizedAssistant = account && account.role === 'assistant' && String(account.teacherId) === String(req.params.id);
         const isAdmin = account && account.role === 'admin';
-        if (!account || (!isAuthorizedTeacher && !isAdmin)) {
-            return res.status(403).json({ success: false, message: 'هذه اللوحة متاحة لحساب المدرس فقط' });
+        if (!account || (!isAuthorizedTeacher && !isAdmin && !isAuthorizedAssistant)) {
+            return res.status(403).json({ success: false, message: 'هذه اللوحة متاحة لحساب المدرس أو مساعده المعتمد فقط' });
         }
 
         const [teacher, videos, exams] = await Promise.all([
@@ -110,10 +111,7 @@ exports.getTeacherDashboard = async (req, res, next) => {
         const videoIds = videos.map(video => String(video._id));
         const questions = videoIds.length
             ? await VideoQuestion.find({
-                $or: [
-                    { teacherId: String(req.params.id) },
-                    { teacherId: { $in: ['', null] }, videoId: { $in: videoIds } }
-                ]
+                videoId: { $in: videoIds }
             }).sort({ createdAt: -1 }).lean()
             : [];
 
@@ -158,18 +156,26 @@ exports.getTeacherDashboard = async (req, res, next) => {
         const uniqueViewers = new Set(videoRows.flatMap(video => video.watchers.map(watcher => watcher.id)));
         const resultsCount = examRows.reduce((count, exam) => count + exam.results.length, 0);
 
-        // Scope attendance by this teacher's lectures only. Including records
-        // for a shared student would expose another teacher's attendance.
-        const attendances = videoIds.length
-            ? await Attendance.find({ videoId: { $in: videoIds } }).sort({ scannedAt: -1 }).lean()
-            : [];
+        // Scope attendance by this teacher: records linked to this teacher's lectures
+        // or in-person center sessions recorded with this teacher's teacherId.
+        const attendances = await Attendance.find({
+            $or: [
+                { teacherId: String(req.params.id) },
+                ...(videoIds.length ? [{ videoId: { $in: videoIds } }] : [])
+            ]
+        }).sort({ scannedAt: -1 }).lean();
 
-        // Real students strictly associated with this teacher (followers, video viewers, exam takers, attendees)
-        const followerStudents = await User.find({ role: 'student', followedTeachers: String(req.params.id) }).select('_id').lean();
+        // Real students strictly associated with this teacher (followers, direct center students, video viewers, exam takers, attendees)
+        const [followerStudents, directStudents] = await Promise.all([
+            User.find({ role: 'student', followedTeachers: String(req.params.id) }).select('_id').lean(),
+            User.find({ role: 'student', teacherId: String(req.params.id) }).select('_id').lean()
+        ]);
         const followerIds = followerStudents.map(s => String(s._id));
+        const directStudentIds = directStudents.map(s => String(s._id));
 
         const allRealTeacherStudents = new Set([
             ...followerIds,
+            ...directStudentIds,
             ...uniqueViewers,
             ...resultStudentIds,
             ...attendances.map(a => String(a.studentId)).filter(Boolean)
@@ -599,6 +605,119 @@ exports.deleteTeacher = async (req, res, next) => {
         await User.deleteMany({ teacherId: req.params.id });
 
         res.json({ success: true, message: 'تم حذف المعلم بنجاح' });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.getTeacherStudentRecord = async (req, res, next) => {
+    try {
+        const { id: teacherId, studentId } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(teacherId)) {
+            return res.status(400).json({ success: false, message: 'معرف المعلم غير صالح' });
+        }
+
+        // Authorization check: admin, teacher owner, or assistant of this teacher
+        const isSelfTeacher = req.user.role === 'teacher' && String(req.user.teacherId) === String(teacherId);
+        const isSelfAssistant = req.user.role === 'assistant' && String(req.user.teacherId) === String(teacherId);
+        const isAdmin = req.user.role === 'admin';
+        if (!isSelfTeacher && !isSelfAssistant && !isAdmin) {
+            return res.status(403).json({ success: false, message: 'غير مصرح لك بعرض بيانات هذا الطالب' });
+        }
+
+        // Find student by ID or Phone or Username
+        const studentQuery = mongoose.Types.ObjectId.isValid(studentId)
+            ? { _id: studentId, role: 'student' }
+            : { $or: [{ phone: studentId }, { username: studentId }], role: 'student' };
+        
+        const student = await User.findOne(studentQuery)
+            .select('_id firstName secondName thirdName lastName username phone parentPhone nationalId governorate grade section secondLanguage balance createdAt lastActive imagePath subscribedVideos watchedVideos')
+            .lean();
+
+        if (!student) {
+            return res.status(404).json({ success: false, message: 'الطالب غير موجود' });
+        }
+
+        // Teacher, videos & exams
+        const [teacher, videos, exams] = await Promise.all([
+            Teacher.findById(teacherId).select('name subjectAr').lean(),
+            Video.find({ teacherId: String(teacherId) }).select('_id title price playlistName').lean(),
+            Exam.find({ teacherId: String(teacherId) }).select('_id title totalMarks duration questions results').lean()
+        ]);
+
+        const videoIds = videos.map(v => String(v._id));
+        const videoMap = Object.fromEntries(videos.map(v => [String(v._id), v]));
+
+        // 1. Attendance records for this student and this teacher (centers + online)
+        const attendances = await Attendance.find({
+            studentId: student._id,
+            $or: [
+                { teacherId: String(teacherId) },
+                ...(videoIds.length ? [{ videoId: { $in: videoIds } }] : [])
+            ]
+        }).sort({ scannedAt: -1 }).lean();
+
+        // 2. Exam results for this student on this teacher's exams
+        const studentExamResults = [];
+        exams.forEach(exam => {
+            const result = (exam.results || []).find(r => String(r.studentId) === String(student._id));
+            if (result) {
+                studentExamResults.push({
+                    examId: exam._id,
+                    examTitle: exam.title,
+                    totalMarks: exam.totalMarks || (exam.questions ? exam.questions.length : 0),
+                    score: result.score != null ? result.score : 0,
+                    percentage: result.percentage != null ? result.percentage : 0,
+                    isGraded: result.isGraded !== false,
+                    submittedAt: result.submittedAt || null
+                });
+            }
+        });
+        studentExamResults.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+
+        // 3. Watched & Subscribed videos for this teacher
+        const studentWatchedVideos = [];
+        const watchedMap = Object.fromEntries((student.watchedVideos || []).map(w => [String(w.videoId), w]));
+
+        videoIds.forEach(vid => {
+            const vObj = videoMap[vid];
+            const isSubscribed = Array.isArray(student.subscribedVideos) && student.subscribedVideos.map(String).includes(vid);
+            const watchInfo = watchedMap[vid];
+            if (isSubscribed || watchInfo) {
+                studentWatchedVideos.push({
+                    videoId: vid,
+                    title: vObj ? vObj.title : 'محاضرة',
+                    playlistName: vObj ? vObj.playlistName : '',
+                    price: vObj ? vObj.price : 0,
+                    isWatched: !!watchInfo,
+                    watchCount: watchInfo ? (watchInfo.watchCount || 1) : 0,
+                    watchedAt: watchInfo ? watchInfo.watchedAt : null
+                });
+            }
+        });
+
+        const fullName = `${student.firstName || ''} ${student.secondName || ''} ${student.lastName || ''}`.replace(/\s+/g, ' ').trim() || student.username;
+
+        res.json({
+            success: true,
+            teacher,
+            student: {
+                ...student,
+                fullName
+            },
+            attendances,
+            examResults: studentExamResults,
+            watchedVideos: studentWatchedVideos,
+            stats: {
+                attendancesCount: attendances.length,
+                examsCount: studentExamResults.length,
+                avgExamScore: studentExamResults.length 
+                    ? Math.round(studentExamResults.reduce((sum, e) => sum + Number(e.percentage || 0), 0) / studentExamResults.length) 
+                    : 0,
+                watchedCount: studentWatchedVideos.filter(v => v.isWatched).length,
+                totalTeacherVideos: videos.length
+            }
+        });
     } catch (err) {
         next(err);
     }

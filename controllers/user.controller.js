@@ -487,8 +487,8 @@ exports.registerAttendance = async (req, res, next) => {
     try {
         const { studentId: scannedData, videoId, center, day, grade, time } = req.body;
 
-        if (!scannedData || !videoId) {
-            return res.status(400).json({ success: false, message: 'بيانات الطالب والمحاضرة مطلوبة' });
+        if (!scannedData) {
+            return res.status(400).json({ success: false, message: 'بيانات الطالب مطلوبة' });
         }
 
         // استخراج اسم المستخدم (username) من البريد الإلكتروني أو كود الطالب
@@ -499,9 +499,11 @@ exports.registerAttendance = async (req, res, next) => {
             return res.status(403).json({ success: false, message: 'حساب المدرس أو المساعد غير مرتبط بمدرس' });
         }
 
-        // Attendance belongs to the lecture owner. The browser cannot choose it.
+        const hasVideo = videoId && videoId !== 'none' && videoId !== 'pending' && videoId !== 'null' && String(videoId).trim() !== '';
+
+        // Attendance belongs to the lecture owner or to the teacher of the assistant/session.
         let attendanceTeacherId = accountTeacherId;
-        if (videoId !== 'pending') {
+        if (hasVideo) {
             if (!mongoose.Types.ObjectId.isValid(videoId)) {
                 return res.status(400).json({ success: false, message: 'بيانات المحاضرة غير صالحة' });
             }
@@ -513,8 +515,8 @@ exports.registerAttendance = async (req, res, next) => {
             if (!isAdmin && attendanceTeacherId !== accountTeacherId) {
                 return res.status(403).json({ success: false, message: 'لا تملك صلاحية تسجيل حضور لمحاضرة مدرس آخر' });
             }
-        } else if (isAdmin) {
-            return res.status(400).json({ success: false, message: 'يجب اختيار محاضرة لتسجيل الحضور' });
+        } else if (isAdmin && !attendanceTeacherId && req.body.teacherId) {
+            attendanceTeacherId = String(req.body.teacherId);
         }
 
         const normalizedScannedData = String(scannedData).trim().toLowerCase();
@@ -532,18 +534,20 @@ exports.registerAttendance = async (req, res, next) => {
             return res.status(404).json({ success: false, message: 'الطالب غير مسجل بالمنصة' });
         }
 
-        if (!user.subscribedVideos) user.subscribedVideos = [];
-        if (videoId !== 'pending' && !user.subscribedVideos.map(String).includes(String(videoId))) {
-            user.subscribedVideos.push(videoId);
-            await user.save();
+        if (hasVideo) {
+            if (!user.subscribedVideos) user.subscribedVideos = [];
+            if (!user.subscribedVideos.map(String).includes(String(videoId))) {
+                user.subscribedVideos.push(videoId);
+                await user.save();
+            }
         }
 
         const attendance = new Attendance({
             studentId: user._id,
-            studentName: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+            studentName: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username,
             studentPhone: user.phone || '',
             studentEmail: `${user.username}@edgeacademy.edu`,
-            videoId: videoId === 'pending' ? 'pending' : videoId,
+            videoId: hasVideo ? videoId : 'none',
             teacherId: attendanceTeacherId,
             center: center || '—',
             day: day || '—',
@@ -556,8 +560,11 @@ exports.registerAttendance = async (req, res, next) => {
 
         res.json({
             success: true,
-            message: 'تم تسجيل الحضور وفتح المحاضرة للطالب بنجاح ✅',
-            studentName: attendance.studentName
+            message: hasVideo
+                ? 'تم تسجيل الحضور وفتح المحاضرة للطالب بنجاح ✅'
+                : 'تم تسجيل حضور الطالب في السنتر بنجاح ✅',
+            studentName: attendance.studentName,
+            hasVideo
         });
     } catch (err) {
         next(err);

@@ -345,6 +345,7 @@
         <h1><i class="ti ti-messages"></i> أسئلة الطلاب — بوابة المساعد</h1>
         <div style="display:flex;align-items:center;gap:10px;">
             <span id="assistantNameDisplay" style="color:var(--txt2);font-size:0.85rem;"></span>
+            <a href="assistant-dashboard" style="background:rgba(44,167,114,0.12);border:1px solid rgba(44,167,114,0.3);color:var(--green);padding:8px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:flex;align-items:center;gap:5px;"><i class="ti ti-layout-dashboard"></i> لوحة المتابعة</a>
             <a href="assistant-hub" style="background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.25);color:var(--primary);padding:8px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:flex;align-items:center;gap:5px;"><i class="ti ti-home"></i> الرئيسية</a>
             <button class="logout-btn" onclick="doLogout()"><i class="ti ti-logout"></i> خروج</button>
         </div>
@@ -451,7 +452,13 @@
         try {
             const { currentUser } = checkAuth();
             const userId = currentUser && currentUser._id ? currentUser._id : '';
-            const res = await fetch(`${API}/api/video-questions?userId=${encodeURIComponent(userId)}`);
+            const teacherId = currentUser && currentUser.teacherId ? currentUser.teacherId : '';
+            const queryParams = new URLSearchParams();
+            if (userId) queryParams.set('userId', userId);
+            if (teacherId) queryParams.set('teacherId', teacherId);
+            const res = await fetch(`${API}/api/video-questions?${queryParams.toString()}`, {
+                credentials: 'include'
+            });
             const data = await res.json();
             if (data.success && Array.isArray(data.data)) {
                 allQuestions = data.data;

@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- EDGE Academy Favicon -->
+    <link rel="icon" type="image/jpeg" href="imges/edge-square.jpg">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="imges/edge-square.jpg">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المساعد الذكية ومتابعة الطلاب | EDGE Academy</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --primary: #1a6bdb;
+            --primary-dark: #114fb0;
+            --primary-light: #e8f1fc;
+            --accent-green: #059669;
+            --green-light: #ecfdf5;
+            --accent-red: #dc2626;
+            --red-light: #fef2f2;
+            --accent-gold: #d97706;
+            --gold-light: #fffbeb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --border2: #cbd5e1;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 14px rgba(26, 107, 219, 0.08);
+            --shadow-modal: 0 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .dark-mode {
+            --bg: #091326;
+            --card: #11203d;
+            --border: #1f3259;
+            --border2: #2a4374;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary-light: #182e54;
+            --green-light: rgba(5, 150, 105, 0.15);
+            --red-light: rgba(220, 38, 38, 0.15);
+            --gold-light: rgba(217, 119, 6, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        /* Top Header */
+        header.topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .brand-sub {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-chip {
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid rgba(26, 107, 219, 0.25);
+            padding: 7px 14px;
+            border-radius: 50px;
+            font-size: 0.84rem;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-chip:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .theme-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 7px 12px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.84rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-logout {
+            background: var(--red-light);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+            color: var(--accent-red);
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.84rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Container */
+        .dash-container {
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        /* Teacher Hero Banner */
+        .teacher-hero-card {
+            background: linear-gradient(135deg, rgba(26, 107, 219, 0.08), rgba(0, 184, 148, 0.08));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 18px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .teacher-hero-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .teacher-avatar-big {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 1.8rem;
+            border: 3px solid #fff;
+            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.25);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .teacher-hero-text h1 {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .teacher-hero-text p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        /* Metrics Strip */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .metric-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .metric-content h4 {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .metric-content .num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .metric-icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 1.4rem;
+        }
+
+        .metric-total .metric-icon-wrap { background: var(--primary-light); color: var(--primary); }
+        .metric-attend .metric-icon-wrap { background: var(--green-light); color: var(--accent-green); }
+        .metric-exams .metric-icon-wrap { background: var(--gold-light); color: var(--accent-gold); }
+        .metric-views .metric-icon-wrap { background: rgba(147, 51, 234, 0.12); color: #9333ea; }
+
+        /* Main Table Section */
+        .roster-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .roster-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .roster-title h2 {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .roster-title p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Filter Toolbar */
+        .filter-toolbar {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .filter-toolbar {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .filter-toolbar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.15rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 42px 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 107, 219, 0.15);
+        }
+
+        .filter-select {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* Table */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        table.student-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+            font-size: 0.88rem;
+        }
+
+        table.student-table thead th {
+            background: var(--bg);
+            color: var(--text-muted);
+            padding: 12px 14px;
+            font-weight: 800;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        table.student-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s ease;
+        }
+
+        table.student-table tbody tr:hover {
+            background: rgba(26, 107, 219, 0.03);
+        }
+
+        table.student-table tbody td {
+            padding: 12px 14px;
+            color: var(--text);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .student-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .student-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 0.95rem;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .student-code-badge {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 0.75rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .pill-green { background: var(--green-light); color: var(--accent-green); }
+        .pill-gold { background: var(--gold-light); color: var(--accent-gold); }
+        .pill-red { background: var(--red-light); color: var(--accent-red); }
+        .pill-blue { background: var(--primary-light); color: var(--primary); }
+
+        .btn-view-record {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-view-record:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-wa-icon {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-wa-icon:hover {
+            background: #10b981;
+            color: #fff;
+        }
+
+        /* ════ FULL STUDENT RECORD MODAL ════ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 950px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-modal);
+            display: flex;
+            flex-direction: column;
+            animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--card);
+            z-index: 10;
+        }
+
+        .modal-header-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .modal-avatar-big {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .btn-close-modal {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .btn-close-modal:hover {
+            background: var(--red-light);
+            color: var(--accent-red);
+            border-color: var(--accent-red);
+        }
+
+        .modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Modal Quick Stats */
+        .modal-stats-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .modal-stat-box {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            text-align: center;
+        }
+
+        .modal-stat-box .title {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .modal-stat-box .value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        /* Modal Tabs */
+        .modal-tabs-nav {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 4px;
+            overflow-x: auto;
+        }
+
+        .modal-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .modal-tab-btn:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .modal-tab-btn.active {
+            color: #fff;
+            background: var(--primary);
+        }
+
+        .modal-tab-pane {
+            display: none;
+        }
+
+        .modal-tab-pane.active {
+            display: block;
+        }
+
+        .modal-footer {
+            padding: 18px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: var(--bg);
+            border-radius: 0 0 20px 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="brand-area">
+            <img src="imges/edge-square.jpg" alt="EDGE Academy" class="brand-logo">
+            <div>
+                <div class="brand-title">EDGE Academy</div>
+                <div class="brand-sub"><i class="ti ti-layout-dashboard"></i> لوحة المساعد الذكية ومتابعة الطلاب</div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <a href="attendance" class="nav-chip"><i class="ti ti-scan"></i> بوابة الحضور السريع</a>
+            <a href="assistant-exams" class="nav-chip"><i class="ti ti-clipboard-check"></i> الامتحانات</a>
+            <a href="assistant-hub" class="nav-chip"><i class="ti ti-home"></i> الرئيسية</a>
+            <button type="button" class="theme-btn" onclick="toggleTheme()" id="themeToggleBtn">
+                <i class="ti ti-moon" id="themeIcon"></i>
+                <span id="themeText">وضع ليلي</span>
+            </button>
+            <button type="button" class="btn-logout" onclick="logout()"><i class="ti ti-logout"></i> خروج</button>
+        </div>
+    </header>
+
+    <div class="dash-container">
+
+        <!-- Loading Spinner -->
+        <div id="loaderArea" style="text-align:center; padding:80px 20px;">
+            <div style="width:48px; height:48px; border:4px solid rgba(26,107,219,0.2); border-top-color:#1a6bdb; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px;"></div>
+            <h3 style="font-weight:800; font-size:1.1rem; color:var(--text);">جاري تحميل بيانات لوحة المساعد والطلاب...</h3>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="mainContent" style="display:none; flex-direction:column; gap:22px;">
+
+            <!-- Teacher Hero Card -->
+            <div class="teacher-hero-card">
+                <div class="teacher-hero-info">
+                    <img id="teacherAvatar" class="teacher-avatar-big" src="imges/edge-square.jpg" alt="المعلم">
+                    <div class="teacher-hero-text">
+                        <h1 id="teacherName">أ. المعلم</h1>
+                        <p id="teacherSubject">لوحة متابعة طلاب المادة والسناتر والامتحانات والمشاهدات</p>
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <a href="attendance" class="btn-view-record" style="text-decoration:none; padding:10px 18px; font-size:0.9rem;">
+                        <i class="ti ti-scan"></i> بدء جلسة تحضير سنتر
+                    </a>
+                </div>
+            </div>
+
+            <!-- Metrics Strip -->
+            <div class="metrics-grid">
+                <div class="metric-card metric-total">
+                    <div class="metric-content">
+                        <h4>إجمالي طلاب المدرس</h4>
+                        <div class="num" id="metricTotalStudents">0</div>
+                    </div>
+                    <div class="metric-icon-wrap"><i class="ti ti-users"></i></div>
+                </div>
+
+                <div class="metric-card metric-attend">
+                    <div class="metric-content">
+                        <h4>تسجيلات حضور السناتر</h4>
+                        <div class="num" id="metricAttendances">0</div>
+                    </div>
+                    <div class="metric-icon-wrap"><i class="ti ti-map-pin"></i></div>
+                </div>
+
+                <div class="metric-card metric-exams">
+                    <div class="metric-content">
+                        <h4>حلول الامتحانات المسجلة</h4>
+                        <div class="num" id="metricExamsDone">0</div>
+                    </div>
+                    <div class="metric-icon-wrap"><i class="ti ti-checklist"></i></div>
+                </div>
+
+                <div class="metric-card metric-views">
+                    <div class="metric-content">
+                        <h4>مشاهدات الفيديوهات</h4>
+                        <div class="num" id="metricVideoViews">0</div>
+                    </div>
+                    <div class="metric-icon-wrap"><i class="ti ti-player-play"></i></div>
+                </div>
+            </div>
+
+            <!-- Students Roster Card -->
+            <div class="roster-card">
+                <div class="roster-header">
+                    <div class="roster-title">
+                        <h2><i class="ti ti-user-check" style="color:var(--primary);"></i> كشف طلاب المدرس وسجلات المتابعة</h2>
+                        <p>استعراض جميع الطلاب المسجلين مع المدرس، الحضور في السناتر، والتفاعل اللحظي على المنصة</p>
+                    </div>
+                    <div style="font-weight:800; font-size:0.92rem; color:var(--text-muted);">
+                        عدد الطلاب المعروضين: <b id="displayedStudentsCount" style="color:var(--primary); font-family:'Outfit';">0</b>
+                    </div>
+                </div>
+
+                <!-- Filter Toolbar -->
+                <div class="filter-toolbar">
+                    <div class="search-box">
+                        <i class="ti ti-search"></i>
+                        <input type="text" id="searchInput" placeholder="ابحث باسم الطالب، الهاتف، رقم ولي الأمر..." oninput="applyFilters()">
+                    </div>
+
+                    <select id="gradeFilter" class="filter-select" onchange="applyFilters()">
+                        <option value="ALL">جميع الصفوف الدراسية</option>
+                    </select>
+
+                    <select id="statusFilter" class="filter-select" onchange="applyFilters()">
+                        <option value="ALL">جميع حالات التفاعل</option>
+                        <option value="active">مشترك ومفعل فقط</option>
+                        <option value="inactive">لم يشترك بعد</option>
+                    </select>
+
+                    <select id="attendFilter" class="filter-select" onchange="applyFilters()">
+                        <option value="ALL">جميع حالات الحضور</option>
+                        <option value="attended">حضر بالسنتر</option>
+                        <option value="not_attended">لم يحضر بعد</option>
+                    </select>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="student-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center;">#</th>
+                                <th>الطالب</th>
+                                <th>الصف والمحافظة</th>
+                                <th>هاتف الطالب</th>
+                                <th>هاتف ولي الأمر</th>
+                                <th style="text-align: center;">حضور السناتر</th>
+                                <th style="text-align: center;">الامتحانات</th>
+                                <th style="text-align: center;">المشاهدات</th>
+                                <th style="text-align: center;">الحالة</th>
+                                <th style="text-align: center;">الملف الكامل</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ════ STUDENT COMPREHENSIVE RECORD MODAL ════ -->
+    <div id="studentModalOverlay" class="modal-overlay" onclick="closeStudentModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-header-info">
+                    <div class="modal-avatar-big" id="modalAvatar">ط</div>
+                    <div>
+                        <h2 id="modalStudentName" style="font-size:1.25rem; font-weight:900;">اسم الطالب</h2>
+                        <div style="display:flex; align-items:center; gap:8px; margin-top:3px; flex-wrap:wrap;">
+                            <span class="student-code-badge" id="modalStudentCode">STD-000</span>
+                            <span style="font-size:0.84rem; color:var(--text-muted); font-weight:700;" id="modalStudentGrade">الصف الدراسي</span>
+                            <span style="font-size:0.84rem; color:var(--text-muted); font-weight:700;">•</span>
+                            <span style="font-size:0.84rem; color:var(--text-muted); font-weight:700;" id="modalStudentGov">المحافظة</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-close-modal" onclick="closeStudentModal()"><i class="ti ti-x"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Modal Quick Stats -->
+                <div class="modal-stats-strip">
+                    <div class="modal-stat-box">
+                        <div class="title">حضور السناتر</div>
+                        <div class="value" id="modalAttendCount" style="color:var(--accent-green);">0</div>
+                    </div>
+                    <div class="modal-stat-box">
+                        <div class="title">الامتحانات المؤداة</div>
+                        <div class="value" id="modalExamsCount" style="color:var(--primary);">0</div>
+                    </div>
+                    <div class="modal-stat-box">
+                        <div class="title">متوسط الدرجات</div>
+                        <div class="value" id="modalAvgScore" style="color:var(--accent-gold);">0%</div>
+                    </div>
+                    <div class="modal-stat-box">
+                        <div class="title">المحاضرات المشاهدة</div>
+                        <div class="value" id="modalWatchedCount">0</div>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs inside Modal -->
+                <div class="modal-tabs-nav">
+                    <button type="button" class="modal-tab-btn active" onclick="switchModalTab('attendances', this)">
+                        <i class="ti ti-map-pin"></i> سجل حضور السناتر (<span id="modalTabAttendCount">0</span>)
+                    </button>
+                    <button type="button" class="modal-tab-btn" onclick="switchModalTab('exams', this)">
+                        <i class="ti ti-checklist"></i> نتائج الامتحانات (<span id="modalTabExamCount">0</span>)
+                    </button>
+                    <button type="button" class="modal-tab-btn" onclick="switchModalTab('videos', this)">
+                        <i class="ti ti-video"></i> المحاضرات والتفاعل (<span id="modalTabVideoCount">0</span>)
+                    </button>
+                </div>
+
+                <!-- Tab 1: Attendances -->
+                <div id="modalTabContent-attendances" class="modal-tab-pane active">
+                    <div class="table-responsive">
+                        <table class="student-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>السنتر / المقر</th>
+                                    <th>اليوم</th>
+                                    <th>الميعاد</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>تاريخ ووقت التحضير</th>
+                                    <th>نوع الحضور</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalAttendTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Exams -->
+                <div id="modalTabContent-exams" class="modal-tab-pane">
+                    <div class="table-responsive">
+                        <table class="student-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم الامتحان</th>
+                                    <th>الدرجة</th>
+                                    <th>النسبة المئوية</th>
+                                    <th>التقدير</th>
+                                    <th>تاريخ الحل</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalExamsTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Videos -->
+                <div id="modalTabContent-videos" class="modal-tab-pane">
+                    <div class="table-responsive">
+                        <table class="student-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم المحاضرة</th>
+                                    <th>الكورس / القسم</th>
+                                    <th>عدد المشاهدات</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalVideosTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <span style="font-size:0.88rem; font-weight:800; color:var(--text);">هاتف ولي الأمر: <b id="modalParentPhone" style="font-family:'Outfit'; direction:ltr; display:inline-block;">—</b></span>
+                    <a id="modalWhatsAppBtn" href="#" target="_blank" class="btn-wa-icon" style="padding:8px 16px; font-size:0.85rem;">
+                        <i class="ti ti-brand-whatsapp"></i> إرسال تقرير المستوى لولي الأمر
+                    </a>
+                </div>
+                <button type="button" class="theme-btn" onclick="closeStudentModal()">إغلاق النافذة</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+
+    <script>
+        const API = window.location.origin;
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+        // Auth Guard: Assistant, Teacher, or Admin
+        if (!currentUser || (currentUser.role !== 'assistant' && currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+            alert('🚫 غير مصرح بالدخول: هذه اللوحة مخصصة للمساعدين والمعلمين فقط.');
+            window.location.href = 'login';
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('assistant_theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeIcon').className = isDark ? 'ti ti-sun' : 'ti ti-moon';
+            document.getElementById('themeText').textContent = isDark ? 'وضع نهاري' : 'وضع ليلي';
+        }
+
+        if (localStorage.getItem('assistant_theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            const icon = document.getElementById('themeIcon');
+            const txt = document.getElementById('themeText');
+            if (icon) icon.className = 'ti ti-sun';
+            if (txt) txt.textContent = 'وضع نهاري';
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            sessionStorage.removeItem('assistantLoggedIn');
+            window.location.href = 'login';
+        }
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        let dashData = null;
+        let allStudentsList = [];
+        let targetTeacherId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                targetTeacherId = urlParams.get('teacherId') || currentUser.teacherId;
+
+                // If admin without teacherId, pick first teacher
+                if (!targetTeacherId && currentUser.role === 'admin') {
+                    const teachersRes = await fetch(`${API}/api/teachers?includeHidden=true`);
+                    const teachers = await teachersRes.json();
+                    if (Array.isArray(teachers) && teachers.length > 0) {
+                        targetTeacherId = teachers[0]._id;
+                    }
+                }
+
+                if (!targetTeacherId) {
+                    throw new Error('حساب المساعد غير مرتبط بمعلم. يرجى مراجعة إدارة المنصة.');
+                }
+
+                // Fetch Dashboard Data strictly for this teacher
+                const res = await fetch(`${API}/api/teachers/dashboard/${targetTeacherId}?userId=${currentUser._id}`);
+                const data = await res.json();
+
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || 'تعذر تحميل بيانات المدرس والطلاب');
+                }
+
+                dashData = data;
+                renderDashboard(data);
+
+            } catch (err) {
+                document.getElementById('loaderArea').innerHTML = `
+                    <div style="color:var(--accent-red); font-weight:800; font-size:1.1rem;">
+                        <i class="ti ti-alert-triangle" style="font-size:2.5rem; display:block; margin-bottom:10px;"></i>
+                        خطأ أثناء تحميل البيانات: ${escapeHtml(err.message)}
+                        <br>
+                        <button onclick="location.reload()" style="margin-top:16px; padding:10px 22px; background:var(--primary); color:#fff; border:none; border-radius:10px; cursor:pointer; font-weight:700;">إعادة المحاولة</button>
+                    </div>
+                `;
+            }
+        });
+
+        function renderDashboard(d) {
+            document.getElementById('loaderArea').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'flex';
+
+            const teacher = d.teacher || {};
+            const stats = d.stats || {};
+            const attendances = d.attendances || [];
+            const videos = d.videos || [];
+            const exams = d.exams || [];
+            const analytics = d.analytics || {};
+
+            // Teacher Hero
+            document.getElementById('teacherName').textContent = `أ. ${teacher.name || 'المعلم'}`;
+            document.getElementById('teacherSubject').textContent = `لوحة متابعة طلاب مادة ${teacher.subjectAr || ''} والسناتر والامتحانات والمشاهدات`;
+            if (teacher.imagePath) {
+                document.getElementById('teacherAvatar').src = teacher.imagePath;
+            }
+
+            // Top Metrics
+            document.getElementById('metricTotalStudents').textContent = stats.totalStudentsCount || analytics.studentsCount || 0;
+            document.getElementById('metricAttendances').textContent = attendances.length;
+            document.getElementById('metricExamsDone').textContent = stats.resultsCount || 0;
+            const totalViews = videos.reduce((acc, v) => acc + (v.watchers ? v.watchers.length : 0), 0);
+            document.getElementById('metricVideoViews').textContent = totalViews;
+
+            // Build Comprehensive Students Roster
+            // We combine watcher maps, exam results, and attendance records
+            const studentMap = new Map();
+
+            // 1. From videos watchers
+            videos.forEach(v => {
+                (v.watchers || []).forEach(w => {
+                    const sid = String(w.id || w._id);
+                    if (!studentMap.has(sid)) {
+                        studentMap.set(sid, {
+                            id: sid,
+                            name: w.name,
+                            phone: w.phone || '—',
+                            grade: w.grade || '—',
+                            gov: w.governorate || '—',
+                            parentPhone: '—',
+                            attendCount: 0,
+                            examsDone: 0,
+                            examScores: [],
+                            viewsCount: 0,
+                            status: 'مفعل'
+                        });
+                    }
+                    studentMap.get(sid).viewsCount += 1;
+                });
+            });
+
+            // 2. From Exams
+            exams.forEach(e => {
+                (e.results || []).forEach(r => {
+                    const sid = String(r.studentId);
+                    if (sid) {
+                        if (!studentMap.has(sid)) {
+                            studentMap.set(sid, {
+                                id: sid,
+                                name: r.studentName || 'طالب',
+                                phone: r.studentPhone || '—',
+                                grade: r.grade || '—',
+                                gov: r.governorate || '—',
+                                parentPhone: r.parentPhone || '—',
+                                attendCount: 0,
+                                examsDone: 0,
+                                examScores: [],
+                                viewsCount: 0,
+                                status: 'مفعل'
+                            });
+                        }
+                        const st = studentMap.get(sid);
+                        st.examsDone += 1;
+                        if (r.percentage != null) st.examScores.push(Number(r.percentage));
+                        if (r.parentPhone && r.parentPhone !== '—') st.parentPhone = r.parentPhone;
+                    }
+                });
+            });
+
+            // 3. From Attendance
+            attendances.forEach(a => {
+                const sid = String(a.studentId);
+                if (sid) {
+                    if (!studentMap.has(sid)) {
+                        studentMap.set(sid, {
+                            id: sid,
+                            name: a.studentName || 'طالب',
+                            phone: a.studentPhone || '—',
+                            grade: a.grade || '—',
+                            gov: '—',
+                            parentPhone: '—',
+                            attendCount: 0,
+                            examsDone: 0,
+                            examScores: [],
+                            viewsCount: 0,
+                            status: 'مفعل'
+                        });
+                    }
+                    studentMap.get(sid).attendCount += 1;
+                }
+            });
+
+            // 4. From Inactive / Registered students table
+            (analytics.inactiveStudents || []).forEach(inact => {
+                const sid = String(inact._id);
+                if (!studentMap.has(sid)) {
+                    studentMap.set(sid, {
+                        id: sid,
+                        name: inact.name,
+                        phone: inact.phone || '—',
+                        grade: inact.grade || '—',
+                        gov: inact.governorate || '—',
+                        parentPhone: inact.parentPhone || '—',
+                        attendCount: 0,
+                        examsDone: 0,
+                        examScores: [],
+                        viewsCount: 0,
+                        status: inact.status || 'لم يشترك بعد'
+                    });
+                }
+            });
+
+            allStudentsList = Array.from(studentMap.values());
+
+            // Populate Grades Filter Dropdown
+            const gradesSet = new Set(allStudentsList.map(s => s.grade).filter(g => g && g !== '—'));
+            const gradeFilter = document.getElementById('gradeFilter');
+            gradesSet.forEach(g => {
+                gradeFilter.innerHTML += `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`;
+            });
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+            const selectedGrade = document.getElementById('gradeFilter')?.value || 'ALL';
+            const selectedStatus = document.getElementById('statusFilter')?.value || 'ALL';
+            const selectedAttend = document.getElementById('attendFilter')?.value || 'ALL';
+
+            const filtered = allStudentsList.filter(s => {
+                const matchQ = !query || 
+                    s.name.toLowerCase().includes(query) || 
+                    s.phone.includes(query) || 
+                    s.parentPhone.includes(query) || 
+                    s.id.toLowerCase().includes(query);
+
+                const matchGrade = selectedGrade === 'ALL' || s.grade === selectedGrade;
+                const matchStatus = selectedStatus === 'ALL' || 
+                    (selectedStatus === 'active' && s.status === 'مفعل') || 
+                    (selectedStatus === 'inactive' && s.status !== 'مفعل');
+
+                const matchAttend = selectedAttend === 'ALL' || 
+                    (selectedAttend === 'attended' && s.attendCount > 0) || 
+                    (selectedAttend === 'not_attended' && s.attendCount === 0);
+
+                return matchQ && matchGrade && matchStatus && matchAttend;
+            });
+
+            document.getElementById('displayedStudentsCount').textContent = filtered.length;
+            renderStudentsTable(filtered);
+        }
+
+        function renderStudentsTable(list) {
+            const tbody = document.getElementById('studentsTbody');
+            if (!tbody) return;
+
+            if (!list.length) {
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:35px; color:var(--text-muted); font-weight:700;">لا يوجد طلاب مطابقين لمعايير البحث.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map((s, idx) => {
+                const avgScore = s.examScores.length 
+                    ? Math.round(s.examScores.reduce((a, b) => a + b, 0) / s.examScores.length)
+                    : null;
+
+                const parentPhoneClean = s.parentPhone && s.parentPhone !== '—' ? s.parentPhone : s.phone;
+                const waMsg = encodeURIComponent(`السلام عليكم ولي أمر الطالب/ة ${s.name} بخصوص مستواه في مادة ${dashData?.teacher?.subjectAr || ''}.`);
+
+                return `
+                    <tr>
+                        <td style="text-align:center; font-family:'Outfit'; font-weight:800; color:var(--text-muted);">${idx + 1}</td>
+                        <td>
+                            <div class="student-cell">
+                                <div class="student-avatar">${escapeHtml(s.name.charAt(0))}</div>
+                                <div>
+                                    <div style="font-weight:800; color:var(--text); cursor:pointer;" onclick="openStudentModal('${s.id}')">${escapeHtml(s.name)}</div>
+                                    <span class="student-code-badge">${s.id.slice(-6).toUpperCase()}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight:700;">${escapeHtml(s.grade)}</div>
+                            <small style="color:var(--text-muted);">${escapeHtml(s.gov)}</small>
+                        </td>
+                        <td style="font-family:'Outfit'; direction:ltr; text-align:right;">
+                            ${s.phone && s.phone !== '—' ? `<a href="tel:${s.phone}" style="color:var(--primary); font-weight:800; text-decoration:none;"><i class="ti ti-phone"></i> ${escapeHtml(s.phone)}</a>` : '—'}
+                        </td>
+                        <td style="font-family:'Outfit'; direction:ltr; text-align:right;">
+                            ${s.parentPhone && s.parentPhone !== '—' ? `<span style="font-weight:700;">${escapeHtml(s.parentPhone)}</span>` : '—'}
+                        </td>
+                        <td style="text-align:center;">
+                            ${s.attendCount > 0 
+                                ? `<span class="pill-badge pill-green"><i class="ti ti-check"></i> ${s.attendCount} حصة</span>`
+                                : `<span class="pill-badge pill-red"><i class="ti ti-x"></i> لم يحضر</span>`}
+                        </td>
+                        <td style="text-align:center;">
+                            ${s.examsDone > 0 
+                                ? `<span class="pill-badge pill-blue">${s.examsDone} امتحان (${avgScore}%)</span>`
+                                : `<span style="color:var(--text-muted); font-size:0.8rem;">—</span>`}
+                        </td>
+                        <td style="text-align:center;">
+                            <span class="pill-badge pill-gold"><i class="ti ti-eye"></i> ${s.viewsCount}</span>
+                        </td>
+                        <td style="text-align:center;">
+                            <span class="pill-badge ${s.status === 'مفعل' ? 'pill-green' : 'pill-red'}">${escapeHtml(s.status)}</span>
+                        </td>
+                        <td style="text-align:center;">
+                            <div style="display:flex; align-items:center; justify-content:center; gap:6px;">
+                                <button type="button" class="btn-view-record" onclick="openStudentModal('${s.id}')" title="فتح الملف وسجلات الطالب">
+                                    <i class="ti ti-id"></i> الملف الشامل
+                                </button>
+                                ${parentPhoneClean && parentPhoneClean !== '—' ? `
+                                    <a href="https://wa.me/20${parentPhoneClean.replace(/^0+/, '')}?text=${waMsg}" target="_blank" class="btn-wa-icon" title="مراسلة واتساب">
+                                        <i class="ti ti-brand-whatsapp"></i>
+                                    </a>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        /* ════ OPEN / CLOSE STUDENT MODAL ════ */
+        let currentModalStudent = null;
+
+        async function openStudentModal(studentId) {
+            const overlay = document.getElementById('studentModalOverlay');
+            overlay.classList.add('active');
+
+            // Reset modal data
+            document.getElementById('modalStudentName').textContent = 'جاري جلب الملف...';
+            document.getElementById('modalStudentCode').textContent = '...';
+            document.getElementById('modalStudentGrade').textContent = '';
+            document.getElementById('modalStudentGov').textContent = '';
+            document.getElementById('modalAttendCount').textContent = '0';
+            document.getElementById('modalExamsCount').textContent = '0';
+            document.getElementById('modalAvgScore').textContent = '0%';
+            document.getElementById('modalWatchedCount').textContent = '0';
+            document.getElementById('modalAttendTbody').innerHTML = `<tr><td colspan="7" style="text-align:center; padding:25px;">جاري التحميل...</td></tr>`;
+            document.getElementById('modalExamsTbody').innerHTML = `<tr><td colspan="6" style="text-align:center; padding:25px;">جاري التحميل...</td></tr>`;
+            document.getElementById('modalVideosTbody').innerHTML = `<tr><td colspan="5" style="text-align:center; padding:25px;">جاري التحميل...</td></tr>`;
+
+            try {
+                const res = await fetch(`${API}/api/teachers/${targetTeacherId}/student-record/${studentId}`);
+                const data = await res.json();
+                if (!res.ok || !data.success) throw new Error(data.message || 'تعذر جلب ملف الطالب');
+
+                currentModalStudent = data;
+                renderStudentModalData(data);
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: err.message,
+                    confirmButtonText: 'حسناً'
+                });
+                closeStudentModal();
+            }
+        }
+
+        function renderStudentModalData(d) {
+            const st = d.student || {};
+            const stats = d.stats || {};
+            const attendances = d.attendances || [];
+            const exams = d.examResults || [];
+            const videos = d.watchedVideos || [];
+
+            document.getElementById('modalAvatar').textContent = (st.fullName || st.firstName || 'ط').charAt(0);
+            document.getElementById('modalStudentName').textContent = st.fullName || `${st.firstName || ''} ${st.lastName || ''}`;
+            document.getElementById('modalStudentCode').textContent = `كود: ${(st._id || '').slice(-6).toUpperCase()}`;
+            document.getElementById('modalStudentGrade').textContent = st.grade || '—';
+            document.getElementById('modalStudentGov').textContent = st.governorate || '—';
+
+            document.getElementById('modalAttendCount').textContent = stats.attendancesCount || 0;
+            document.getElementById('modalExamsCount').textContent = stats.examsCount || 0;
+            document.getElementById('modalAvgScore').textContent = `${stats.avgExamScore || 0}%`;
+            document.getElementById('modalWatchedCount').textContent = `${stats.watchedCount || 0} من أصل ${stats.totalTeacherVideos || 0}`;
+
+            document.getElementById('modalTabAttendCount').textContent = attendances.length;
+            document.getElementById('modalTabExamCount').textContent = exams.length;
+            document.getElementById('modalTabVideoCount').textContent = videos.length;
+
+            // Render Attendances
+            const attendTbody = document.getElementById('modalAttendTbody');
+            if (!attendances.length) {
+                attendTbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:25px; color:var(--text-muted);">لا توجد تسجيلات حضور في السناتر لهذا الطالب بعد.</td></tr>`;
+            } else {
+                attendTbody.innerHTML = attendances.map((a, i) => `
+                    <tr>
+                        <td style="text-align:center; font-family:'Outfit';">${i + 1}</td>
+                        <td style="font-weight:800; color:var(--primary);">${escapeHtml(a.center || '—')}</td>
+                        <td>${escapeHtml(a.day || '—')}</td>
+                        <td style="font-family:'Outfit';">${escapeHtml(a.time || '—')}</td>
+                        <td>${escapeHtml(a.grade || '—')}</td>
+                        <td style="font-family:'Outfit'; font-size:0.84rem;">${a.scannedAt ? new Date(a.scannedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '—'}</td>
+                        <td>
+                            ${a.videoId && a.videoId !== 'none' && a.videoId !== 'pending'
+                                ? `<span class="pill-badge pill-blue"><i class="ti ti-video"></i> مرتبط بمحاضرة</span>`
+                                : `<span class="pill-badge pill-green"><i class="ti ti-user-check"></i> سنتر عادي</span>`}
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Render Exams
+            const examsTbody = document.getElementById('modalExamsTbody');
+            if (!exams.length) {
+                examsTbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:25px; color:var(--text-muted);">لم يقم الطالب بحل أي امتحانات لهذا المعلم بعد.</td></tr>`;
+            } else {
+                examsTbody.innerHTML = exams.map((e, i) => {
+                    let badgeClass = 'pill-green';
+                    let gradeText = 'ممتاز';
+                    if (e.percentage < 50) { badgeClass = 'pill-red'; gradeText = 'راسب'; }
+                    else if (e.percentage < 65) { badgeClass = 'pill-gold'; gradeText = 'مقبول'; }
+                    else if (e.percentage < 75) { badgeClass = 'pill-blue'; gradeText = 'جيد'; }
+                    else if (e.percentage < 85) { badgeClass = 'pill-blue'; gradeText = 'جيد جداً'; }
+
+                    return `
+                        <tr>
+                            <td style="text-align:center; font-family:'Outfit';">${i + 1}</td>
+                            <td style="font-weight:800;">${escapeHtml(e.examTitle)}</td>
+                            <td style="font-family:'Outfit'; font-weight:800;">${e.score} / ${e.totalMarks}</td>
+                            <td style="font-family:'Outfit'; font-weight:900; font-size:0.95rem;">${e.percentage}%</td>
+                            <td><span class="pill-badge ${badgeClass}">${gradeText}</span></td>
+                            <td style="font-family:'Outfit'; font-size:0.84rem;">${e.submittedAt ? new Date(e.submittedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '—'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // Render Videos
+            const videosTbody = document.getElementById('modalVideosTbody');
+            if (!videos.length) {
+                videosTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:25px; color:var(--text-muted);">لا توجد محاضرات مشتركة أو مشاهدة لهذا الطالب بعد.</td></tr>`;
+            } else {
+                videosTbody.innerHTML = videos.map((v, i) => `
+                    <tr>
+                        <td style="text-align:center; font-family:'Outfit';">${i + 1}</td>
+                        <td style="font-weight:800;">${escapeHtml(v.title)}</td>
+                        <td>${escapeHtml(v.playlistName || 'عام')}</td>
+                        <td style="font-family:'Outfit'; font-weight:800; text-align:center;">${v.watchCount} مرة</td>
+                        <td>
+                            ${v.isWatched 
+                                ? `<span class="pill-badge pill-green"><i class="ti ti-check"></i> تمت المشاهدة</span>`
+                                : `<span class="pill-badge pill-gold">مشترك فقط</span>`}
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Parent Phone & WhatsApp Action
+            const parentPhone = st.parentPhone && st.parentPhone !== '—' ? st.parentPhone : st.phone;
+            document.getElementById('modalParentPhone').textContent = parentPhone || 'غير مسجل';
+
+            const waBtn = document.getElementById('modalWhatsAppBtn');
+            if (parentPhone && parentPhone !== '—') {
+                const reportMsg = `السلام عليكم ولي أمر الطالب: ${st.fullName || st.firstName}\nنحيطكم علماً بتقرير مستوى الطالب مع الأستاذ ${d.teacher?.name || ''} بمادة ${d.teacher?.subjectAr || ''}:\n- عدد مرات الحضور بالسنتر: ${stats.attendancesCount} حصة\n- عدد الامتحانات المنجزة: ${stats.examsCount}\n- متوسط درجات الامتحانات: ${stats.avgExamScore}%\n- المحاضرات المشاهدة: ${stats.watchedCount}\nمع تحيات منصة EDGE Academy.`;
+                waBtn.href = `https://wa.me/20${parentPhone.replace(/^0+/, '')}?text=${encodeURIComponent(reportMsg)}`;
+                waBtn.style.display = 'inline-flex';
+            } else {
+                waBtn.style.display = 'none';
+            }
+        }
+
+        function switchModalTab(tabKey, btn) {
+            document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.modal-tab-pane').forEach(p => p.classList.remove('active'));
+
+            if (btn) btn.classList.add('active');
+            const targetPane = document.getElementById(`modalTabContent-${tabKey}`);
+            if (targetPane) targetPane.classList.add('active');
+        }
+
+        function closeStudentModal(e) {
+            if (e && e.target && e.target !== document.getElementById('studentModalOverlay') && !e.target.classList.contains('btn-close-modal') && !e.target.closest('.btn-close-modal')) return;
+            document.getElementById('studentModalOverlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

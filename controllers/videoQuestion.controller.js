@@ -9,8 +9,11 @@ async function getQuestionScope(userId) {
     const user = await User.findById(userId).select('role teacherId').lean();
     if (!user) return null;
     if (user.role === 'admin') return { admin: true };
-    if ((user.role === 'assistant' || user.role === 'teacher') && user.teacherId) {
+    if (user.role === 'assistant' && user.teacherId) {
         return { teacherId: String(user.teacherId) };
+    }
+    if (user.role === 'teacher') {
+        return { teacherId: String(user.teacherId || user._id) };
     }
     return null;
 }
@@ -54,18 +57,47 @@ exports.getAllQuestions = async (req, res, next) => {
     try {
         const scope = await getQuestionScope(String(req.user._id));
         if (!scope) return res.status(403).json({ success: false, message: 'يلزم تسجيل الدخول بحساب مساعد أو مدرس' });
+
+        let targetTeacherId = null;
         if (scope.admin) {
-            const questions = await VideoQuestion.find().sort({ createdAt: -1 }).lean();
-            return res.json({ success: true, data: questions });
+            if (req.query.teacherId) {
+                targetTeacherId = String(req.query.teacherId);
+            } else if (req.query.userId && req.query.userId !== 'admin-master-id') {
+                const targetScope = await getQuestionScope(String(req.query.userId));
+                if (targetScope && targetScope.teacherId) {
+                    targetTeacherId = targetScope.teacherId;
+                }
+            }
+            if (!targetTeacherId) {
+                // Return all questions belonging to existing videos
+                const allVideos = await Video.find().select('_id').lean();
+                const allVideoIds = allVideos.map(v => String(v._id));
+                const questions = await VideoQuestion.find({
+                    videoId: { $in: allVideoIds }
+                }).sort({ createdAt: -1 }).lean();
+                return res.json({ success: true, data: questions });
+            }
+        } else {
+            targetTeacherId = scope.teacherId;
         }
-        const ownedVideos = await Video.find({ teacherId: scope.teacherId }).select('_id').lean();
+
+        if (!targetTeacherId) {
+            return res.json({ success: true, data: [] });
+        }
+
+        // Get all videos strictly owned by this teacher
+        const ownedVideos = await Video.find({ teacherId: targetTeacherId }).select('_id').lean();
         const videoIds = ownedVideos.map(video => String(video._id));
+
+        if (!videoIds.length) {
+            return res.json({ success: true, data: [] });
+        }
+
+        // Questions must strictly belong to one of this teacher's videos
         const questions = await VideoQuestion.find({
-            $or: [
-                { teacherId: scope.teacherId },
-                { teacherId: { $in: ['', null] }, videoId: { $in: videoIds } }
-            ]
+            videoId: { $in: videoIds }
         }).sort({ createdAt: -1 }).lean();
+
         res.json({ success: true, data: questions });
     } catch (err) {
         next(err);

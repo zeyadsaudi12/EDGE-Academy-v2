@@ -6,6 +6,7 @@ const { authenticate, optionalAuthenticate, allowRoles } = require('../middlewar
 
 router.get('/follower-counts', teacherController.getFollowerCounts);
 router.get('/dashboard/:id', authenticate, (req, _res, next) => { req.query.userId = String(req.user._id); next(); }, teacherController.getTeacherDashboard);
+router.get('/:id/student-record/:studentId', authenticate, teacherController.getTeacherStudentRecord);
 router.get('/', optionalAuthenticate, teacherController.getAllTeachers);
 router.put('/:id/toggle-visibility', authenticate, allowRoles('admin'), teacherController.toggleTeacherVisibility);
 router.get('/:id', optionalAuthenticate, teacherController.getTeacherById);

@@ -318,7 +318,21 @@
                 <small id="schedule-help" style="margin-top:8px;color:var(--txt2);display:block;">اختر السنتر أولاً، ثم أكمل باقي البيانات بالترتيب.</small>
             </div>
 
-            <div class="form-field" style="margin-bottom: 15px;">
+            <div class="form-field" style="margin-bottom: 12px;">
+                <label>نوع جلسة التحضير *</label>
+                <div style="display:flex; gap:10px; margin-top:4px; flex-wrap:wrap;">
+                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.88rem; font-weight:700; background:var(--bg3); padding:8px 14px; border-radius:10px; border:1px solid var(--border2);">
+                        <input type="radio" name="attendMode" value="regular" id="mode-regular" checked onchange="onAttendModeChange()">
+                        <span><i class="ti ti-user-check"></i> تحضير سنتر عادي (بدون ربط بمحاضرة)</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.88rem; font-weight:700; background:var(--bg3); padding:8px 14px; border-radius:10px; border:1px solid var(--border2);">
+                        <input type="radio" name="attendMode" value="video" id="mode-video" onchange="onAttendModeChange()">
+                        <span><i class="ti ti-video"></i> تحضير مع تفعيل محاضرة أونلاين</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-field" id="video-select-group" style="margin-bottom: 15px; display:none;">
                 <label>المحاضرة الأونلاين المراد تفعيلها لهم *</label>
                 <select id="setup-video">
                     <option value="">-- أكمل بيانات حصة السنتر أولاً --</option>
@@ -547,10 +561,23 @@
             }
         }
 
+        function onAttendModeChange() {
+            const isVideo = document.getElementById('mode-video')?.checked;
+            const group = document.getElementById('video-select-group');
+            if (group) group.style.display = isVideo ? 'flex' : 'none';
+        }
+
+        function getTargetVideoId() {
+            const isVideo = document.getElementById('mode-video')?.checked;
+            if (!isVideo) return 'none';
+            return document.getElementById('setup-video')?.value || '';
+        }
+
         // تشغيل / إيقاف جلسة مسح الحضور
         function toggleSession() {
             const btn = document.getElementById('action-btn');
-            const videoId = document.getElementById('setup-video').value;
+            const isVideo = document.getElementById('mode-video')?.checked;
+            const videoId = getTargetVideoId();
             const activeSched = selectedSchedule();
 
             if (!activeSched) {
@@ -558,7 +585,7 @@
                 return;
             }
 
-            if (!videoId) {
+            if (isVideo && !videoId) {
                 showAlert('⚠️ اختر المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
                 return;
             }
@@ -613,14 +640,15 @@
         function submitManualAttendance() {
             const studentIdInput = document.getElementById('manual-student-id');
             let studentEmail = studentIdInput.value.trim().toLowerCase();
-            const videoVal = document.getElementById('setup-video').value;
+            const videoVal = getTargetVideoId();
+            const isVideo = document.getElementById('mode-video')?.checked;
             const activeSched = selectedSchedule();
 
             if (!activeSched) {
                 showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
                 return;
             }
-            if (!videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
+            if (isVideo && !videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
             if (!studentEmail) {
                 showAlert('⚠️ يرجى إدخال بريد الطالب أولاً!', 'orange');
                 return;
@@ -677,8 +705,9 @@
 
             const activeSched = selectedSchedule();
             if (!activeSched) { showAlert('⚠️ أكمل بيانات حصة السنتر أولاً!', 'orange'); return; }
-            const videoVal = document.getElementById('setup-video').value;
-            if (!videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
+            const videoVal = getTargetVideoId();
+            const isVideo = document.getElementById('mode-video')?.checked;
+            if (isVideo && !videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
 
             const payload = {
                 studentId: studentId.trim(),

@@ -5,6 +5,9 @@ const COOKIE_NAME = 'edge_session';
 
 function secret() {
     if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+        if (process.env.NODE_ENV !== 'production') {
+            return process.env.JWT_SECRET || 'edge-academy-development-offline-secret-key-64chars-min-secure-token';
+        }
         throw new Error('JWT_SECRET must be set to a random value of at least 32 characters');
     }
     return process.env.JWT_SECRET;
