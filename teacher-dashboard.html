@@ -2010,7 +2010,7 @@
                     throw new Error('يرجى تحديد المعلم المطلوب عرض لوحته الإحصائية');
                 }
 
-                const res = await fetch(`${API}/api/teachers/dashboard/${targetTeacherId}?userId=${currentUser._id}`);
+                const res = await fetch(`${API}/api/teachers/dashboard/${targetTeacherId}?userId=${currentUser._id}`, { credentials: 'include' });
                 const data = await res.json();
                 if (!res.ok || !data.success) throw new Error(data.message || 'تعذر جلب البيانات');
                 dashData = data;
@@ -2094,6 +2094,60 @@
             setSafeText('cardCoursesCount', coursesCount);
             setSafeText('cardLecturesCount', lecturesCount);
 
+            // Render DOM lists & tables BEFORE Chart.js so a Chart error never hides real data
+            const rlL = document.getElementById('recentLecturesList');
+            if (rlL) {
+                rlL.innerHTML = recLec.length ? recLec.map(l => `
+                    <div class="recent-item-row">
+                        <div>
+                            <div class="recent-item-title">${escapeHtml(l.title)}</div>
+                            <div class="recent-item-sub">${escapeHtml(l.teacherName || '')} | ${l.price != null ? l.price + ' ج' : 'مجانية'}</div>
+                        </div>
+                    </div>
+                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا توجد محاضرات مضافة بعد.</div>';
+            }
+
+            const rtL = document.getElementById('recentTeachersList');
+            if (rtL) {
+                rtL.innerHTML = recTeach.length ? recTeach.map(t => `
+                    <div class="recent-teacher-box">
+                        <div class="recent-teacher-contacts">
+                            ${t.phone ? `<a href="tel:${t.phone}" class="btn-contact-icon phone" title="اتصال"><i class="ti ti-phone"></i></a>` : ''}
+                            ${t.whatsapp || t.phone ? `<a href="https://wa.me/20${(t.whatsapp || t.phone).replace(/^0+/, '')}" target="_blank" class="btn-contact-icon whatsapp" title="واتساب"><i class="ti ti-brand-whatsapp"></i></a>` : ''}
+                        </div>
+                        <div class="recent-teacher-info">
+                            <div style="text-align:right;">
+                                <div class="recent-item-title">${escapeHtml(t.name)}</div>
+                                <div class="recent-item-sub">${escapeHtml(t.subjectAr || '')}</div>
+                            </div>
+                            <img src="${t.imagePath || 'imges/logo-light-mode.png'}" alt="${escapeHtml(t.name)}" class="recent-teacher-avatar" onerror="this.src='imges/logo-light-mode.png'">
+                        </div>
+                    </div>
+                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا يوجد معلمون مضافون بعد.</div>';
+            }
+
+            const rsL = document.getElementById('recentStudentsList');
+            if (rsL) {
+                rsL.innerHTML = recStud.length ? recStud.map(s => `
+                    <div class="recent-item-row">
+                        <span class="recent-item-badge">${escapeHtml(s.timeAgo || 'مؤخراً')}</span>
+                        <div style="text-align:right;">
+                            <div class="recent-item-title">${escapeHtml(s.name)}</div>
+                            <div class="recent-item-sub">${escapeHtml(s.grade || '')}</div>
+                        </div>
+                    </div>
+                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا يوجد طلاب مسجلون بعد.</div>';
+            }
+
+            allInactiveStudents = inact;
+            setSafeText('sideBadgeInactive', allInactiveStudents.length);
+            renderInactiveStudentsTable(allInactiveStudents);
+
+            setSafeText('badgeActiveCount', as.activeCount || 0);
+            setSafeText('badgeInactiveCount', as.inactiveCount || 0);
+
+            if (typeof Chart !== 'undefined') {
+            try {
             // 2. Platform Overview Donut
             const pCtx = document.getElementById('chartPlatformOverview')?.getContext('2d');
             if (pCtx) {
@@ -2406,58 +2460,10 @@
                 setSafeText('badgeActiveCount', as.activeCount || 0);
                 setSafeText('badgeInactiveCount', as.inactiveCount || 0);
             }
-
-            // 9. Recent Lectures List (Strictly Real)
-            const rlL = document.getElementById('recentLecturesList');
-            if (rlL) {
-                rlL.innerHTML = recLec.length ? recLec.map(l => `
-                    <div class="recent-item-row">
-                        <div>
-                            <div class="recent-item-title">${escapeHtml(l.title)}</div>
-                            <div class="recent-item-sub">${escapeHtml(l.teacherName || '')} | ${l.price != null ? l.price + ' ج' : 'مجانية'}</div>
-                        </div>
-                    </div>
-                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا توجد محاضرات مضافة بعد.</div>';
+            } catch (chartErr) {
+                console.warn('Chart rendering error:', chartErr);
             }
-
-            // 10. Recent Teachers List (Strictly Real)
-            const rtL = document.getElementById('recentTeachersList');
-            if (rtL) {
-                rtL.innerHTML = recTeach.length ? recTeach.map(t => `
-                    <div class="recent-teacher-box">
-                        <div class="recent-teacher-contacts">
-                            ${t.phone ? `<a href="tel:${t.phone}" class="btn-contact-icon phone" title="اتصال"><i class="ti ti-phone"></i></a>` : ''}
-                            ${t.whatsapp || t.phone ? `<a href="https://wa.me/20${(t.whatsapp || t.phone).replace(/^0+/, '')}" target="_blank" class="btn-contact-icon whatsapp" title="واتساب"><i class="ti ti-brand-whatsapp"></i></a>` : ''}
-                        </div>
-                        <div class="recent-teacher-info">
-                            <div style="text-align:right;">
-                                <div class="recent-item-title">${escapeHtml(t.name)}</div>
-                                <div class="recent-item-sub">${escapeHtml(t.subjectAr || '')}</div>
-                            </div>
-                            <img src="${t.imagePath || 'imges/logo-light-mode.png'}" alt="${escapeHtml(t.name)}" class="recent-teacher-avatar" onerror="this.src='imges/logo-light-mode.png'">
-                        </div>
-                    </div>
-                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا يوجد معلمون مضافون بعد.</div>';
             }
-
-            // 11. Recent Students List (Strictly Real)
-            const rsL = document.getElementById('recentStudentsList');
-            if (rsL) {
-                rsL.innerHTML = recStud.length ? recStud.map(s => `
-                    <div class="recent-item-row">
-                        <span class="recent-item-badge">${escapeHtml(s.timeAgo || 'مؤخراً')}</span>
-                        <div style="text-align:right;">
-                            <div class="recent-item-title">${escapeHtml(s.name)}</div>
-                            <div class="recent-item-sub">${escapeHtml(s.grade || '')}</div>
-                        </div>
-                    </div>
-                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا يوجد طلاب مسجلون بعد.</div>';
-            }
-
-            // 12. Inactive Students Table (Strictly Real)
-            allInactiveStudents = inact;
-            document.getElementById('sideBadgeInactive').textContent = allInactiveStudents.length;
-            renderInactiveStudentsTable(allInactiveStudents);
         }
 
         let allInactiveStudents = [];
