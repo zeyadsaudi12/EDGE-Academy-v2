@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
@@ -9,7 +9,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ù„ÙˆØ­Ø© Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ù…Ø¯Ø±Ø³ ÙˆØ§Ù„Ø³Ù†Ø§ØªØ± | EDGE Academy</title>
+    <title>لوحة إحصائيات المدرس والسناتر | EDGE Academy</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,11 +21,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Platform script (theme + language + auth) â€” NO defer so functions are available to inline scripts -->
+    <!-- Platform script (theme + language + auth) — NO defer so functions are available to inline scripts -->
     <script src="script.js?v=20261103-v3"></script>
 
     <style>
-        /* â”€â”€ Custom Teacher Dashboard Layout â”€â”€ */
+        /* ── Custom Teacher Dashboard Layout ── */
         :root {
             --sidebar-width: 290px;
             --dash-primary: #1a6bdb;
@@ -56,21 +56,21 @@
             padding: 0;
         }
 
-        /* â”€â”€ Top Header Customization for Dashboard â”€â”€ */
+        /* ── Top Header Customization for Dashboard ── */
         header {
             position: sticky !important;
             top: 0 !important;
             z-index: 1000 !important;
         }
 
-        /* â”€â”€ Dashboard Master Layout (Sidebar + Content) â”€â”€ */
+        /* ── Dashboard Master Layout (Sidebar + Content) ── */
         .dash-layout {
             display: flex;
             min-height: calc(100vh - 84px);
             width: 100%;
         }
 
-        /* â”€â”€ Sidebar (Ø´Ø±ÙŠØ· Ø§Ù„Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø¬Ø§Ù†Ø¨ÙŠ Ø§Ù„Ù…Ø­Ø³Ù†) â”€â”€ */
+        /* ── Sidebar (شريط الأدوات الجانبي المحسن) ── */
         .dash-sidebar {
             width: var(--sidebar-width);
             background: var(--dash-card);
@@ -324,7 +324,7 @@
             transform: translateY(-2px);
         }
 
-        /* â”€â”€ Main Content Area â”€â”€ */
+        /* ── Main Content Area ── */
         .dash-main {
             flex: 1;
             padding: clamp(20px, 3.5vw, 40px);
@@ -332,7 +332,7 @@
             max-width: 100%;
         }
 
-        /* â”€â”€ Hero Welcome Card â”€â”€ */
+        /* ── Hero Welcome Card ── */
         .teacher-hero-banner {
             background: linear-gradient(135deg, #0d2249 0%, #153878 50%, #1b4b9b 100%);
             border-radius: 24px;
@@ -373,7 +373,7 @@
             gap: 14px;
         }
 
-        /* â”€â”€ Percentages & Active Students KPIs â”€â”€ */
+        /* ── Percentages & Active Students KPIs ── */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -479,7 +479,7 @@
             margin-top: 4px;
         }
 
-        /* â”€â”€ CIRCULAR CENTERS / LOCATION ATTENDANCE SECTION (Ø§Ù„Ù…Ø¤Ø´Ø± Ø§Ù„Ø¯Ø§Ø¦Ø±ÙŠ Ù„Ù„Ø³Ù†Ø§ØªØ±) â”€â”€ */
+        /* ── CIRCULAR CENTERS / LOCATION ATTENDANCE SECTION (المؤشر الدائري للسناتر) ── */
         .centers-attendance-section {
             background: var(--dash-card);
             border: 1px solid var(--dash-border);
@@ -641,7 +641,7 @@
             flex-shrink: 0;
         }
 
-        /* â”€â”€ Dynamic Tab Panes â”€â”€ */
+        /* ── Dynamic Tab Panes ── */
         .tab-content-area {
             display: none;
             animation: tabFadeIn 0.3s ease;
@@ -801,9 +801,9 @@
             }
         }
     
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-           ðŸ“Š COMPREHENSIVE ANALYTICS WIDGETS (Matching User Request)
-        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        /* ══════════════════════════════════════════════════════════════════
+           📊 COMPREHENSIVE ANALYTICS WIDGETS (Matching User Request)
+        ══════════════════════════════════════════════════════════════════ */
         .dash-stat-cards-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1270,22 +1270,22 @@
 </head>
 
 <body>
-    <!-- â•â•â•â• MAIN PLATFORM HEADER â•â•â•â• -->
+    <!-- ════ MAIN PLATFORM HEADER ════ -->
     <header>
         <div class="header-inner">
             <!-- Right: Logo -->
-            <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© ÙˆØ²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨Ù‡ -->
+            <!-- اليمين: شعار المنصة وزر تبديل اللغة بجانبه -->
         <div class="header-right">
-            <button type="button" class="nav-back-btn" onclick="goBack()" title="Ø±Ø¬ÙˆØ¹ Ù„Ù„ØµÙØ­Ø© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
                 <i class="ti ti-arrow-right"></i>
-                <span>Ø±Ø¬ÙˆØ¹</span>
+                <span>رجوع</span>
             </button>
             <a href="teacher-dashboard" class="header-brand" aria-label="EDGE Academy">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
-            <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨ Ø§Ù„Ù„ÙˆØ¬Ùˆ -->
-            <button type="button" class="language-switcher" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ©" title="Switch Language">
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
                 <span>EN</span>
                 <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -1297,91 +1297,91 @@
 
             <!-- Center: Navigation -->
             <nav class="header-center">
-                <a href="teacher-dashboard" class="nav-link-item active" style="color:var(--dash-primary); font-weight:800;">ðŸ“Š Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø¹Ù„Ù…</a>
-                <a href="assistant-dashboard" class="nav-link-item">ðŸ‘¥ Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø·Ù„Ø§Ø¨ ÙˆØ§Ù„Ø³Ù†Ø§ØªØ±</a>
-                <a href="attendance" class="nav-link-item">ðŸ“² Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„ØªØ­Ø¶ÙŠØ±</a>
-                <a href="assistant" class="nav-link-item">ðŸ’¬ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
+                <a href="teacher-dashboard" class="nav-link-item active" style="color:var(--dash-primary); font-weight:800;">📊 لوحة المعلم</a>
+                <a href="assistant-dashboard" class="nav-link-item">👥 متابعة الطلاب والسناتر</a>
+                <a href="attendance" class="nav-link-item">📲 بوابة التحضير</a>
+                <a href="assistant" class="nav-link-item">💬 أسئلة الطلاب</a>
             </nav>
 
             <!-- Left: Actions & Themes -->
             <div class="header-left">
-                <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… (ÙŠØªØ­ÙƒÙ… Ø¨Ù‡Ø§ script.js) -->
+                <!-- قائمة المستخدم (يتحكم بها script.js) -->
                 <nav class="header-actions" id="authActions" style="display:none;"></nav>
                 <div class="user-dropdown-container" id="userDropdownArea" style="display:none;">
                     <button class="user-menu-btn" onclick="toggleUserMenu()">
-                        <span id="navUserName">Ø§Ù„Ù…Ø¹Ù„Ù…</span>
-                        <div class="user-icon-circle">ðŸ‘¤</div>
+                        <span id="navUserName">المعلم</span>
+                        <div class="user-icon-circle">👤</div>
                     </button>
                     <div class="user-dropdown-menu" id="userMenu">
-                        <a href="teacher-dashboard" class="menu-item" style="color:var(--dash-primary); font-weight:800;">ðŸ“Š Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø¹Ù„Ù…</a>
-                        <div class="menu-item balance-item"><span>ðŸ’° Ø§Ù„Ø±ØµÙŠØ¯:</span><span id="userPoints">0</span> Ø¬.Ù…</div>
+                        <a href="teacher-dashboard" class="menu-item" style="color:var(--dash-primary); font-weight:800;">📊 لوحة المعلم</a>
+                        <div class="menu-item balance-item"><span>💰 الرصيد:</span><span id="userPoints">0</span> ج.م</div>
                         <hr>
-                        <button onclick="handleLogout()" class="menu-item logout-btn">ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬</button>
+                        <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
                     </div>
                 </div>
-                <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© -->
-                <!-- Ù…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ -->
-                <div class="theme-capsule" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¸Ù‡Ø±">
-                    <button type="button" class="icon-btn theme-switcher" data-theme="light" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±" title="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±" onclick="setThemeMode('light')">â˜€</button>
-                    <button type="button" class="icon-btn theme-switcher" data-theme="dark" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…" title="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…" onclick="setThemeMode('dark')">ðŸŒ™</button>
+                <!-- زر تبديل اللغة -->
+                <!-- محول الأوضاع -->
+                <div class="theme-capsule" aria-label="تبديل المظهر">
+                    <button type="button" class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار" onclick="setThemeMode('light')">☀</button>
+                    <button type="button" class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام" onclick="setThemeMode('dark')">🌙</button>
                 </div>
                 <button type="button" class="btn-fill" onclick="handleLogout ? handleLogout() : logout()" style="padding:8px 18px; font-size:0.88rem;">
-                    <i class="ti ti-logout" style="margin-left:4px;"></i> Ø®Ø±ÙˆØ¬
+                    <i class="ti ti-logout" style="margin-left:4px;"></i> خروج
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Mobile Sidebar Trigger -->
-    <button class="sidebar-mobile-toggle" onclick="toggleSidebar()" aria-label="ÙØªØ­ Ø§Ù„Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø¬Ø§Ù†Ø¨ÙŠØ©">
+    <button class="sidebar-mobile-toggle" onclick="toggleSidebar()" aria-label="فتح القائمة الجانبية">
         <i class="ti ti-layout-sidebar-right"></i>
     </button>
 
-    <!-- â•â•â•â• DASHBOARD MASTER LAYOUT â•â•â•â• -->
+    <!-- ════ DASHBOARD MASTER LAYOUT ════ -->
     <div class="dash-layout">
-        <!-- â”€â”€ SIDEBAR (Ø´Ø±ÙŠØ· Ø§Ù„Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø¬Ø§Ù†Ø¨ÙŠ) â”€â”€ -->
+        <!-- ── SIDEBAR (شريط الأدوات الجانبي) ── -->
         <aside class="dash-sidebar" id="dashSidebar">
             <!-- Teacher Profile Card -->
             <div class="sidebar-teacher-card">
-                <img id="sidebarAvatarImg" class="sidebar-avatar" src="" alt="Ø§Ù„Ù…Ø¯Ø±Ø³" style="display:none;" onerror="this.onerror=null; this.src='imges/edge-square.jpg';">
-                <div id="sidebarAvatarFallback" class="sidebar-avatar">Ù…</div>
+                <img id="sidebarAvatarImg" class="sidebar-avatar" src="" alt="المدرس" style="display:none;" onerror="this.onerror=null; this.src='imges/edge-square.jpg';">
+                <div id="sidebarAvatarFallback" class="sidebar-avatar">م</div>
                 <div style="min-width:0; flex:1;">
-                    <div class="sidebar-teacher-name" id="sidebarTeacherName">Ø­Ø³Ø§Ø¨ Ø§Ù„Ù…Ø¹Ù„Ù…</div>
-                    <span class="sidebar-teacher-sub" id="sidebarTeacherSubject">Ø§Ù„Ù…Ø§Ø¯Ø© Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©</span>
+                    <div class="sidebar-teacher-name" id="sidebarTeacherName">حساب المعلم</div>
+                    <span class="sidebar-teacher-sub" id="sidebarTeacherSubject">المادة الدراسية</span>
                 </div>
             </div>
 
             <!-- Navigation Menu with Categories -->
             <div class="sidebar-menu">
-                <!-- Group 1: Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ© ÙˆØ§Ù„Ù…Ø§Ù„ÙŠØ© -->
+                <!-- Group 1: الرئيسية والمالية -->
                 <div class="sidebar-section-title">
-                    <span>Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ© ÙˆØ§Ù„Ù…Ø§Ù„ÙŠØ©</span>
+                    <span>الرئيسية والمالية</span>
                 </div>
 
                 <button class="sidebar-link active" onclick="activateTab('overview', this)">
                     <div class="sidebar-link-content">
                         <i class="ti ti-layout-dashboard"></i>
-                        <span>Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø© ÙˆØ§Ù„Ù†Ø³Ø¨</span>
+                        <span>نظرة عامة والنسب</span>
                     </div>
                 </button>
 
                 <button class="sidebar-link" onclick="activateTab('sales', this)">
                     <div class="sidebar-link-content">
                         <i class="ti ti-chart-line"></i>
-                        <span>Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª ÙˆØ§Ù„Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª</span>
+                        <span>المبيعات والإحصائيات</span>
                     </div>
-                    <span class="sidebar-badge badge-currency" id="sideBadgeSales">0 Ø¬</span>
+                    <span class="sidebar-badge badge-currency" id="sideBadgeSales">0 ج</span>
                 </button>
 
-                <!-- Group 2: Ø§Ù„Ù…Ø­ØªÙˆÙ‰ ÙˆØ§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª -->
+                <!-- Group 2: المحتوى والامتحانات -->
                 <div class="sidebar-section-title">
-                    <span>Ø§Ù„Ù…Ø­ØªÙˆÙ‰ ÙˆØ§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</span>
+                    <span>المحتوى والامتحانات</span>
                 </div>
 
                 <button class="sidebar-link" onclick="activateTab('videos', this)">
                     <div class="sidebar-link-content">
                         <i class="ti ti-video"></i>
-                        <span>Ø§Ù„ÙÙŠØ¯ÙŠÙˆÙ‡Ø§Øª ÙˆØ§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø§Øª</span>
+                        <span>الفيديوهات والمشاهدات</span>
                     </div>
                     <span class="sidebar-badge" id="sideBadgeVideos">0</span>
                 </button>
@@ -1389,7 +1389,7 @@
                 <button class="sidebar-link" onclick="activateTab('exams', this)">
                     <div class="sidebar-link-content">
                         <i class="ti ti-file-certificate"></i>
-                        <span>Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª ÙˆØ§Ù„Ø¯Ø±Ø¬Ø§Øª</span>
+                        <span>الامتحانات والدرجات</span>
                     </div>
                     <span class="sidebar-badge" id="sideBadgeExams">0</span>
                 </button>
@@ -1397,20 +1397,20 @@
                 <button class="sidebar-link" onclick="activateTab('questions', this)">
                     <div class="sidebar-link-content">
                         <i class="ti ti-messages"></i>
-                        <span>Ø§Ø³ØªÙØ³Ø§Ø±Ø§Øª Ø§Ù„Ø·Ù„Ø§Ø¨</span>
+                        <span>استفسارات الطلاب</span>
                     </div>
                     <span class="sidebar-badge" id="sideBadgeQuestions">0</span>
                 </button>
 
-                <!-- Group 3: Ø´Ø¤ÙˆÙ† Ø§Ù„Ø·Ù„Ø§Ø¨ ÙˆØ§Ù„Ø³Ù†Ø§ØªØ± -->
+                <!-- Group 3: شؤون الطلاب والسناتر -->
                 <div class="sidebar-section-title">
-                    <span>Ø§Ù„Ø·Ù„Ø§Ø¨ ÙˆØ§Ù„Ø³Ù†Ø§ØªØ±</span>
+                    <span>الطلاب والسناتر</span>
                 </div>
 
                 <button class="sidebar-link" onclick="activateTab('centers', this)">
                     <div class="sidebar-link-content">
                         <i class="ti ti-map-pin"></i>
-                        <span>Ø£Ù…Ø§ÙƒÙ† ÙˆØ³Ù†Ø§ØªØ± Ø§Ù„Ø·Ù„Ø§Ø¨</span>
+                        <span>أماكن وسناتر الطلاب</span>
                     </div>
                     <span class="sidebar-badge" id="sideBadgeCenters">0</span>
                 </button>
@@ -1418,15 +1418,15 @@
                 <a href="assistant-dashboard" target="_blank" class="sidebar-link" style="text-decoration:none;">
                     <div class="sidebar-link-content">
                         <i class="ti ti-layout-dashboard"></i>
-                        <span>Ù„ÙˆØ­Ø© ÙˆØ³Ø¬Ù„Ø§Øª Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</span>
+                        <span>لوحة وسجلات المساعد</span>
                     </div>
-                    <span class="sidebar-badge" style="background:var(--dash-primary); color:#fff; font-weight:800;">Ø¬Ø¯ÙŠØ¯</span>
+                    <span class="sidebar-badge" style="background:var(--dash-primary); color:#fff; font-weight:800;">جديد</span>
                 </a>
 
                 <button class="sidebar-link" onclick="activateTab('students', this)">
                     <div class="sidebar-link-content">
                         <i class="ti ti-user-x"></i>
-                        <span>Ø§Ù„Ø·Ù„Ø¨Ø© ØºÙŠØ± Ø§Ù„Ù…ÙØ¹Ù„ÙŠÙ†</span>
+                        <span>الطلبة غير المفعلين</span>
                     </div>
                     <span class="sidebar-badge badge-warning" id="sideBadgeInactive">0</span>
                 </button>
@@ -1434,35 +1434,35 @@
 
             <!-- Sidebar Footer -->
             <div class="sidebar-footer">
-                <a href="/" class="sidebar-footer-link" title="Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©">
+                <a href="/" class="sidebar-footer-link" title="المنصة الرئيسية">
                     <i class="ti ti-home"></i>
-                    <span>Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</span>
+                    <span>المنصة الرئيسية</span>
                 </a>
                 <button class="sidebar-logout-btn" onclick="logout()">
                     <i class="ti ti-logout"></i>
-                    <span>ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬</span>
+                    <span>تسجيل الخروج</span>
                 </button>
             </div>
         </aside>
 
-        <!-- â”€â”€ MAIN CONTENT (Ù…Ø³Ø§Ø­Ø© Ø§Ù„Ø¹Ù…Ù„ ÙˆØ§Ù„Ù…Ø­ØªÙˆÙ‰) â”€â”€ -->
+        <!-- ── MAIN CONTENT (مساحة العمل والمحتوى) ── -->
         <main class="dash-main">
             <!-- Loading Indicator -->
             <div id="dashLoader" style="text-align:center; padding:100px 20px;">
                 <div style="width:48px; height:48px; border:4px solid rgba(26,107,219,0.2); border-top-color:#1a6bdb; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 16px;"></div>
-                <h3 style="font-size:1.15rem; font-weight:800;">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø¤Ø´Ø±Ø§Øª ÙˆØ§Ù„Ø³Ù†Ø§ØªØ±...</h3>
+                <h3 style="font-size:1.15rem; font-weight:800;">جاري تحميل لوحة المؤشرات والسناتر...</h3>
             </div>
 
             <div id="dashContent" style="display:none;">
                 <!-- Hero Welcome Banner -->
                 <div class="teacher-hero-banner">
                     <div>
-                        <h1 class="hero-welcome-h1" id="heroGreeting">Ù…Ø±Ø­Ø¨Ø§Ù‹ Ø¨Ùƒ Ø£Ø³ØªØ§Ø°Ù†Ø§ âœ¨</h1>
-                        <p class="hero-welcome-p" id="heroSubjectText">Ù…ØªØ§Ø¨Ø¹Ø© ØªÙØ§Ø¹Ù„ÙŠØ© Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ù„Ø§Ø¨ ÙˆØ§Ù„Ø³Ù†Ø§ØªØ± ÙˆØ§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª ÙˆØ§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø§Øª</p>
+                        <h1 class="hero-welcome-h1" id="heroGreeting">مرحباً بك أستاذنا ✨</h1>
+                        <p class="hero-welcome-p" id="heroSubjectText">متابعة تفاعلية لحضور الطلاب والسناتر والامتحانات والمشاهدات</p>
                         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:12px;">
                             <div id="heroProfileLinkWrap"></div>
                             <div id="adminTeacherSwitcherArea" style="display:none; background:rgba(0,0,0,0.2); padding:6px 14px; border-radius:50px; border:1px solid rgba(255,255,255,0.2);">
-                                <span style="font-size:0.85rem; font-weight:800; color:#cbd5e1; margin-left:6px;"><i class="ti ti-switch-horizontal"></i> ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¹Ù„Ù…:</span>
+                                <span style="font-size:0.85rem; font-weight:800; color:#cbd5e1; margin-left:6px;"><i class="ti ti-switch-horizontal"></i> تبديل المعلم:</span>
                                 <select id="adminTeacherSelect" onchange="location.href='teacher-dashboard?teacherId=' + this.value" style="background:#1e293b; color:#fff; border:1px solid #475569; padding:4px 10px; border-radius:8px; font-weight:700; font-family:inherit; outline:none; cursor:pointer;">
                                 </select>
                             </div>
@@ -1471,66 +1471,66 @@
                     <div class="hero-stat-badge">
                         <i class="ti ti-activity" style="font-size:1.8rem; color:#38bdf8;"></i>
                         <div>
-                            <div style="font-size:0.78rem; color:#bfdbfe; font-weight:700;">Ù…Ø¹Ø¯Ù„ Ù†Ø´Ø§Ø· Ø§Ù„Ø·Ù„Ø§Ø¨</div>
+                            <div style="font-size:0.78rem; color:#bfdbfe; font-weight:700;">معدل نشاط الطلاب</div>
                             <div style="font-family:'Outfit'; font-size:1.35rem; font-weight:900;" id="heroActiveRate">0%</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- â•â•â•â• SMART PERCENTAGE METRICS (Ù†Ø³Ø¨ ÙˆØ¹Ø¯Ø¯ Ø§Ù„Ø·Ù„Ø§Ø¨ ÙˆØ§Ù„ÙØ¹Ø§Ù„ÙŠÙ†) â•â•â•â• -->
+                <!-- ════ SMART PERCENTAGE METRICS (نسب وعدد الطلاب والفعالين) ════ -->
                 <div class="metrics-grid">
                     <!-- Metric 1: Total & Active Students -->
                     <div class="metric-card">
                         <div class="metric-top">
                             <div class="metric-icon-wrap blue"><i class="ti ti-users-group"></i></div>
-                            <span class="pct-pill good" id="metricActivePct">0% Ù†Ø´Ø§Ø·</span>
+                            <span class="pct-pill good" id="metricActivePct">0% نشاط</span>
                         </div>
                         <div>
                             <div class="metric-main-val" id="metricActiveCount">0</div>
-                            <div class="metric-title">Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„ÙØ¹Ù‘Ø§Ù„ÙŠÙ† (Ø§Ù„Ù…ØªÙØ§Ø¹Ù„ÙŠÙ†)</div>
+                            <div class="metric-title">الطلاب الفعّالين (المتفاعلين)</div>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-bar bar-blue" id="metricActiveBar" style="width:0%;"></div>
                             </div>
                             <div class="metric-subtext">
-                                <span>Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø³Ø¬Ù„ÙŠÙ†: <b id="metricTotalRegistered">0</b></span>
+                                <span>إجمالي المسجلين: <b id="metricTotalRegistered">0</b></span>
                                 <span id="metricActiveRatioText">0 / 0</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Metric 2: Attendance Rate (Ù†Ø³Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ±) -->
+                    <!-- Metric 2: Attendance Rate (نسبة الحضور) -->
                     <div class="metric-card">
                         <div class="metric-top">
                             <div class="metric-icon-wrap emerald"><i class="ti ti-qrcode"></i></div>
-                            <span class="pct-pill good" id="metricAttendPct">0% Ø­Ø¶ÙˆØ±</span>
+                            <span class="pct-pill good" id="metricAttendPct">0% حضور</span>
                         </div>
                         <div>
                             <div class="metric-main-val" id="metricAttendCount">0</div>
-                            <div class="metric-title">Ù…Ø±Ø§Øª Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ù…Ø³Ø¬Ù„Ø© Ø¨Ø§Ù„Ø³Ù†Ø§ØªØ±</div>
+                            <div class="metric-title">مرات الحضور المسجلة بالسناتر</div>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-bar bar-emerald" id="metricAttendBar" style="width:0%;"></div>
                             </div>
                             <div class="metric-subtext">
-                                <span>Ù†Ø³Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©</span>
-                                <span id="metricAttendSub">0 Ø·Ø§Ù„Ø¨</span>
+                                <span>نسبة الحضور التقديرية</span>
+                                <span id="metricAttendSub">0 طالب</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Metric 3: Pass Rate (Ù†Ø³Ø¨Ø© Ø§Ù„Ù†Ø¬Ø§Ø­ Ø§Ù„Ø¹Ø§Ù…Ø©) -->
+                    <!-- Metric 3: Pass Rate (نسبة النجاح العامة) -->
                     <div class="metric-card">
                         <div class="metric-top">
                             <div class="metric-icon-wrap purple"><i class="ti ti-award"></i></div>
-                            <span class="pct-pill info" id="metricPassRate">0% Ù†Ø¬Ø§Ø­</span>
+                            <span class="pct-pill info" id="metricPassRate">0% نجاح</span>
                         </div>
                         <div>
                             <div class="metric-main-val" id="metricExamResultsCount">0</div>
-                            <div class="metric-title">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ù†ØªØ§Ø¦Ø¬ ÙˆØ§Ø®ØªØ¨Ø§Ø±Ø§Øª Ø§Ù„Ø·Ù„Ø§Ø¨</div>
+                            <div class="metric-title">إجمالي نتائج واختبارات الطلاب</div>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-bar bar-purple" id="metricPassBar" style="width:0%;"></div>
                             </div>
                             <div class="metric-subtext">
-                                <span>Ù…ØªÙˆØ³Ø· Ø¯Ø±Ø¬Ø§Øª Ø§Ù„Ø·Ù„Ø§Ø¨</span>
+                                <span>متوسط درجات الطلاب</span>
                                 <span id="metricAvgScore">0%</span>
                             </div>
                         </div>
@@ -1540,46 +1540,46 @@
                     <div class="metric-card">
                         <div class="metric-top">
                             <div class="metric-icon-wrap orange"><i class="ti ti-player-play"></i></div>
-                            <span class="pct-pill warning" id="metricInquiriesCount">0 Ø³Ø¤Ø§Ù„</span>
+                            <span class="pct-pill warning" id="metricInquiriesCount">0 سؤال</span>
                         </div>
                         <div>
                             <div class="metric-main-val" id="metricTotalViews">0</div>
-                            <div class="metric-title">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ù…Ø´Ø§Ù‡Ø¯Ø§Øª Ø§Ù„Ø­ØµØµ ÙˆØ§Ù„Ø¯Ø±ÙˆØ³</div>
+                            <div class="metric-title">إجمالي مشاهدات الحصص والدروس</div>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-bar bar-orange" id="metricViewsBar" style="width:0%;"></div>
                             </div>
                             <div class="metric-subtext">
-                                <span>Ø¹Ø¯Ø¯ Ø§Ù„ÙÙŠØ¯ÙŠÙˆÙ‡Ø§Øª Ø§Ù„Ù…Ø±ÙÙˆØ¹Ø©</span>
-                                <span id="metricVideosCount">0 ÙÙŠØ¯ÙŠÙˆ</span>
+                                <span>عدد الفيديوهات المرفوعة</span>
+                                <span id="metricVideosCount">0 فيديو</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- â•â•â•â• TAB 1: OVERVIEW & CHARTS â•â•â•â• -->
+                <!-- ════ TAB 1: OVERVIEW & CHARTS ════ -->
                 <div id="tab-overview" class="tab-content-area active">
                     <!-- Platform Overview Donut & Active vs Inactive -->
                     <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
                         <div class="dash-widget-box">
                             <div class="widget-header">
-                                <h3><i class="ti ti-chart-pie"></i> Ù†Ø¸Ø±Ø© Ø¹Ø§Ù…Ø© Ø¹Ù„Ù‰ Ø§Ù„Ù…Ù†ØµØ©</h3>
+                                <h3><i class="ti ti-chart-pie"></i> نظرة عامة على المنصة</h3>
                             </div>
                             <div class="widget-body">
                                 <div class="platform-donut-wrap" style="height: 200px;">
                                     <canvas id="chartPlatformOverview"></canvas>
                                 </div>
                                 <div class="platform-donut-legend">
-                                    <span class="p-legend-item"><span class="p-dot" style="background:#6366f1"></span>Ø§Ù„Ù…Ø¯Ø±Ø³ÙŠÙ†</span>
-                                    <span class="p-legend-item"><span class="p-dot" style="background:#f87171"></span>Ø§Ù„Ø·Ù„Ø¨Ø©</span>
-                                    <span class="p-legend-item"><span class="p-dot" style="background:#14b8a6"></span>Ø§Ù„ÙƒÙˆØ±Ø³Ø§Øª</span>
-                                    <span class="p-legend-item"><span class="p-dot" style="background:#f59e0b"></span>Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª</span>
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#6366f1"></span>المدرسين</span>
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#f87171"></span>الطلبة</span>
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#14b8a6"></span>الكورسات</span>
+                                    <span class="p-legend-item"><span class="p-dot" style="background:#f59e0b"></span>المحاضرات</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="dash-widget-box">
                             <div class="widget-header">
-                                <h3><i class="ti ti-user-check"></i> Ù†Ø³Ø¨Ø© Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„ÙØ¹Ù‘Ø§Ù„ÙŠÙ† Ù…Ù‚Ø§Ø¨Ù„ ØºÙŠØ± Ø§Ù„ÙØ¹Ù‘Ø§Ù„ÙŠÙ†</h3>
+                                <h3><i class="ti ti-user-check"></i> نسبة الطلاب الفعّالين مقابل غير الفعّالين</h3>
                             </div>
                             <div class="widget-body">
                                 <div style="position:relative; height: 200px;">
@@ -1588,11 +1588,11 @@
                                 <div class="active-students-pills-row">
                                     <div class="active-pill-box">
                                         <span class="active-num-badge teal" id="badgeActiveCount">0</span>
-                                        <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">Ø§Ø´ØªØ±ÙˆØ§ Ø§Ø´ØªØ±Ø§ÙƒØ§Øª</span>
+                                        <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">اشتروا اشتراكات</span>
                                     </div>
                                     <div class="active-pill-box">
                                         <span class="active-num-badge" style="background:rgba(148,163,184,0.2); color:var(--dash-text);" id="badgeInactiveCount">0</span>
-                                        <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">Ù…Ø³Ø¬Ù„ÙŠÙ† ÙÙ‚Ø·</span>
+                                        <span style="font-size:0.8rem; font-weight:700; color:var(--dash-muted);">مسجلين فقط</span>
                                     </div>
                                 </div>
                             </div>
@@ -1605,9 +1605,9 @@
                             <div class="section-title-wrap">
                                 <h2>
                                     <i class="ti ti-trophy" style="color:#eab308"></i>
-                                    Ù„ÙˆØ­Ø© Ø´Ø±Ù Ø§Ù„Ø£ÙˆØ§Ø¦Ù„ (Ø§Ù„Ù…ØªÙÙˆÙ‚ÙŠÙ† Ø¯Ø±Ø§Ø³ÙŠØ§Ù‹)
+                                    لوحة شرف الأوائل (المتفوقين دراسياً)
                                 </h2>
-                                <p>Ø£Ø¹Ù„Ù‰ Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„Ø­Ø§ØµÙ„ÙŠÙ† Ø¹Ù„Ù‰ Ø¯Ø±Ø¬Ø§Øª Ù…ØªÙÙˆÙ‚Ø© Ù…Ø¹ Ø¥Ù…ÙƒØ§Ù†ÙŠØ© Ø§Ù„ØªÙ‡Ù†Ø¦Ø© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±Ø©</p>
+                                <p>أعلى الطلاب الحاصلين على درجات متفوقة مع إمكانية التهنئة المباشرة</p>
                             </div>
                         </div>
                         <div id="topStudentsListWrap" class="centers-breakdown-list">
@@ -1619,7 +1619,7 @@
                     <div class="dash-charts-grid-2" style="margin-bottom: 24px;">
                         <div class="dash-widget-box">
                             <div class="widget-header">
-                                <h3><i class="ti ti-school"></i> ØªÙˆØ²ÙŠØ¹ Ø§Ù„ØµÙÙˆÙ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ© (Top 3)</h3>
+                                <h3><i class="ti ti-school"></i> توزيع الصفوف الدراسية (Top 3)</h3>
                             </div>
                             <div class="widget-body">
                                 <div style="height: 180px;">
@@ -1631,7 +1631,7 @@
 
                         <div class="dash-widget-box">
                             <div class="widget-header">
-                                <h3><i class="ti ti-map-pins"></i> Ø£Ø¹Ù„Ù‰ 10 Ù…Ø­Ø§ÙØ¸Ø§Øª ØªØ³Ø¬ÙŠÙ„Ø§Ù‹</h3>
+                                <h3><i class="ti ti-map-pins"></i> أعلى 10 محافظات تسجيلاً</h3>
                             </div>
                             <div class="widget-body" style="height: 280px;">
                                 <canvas id="chartTopGovs"></canvas>
@@ -1643,8 +1643,8 @@
                     <div class="dash-charts-grid-2">
                         <div class="dash-widget-box">
                             <div class="widget-header">
-                                <h3><i class="ti ti-video"></i> Ø¢Ø®Ø± Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„Ù…Ø¶Ø§ÙØ©</h3>
-                                <a href="#" onclick="activateTab('videos'); return false;" class="widget-header-link">Ø¹Ø±Ø¶ Ø§Ù„ÙƒÙ„</a>
+                                <h3><i class="ti ti-video"></i> آخر المحاضرات المضافة</h3>
+                                <a href="#" onclick="activateTab('videos'); return false;" class="widget-header-link">عرض الكل</a>
                             </div>
                             <div class="widget-body" style="padding: 12px 16px;">
                                 <div class="recent-items-list" id="recentLecturesList">
@@ -1655,7 +1655,7 @@
 
                         <div class="dash-widget-box">
                             <div class="widget-header">
-                                <h3><i class="ti ti-user-plus"></i> Ø¢Ø®Ø± Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„Ù…Ø³Ø¬Ù„ÙŠÙ†</h3>
+                                <h3><i class="ti ti-user-plus"></i> آخر الطلاب المسجلين</h3>
                             </div>
                             <div class="widget-body" style="padding: 12px 16px;">
                                 <div class="recent-items-list" id="recentStudentsList"></div>
@@ -1664,35 +1664,35 @@
                     </div>
                 </div>
 
-                <!-- â•â•â•â• TAB 2: SALES & FINANCIAL ANALYTICS â•â•â•â• -->
+                <!-- ════ TAB 2: SALES & FINANCIAL ANALYTICS ════ -->
                 <div id="tab-sales" class="tab-content-area">
                     <div id="salesSummaryWrap" style="margin-bottom: 24px;">
                         <!-- Sales Summary Box -->
                         <div class="dash-widget-box" style="margin-bottom: 24px; padding: 24px;">
                             <div class="sales-grand-card">
-                                <div class="grand-card-label">Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª Ø§Ù„Ù…Ø­Ù‚Ù‚Ø©</div>
-                                <div class="grand-card-val" id="salesGrandVal">0 Ø¬</div>
+                                <div class="grand-card-label">إجمالي المبيعات المحققة</div>
+                                <div class="grand-card-val" id="salesGrandVal">0 ج</div>
                             </div>
                             <div class="sales-sub-grid">
                                 <div class="sales-sub-card">
-                                    <div class="sub-card-title">Ù…Ø¨ÙŠØ¹Ø§Øª Ø§Ù„ÙƒÙˆØ±Ø³Ø§Øª</div>
+                                    <div class="sub-card-title">مبيعات الكورسات</div>
                                     <div class="sub-card-val" id="subSalesCoursesVal">0</div>
-                                    <div class="sub-card-ops" id="subSalesCoursesOps">0 Ø¹Ù…Ù„ÙŠØ©</div>
+                                    <div class="sub-card-ops" id="subSalesCoursesOps">0 عملية</div>
                                 </div>
                                 <div class="sales-sub-card">
-                                    <div class="sub-card-title">Ù…Ø¨ÙŠØ¹Ø§Øª Ø§Ù„Ø¨Ø§ÙƒØ¯Ø¬Ø§Øª</div>
+                                    <div class="sub-card-title">مبيعات الباكدجات</div>
                                     <div class="sub-card-val" id="subSalesPackagesVal">0</div>
-                                    <div class="sub-card-ops" id="subSalesPackagesOps">0 Ø¹Ù…Ù„ÙŠØ©</div>
+                                    <div class="sub-card-ops" id="subSalesPackagesOps">0 عملية</div>
                                 </div>
                                 <div class="sales-sub-card">
-                                    <div class="sub-card-title">Ù…Ø¨ÙŠØ¹Ø§Øª Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª</div>
+                                    <div class="sub-card-title">مبيعات المحاضرات</div>
                                     <div class="sub-card-val" id="subSalesLecturesVal">0</div>
-                                    <div class="sub-card-ops" id="subSalesLecturesOps">0 Ø¹Ù…Ù„ÙŠØ©</div>
+                                    <div class="sub-card-ops" id="subSalesLecturesOps">0 عملية</div>
                                 </div>
                                 <div class="sales-sub-card">
-                                    <div class="sub-card-title">Ù…Ø¨ÙŠØ¹Ø§Øª Ø§Ù„Ø³Ù†Ø§ØªØ±</div>
+                                    <div class="sub-card-title">مبيعات السناتر</div>
                                     <div class="sub-card-val" id="subSalesCentersVal">0</div>
-                                    <div class="sub-card-ops" id="subSalesCentersOps">0 Ø¹Ù…Ù„ÙŠØ©</div>
+                                    <div class="sub-card-ops" id="subSalesCentersOps">0 عملية</div>
                                 </div>
                             </div>
                         </div>
@@ -1700,7 +1700,7 @@
                         <!-- Monthly Sales & Registrations Chart -->
                         <div class="dash-widget-box" style="margin-bottom: 24px;">
                             <div class="widget-header">
-                                <h3><i class="ti ti-chart-line"></i> Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª Ø§Ù„Ø´Ù‡Ø±ÙŠØ© ÙˆØªØ³Ø¬ÙŠÙ„Ø§Øª Ø§Ù„Ø·Ù„Ø¨Ø©</h3>
+                                <h3><i class="ti ti-chart-line"></i> المبيعات الشهرية وتسجيلات الطلبة</h3>
                             </div>
                             <div class="widget-body" style="height: 320px;">
                                 <canvas id="chartMonthlySales"></canvas>
@@ -1709,15 +1709,15 @@
                     </div>
                 </div>
 
-                <!-- â•â•â•â• TAB 3: VIDEOS & WATCHERS â•â•â•â• -->
+                <!-- ════ TAB 3: VIDEOS & WATCHERS ════ -->
                 <div id="tab-videos" class="tab-content-area">
                     <div class="dash-filter-row">
                         <div class="search-box-input">
                             <i class="ti ti-search"></i>
-                            <input type="text" id="searchVideosInput" placeholder="Ø§Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ø£Ùˆ Ø§Ù„Ø­ØµØ©..." oninput="filterVideosTab()">
+                            <input type="text" id="searchVideosInput" placeholder="ابحث باسم الفيديو أو الحصة..." oninput="filterVideosTab()">
                         </div>
                         <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
-                            Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙÙŠØ¯ÙŠÙˆÙ‡Ø§Øª: <b id="tabVideosCount">0</b>
+                            إجمالي الفيديوهات: <b id="tabVideosCount">0</b>
                         </div>
                     </div>
                     <div id="videosAccordionWrap">
@@ -1725,19 +1725,19 @@
                     </div>
                 </div>
 
-                <!-- â•â•â•â• TAB 4: EXAMS & RESULTS â•â•â•â• -->
+                <!-- ════ TAB 4: EXAMS & RESULTS ════ -->
                 <div id="tab-exams" class="tab-content-area">
                     <div class="dash-filter-row">
                         <div class="search-box-input">
                             <i class="ti ti-search"></i>
-                            <input type="text" id="searchExamsInput" placeholder="Ø§Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ..." oninput="filterExamsTable()">
+                            <input type="text" id="searchExamsInput" placeholder="ابحث باسم الطالب أو رقم الهاتف..." oninput="filterExamsTable()">
                         </div>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <select id="selectExamFilter" onchange="filterExamsTable()" style="padding:9px 14px; border-radius:10px; border:1px solid var(--dash-border); font-family:inherit; font-weight:700; background:var(--dash-card); color:var(--dash-text);">
-                                <option value="ALL">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</option>
+                                <option value="ALL">جميع الامتحانات</option>
                             </select>
                             <button onclick="exportExamsCSV()" style="padding:9px 16px; border-radius:10px; background:#f0fdf4; border:1px solid #86efac; color:#166534; font-family:inherit; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-                                <i class="ti ti-file-spreadsheet"></i> ØªØµØ¯ÙŠØ± Excel
+                                <i class="ti ti-file-spreadsheet"></i> تصدير Excel
                             </button>
                         </div>
                     </div>
@@ -1746,14 +1746,14 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨</th>
-                                    <th>Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†</th>
-                                    <th>Ø§Ù„ØµÙ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠ</th>
-                                    <th>Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©</th>
-                                    <th>Ø§Ù„Ù†Ø³Ø¨Ø© Ø§Ù„Ù…Ø¦ÙˆÙŠØ©</th>
-                                    <th>Ø§Ù„ØªÙ‚Ø¯ÙŠØ±</th>
-                                    <th>Ø§Ù„Ù‡Ø§ØªÙ</th>
-                                    <th>Ù…Ø±Ø§Ø³Ù„Ø©</th>
+                                    <th>اسم الطالب</th>
+                                    <th>الامتحان</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>المحافظة</th>
+                                    <th>النسبة المئوية</th>
+                                    <th>التقدير</th>
+                                    <th>الهاتف</th>
+                                    <th>مراسلة</th>
                                 </tr>
                             </thead>
                             <tbody id="examResultsTbody">
@@ -1763,15 +1763,15 @@
                     </div>
                 </div>
 
-                <!-- â•â•â•â• TAB 5: STUDENT QUESTIONS â•â•â•â• -->
+                <!-- ════ TAB 5: STUDENT QUESTIONS ════ -->
                 <div id="tab-questions" class="tab-content-area">
                     <div class="dash-filter-row">
                         <div class="search-box-input">
                             <i class="ti ti-search"></i>
-                            <input type="text" id="searchQuestionsInput" placeholder="Ø§Ø¨Ø­Ø« ÙÙŠ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨..." oninput="filterQuestionsTab()">
+                            <input type="text" id="searchQuestionsInput" placeholder="ابحث في أسئلة الطلاب..." oninput="filterQuestionsTab()">
                         </div>
                         <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
-                            Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„ÙˆØ§Ø±Ø¯Ø©: <b id="tabQuestionsCount">0</b>
+                            الأسئلة الواردة: <b id="tabQuestionsCount">0</b>
                         </div>
                     </div>
                     <div id="questionsCardsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px;">
@@ -1779,7 +1779,7 @@
                     </div>
                 </div>
 
-                <!-- â•â•â•â• TAB 6: CENTERS & ATTENDANCE LOG â•â•â•â• -->
+                <!-- ════ TAB 6: CENTERS & ATTENDANCE LOG ════ -->
                 <div id="tab-centers" class="tab-content-area">
                     <!-- Circular Centers / Location Gauge -->
                     <div class="centers-attendance-section" style="margin-bottom: 24px;">
@@ -1787,13 +1787,13 @@
                             <div class="section-title-wrap">
                                 <h2>
                                     <i class="ti ti-chart-donut-filled" style="color:var(--dash-primary)"></i>
-                                    Ù…Ø¤Ø´Ø± ØªÙˆØ²ÙŠØ¹ ÙˆÙ†Ø³Ø¨ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ù„Ø§Ø¨ Ø¨Ø§Ù„Ø£Ù…Ø§ÙƒÙ† ÙˆØ§Ù„Ø³Ù†Ø§ØªØ±
+                                    مؤشر توزيع ونسب حضور الطلاب بالأماكن والسناتر
                                 </h2>
-                                <p>Ù…Ø®Ø·Ø· Ø¯Ø§Ø¦Ø±ÙŠ ÙŠÙˆØ¶Ø­ Ù†Ø³Ø¨Ø© Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„Ø­Ø§Ø¶Ø±ÙŠÙ† ÙÙŠ ÙƒÙ„ Ø³Ù†ØªØ± ÙˆÙ…Ø­Ø§ÙØ¸Ø© Ø¨Ù„ÙˆÙ† Ù…Ù…ÙŠØ²</p>
+                                <p>مخطط دائري يوضح نسبة الطلاب الحاضرين في كل سنتر ومحافظة بلون مميز</p>
                             </div>
                             <div class="toggle-group">
-                                <button class="toggle-btn active" id="btnToggleCenters" onclick="setAttendanceViewMode('centers')">Ø­Ø³Ø¨ Ø§Ù„Ø³Ù†Ø§ØªØ±</button>
-                                <button class="toggle-btn" id="btnToggleGovs" onclick="setAttendanceViewMode('govs')">Ø­Ø³Ø¨ Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø§Øª</button>
+                                <button class="toggle-btn active" id="btnToggleCenters" onclick="setAttendanceViewMode('centers')">حسب السناتر</button>
+                                <button class="toggle-btn" id="btnToggleGovs" onclick="setAttendanceViewMode('govs')">حسب المحافظات</button>
                             </div>
                         </div>
 
@@ -1802,7 +1802,7 @@
                                 <canvas id="chartCentersDonut"></canvas>
                                 <div class="chart-center-cutout">
                                     <div class="cutout-number" id="cutoutTotalCount">0</div>
-                                    <div class="cutout-label" id="cutoutLabelText">Ø·Ø§Ù„Ø¨ Ù…Ø³Ø¬Ù„</div>
+                                    <div class="cutout-label" id="cutoutLabelText">طالب مسجل</div>
                                 </div>
                             </div>
                             <div class="centers-breakdown-list" id="centersBreakdownGrid">
@@ -1815,14 +1815,14 @@
                     <div class="dash-filter-row">
                         <div class="search-box-input">
                             <i class="ti ti-search"></i>
-                            <input type="text" id="attendanceSearchInput" placeholder="Ø§Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨ Ø£Ùˆ Ø§Ù„Ø³Ù†ØªØ±..." oninput="filterAttendanceLogs()">
+                            <input type="text" id="attendanceSearchInput" placeholder="ابحث باسم الطالب أو السنتر..." oninput="filterAttendanceLogs()">
                         </div>
                         <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
                             <a href="assistant-dashboard" target="_blank" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:var(--dash-primary); color:#fff; padding:7px 14px; border-radius:10px; font-weight:800; font-size:0.85rem; box-shadow:0 3px 10px rgba(26,107,219,0.2);">
-                                <i class="ti ti-layout-dashboard"></i> Ù„ÙˆØ­Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ ÙˆØ³Ø¬Ù„Ø§Øª Ø§Ù„Ø·Ù„Ø§Ø¨
+                                <i class="ti ti-layout-dashboard"></i> لوحة المساعد وسجلات الطلاب
                             </a>
                             <div style="font-weight:800; color:var(--dash-muted); font-size:0.92rem;">
-                                Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø³Ø¬Ù„ÙŠÙ† Ø¨Ø§Ù„Ø­Ø¶ÙˆØ±: <b id="totalAttendRecords">0</b>
+                                إجمالي المسجلين بالحضور: <b id="totalAttendRecords">0</b>
                             </div>
                         </div>
                     </div>
@@ -1832,14 +1832,14 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨</th>
-                                    <th>Ø§Ù„Ø³Ù†ØªØ± / Ø§Ù„Ù…Ù‚Ø±</th>
-                                    <th>Ø§Ù„ÙŠÙˆÙ…</th>
-                                    <th>Ø§Ù„Ù…ÙŠØ¹Ø§Ø¯</th>
-                                    <th>Ø§Ù„ØµÙ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠ</th>
-                                    <th>ÙˆÙ‚Øª Ø§Ù„ØªØ³Ø¬ÙŠÙ„</th>
-                                    <th>Ù‡Ø§ØªÙ Ø§Ù„Ø·Ø§Ù„Ø¨</th>
-                                    <th>ØªÙˆØ§ØµÙ„ ÙˆØ§ØªØ³Ø§Ø¨</th>
+                                    <th>اسم الطالب</th>
+                                    <th>السنتر / المقر</th>
+                                    <th>اليوم</th>
+                                    <th>الميعاد</th>
+                                    <th>الصف الدراسي</th>
+                                    <th>وقت التسجيل</th>
+                                    <th>هاتف الطالب</th>
+                                    <th>تواصل واتساب</th>
                                 </tr>
                             </thead>
                             <tbody id="attendanceTableBody">
@@ -1849,12 +1849,12 @@
                     </div>
                 </div>
 
-                <!-- â•â•â•â• TAB 7: STUDENTS & INACTIVE TABLE â•â•â•â• -->
+                <!-- ════ TAB 7: STUDENTS & INACTIVE TABLE ════ -->
                 <div id="tab-students" class="tab-content-area">
                     <!-- Top Interactive Students Chart -->
                     <div class="dash-widget-box" style="margin-bottom: 24px;">
                         <div class="widget-header">
-                            <h3><i class="ti ti-flame"></i> Ø£ÙƒØ«Ø± Ø§Ù„Ø·Ù„Ø§Ø¨ ØªÙØ§Ø¹Ù„Ø§Ù‹ (Ù…Ø´Ø§Ù‡Ø¯Ø§Øª Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª)</h3>
+                            <h3><i class="ti ti-flame"></i> أكثر الطلاب تفاعلاً (مشاهدات المحاضرات)</h3>
                         </div>
                         <div class="widget-body" style="height: 260px;">
                             <canvas id="chartTopInteractiveStudents"></canvas>
@@ -1864,23 +1864,23 @@
                     <!-- Inactive Students Table -->
                     <div class="dash-widget-box" id="tableInactiveStudentsWrap" style="margin-bottom: 28px;">
                         <div class="widget-header" style="padding: 18px 24px; border-bottom: 1px solid var(--dash-border); flex-wrap: wrap; gap: 12px;">
-                            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dash-text);"><i class="ti ti-user-x"></i> Ø§Ù„Ø·Ù„Ø¨Ø© ØºÙŠØ± Ø§Ù„Ù…ÙØ¹Ù„ÙŠÙ† (Ù…Ø³Ø¬Ù„ÙŠÙ† Ø¯ÙˆÙ† Ø§Ø´ØªØ±Ø§ÙƒØ§Øª)</h3>
+                            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dash-text);"><i class="ti ti-user-x"></i> الطلبة غير المفعلين (مسجلين دون اشتراكات)</h3>
                             <div class="table-search-box">
                                 <i class="ti ti-search"></i>
-                                <input type="text" id="inactiveSearchInput" placeholder="Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨ Ø£Ùˆ Ø§Ù„Ù‡Ø§ØªÙ..." oninput="filterInactiveStudentsTable()">
+                                <input type="text" id="inactiveSearchInput" placeholder="بحث باسم الطالب أو الهاتف..." oninput="filterInactiveStudentsTable()">
                             </div>
                         </div>
                         <div class="dash-table-wrap" style="border:none; border-radius:0;">
                             <table class="dash-table inactive-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 50px; text-align: center;">Ù…</th>
-                                        <th>Ø§Ù„Ø§Ø³Ù…</th>
-                                        <th>Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ</th>
-                                        <th>Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©</th>
-                                        <th>Ø§Ù„Ø³Ù†Ø© Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©</th>
-                                        <th>ØªØ§Ø±ÙŠØ® Ø§Ù„Ø§Ù†Ø´Ø§Ø¡</th>
-                                        <th style="text-align: center;">Ø§Ù„Ø­Ø§Ù„Ø©</th>
+                                        <th style="width: 50px; text-align: center;">م</th>
+                                        <th>الاسم</th>
+                                        <th>رقم الهاتف</th>
+                                        <th>المحافظة</th>
+                                        <th>السنة الدراسية</th>
+                                        <th>تاريخ الانشاء</th>
+                                        <th style="text-align: center;">الحالة</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inactiveStudentsTbody">
@@ -2007,28 +2007,28 @@
                 }
 
                 if (!targetTeacherId) {
-                    throw new Error('ÙŠØ±Ø¬Ù‰ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…Ø¹Ù„Ù… Ø§Ù„Ù…Ø·Ù„ÙˆØ¨ Ø¹Ø±Ø¶ Ù„ÙˆØ­ØªÙ‡ Ø§Ù„Ø¥Ø­ØµØ§Ø¦ÙŠØ©');
+                    throw new Error('يرجى تحديد المعلم المطلوب عرض لوحته الإحصائية');
                 }
 
                 const res = await fetch(`${API}/api/teachers/dashboard/${targetTeacherId}?userId=${currentUser._id}`);
                 const data = await res.json();
-                if (!res.ok || !data.success) throw new Error(data.message || 'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª');
+                if (!res.ok || !data.success) throw new Error(data.message || 'تعذر جلب البيانات');
                 dashData = data;
                 renderTeacherDashboard(data);
             } catch (err) {
                 document.getElementById('dashLoader').innerHTML = `
                     <div style="color:#ef4444; font-weight:800; font-size:1.1rem;">
                         <i class="ti ti-alert-triangle" style="font-size:2rem; display:block; margin-bottom:8px;"></i>
-                        Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª: ${escapeHtml(err.message)}
+                        حدث خطأ أثناء تحميل البيانات: ${escapeHtml(err.message)}
                         <br>
-                        <button onclick="loadDashboard()" style="margin-top:14px; padding:8px 16px; border-radius:10px; background:var(--dash-primary); color:#fff; border:none; cursor:pointer;">Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©</button>
+                        <button onclick="loadDashboard()" style="margin-top:14px; padding:8px 16px; border-radius:10px; background:var(--dash-primary); color:#fff; border:none; cursor:pointer;">إعادة المحاولة</button>
                     </div>
                 `;
             }
         }
 
         
-        // â”€â”€ Chart.js Instances for Comprehensive Analytics â”€â”€
+        // ── Chart.js Instances for Comprehensive Analytics ──
         let chartPlatformInstance = null;
         let chartMonthlySalesInstance = null;
         let chartTopInteractiveInstance = null;
@@ -2102,7 +2102,7 @@
                 chartPlatformInstance = new Chart(pCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: totalItems > 0 ? ['Ø§Ù„Ù…Ø¯Ø±Ø³ÙŠÙ†', 'Ø§Ù„Ø·Ù„Ø¨Ø©', 'Ø§Ù„ÙƒÙˆØ±Ø³Ø§Øª', 'Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª'] : ['Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¨ÙŠØ§Ù†Ø§Øª'],
+                        labels: totalItems > 0 ? ['المدرسين', 'الطلبة', 'الكورسات', 'المحاضرات'] : ['لا توجد بيانات'],
                         datasets: [{
                             data: totalItems > 0 ? [po.teachers || 0, po.students || 0, po.courses || 0, po.lectures || 0] : [1],
                             backgroundColor: totalItems > 0 ? ['#6366f1', '#f87171', '#14b8a6', '#f59e0b'] : [isDark ? '#334155' : '#e2e8f0'],
@@ -2134,10 +2134,10 @@
                 chartMonthlySalesInstance = new Chart(msCtx, {
                     type: 'line',
                     data: {
-                        labels: months.length ? months : ['Ø§Ù„Ø´Ù‡Ø± 1', 'Ø§Ù„Ø´Ù‡Ø± 2', 'Ø§Ù„Ø´Ù‡Ø± 3', 'Ø§Ù„Ø´Ù‡Ø± 4', 'Ø§Ù„Ø´Ù‡Ø± 5', 'Ø§Ù„Ø´Ù‡Ø± Ø§Ù„Ø­Ø§Ù„ÙŠ'],
+                        labels: months.length ? months : ['الشهر 1', 'الشهر 2', 'الشهر 3', 'الشهر 4', 'الشهر 5', 'الشهر الحالي'],
                         datasets: [
                             {
-                                label: 'Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ (Ø¬)',
+                                label: 'الإجمالي (ج)',
                                 data: totals.length ? totals : [0, 0, 0, 0, 0, 0],
                                 borderColor: isDark ? '#f8fafc' : '#1e293b',
                                 backgroundColor: isDark ? '#f8fafc' : '#1e293b',
@@ -2147,7 +2147,7 @@
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'ÙƒÙˆØ±Ø³Ø§Øª (Ø¬)',
+                                label: 'كورسات (ج)',
                                 data: ms.map(m => m.courses || 0),
                                 borderColor: '#3b82f6',
                                 borderDash: [4, 4],
@@ -2157,7 +2157,7 @@
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'Ø¨Ø§ÙƒØ¯Ø¬Ø§Øª (Ø¬)',
+                                label: 'باكدجات (ج)',
                                 data: ms.map(m => m.packages || 0),
                                 borderColor: '#ef4444',
                                 borderDash: [4, 4],
@@ -2167,7 +2167,7 @@
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'Ù…Ø­Ø§Ø¶Ø±Ø§Øª (Ø¬)',
+                                label: 'محاضرات (ج)',
                                 data: ms.map(m => m.lectures || 0),
                                 borderColor: '#06b6d4',
                                 borderDash: [4, 4],
@@ -2177,7 +2177,7 @@
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'Ø³Ù†Ø§ØªØ± (Ø¬)',
+                                label: 'سناتر (ج)',
                                 data: ms.map(m => m.centers || 0),
                                 borderColor: '#eab308',
                                 borderDash: [4, 4],
@@ -2187,7 +2187,7 @@
                                 yAxisID: 'y'
                             },
                             {
-                                label: 'ØªØ³Ø¬ÙŠÙ„Ø§Øª Ø§Ù„Ø·Ù„Ø¨Ø©',
+                                label: 'تسجيلات الطلبة',
                                 data: regs.length ? regs : [0, 0, 0, 0, 0, 0],
                                 borderColor: '#94a3b8',
                                 backgroundColor: isDark ? 'rgba(148, 163, 184, 0.1)' : 'rgba(148, 163, 184, 0.18)',
@@ -2214,7 +2214,7 @@
                                 position: 'left',
                                 grid: { color: gridColor },
                                 ticks: { color: mutedColor, font: { family: 'Outfit', size: 11 } },
-                                title: { display: true, text: 'Ø§Ù„Ù…Ø§Ù„ÙŠØ§Øª', color: mutedColor },
+                                title: { display: true, text: 'الماليات', color: mutedColor },
                                 beginAtZero: true
                             },
                             y1: {
@@ -2223,7 +2223,7 @@
                                 position: 'right',
                                 grid: { drawOnChartArea: false },
                                 ticks: { color: mutedColor, font: { family: 'Outfit', size: 11 } },
-                                title: { display: true, text: 'ØªØ³Ø¬ÙŠÙ„Ø§Øª (Ø¹)', color: mutedColor },
+                                title: { display: true, text: 'تسجيلات (ع)', color: mutedColor },
                                 beginAtZero: true
                             }
                         },
@@ -2251,9 +2251,9 @@
                 chartTopInteractiveInstance = new Chart(isCtx, {
                     type: 'bar',
                     data: {
-                        labels: tis.length ? tis.map(s => s.name) : ['Ù„Ø§ ÙŠÙˆØ¬Ø¯ ØªÙØ§Ø¹Ù„ Ù…Ø³Ø¬Ù„'],
+                        labels: tis.length ? tis.map(s => s.name) : ['لا يوجد تفاعل مسجل'],
                         datasets: [{
-                            label: 'Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø©',
+                            label: 'المحاضرات المشاهدة',
                             data: tis.length ? tis.map(s => s.count) : [0],
                             backgroundColor: '#818cf8',
                             borderRadius: 6,
@@ -2284,16 +2284,16 @@
 
             // 5. Sales Summary Box (Strictly Real)
             const ss = an.salesSummary || {};
-            setSafeText('salesGrandVal', (ss.totalSales || 0) + ' Ø¬');
-            setSafeText('sideBadgeSales', (ss.totalSales || 0) + ' Ø¬');
+            setSafeText('salesGrandVal', (ss.totalSales || 0) + ' ج');
+            setSafeText('sideBadgeSales', (ss.totalSales || 0) + ' ج');
             setSafeText('subSalesCoursesVal', ss.courses?.amount || 0);
-            setSafeText('subSalesCoursesOps', (ss.courses?.count || 0) + ' Ø¹Ù…Ù„ÙŠØ©');
+            setSafeText('subSalesCoursesOps', (ss.courses?.count || 0) + ' عملية');
             setSafeText('subSalesPackagesVal', ss.packages?.amount || 0);
-            setSafeText('subSalesPackagesOps', (ss.packages?.count || 0) + ' Ø¹Ù…Ù„ÙŠØ©');
+            setSafeText('subSalesPackagesOps', (ss.packages?.count || 0) + ' عملية');
             setSafeText('subSalesLecturesVal', ss.lectures?.amount || 0);
-            setSafeText('subSalesLecturesOps', (ss.lectures?.count || 0) + ' Ø¹Ù…Ù„ÙŠØ©');
+            setSafeText('subSalesLecturesOps', (ss.lectures?.count || 0) + ' عملية');
             setSafeText('subSalesCentersVal', ss.centers?.amount || 0);
-            setSafeText('subSalesCentersOps', (ss.centers?.count || 0) + ' Ø¹Ù…Ù„ÙŠØ©');
+            setSafeText('subSalesCentersOps', (ss.centers?.count || 0) + ' عملية');
 
             // 6. Top 3 Grades Donut (Strictly Real)
             const tgCtx = document.getElementById('chartTopGrades')?.getContext('2d');
@@ -2304,7 +2304,7 @@
                 chartTopGradesInstance = new Chart(tgCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: tg.length ? tg.map(g => g.grade) : ['Ù„Ø§ ØªÙˆØ¬Ø¯ ØµÙÙˆÙ'],
+                        labels: tg.length ? tg.map(g => g.grade) : ['لا توجد صفوف'],
                         datasets: [{
                             data: tg.length ? tg.map(g => g.count) : [1],
                             backgroundColor: tg.length ? gradeColors : [isDark ? '#334155' : '#e2e8f0'],
@@ -2332,7 +2332,7 @@
                             </span>
                             <span style="font-family:'Outfit'; color:var(--dash-muted);">${g.count}</span>
                         </div>
-                    `).join('') : '<div style="text-align:center; padding:10px; color:var(--dash-muted); font-size:0.85rem;">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¨ÙŠØ§Ù†Ø§Øª ØµÙÙˆÙ Ø¯Ø±Ø§Ø³ÙŠØ© Ù…Ø³Ø¬Ù„Ø© Ø¨Ø¹Ø¯.</div>';
+                    `).join('') : '<div style="text-align:center; padding:10px; color:var(--dash-muted); font-size:0.85rem;">لا توجد بيانات صفوف دراسية مسجلة بعد.</div>';
                 }
             }
 
@@ -2345,7 +2345,7 @@
                 chartTopGovInstance = new Chart(govCtx, {
                     type: 'bar',
                     data: {
-                        labels: govs.length ? govs.map(g => g.governorate) : ['Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ø­Ø§ÙØ¸Ø§Øª Ù…Ø³Ø¬Ù„Ø© Ø¨Ø¹Ø¯'],
+                        labels: govs.length ? govs.map(g => g.governorate) : ['لا توجد محافظات مسجلة بعد'],
                         datasets: [{
                             data: govs.length ? govs.map(g => g.count) : [0],
                             backgroundColor: govs.map((_, idx) => govColors[idx % govColors.length]),
@@ -2384,7 +2384,7 @@
                 chartActiveInactiveInstance = new Chart(actCtx, {
                     type: 'doughnut',
                     data: {
-                        labels: totalAct > 0 ? ['Ø§Ø´ØªØ±ÙˆØ§ Ø§Ø´ØªØ±Ø§ÙƒØ§Øª', 'Ù…Ø³Ø¬Ù„ÙŠÙ† ÙÙ‚Ø·'] : ['Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø§Ø¨'],
+                        labels: totalAct > 0 ? ['اشتروا اشتراكات', 'مسجلين فقط'] : ['لا يوجد طلاب'],
                         datasets: [{
                             data: totalAct > 0 ? [as.activeCount || 0, as.inactiveCount || 0] : [1],
                             backgroundColor: totalAct > 0 ? ['#14b8a6', isDark ? '#334155' : '#e2e8f0'] : [isDark ? '#334155' : '#e2e8f0'],
@@ -2414,10 +2414,10 @@
                     <div class="recent-item-row">
                         <div>
                             <div class="recent-item-title">${escapeHtml(l.title)}</div>
-                            <div class="recent-item-sub">${escapeHtml(l.teacherName || '')} | ${l.price != null ? l.price + ' Ø¬' : 'Ù…Ø¬Ø§Ù†ÙŠØ©'}</div>
+                            <div class="recent-item-sub">${escapeHtml(l.teacherName || '')} | ${l.price != null ? l.price + ' ج' : 'مجانية'}</div>
                         </div>
                     </div>
-                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ù…Ø¶Ø§ÙØ© Ø¨Ø¹Ø¯.</div>';
+                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا توجد محاضرات مضافة بعد.</div>';
             }
 
             // 10. Recent Teachers List (Strictly Real)
@@ -2426,8 +2426,8 @@
                 rtL.innerHTML = recTeach.length ? recTeach.map(t => `
                     <div class="recent-teacher-box">
                         <div class="recent-teacher-contacts">
-                            ${t.phone ? `<a href="tel:${t.phone}" class="btn-contact-icon phone" title="Ø§ØªØµØ§Ù„"><i class="ti ti-phone"></i></a>` : ''}
-                            ${t.whatsapp || t.phone ? `<a href="https://wa.me/20${(t.whatsapp || t.phone).replace(/^0+/, '')}" target="_blank" class="btn-contact-icon whatsapp" title="ÙˆØ§ØªØ³Ø§Ø¨"><i class="ti ti-brand-whatsapp"></i></a>` : ''}
+                            ${t.phone ? `<a href="tel:${t.phone}" class="btn-contact-icon phone" title="اتصال"><i class="ti ti-phone"></i></a>` : ''}
+                            ${t.whatsapp || t.phone ? `<a href="https://wa.me/20${(t.whatsapp || t.phone).replace(/^0+/, '')}" target="_blank" class="btn-contact-icon whatsapp" title="واتساب"><i class="ti ti-brand-whatsapp"></i></a>` : ''}
                         </div>
                         <div class="recent-teacher-info">
                             <div style="text-align:right;">
@@ -2437,7 +2437,7 @@
                             <img src="${t.imagePath || 'imges/logo-light-mode.png'}" alt="${escapeHtml(t.name)}" class="recent-teacher-avatar" onerror="this.src='imges/logo-light-mode.png'">
                         </div>
                     </div>
-                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…Ø¹Ù„Ù…ÙˆÙ† Ù…Ø¶Ø§ÙÙˆÙ† Ø¨Ø¹Ø¯.</div>';
+                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا يوجد معلمون مضافون بعد.</div>';
             }
 
             // 11. Recent Students List (Strictly Real)
@@ -2445,13 +2445,13 @@
             if (rsL) {
                 rsL.innerHTML = recStud.length ? recStud.map(s => `
                     <div class="recent-item-row">
-                        <span class="recent-item-badge">${escapeHtml(s.timeAgo || 'Ù…Ø¤Ø®Ø±Ø§Ù‹')}</span>
+                        <span class="recent-item-badge">${escapeHtml(s.timeAgo || 'مؤخراً')}</span>
                         <div style="text-align:right;">
                             <div class="recent-item-title">${escapeHtml(s.name)}</div>
                             <div class="recent-item-sub">${escapeHtml(s.grade || '')}</div>
                         </div>
                     </div>
-                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø§Ø¨ Ù…Ø³Ø¬Ù„ÙˆÙ† Ø¨Ø¹Ø¯.</div>';
+                `).join('') : '<div style="text-align:center; padding:24px; color:var(--dash-muted); font-size:0.9rem; font-weight:700;">لا يوجد طلاب مسجلون بعد.</div>';
             }
 
             // 12. Inactive Students Table (Strictly Real)
@@ -2465,7 +2465,7 @@
             const tbody = document.getElementById('inactiveStudentsTbody');
             if (!tbody) return;
             if (!list || list.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--dash-muted);">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø© ØºÙŠØ± Ù…ÙØ¹Ù„ÙŠÙ† Ø­Ø§Ù„ÙŠØ§Ù‹.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:32px; color:var(--dash-muted);">لا يوجد طلبة غير مفعلين حالياً.</td></tr>';
                 return;
             }
 
@@ -2476,10 +2476,10 @@
                     <td style="font-family:'Outfit'; direction:ltr; text-align:right;">
                         <a href="tel:${s.phone}" style="color:var(--dash-primary); text-decoration:none; font-weight:700;">${escapeHtml(s.phone)}</a>
                     </td>
-                    <td>${escapeHtml(s.governorate || 'â€”')}</td>
-                    <td><span style="font-size:0.85rem; color:var(--dash-muted); font-weight:700;">${escapeHtml(s.grade || 'â€”')}</span></td>
-                    <td style="font-family:'Outfit'; font-size:0.85rem; color:var(--dash-muted);">${escapeHtml(s.createdAt || 'â€”')}</td>
-                    <td style="text-align:center;"><span class="status-pill-inactive">${escapeHtml(s.status || 'ØºÙŠØ± Ù…ÙØ¹Ù„')}</span></td>
+                    <td>${escapeHtml(s.governorate || '—')}</td>
+                    <td><span style="font-size:0.85rem; color:var(--dash-muted); font-weight:700;">${escapeHtml(s.grade || '—')}</span></td>
+                    <td style="font-family:'Outfit'; font-size:0.85rem; color:var(--dash-muted);">${escapeHtml(s.createdAt || '—')}</td>
+                    <td style="text-align:center;"><span class="status-pill-inactive">${escapeHtml(s.status || 'غير مفعل')}</span></td>
                 </tr>
             `).join('');
         }
@@ -2498,7 +2498,7 @@
         function filterSalesData() {
             const from = document.getElementById('salesFilterFrom')?.value;
             const to = document.getElementById('salesFilterTo')?.value;
-            alert(`ØªÙ… ØªØ·Ø¨ÙŠÙ‚ ÙÙ„ØªØ± Ø§Ù„Ù…Ø¨ÙŠØ¹Ø§Øª Ù…Ù† ${from} Ø¥Ù„Ù‰ ${to}`);
+            alert(`تم تطبيق فلتر المبيعات من ${from} إلى ${to}`);
         }
 
         
@@ -2522,8 +2522,8 @@
             const questions = d.questions || [];
 
             // Sidebar details
-            setSafeText('sidebarTeacherName', t.name || 'Ø§Ù„Ù…Ø¹Ù„Ù…');
-            setSafeText('sidebarTeacherSubject', t.subjectAr || 'Ø§Ù„Ù…Ø§Ø¯Ø©');
+            setSafeText('sidebarTeacherName', t.name || 'المعلم');
+            setSafeText('sidebarTeacherSubject', t.subjectAr || 'المادة');
             if (t.imagePath) {
                 const imgEl = document.getElementById('sidebarAvatarImg');
                 if (imgEl) {
@@ -2535,12 +2535,12 @@
             }
 
             // Hero Details
-            setSafeText('heroGreeting', `Ù…Ø±Ø­Ø¨Ø§Ù‹ Ø¨Ùƒ ÙŠØ§ Ø£Ø³ØªØ§Ø° ${t.name || ''} ðŸ‘‹`);
+            setSafeText('heroGreeting', `مرحباً بك يا أستاذ ${t.name || ''} 👋`);
             
             // Link to view teacher profile
             const profileLinkWrap = document.getElementById('heroProfileLinkWrap');
             if (profileLinkWrap) {
-                profileLinkWrap.innerHTML = `<a href="teacher-profile?id=${t._id}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.18); color:#fff; text-decoration:none; padding:7px 16px; border-radius:50px; font-weight:800; font-size:0.85rem; border:1px solid rgba(255,255,255,0.25); transition:all 0.2s;"><i class="ti ti-external-link"></i> Ù…Ø¹Ø§ÙŠÙ†Ø© Ø§Ù„Ø¨Ø±ÙˆÙØ§ÙŠÙ„ Ù„Ù„Ø·Ù„Ø§Ø¨</a>`;
+                profileLinkWrap.innerHTML = `<a href="teacher-profile?id=${t._id}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.18); color:#fff; text-decoration:none; padding:7px 16px; border-radius:50px; font-weight:800; font-size:0.85rem; border:1px solid rgba(255,255,255,0.25); transition:all 0.2s;"><i class="ti ti-external-link"></i> معاينة البروفايل للطلاب</a>`;
             }
 
             // Populate admin teacher switcher if user is admin
@@ -2560,7 +2560,7 @@
                         .catch(err => console.error('Failed to load teachers for switcher:', err));
                 }
             }
-            setSafeText('heroSubjectText', `Ù„ÙˆØ­Ø© Ù…ØªØ§Ø¨Ø¹Ø© Ø·Ù„Ø§Ø¨ Ù…Ø§Ø¯Ø© ${t.subjectAr || ''} ÙˆØ§Ù„Ø³Ù†Ø§ØªØ± ÙˆØ§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª ÙˆØ§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø§Øª Ø§Ù„Ù„Ø­Ø¸ÙŠØ©`);
+            setSafeText('heroSubjectText', `لوحة متابعة طلاب مادة ${t.subjectAr || ''} والسناتر والامتحانات والمشاهدات اللحظية`);
 
             // Active Students & Percentage calculations (strictly real data)
             const totalStudents = s.totalStudentsCount || 0;
@@ -2568,24 +2568,24 @@
             const activeRate = totalStudents > 0 ? Math.min(100, Math.round((activeStudents / totalStudents) * 100)) : 0;
 
             setSafeText('heroActiveRate', `${activeRate}%`);
-            setSafeText('metricActivePct', `${activeRate}% Ù†Ø´Ø§Ø·`);
+            setSafeText('metricActivePct', `${activeRate}% نشاط`);
             setSafeText('metricActiveCount', activeStudents);
             setSafeWidth('metricActiveBar', `${activeRate}%`);
             setSafeText('metricTotalRegistered', totalStudents);
             setSafeText('metricActiveRatioText', totalStudents > 0 
-                ? `${activeStudents} Ù…Ù† Ø£ØµÙ„ ${totalStudents} Ø·Ø§Ù„Ø¨`
-                : 'Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø§Ø¨ Ù…Ø³Ø¬Ù„ÙŠÙ† Ø¨Ø¹Ø¯');
+                ? `${activeStudents} من أصل ${totalStudents} طالب`
+                : 'لا يوجد طلاب مسجلين بعد');
 
             // Attendance & QR Scans (strictly real data)
             const attendCount = attendances.length;
             const attendBase = totalStudents > 0 ? totalStudents : (activeStudents > 0 ? activeStudents : 0);
             const attendRate = attendBase > 0 ? Math.min(100, Math.round((attendCount / attendBase) * 100)) : 0;
-            setSafeText('metricAttendPct', `${attendRate}% Ø­Ø¶ÙˆØ±`);
+            setSafeText('metricAttendPct', `${attendRate}% حضور`);
             setSafeText('metricAttendCount', attendCount);
             setSafeWidth('metricAttendBar', `${attendRate}%`);
             setSafeText('metricAttendSub', attendCount > 0 
-                ? `${attendCount} ØªØ³Ø¬ÙŠÙ„ Ø­Ø¶ÙˆØ± Ø¨Ø§Ù„Ø³Ù†Ø§ØªØ±`
-                : 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØªØ³Ø¬ÙŠÙ„Ø§Øª Ø­Ø¶ÙˆØ± Ø¨Ø¹Ø¯');
+                ? `${attendCount} تسجيل حضور بالسناتر`
+                : 'لا توجد تسجيلات حضور بعد');
 
             // Exams & Results (strictly real data)
             const allResults = exams.flatMap(e => e.results || []);
@@ -2594,20 +2594,20 @@
             const passRate = totalResults > 0 ? Math.round((passCount / totalResults) * 100) : 0;
             const avgScore = totalResults > 0 ? (allResults.reduce((a, b) => a + Number(b.percentage || 0), 0) / totalResults).toFixed(1) : 0;
 
-            setSafeText('metricPassRate', `${passRate}% Ù†Ø¬Ø§Ø­`);
+            setSafeText('metricPassRate', `${passRate}% نجاح`);
             setSafeText('metricExamResultsCount', totalResults);
             setSafeWidth('metricPassBar', `${passRate}%`);
-            setSafeText('metricAvgScore', totalResults > 0 ? `${avgScore}%` : 'â€”');
+            setSafeText('metricAvgScore', totalResults > 0 ? `${avgScore}%` : '—');
 
             // Views & Inquiries (strictly real data)
             const totalViews = videos.reduce((acc, v) => acc + (v.watchers ? v.watchers.length : 0), 0);
             setSafeText('metricTotalViews', totalViews);
-            setSafeText('metricInquiriesCount', `${questions.length} Ø³Ø¤Ø§Ù„`);
-            setSafeText('metricVideosCount', `${videos.length} ÙÙŠØ¯ÙŠÙˆ`);
+            setSafeText('metricInquiriesCount', `${questions.length} سؤال`);
+            setSafeText('metricVideosCount', `${videos.length} فيديو`);
             const viewsRate = totalStudents > 0 ? Math.min(100, Math.round((totalViews / totalStudents) * 100)) : (totalViews > 0 ? 100 : 0);
             setSafeWidth('metricViewsBar', `${viewsRate}%`);
 
-            // â”€â”€ Top Stat Cards: populate from real data (works with or without analytics) â”€â”€
+            // ── Top Stat Cards: populate from real data (works with or without analytics) ──
             const _an = d.analytics || {};
             setSafeText('cardTeachersCount', _an.teachersCount != null ? _an.teachersCount : (s.teachersCount != null ? s.teachersCount : 0));
             setSafeText('cardStudentsCount', _an.studentsCount != null ? _an.studentsCount : (s.totalStudentsCount != null ? s.totalStudentsCount : 0));
@@ -2650,7 +2650,7 @@
             }
         }
 
-        // â•â•â•â• TABS NAVIGATION â•â•â•â•
+        // ════ TABS NAVIGATION ════
         
     function goBack() {
         if (document.referrer && document.referrer.includes(window.location.host) && !document.referrer.includes('/teacher-dashboard')) {
@@ -2697,7 +2697,7 @@
             }, 60);
         }
 
-        // â•â•â•â• CENTERS & LOCATIONS CIRCULAR DONUT GAUGE â•â•â•â•
+        // ════ CENTERS & LOCATIONS CIRCULAR DONUT GAUGE ════
         function setAttendanceViewMode(mode) {
             attendanceMode = mode;
             document.getElementById('btnToggleCenters').classList.toggle('active', mode === 'centers');
@@ -2715,13 +2715,13 @@
             const countMap = {};
             if (attendanceMode === 'centers') {
                 attendances.forEach(a => {
-                    const name = (a.center && a.center !== 'â€”') ? a.center : 'Ø§Ù„Ø³Ù†ØªØ± Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ';
+                    const name = (a.center && a.center !== '—') ? a.center : 'السنتر الرئيسي';
                     countMap[name] = (countMap[name] || 0) + 1;
                 });
             } else {
-                // By Governorate â€” from video watchers
+                // By Governorate — from video watchers
                 allWatchers.forEach(w => {
-                    const gov = w.governorate && w.governorate !== 'â€”' ? w.governorate : 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯';
+                    const gov = w.governorate && w.governorate !== '—' ? w.governorate : 'غير محدد';
                     countMap[gov] = (countMap[gov] || 0) + 1;
                 });
             }
@@ -2730,11 +2730,11 @@
             const values = Object.values(countMap);
             const total = values.reduce((a, b) => a + b, 0);
 
-            // â”€â”€ Ø¥Ø°Ø§ Ù…ÙÙŠØ´ Ø¯Ø§ØªØ§ Ø­Ù‚ÙŠÙ‚ÙŠØ© Ø§Ø¹Ø±Ø¶ Ø±Ø³Ø§Ù„Ø© ÙØ§Ø±ØºØ© ÙˆÙ…Ø¤Ø´Ø± Ø¯Ø§Ø¦Ø±ÙŠ Ù…Ø­Ø§ÙŠØ¯ â”€â”€
+            // ── إذا مفيش داتا حقيقية اعرض رسالة فارغة ومؤشر دائري محايد ──
             const breakdownGrid = document.getElementById('centersBreakdownGrid');
             if (labels.length === 0) {
                 document.getElementById('cutoutTotalCount').textContent = '0';
-                document.getElementById('cutoutLabelText').textContent = attendanceMode === 'centers' ? 'Ø­Ø§Ø¶Ø± Ø¨Ø§Ù„Ø³Ù†Ø§ØªØ±' : 'Ø·Ø§Ù„Ø¨ Ù…Ø´Ø§Ù‡Ø¯';
+                document.getElementById('cutoutLabelText').textContent = attendanceMode === 'centers' ? 'حاضر بالسناتر' : 'طالب مشاهد';
                 if (donutChartInstance) { donutChartInstance.destroy(); donutChartInstance = null; }
                 const isDark = document.body.classList.contains('dark-mode');
                 const ctx = document.getElementById('chartCentersDonut')?.getContext('2d');
@@ -2742,7 +2742,7 @@
                     donutChartInstance = new Chart(ctx, {
                         type: 'doughnut',
                         data: {
-                            labels: ['Ù„Ø§ ØªÙˆØ¬Ø¯ ØªØ³Ø¬ÙŠÙ„Ø§Øª Ø¨Ø¹Ø¯'],
+                            labels: ['لا توجد تسجيلات بعد'],
                             datasets: [{
                                 data: [1],
                                 backgroundColor: [isDark ? '#1e293b' : '#e2e8f0'],
@@ -2761,12 +2761,12 @@
                     });
                 }
                 if (breakdownGrid) {
-                    const modeLabel = attendanceMode === 'centers' ? 'Ø³Ø¬Ù„Ø§Øª Ø­Ø¶ÙˆØ± Ø¨Ø§Ù„Ø³Ù†ØªØ±' : 'Ù…Ø´Ø§Ù‡Ø¯ÙŠÙ† Ù…Ø³Ø¬Ù„ÙŠÙ†';
+                    const modeLabel = attendanceMode === 'centers' ? 'سجلات حضور بالسنتر' : 'مشاهدين مسجلين';
                     breakdownGrid.innerHTML = `
                         <div style="color:var(--dash-muted); padding:32px 20px; text-align:center; grid-column:1/-1; font-size:0.95rem; font-weight:700;">
                             <i class="ti ti-map-pin-off" style="font-size:2.2rem; display:block; margin-bottom:10px; opacity:0.6; color:var(--dash-primary);"></i>
-                            Ù„Ø§ ØªÙˆØ¬Ø¯ ${modeLabel} Ø­Ø§Ù„ÙŠØ§Ù‹.<br>
-                            <small style="font-weight:600; font-size:0.85rem; opacity:0.8;">Ø¹Ù†Ø¯Ù…Ø§ ÙŠÙ‚ÙˆÙ… Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ Ø¨Ù…Ø³Ø­ ÙƒÙˆØ¯ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ù„Ø§Ø¨ ÙÙŠ Ø§Ù„Ø³Ù†ØªØ±ØŒ Ø³ØªØ¸Ù‡Ø± Ù‡Ù†Ø§ Ù†Ø³Ø¨ Ø§Ù„Ø·Ù„Ø§Ø¨ Ù„ÙƒÙ„ Ø³Ù†ØªØ± Ø¨Ù„ÙˆÙ† Ù…Ù…ÙŠØ² ÙÙŠ Ø§Ù„Ù…Ø®Ø·Ø· Ø§Ù„Ø¯Ø§Ø¦Ø±ÙŠ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.</small>
+                            لا توجد ${modeLabel} حالياً.<br>
+                            <small style="font-weight:600; font-size:0.85rem; opacity:0.8;">عندما يقوم المساعد بمسح كود حضور الطلاب في السنتر، ستظهر هنا نسب الطلاب لكل سنتر بلون مميز في المخطط الدائري تلقائياً.</small>
                         </div>
                     `;
                 }
@@ -2778,7 +2778,7 @@
 
             // Update Cutout Info
             document.getElementById('cutoutTotalCount').textContent = total;
-            document.getElementById('cutoutLabelText').textContent = attendanceMode === 'centers' ? 'Ø­Ø§Ø¶Ø± Ø¨Ø§Ù„Ø³Ù†Ø§ØªØ±' : 'Ø·Ø§Ù„Ø¨ Ù…Ø´Ø§Ù‡Ø¯';
+            document.getElementById('cutoutLabelText').textContent = attendanceMode === 'centers' ? 'حاضر بالسناتر' : 'طالب مشاهد';
 
             // Render Chart.js Donut
             const ctx = document.getElementById('chartCentersDonut')?.getContext('2d');
@@ -2810,7 +2810,7 @@
                                     label: function(ctx) {
                                         const val = ctx.raw || 0;
                                         const pct = total > 0 ? Math.round((val / total) * 100) : 0;
-                                        return ` ${val} Ø·Ø§Ù„Ø¨ (${pct}%)`;
+                                        return ` ${val} طالب (${pct}%)`;
                                     }
                                 }
                             }
@@ -2830,7 +2830,7 @@
                             <div class="center-color-dot" style="background:${color}; box-shadow:0 0 0 3px ${color}33;"></div>
                             <div class="center-details">
                                 <div class="center-name" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
-                                <div class="center-count-text">${count} ${attendanceMode === 'centers' ? 'Ø·Ø§Ù„Ø¨ Ø­Ø§Ø¶Ø±' : 'Ø·Ø§Ù„Ø¨'}</div>
+                                <div class="center-count-text">${count} ${attendanceMode === 'centers' ? 'طالب حاضر' : 'طالب'}</div>
                             </div>
                             <div class="center-pct-tag" style="color:${color};">${pct}%</div>
                         </div>
@@ -2839,12 +2839,12 @@
             }
         }
 
-        // â•â•â•â• TOP PERFORMERS (LEADERBOARD) â•â•â•â•
+        // ════ TOP PERFORMERS (LEADERBOARD) ════
         function renderTopPerformers(results) {
             const studentMap = {};
             results.forEach(r => {
-                if (!r.studentName || r.studentName === 'Ø·Ø§Ù„Ø¨') return;
-                const key = (r.studentPhone && r.studentPhone !== 'â€”') ? r.studentPhone : r.studentName;
+                if (!r.studentName || r.studentName === 'طالب') return;
+                const key = (r.studentPhone && r.studentPhone !== '—') ? r.studentPhone : r.studentName;
                 if (!studentMap[key]) {
                     studentMap[key] = {
                         name: r.studentName,
@@ -2868,24 +2868,24 @@
             if (!wrap) return;
 
             if (!top.length) {
-                wrap.innerHTML = `<div style="color:var(--dash-muted); padding:20px; text-align:center; grid-column:1/-1;">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¯Ø±Ø¬Ø§Øª Ø§Ù…ØªØ­Ø§Ù†Ø§Øª ÙƒØ§ÙÙŠØ© Ø¨Ø¹Ø¯ Ù„Ø¥Ø¸Ù‡Ø§Ø± Ù„ÙˆØ­Ø© Ø§Ù„Ø´Ø±Ù.</div>`;
+                wrap.innerHTML = `<div style="color:var(--dash-muted); padding:20px; text-align:center; grid-column:1/-1;">لا توجد درجات امتحانات كافية بعد لإظهار لوحة الشرف.</div>`;
                 return;
             }
 
             wrap.innerHTML = top.map((st, idx) => {
-                const medals = ['ðŸ¥‡', 'ðŸ¥ˆ', 'ðŸ¥‰', 'ðŸ…', 'â­', 'âœ¨'];
+                const medals = ['🥇', '🥈', '🥉', '🏅', '⭐', '✨'];
                 const badgeColor = idx === 0 ? '#fef08a' : (idx === 1 ? '#e2e8f0' : (idx === 2 ? '#fed7aa' : '#f1f5f9'));
-                const waText = encodeURIComponent(`Ø£Ù‡Ù„Ø§Ù‹ ÙŠØ§ ${st.name}ØŒ ÙØ®ÙˆØ± Ø¬Ø¯Ø§Ù‹ Ø¨ØªÙÙˆÙ‚Ùƒ ÙˆØ­ØµÙˆÙ„Ùƒ Ø¹Ù„Ù‰ Ø§Ù„Ù…Ø±ÙƒØ² Ø§Ù„Ù…ØªÙ‚Ø¯Ù… (${st.avg}%) ÙÙŠ Ù…Ø§Ø¯ØªÙ†Ø§ Ø¹Ù„Ù‰ Ù…Ù†ØµØ© EDGE Academy. Ø§Ø³ØªÙ…Ø± ÙÙŠ Ø§Ù„ØªØ£Ù„Ù‚! ðŸŒŸ`);
+                const waText = encodeURIComponent(`أهلاً يا ${st.name}، فخور جداً بتفوقك وحصولك على المركز المتقدم (${st.avg}%) في مادتنا على منصة EDGE Academy. استمر في التألق! 🌟`);
                 return `
                     <div class="center-info-pill" style="border-right:4px solid var(--dash-primary);">
-                        <div style="font-size:1.5rem;">${medals[idx] || 'ðŸ†'}</div>
+                        <div style="font-size:1.5rem;">${medals[idx] || '🏆'}</div>
                         <div class="center-details">
                             <div class="center-name">${escapeHtml(st.name)}</div>
-                            <div class="center-count-text">${escapeHtml(st.grade || 'â€”')} Â· ${escapeHtml(st.gov || 'â€”')}</div>
+                            <div class="center-count-text">${escapeHtml(st.grade || '—')} · ${escapeHtml(st.gov || '—')}</div>
                         </div>
                         <div class="center-pct-tag" style="color:#16a34a;">${st.avg}%</div>
-                        ${st.phone && st.phone !== 'â€”' ? `
-                            <a href="https://wa.me/20${st.phone.replace(/^0+/, '')}?text=${waText}" target="_blank" class="btn-wa-action" title="ØªÙ‡Ù†Ø¦Ø© ÙˆØ§ØªØ³Ø§Ø¨">
+                        ${st.phone && st.phone !== '—' ? `
+                            <a href="https://wa.me/20${st.phone.replace(/^0+/, '')}?text=${waText}" target="_blank" class="btn-wa-action" title="تهنئة واتساب">
                                 <i class="ti ti-brand-whatsapp"></i>
                             </a>
                         ` : ''}
@@ -2894,7 +2894,7 @@
             }).join('');
         }
 
-        // â•â•â•â• ATTENDANCE TABLE â•â•â•â•
+        // ════ ATTENDANCE TABLE ════
         let allAttendances = [];
         function renderAttendanceTable(list) {
             allAttendances = list || [];
@@ -2915,43 +2915,43 @@
             );
 
             if (!filtered.length) {
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--dash-muted);">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø³Ø¬Ù„Ø§Øª Ø­Ø¶ÙˆØ± Ù…Ø³Ø¬Ù„Ø© Ø¨Ø§Ù„Ø³Ù†Ø§ØªØ± Ø­Ø§Ù„ÙŠØ§Ù‹.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--dash-muted);">لا توجد سجلات حضور مسجلة بالسناتر حالياً.</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = filtered.map((a, i) => {
-                const dateStr = a.scannedAt ? new Date(a.scannedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : 'â€”';
-                const waMsg = encodeURIComponent(`Ø£Ù‡Ù„Ø§Ù‹ ÙŠØ§ ${a.studentName}ØŒ ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø­Ø¶ÙˆØ±Ùƒ Ø¨Ù†Ø¬Ø§Ø­ ÙÙŠ ${a.center || 'Ø§Ù„Ø³Ù†ØªØ±'} Ø¨Ù…Ø§Ø¯Ø© ${dashData?.teacher?.subjectAr || ''}.`);
+                const dateStr = a.scannedAt ? new Date(a.scannedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '—';
+                const waMsg = encodeURIComponent(`أهلاً يا ${a.studentName}، تم تسجيل حضورك بنجاح في ${a.center || 'السنتر'} بمادة ${dashData?.teacher?.subjectAr || ''}.`);
                 return `
                     <tr>
                         <td style="color:var(--dash-muted);">${i + 1}</td>
-                        <td><b style="cursor:pointer; color:var(--dash-primary);" onclick="openTeacherStudentRecord('${a.studentId}')" title="Ø§Ù†Ù‚Ø± Ù„ÙØªØ­ Ø§Ù„Ù…Ù„Ù Ø§Ù„Ø´Ø§Ù…Ù„ ÙˆØ³Ø¬Ù„Ø§Øª Ø§Ù„Ø·Ø§Ù„Ø¨"><i class="ti ti-user"></i> ${escapeHtml(a.studentName || 'Ø·Ø§Ù„Ø¨')}</b></td>
-                        <td><span style="font-weight:800; color:var(--dash-primary);">${escapeHtml(a.center || 'Ø§Ù„Ø³Ù†ØªØ±')}</span></td>
-                        <td>${escapeHtml(a.day || 'â€”')}</td>
-                        <td>${escapeHtml(a.time || 'â€”')}</td>
-                        <td>${escapeHtml(a.grade || 'â€”')}</td>
+                        <td><b style="cursor:pointer; color:var(--dash-primary);" onclick="openTeacherStudentRecord('${a.studentId}')" title="انقر لفتح الملف الشامل وسجلات الطالب"><i class="ti ti-user"></i> ${escapeHtml(a.studentName || 'طالب')}</b></td>
+                        <td><span style="font-weight:800; color:var(--dash-primary);">${escapeHtml(a.center || 'السنتر')}</span></td>
+                        <td>${escapeHtml(a.day || '—')}</td>
+                        <td>${escapeHtml(a.time || '—')}</td>
+                        <td>${escapeHtml(a.grade || '—')}</td>
                         <td><small style="color:var(--dash-muted);">${dateStr}</small></td>
-                        <td style="font-family:'Outfit';">${escapeHtml(a.studentPhone || 'â€”')}</td>
+                        <td style="font-family:'Outfit';">${escapeHtml(a.studentPhone || '—')}</td>
                         <td>
-                            ${a.studentPhone && a.studentPhone !== 'â€”' ? `
+                            ${a.studentPhone && a.studentPhone !== '—' ? `
                                 <a href="https://wa.me/20${a.studentPhone.replace(/^0+/, '')}?text=${waMsg}" target="_blank" class="btn-wa-action">
                                     <i class="ti ti-brand-whatsapp"></i>
                                 </a>
-                            ` : 'â€”'}
+                            ` : '—'}
                         </td>
                     </tr>
                 `;
             }).join('');
         }
 
-        // â•â•â•â• VIDEOS ACCORDION â•â•â•â•
+        // ════ VIDEOS ACCORDION ════
         function renderVideosAccordion(videos) {
             const wrap = document.getElementById('videosAccordionWrap');
             document.getElementById('tabVideosCount').textContent = videos.length;
             if (!wrap) return;
 
             if (!videos.length) {
-                wrap.innerHTML = `<div style="text-align:center; padding:40px; color:var(--dash-muted);">Ù„Ù… ÙŠØªÙ… Ø±ÙØ¹ Ø£ÙŠ ÙÙŠØ¯ÙŠÙˆÙ‡Ø§Øª Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.</div>`;
+                wrap.innerHTML = `<div style="text-align:center; padding:40px; color:var(--dash-muted);">لم يتم رفع أي فيديوهات حتى الآن.</div>`;
                 return;
             }
 
@@ -2966,29 +2966,29 @@
                             </div>
                             <div style="display:flex; align-items:center; gap:10px;">
                                 <span style="background:var(--dash-primary-light); color:var(--dash-primary); padding:4px 12px; border-radius:999px; font-weight:800; font-size:0.85rem;">
-                                    <i class="ti ti-eye"></i> ${watchers.length} Ù…Ø´Ø§Ù‡Ø¯Ø©
+                                    <i class="ti ti-eye"></i> ${watchers.length} مشاهدة
                                 </span>
                                 <i class="ti ti-chevron-down" id="vChevron-${i}" style="color:var(--dash-muted); transition:transform 0.2s;"></i>
                             </div>
                         </div>
 
                         <div id="vWatchers-${i}" style="display:none; margin-top:16px; padding-top:14px; border-top:1px dashed var(--dash-border);">
-                            <div style="font-size:0.85rem; font-weight:800; color:var(--dash-muted); margin-bottom:10px;">Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯ÙˆÙ†:</div>
+                            <div style="font-size:0.85rem; font-weight:800; color:var(--dash-muted); margin-bottom:10px;">الطلاب المشاهدون:</div>
                             ${watchers.length ? `
                                 <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:10px;">
                                     ${watchers.map(w => `
                                         <div style="background:var(--dash-card); padding:10px 14px; border-radius:12px; border:1px solid var(--dash-border); display:flex; align-items:center; justify-content:space-between;">
                                             <div>
                                                 <b>${escapeHtml(w.name)}</b>
-                                                <div style="font-size:0.78rem; color:var(--dash-muted);">${escapeHtml(w.grade || 'â€”')} Â· ${escapeHtml(w.governorate || 'â€”')}</div>
+                                                <div style="font-size:0.78rem; color:var(--dash-muted);">${escapeHtml(w.grade || '—')} · ${escapeHtml(w.governorate || '—')}</div>
                                             </div>
-                                            ${w.phone && w.phone !== 'â€”' ? `
+                                            ${w.phone && w.phone !== '—' ? `
                                                 <a href="https://wa.me/20${w.phone.replace(/^0+/, '')}" target="_blank" class="btn-wa-action"><i class="ti ti-brand-whatsapp"></i></a>
                                             ` : ''}
                                         </div>
                                     `).join('')}
                                 </div>
-                            ` : `<div style="color:var(--dash-muted); font-size:0.85rem;">Ù„Ù… ÙŠØ³Ø¬Ù„ Ù‡Ø°Ø§ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ù…Ø´Ø§Ù‡Ø¯Ø§Øª Ø¨Ø¹Ø¯.</div>`}
+                            ` : `<div style="color:var(--dash-muted); font-size:0.85rem;">لم يسجل هذا الفيديو مشاهدات بعد.</div>`}
                         </div>
                     </div>
                 `;
@@ -3013,12 +3013,12 @@
             });
         }
 
-        // â•â•â•â• EXAMS TABLE â•â•â•â•
+        // ════ EXAMS TABLE ════
         function renderExamsTable(exams) {
             allFlattenedResults = [];
             const select = document.getElementById('selectExamFilter');
             if (select) {
-                select.innerHTML = '<option value="ALL">Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</option>';
+                select.innerHTML = '<option value="ALL">جميع الامتحانات</option>';
                 exams.forEach(e => {
                     const opt = document.createElement('option');
                     opt.value = e._id || e.title;
@@ -3032,11 +3032,11 @@
                     allFlattenedResults.push({
                         examId: exam._id || exam.title,
                         examTitle: exam.title,
-                        studentName: r.studentName || 'Ø·Ø§Ù„Ø¨',
-                        grade: r.grade || 'â€”',
-                        gov: r.governorate || 'â€”',
+                        studentName: r.studentName || 'طالب',
+                        grade: r.grade || '—',
+                        gov: r.governorate || '—',
                         percentage: Number(r.percentage || 0),
-                        phone: r.studentPhone || 'â€”'
+                        phone: r.studentPhone || '—'
                     });
                 });
             });
@@ -3058,19 +3058,19 @@
             });
 
             if (!filtered.length) {
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--dash-muted);">Ù„Ø§ ØªÙˆØ¬Ø¯ Ù†ØªØ§Ø¦Ø¬ Ù…Ø·Ø§Ø¨Ù‚Ø© Ù„Ø¨Ø­Ø«Ùƒ.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--dash-muted);">لا توجد نتائج مطابقة لبحثك.</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = filtered.map((r, i) => {
                 let badgeColor = '#16a34a';
-                let badgeText = 'Ù…Ù…ØªØ§Ø²';
-                if (r.percentage < 50) { badgeColor = '#dc2626'; badgeText = 'Ø±Ø§Ø³Ø¨'; }
-                else if (r.percentage < 65) { badgeColor = '#ea580c'; badgeText = 'Ù…Ù‚Ø¨ÙˆÙ„'; }
-                else if (r.percentage < 75) { badgeColor = '#ca8a04'; badgeText = 'Ø¬ÙŠØ¯'; }
-                else if (r.percentage < 85) { badgeColor = '#0284c7'; badgeText = 'Ø¬ÙŠØ¯ Ø¬Ø¯Ø§Ù‹'; }
+                let badgeText = 'ممتاز';
+                if (r.percentage < 50) { badgeColor = '#dc2626'; badgeText = 'راسب'; }
+                else if (r.percentage < 65) { badgeColor = '#ea580c'; badgeText = 'مقبول'; }
+                else if (r.percentage < 75) { badgeColor = '#ca8a04'; badgeText = 'جيد'; }
+                else if (r.percentage < 85) { badgeColor = '#0284c7'; badgeText = 'جيد جداً'; }
 
-                const waMsg = encodeURIComponent(`Ø£Ù‡Ù„Ø§Ù‹ ÙŠØ§ ${r.studentName}ØŒ Ø¯Ø±Ø¬ØªÙƒ ÙÙŠ Ø§Ù…ØªØ­Ø§Ù† (${r.examTitle}) Ø¨Ù…Ø§Ø¯Ø© ${dashData?.teacher?.subjectAr || ''} Ù‡ÙŠ ${r.percentage}% (${badgeText}).`);
+                const waMsg = encodeURIComponent(`أهلاً يا ${r.studentName}، درجتك في امتحان (${r.examTitle}) بمادة ${dashData?.teacher?.subjectAr || ''} هي ${r.percentage}% (${badgeText}).`);
                 return `
                     <tr>
                         <td style="color:var(--dash-muted);">${i + 1}</td>
@@ -3082,9 +3082,9 @@
                         <td><span style="color:${badgeColor}; font-weight:800;">${badgeText}</span></td>
                         <td style="font-family:'Outfit';">${escapeHtml(r.phone)}</td>
                         <td>
-                            ${r.phone && r.phone !== 'â€”' ? `
+                            ${r.phone && r.phone !== '—' ? `
                                 <a href="https://wa.me/20${r.phone.replace(/^0+/, '')}?text=${waMsg}" target="_blank" class="btn-wa-action"><i class="ti ti-brand-whatsapp"></i></a>
-                            ` : 'â€”'}
+                            ` : '—'}
                         </td>
                     </tr>
                 `;
@@ -3093,10 +3093,10 @@
 
         function exportExamsCSV() {
             if (!allFlattenedResults.length) {
-                alert('Ù„Ø§ ØªÙˆØ¬Ø¯ Ù†ØªØ§Ø¦Ø¬ Ù„ØªØµØ¯ÙŠØ±Ù‡Ø§');
+                alert('لا توجد نتائج لتصديرها');
                 return;
             }
-            const headers = ['Ù…', 'Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨', 'Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†', 'Ø§Ù„ØµÙ', 'Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©', 'Ø§Ù„Ù†Ø³Ø¨Ø© Ø§Ù„Ù…Ø¦ÙˆÙŠØ©', 'Ø§Ù„Ù‡Ø§ØªÙ'];
+            const headers = ['م', 'اسم الطالب', 'الامتحان', 'الصف', 'المحافظة', 'النسبة المئوية', 'الهاتف'];
             const rows = allFlattenedResults.map((r, i) => [
                 i + 1,
                 `"${r.studentName.replace(/"/g, '""')}"`,
@@ -3111,31 +3111,31 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Ù†ØªØ§Ø¦Ø¬_Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª_${new Date().toISOString().slice(0, 10)}.csv`;
+            a.download = `نتائج_الامتحانات_${new Date().toISOString().slice(0, 10)}.csv`;
             a.click();
             URL.revokeObjectURL(url);
         }
 
-        // â•â•â•â• QUESTIONS GRID â•â•â•â•
+        // ════ QUESTIONS GRID ════
         function renderQuestionsGrid(questions) {
             const grid = document.getElementById('questionsCardsGrid');
             document.getElementById('tabQuestionsCount').textContent = questions.length;
             if (!grid) return;
 
             if (!questions.length) {
-                grid.innerHTML = `<div style="text-align:center; padding:40px; color:var(--dash-muted); grid-column:1/-1;">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø³Ø¦Ù„Ø© Ù…Ù† Ø§Ù„Ø·Ù„Ø§Ø¨ Ø­Ø§Ù„ÙŠØ§Ù‹.</div>`;
+                grid.innerHTML = `<div style="text-align:center; padding:40px; color:var(--dash-muted); grid-column:1/-1;">لا توجد أسئلة من الطلاب حالياً.</div>`;
                 return;
             }
 
             grid.innerHTML = questions.map(q => {
-                const dateStr = q.createdAt ? new Date(q.createdAt).toLocaleDateString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : 'Ù…Ø¤Ø®Ø±Ø§Ù‹';
-                const waText = encodeURIComponent(`Ø£Ù‡Ù„Ø§Ù‹ ÙŠØ§ ${q.studentName || 'Ø·Ø§Ù„Ø¨'}ØŒ Ø¨Ø®ØµÙˆØµ Ø³Ø¤Ø§Ù„Ùƒ ÙÙŠ Ù…Ø§Ø¯Ø© ${dashData?.teacher?.subjectAr || ''} Ø¹Ù„Ù‰ Ø¯Ø±Ø³ (${q.videoTitle || ''}):\n\n"${q.question || ''}"\n\nØ¥Ø¬Ø§Ø¨ØªÙƒ ÙƒØ§Ù„ØªØ§Ù„ÙŠ: `);
+                const dateStr = q.createdAt ? new Date(q.createdAt).toLocaleDateString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : 'مؤخراً';
+                const waText = encodeURIComponent(`أهلاً يا ${q.studentName || 'طالب'}، بخصوص سؤالك في مادة ${dashData?.teacher?.subjectAr || ''} على درس (${q.videoTitle || ''}):\n\n"${q.question || ''}"\n\nإجابتك كالتالي: `);
                 return `
                     <div class="center-info-pill" style="display:flex; flex-direction:column; justify-content:space-between; gap:12px; border-right:4px solid var(--accent-orange);" data-q="${escapeHtml((q.studentName || '') + ' ' + (q.videoTitle || '') + ' ' + (q.question || '')).toLowerCase()}">
                         <div>
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-                                <b>${escapeHtml(q.studentName || 'Ø·Ø§Ù„Ø¨')}</b>
-                                <span style="font-size:0.75rem; background:var(--dash-primary-light); color:var(--dash-primary); padding:3px 8px; border-radius:6px;">${escapeHtml(q.videoTitle || 'ÙÙŠØ¯ÙŠÙˆ')}</span>
+                                <b>${escapeHtml(q.studentName || 'طالب')}</b>
+                                <span style="font-size:0.75rem; background:var(--dash-primary-light); color:var(--dash-primary); padding:3px 8px; border-radius:6px;">${escapeHtml(q.videoTitle || 'فيديو')}</span>
                             </div>
                             <div style="font-size:0.92rem; color:var(--dash-text); line-height:1.6; background:var(--dash-card); padding:10px; border-radius:8px; border:1px solid var(--dash-border);">
                                 ${escapeHtml(q.question || '')}
@@ -3143,11 +3143,11 @@
                         </div>
                         <div style="display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--dash-border); padding-top:10px; width:100%;">
                             <small style="color:var(--dash-muted);">${dateStr}</small>
-                            ${q.studentPhone && q.studentPhone !== 'â€”' ? `
+                            ${q.studentPhone && q.studentPhone !== '—' ? `
                                 <a href="https://wa.me/20${q.studentPhone.replace(/^0+/, '')}?text=${waText}" target="_blank" style="display:inline-flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; background:#22c55e; color:#fff; text-decoration:none; font-weight:800; font-size:0.8rem;">
-                                    <i class="ti ti-brand-whatsapp"></i> Ø±Ø¯ Ø¹Ø¨Ø± ÙˆØ§ØªØ³Ø§Ø¨
+                                    <i class="ti ti-brand-whatsapp"></i> رد عبر واتساب
                                 </a>
-                            ` : '<span style="font-size:0.78rem; color:var(--dash-muted);">Ø§Ù„Ø±Ù‚Ù… ØºÙŠØ± Ù…Ø³Ø¬Ù„</span>'}
+                            ` : '<span style="font-size:0.78rem; color:var(--dash-muted);">الرقم غير مسجل</span>'}
                         </div>
                     </div>
                 `;
@@ -3163,19 +3163,19 @@
         }
     </script>
 
-    <!-- â•â•â•â• STUDENT RECORD MODAL FOR TEACHER DASHBOARD â•â•â•â• -->
+    <!-- ════ STUDENT RECORD MODAL FOR TEACHER DASHBOARD ════ -->
     <div id="tdStudentModalOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:99999; display:none; align-items:center; justify-content:center; padding:16px;">
         <div style="background:var(--dash-card); border:1px solid var(--dash-border); border-radius:20px; width:100%; max-width:920px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 50px rgba(0,0,0,0.35); display:flex; flex-direction:column;" onclick="event.stopPropagation()">
             <div style="padding:18px 24px; border-bottom:1px solid var(--dash-border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:var(--dash-card); z-index:10;">
                 <div style="display:flex; align-items:center; gap:14px;">
-                    <div id="tdModalAvatar" style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, var(--dash-primary), #00b894); color:#fff; display:grid; place-items:center; font-size:1.4rem; font-weight:900;">Ø·</div>
+                    <div id="tdModalAvatar" style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, var(--dash-primary), #00b894); color:#fff; display:grid; place-items:center; font-size:1.4rem; font-weight:900;">ط</div>
                     <div>
-                        <h2 id="tdModalStudentName" style="font-size:1.2rem; font-weight:900; margin:0;">Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨</h2>
+                        <h2 id="tdModalStudentName" style="font-size:1.2rem; font-weight:900; margin:0;">اسم الطالب</h2>
                         <div style="display:flex; align-items:center; gap:8px; margin-top:3px; flex-wrap:wrap;">
                             <span id="tdModalStudentCode" style="font-family:'Outfit'; font-weight:800; font-size:0.75rem; background:var(--dash-primary-light); color:var(--dash-primary); padding:2px 8px; border-radius:6px;">STD-000</span>
-                            <span id="tdModalStudentGrade" style="font-size:0.84rem; color:var(--dash-muted); font-weight:700;">Ø§Ù„ØµÙ</span>
-                            <span style="font-size:0.84rem; color:var(--dash-muted); font-weight:700;">â€¢</span>
-                            <span id="tdModalStudentGov" style="font-size:0.84rem; color:var(--dash-muted); font-weight:700;">Ø§Ù„Ù…Ø­Ø§ÙØ¸Ø©</span>
+                            <span id="tdModalStudentGrade" style="font-size:0.84rem; color:var(--dash-muted); font-weight:700;">الصف</span>
+                            <span style="font-size:0.84rem; color:var(--dash-muted); font-weight:700;">•</span>
+                            <span id="tdModalStudentGov" style="font-size:0.84rem; color:var(--dash-muted); font-weight:700;">المحافظة</span>
                         </div>
                     </div>
                 </div>
@@ -3185,48 +3185,48 @@
             <div style="padding:22px; display:flex; flex-direction:column; gap:18px;">
                 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px;">
                     <div style="background:var(--dash-bg); border:1px solid var(--dash-border); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ù†Ø§ØªØ±</div>
+                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">حضور السناتر</div>
                         <div id="tdModalAttendCount" style="font-family:'Outfit'; font-size:1.35rem; font-weight:900; color:#059669;">0</div>
                     </div>
                     <div style="background:var(--dash-bg); border:1px solid var(--dash-border); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ø§Ù„Ù…Ø¤Ø¯Ø§Ø©</div>
+                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">الامتحانات المؤداة</div>
                         <div id="tdModalExamsCount" style="font-family:'Outfit'; font-size:1.35rem; font-weight:900; color:var(--dash-primary);">0</div>
                     </div>
                     <div style="background:var(--dash-bg); border:1px solid var(--dash-border); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">Ù…ØªÙˆØ³Ø· Ø§Ù„Ø¯Ø±Ø¬Ø§Øª</div>
+                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">متوسط الدرجات</div>
                         <div id="tdModalAvgScore" style="font-family:'Outfit'; font-size:1.35rem; font-weight:900; color:#d97706;">0%</div>
                     </div>
                     <div style="background:var(--dash-bg); border:1px solid var(--dash-border); border-radius:10px; padding:12px; text-align:center;">
-                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø©</div>
+                        <div style="font-size:0.78rem; color:var(--dash-muted); font-weight:800; margin-bottom:4px;">المحاضرات المشاهدة</div>
                         <div id="tdModalWatchedCount" style="font-family:'Outfit'; font-size:1.35rem; font-weight:900; color:var(--dash-text);">0</div>
                     </div>
                 </div>
 
                 <div style="display:flex; gap:8px; border-bottom:2px solid var(--dash-border); padding-bottom:4px;">
-                    <button type="button" class="td-m-btn active" onclick="switchTdModalTab('attendances', this)" style="background:var(--dash-primary); color:#fff; border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer;"><i class="ti ti-map-pin"></i> Ø³Ø¬Ù„ Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ù†Ø§ØªØ± (<span id="tdModalBadgeAttend">0</span>)</button>
-                    <button type="button" class="td-m-btn" onclick="switchTdModalTab('exams', this)" style="background:transparent; color:var(--dash-muted); border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer;"><i class="ti ti-checklist"></i> Ù†ØªØ§Ø¦Ø¬ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª (<span id="tdModalBadgeExams">0</span>)</button>
-                    <button type="button" class="td-m-btn" onclick="switchTdModalTab('videos', this)" style="background:transparent; color:var(--dash-muted); border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer;"><i class="ti ti-video"></i> Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª ÙˆØ§Ù„ØªÙØ§Ø¹Ù„ (<span id="tdModalBadgeVideos">0</span>)</button>
+                    <button type="button" class="td-m-btn active" onclick="switchTdModalTab('attendances', this)" style="background:var(--dash-primary); color:#fff; border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer;"><i class="ti ti-map-pin"></i> سجل حضور السناتر (<span id="tdModalBadgeAttend">0</span>)</button>
+                    <button type="button" class="td-m-btn" onclick="switchTdModalTab('exams', this)" style="background:transparent; color:var(--dash-muted); border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer;"><i class="ti ti-checklist"></i> نتائج الامتحانات (<span id="tdModalBadgeExams">0</span>)</button>
+                    <button type="button" class="td-m-btn" onclick="switchTdModalTab('videos', this)" style="background:transparent; color:var(--dash-muted); border:none; padding:8px 16px; border-radius:8px; font-weight:800; cursor:pointer;"><i class="ti ti-video"></i> المحاضرات والتفاعل (<span id="tdModalBadgeVideos">0</span>)</button>
                 </div>
 
                 <div id="tdPane-attendances" class="td-pane" style="display:block;">
-                    <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>#</th><th>Ø§Ù„Ø³Ù†ØªØ±</th><th>Ø§Ù„ÙŠÙˆÙ…</th><th>Ø§Ù„Ù…ÙŠØ¹Ø§Ø¯</th><th>Ø§Ù„ØµÙ</th><th>ØªØ§Ø±ÙŠØ® ÙˆÙˆÙ‚Øª Ø§Ù„ØªØ­Ø¶ÙŠØ±</th><th>Ø§Ù„Ù†ÙˆØ¹</th></tr></thead><tbody id="tdModalAttendTbody"></tbody></table></div>
+                    <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>#</th><th>السنتر</th><th>اليوم</th><th>الميعاد</th><th>الصف</th><th>تاريخ ووقت التحضير</th><th>النوع</th></tr></thead><tbody id="tdModalAttendTbody"></tbody></table></div>
                 </div>
 
                 <div id="tdPane-exams" class="td-pane" style="display:none;">
-                    <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>#</th><th>Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†</th><th>Ø§Ù„Ø¯Ø±Ø¬Ø©</th><th>Ø§Ù„Ù†Ø³Ø¨Ø© %</th><th>Ø§Ù„ØªÙ‚Ø¯ÙŠØ±</th><th>ØªØ§Ø±ÙŠØ® Ø§Ù„Ø­Ù„</th></tr></thead><tbody id="tdModalExamsTbody"></tbody></table></div>
+                    <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>#</th><th>الامتحان</th><th>الدرجة</th><th>النسبة %</th><th>التقدير</th><th>تاريخ الحل</th></tr></thead><tbody id="tdModalExamsTbody"></tbody></table></div>
                 </div>
 
                 <div id="tdPane-videos" class="td-pane" style="display:none;">
-                    <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>#</th><th>Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø©</th><th>Ø§Ù„ÙƒÙˆØ±Ø³</th><th>Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø§Øª</th><th>Ø§Ù„Ø­Ø§Ù„Ø©</th></tr></thead><tbody id="tdModalVideosTbody"></tbody></table></div>
+                    <div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>#</th><th>المحاضرة</th><th>الكورس</th><th>المشاهدات</th><th>الحالة</th></tr></thead><tbody id="tdModalVideosTbody"></tbody></table></div>
                 </div>
             </div>
 
             <div style="padding:16px 24px; border-top:1px solid var(--dash-border); display:flex; align-items:center; justify-content:space-between; background:var(--dash-bg); border-radius:0 0 20px 20px;">
                 <div style="display:flex; align-items:center; gap:10px;">
-                    <span style="font-weight:800; font-size:0.86rem;">ÙˆÙ„ÙŠ Ø§Ù„Ø£Ù…Ø±: <b id="tdModalParentPhone" style="font-family:'Outfit'; direction:ltr; display:inline-block;">â€”</b></span>
-                    <a id="tdModalWhatsAppBtn" href="#" target="_blank" class="btn-wa-action" style="padding:6px 14px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;"><i class="ti ti-brand-whatsapp"></i> Ù…Ø±Ø§Ø³Ù„Ø© ÙˆÙ„ÙŠ Ø§Ù„Ø£Ù…Ø±</a>
+                    <span style="font-weight:800; font-size:0.86rem;">ولي الأمر: <b id="tdModalParentPhone" style="font-family:'Outfit'; direction:ltr; display:inline-block;">—</b></span>
+                    <a id="tdModalWhatsAppBtn" href="#" target="_blank" class="btn-wa-action" style="padding:6px 14px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;"><i class="ti ti-brand-whatsapp"></i> مراسلة ولي الأمر</a>
                 </div>
-                <button type="button" onclick="closeTeacherStudentModal()" style="padding:8px 16px; border-radius:8px; border:1px solid var(--dash-border); background:var(--dash-card); color:var(--dash-text); font-weight:800; cursor:pointer;">Ø¥ØºÙ„Ø§Ù‚</button>
+                <button type="button" onclick="closeTeacherStudentModal()" style="padding:8px 16px; border-radius:8px; border:1px solid var(--dash-border); background:var(--dash-card); color:var(--dash-text); font-weight:800; cursor:pointer;">إغلاق</button>
             </div>
         </div>
     </div>
@@ -3237,17 +3237,17 @@
             if (!overlay) return;
             overlay.style.display = 'flex';
 
-            document.getElementById('tdModalStudentName').textContent = 'Ø¬Ø§Ø±ÙŠ Ø¬Ù„Ø¨ Ø§Ù„Ù…Ù„Ù...';
+            document.getElementById('tdModalStudentName').textContent = 'جاري جلب الملف...';
             document.getElementById('tdModalStudentCode').textContent = '...';
-            document.getElementById('tdModalAttendTbody').innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px;">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</td></tr>';
-            document.getElementById('tdModalExamsTbody').innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</td></tr>';
-            document.getElementById('tdModalVideosTbody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</td></tr>';
+            document.getElementById('tdModalAttendTbody').innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px;">جاري التحميل...</td></tr>';
+            document.getElementById('tdModalExamsTbody').innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">جاري التحميل...</td></tr>';
+            document.getElementById('tdModalVideosTbody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">جاري التحميل...</td></tr>';
 
             try {
                 const targetId = (dashData && dashData.teacher) ? dashData.teacher._id : currentUser.teacherId;
                 const res = await fetch(`${API}/api/teachers/${targetId}/student-record/${studentId}`);
                 const data = await res.json();
-                if (!res.ok || !data.success) throw new Error(data.message || 'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ù…Ù„Ù Ø§Ù„Ø·Ø§Ù„Ø¨');
+                if (!res.ok || !data.success) throw new Error(data.message || 'تعذر جلب ملف الطالب');
 
                 const st = data.student || {};
                 const stats = data.stats || {};
@@ -3255,16 +3255,16 @@
                 const exams = data.examResults || [];
                 const videos = data.watchedVideos || [];
 
-                document.getElementById('tdModalAvatar').textContent = (st.fullName || st.firstName || 'Ø·').charAt(0);
+                document.getElementById('tdModalAvatar').textContent = (st.fullName || st.firstName || 'ط').charAt(0);
                 document.getElementById('tdModalStudentName').textContent = st.fullName || `${st.firstName || ''} ${st.lastName || ''}`;
-                document.getElementById('tdModalStudentCode').textContent = `ÙƒÙˆØ¯: ${(st._id || '').slice(-6).toUpperCase()}`;
-                document.getElementById('tdModalStudentGrade').textContent = st.grade || 'â€”';
-                document.getElementById('tdModalStudentGov').textContent = st.governorate || 'â€”';
+                document.getElementById('tdModalStudentCode').textContent = `كود: ${(st._id || '').slice(-6).toUpperCase()}`;
+                document.getElementById('tdModalStudentGrade').textContent = st.grade || '—';
+                document.getElementById('tdModalStudentGov').textContent = st.governorate || '—';
 
                 document.getElementById('tdModalAttendCount').textContent = stats.attendancesCount || 0;
                 document.getElementById('tdModalExamsCount').textContent = stats.examsCount || 0;
                 document.getElementById('tdModalAvgScore').textContent = `${stats.avgExamScore || 0}%`;
-                document.getElementById('tdModalWatchedCount').textContent = `${stats.watchedCount || 0} Ù…Ù† ${stats.totalTeacherVideos || 0}`;
+                document.getElementById('tdModalWatchedCount').textContent = `${stats.watchedCount || 0} من ${stats.totalTeacherVideos || 0}`;
 
                 document.getElementById('tdModalBadgeAttend').textContent = attendances.length;
                 document.getElementById('tdModalBadgeExams').textContent = exams.length;
@@ -3273,54 +3273,54 @@
                 // Attendances
                 const aTb = document.getElementById('tdModalAttendTbody');
                 aTb.innerHTML = !attendances.length 
-                    ? '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--dash-muted);">Ù„Ø§ ØªÙˆØ¬Ø¯ ØªØ³Ø¬ÙŠÙ„Ø§Øª Ø­Ø¶ÙˆØ± Ø¨Ø§Ù„Ø³Ù†Ø§ØªØ± Ø¨Ø¹Ø¯.</td></tr>'
+                    ? '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--dash-muted);">لا توجد تسجيلات حضور بالسناتر بعد.</td></tr>'
                     : attendances.map((a, i) => `
                         <tr>
                             <td style="color:var(--dash-muted); font-family:'Outfit';">${i + 1}</td>
-                            <td style="font-weight:800; color:var(--dash-primary);">${escapeHtml(a.center || 'â€”')}</td>
-                            <td>${escapeHtml(a.day || 'â€”')}</td>
-                            <td style="font-family:'Outfit';">${escapeHtml(a.time || 'â€”')}</td>
-                            <td>${escapeHtml(a.grade || 'â€”')}</td>
-                            <td style="font-family:'Outfit'; font-size:0.84rem;">${a.scannedAt ? new Date(a.scannedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : 'â€”'}</td>
-                            <td>${a.videoId && a.videoId !== 'none' && a.videoId !== 'pending' ? '<span style="color:var(--dash-primary); font-weight:800;">Ù…Ø­Ø§Ø¶Ø±Ø© Ø£ÙˆÙ†Ù„Ø§ÙŠÙ†</span>' : '<span style="color:#059669; font-weight:800;">Ø³Ù†ØªØ± Ø¹Ø§Ø¯ÙŠ</span>'}</td>
+                            <td style="font-weight:800; color:var(--dash-primary);">${escapeHtml(a.center || '—')}</td>
+                            <td>${escapeHtml(a.day || '—')}</td>
+                            <td style="font-family:'Outfit';">${escapeHtml(a.time || '—')}</td>
+                            <td>${escapeHtml(a.grade || '—')}</td>
+                            <td style="font-family:'Outfit'; font-size:0.84rem;">${a.scannedAt ? new Date(a.scannedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '—'}</td>
+                            <td>${a.videoId && a.videoId !== 'none' && a.videoId !== 'pending' ? '<span style="color:var(--dash-primary); font-weight:800;">محاضرة أونلاين</span>' : '<span style="color:#059669; font-weight:800;">سنتر عادي</span>'}</td>
                         </tr>
                     `).join('');
 
                 // Exams
                 const eTb = document.getElementById('tdModalExamsTbody');
                 eTb.innerHTML = !exams.length
-                    ? '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--dash-muted);">Ù„Ù… ÙŠØ­Ù„ Ø§Ù„Ø·Ø§Ù„Ø¨ Ø£ÙŠ Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ù„Ù‡Ø°Ø§ Ø§Ù„Ù…Ø¹Ù„Ù… Ø¨Ø¹Ø¯.</td></tr>'
+                    ? '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--dash-muted);">لم يحل الطالب أي امتحانات لهذا المعلم بعد.</td></tr>'
                     : exams.map((e, i) => `
                         <tr>
                             <td style="color:var(--dash-muted); font-family:'Outfit';">${i + 1}</td>
                             <td style="font-weight:800;">${escapeHtml(e.examTitle)}</td>
                             <td style="font-family:'Outfit'; font-weight:800;">${e.score} / ${e.totalMarks}</td>
                             <td style="font-family:'Outfit'; font-weight:900;">${e.percentage}%</td>
-                            <td style="font-weight:800; color:${e.percentage >= 50 ? '#059669' : '#dc2626'};">${e.percentage >= 50 ? 'Ù†Ø§Ø¬Ø­' : 'Ø±Ø§Ø³Ø¨'}</td>
-                            <td style="font-family:'Outfit'; font-size:0.84rem;">${e.submittedAt ? new Date(e.submittedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : 'â€”'}</td>
+                            <td style="font-weight:800; color:${e.percentage >= 50 ? '#059669' : '#dc2626'};">${e.percentage >= 50 ? 'ناجح' : 'راسب'}</td>
+                            <td style="font-family:'Outfit'; font-size:0.84rem;">${e.submittedAt ? new Date(e.submittedAt).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' }) : '—'}</td>
                         </tr>
                     `).join('');
 
                 // Videos
                 const vTb = document.getElementById('tdModalVideosTbody');
                 vTb.innerHTML = !videos.length
-                    ? '<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--dash-muted);">Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ù…Ø´ØªØ±ÙƒØ© Ø£Ùˆ Ù…Ø´Ø§Ù‡Ø¯Ø© Ø¨Ø¹Ø¯.</td></tr>'
+                    ? '<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--dash-muted);">لا توجد محاضرات مشتركة أو مشاهدة بعد.</td></tr>'
                     : videos.map((v, i) => `
                         <tr>
                             <td style="color:var(--dash-muted); font-family:'Outfit';">${i + 1}</td>
                             <td style="font-weight:800;">${escapeHtml(v.title)}</td>
-                            <td>${escapeHtml(v.playlistName || 'Ø¹Ø§Ù…')}</td>
-                            <td style="font-family:'Outfit'; font-weight:800;">${v.watchCount} Ù…Ø±Ø©</td>
-                            <td style="font-weight:800; color:${v.isWatched ? '#059669' : 'var(--dash-muted)'};">${v.isWatched ? 'Ù…Ø´Ø§Ù‡Ø¯Ø©' : 'Ù…Ø´ØªØ±Ùƒ ÙÙ‚Ø·'}</td>
+                            <td>${escapeHtml(v.playlistName || 'عام')}</td>
+                            <td style="font-family:'Outfit'; font-weight:800;">${v.watchCount} مرة</td>
+                            <td style="font-weight:800; color:${v.isWatched ? '#059669' : 'var(--dash-muted)'};">${v.isWatched ? 'مشاهدة' : 'مشترك فقط'}</td>
                         </tr>
                     `).join('');
 
                 // WhatsApp
-                const pPhone = st.parentPhone && st.parentPhone !== 'â€”' ? st.parentPhone : st.phone;
-                document.getElementById('tdModalParentPhone').textContent = pPhone || 'â€”';
+                const pPhone = st.parentPhone && st.parentPhone !== '—' ? st.parentPhone : st.phone;
+                document.getElementById('tdModalParentPhone').textContent = pPhone || '—';
                 const waBtn = document.getElementById('tdModalWhatsAppBtn');
-                if (pPhone && pPhone !== 'â€”') {
-                    const rMsg = `Ø§Ù„Ø³Ù„Ø§Ù… Ø¹Ù„ÙŠÙƒÙ… ÙˆÙ„ÙŠ Ø£Ù…Ø± Ø§Ù„Ø·Ø§Ù„Ø¨: ${st.fullName || st.firstName}\nØªÙ‚Ø±ÙŠØ± Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ø·Ø§Ù„Ø¨ Ø¨Ù…Ø§Ø¯Ø© ${dashData?.teacher?.subjectAr || ''}:\n- Ø§Ù„Ø­Ø¶ÙˆØ± Ø¨Ø§Ù„Ø³Ù†ØªØ±: ${stats.attendancesCount} Ø­ØµØ©\n- Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ø§Ù„Ù…Ù†Ø¬Ø²Ø©: ${stats.examsCount}\n- Ù…ØªÙˆØ³Ø· Ø§Ù„Ø¯Ø±Ø¬Ø§Øª: ${stats.avgExamScore}%\n- Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„Ù…Ø´Ø§Ù‡Ø¯Ø©: ${stats.watchedCount}\nÙ…Ù†ØµØ© EDGE Academy.`;
+                if (pPhone && pPhone !== '—') {
+                    const rMsg = `السلام عليكم ولي أمر الطالب: ${st.fullName || st.firstName}\nتقرير مستوى الطالب بمادة ${dashData?.teacher?.subjectAr || ''}:\n- الحضور بالسنتر: ${stats.attendancesCount} حصة\n- الامتحانات المنجزة: ${stats.examsCount}\n- متوسط الدرجات: ${stats.avgExamScore}%\n- المحاضرات المشاهدة: ${stats.watchedCount}\nمنصة EDGE Academy.`;
                     waBtn.href = `https://wa.me/20${pPhone.replace(/^0+/, '')}?text=${encodeURIComponent(rMsg)}`;
                     waBtn.style.display = 'inline-flex';
                 } else {

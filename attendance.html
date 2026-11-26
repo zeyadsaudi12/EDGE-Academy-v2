@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <!-- EDGE Academy Favicon -->
@@ -8,7 +8,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ â€” ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¶ÙˆØ± | EDGE Academy</title>
+    <title>بوابة المساعد — تسجيل الحضور | EDGE Academy</title>
     
     <!-- Platform Official Stylesheet -->
     <link rel="stylesheet" href="style.css?v=20261126-v20">
@@ -21,9 +21,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        /* ═══════════════════════════════════════════════
            ATTENDANCE PORTAL STYLING (MATCHING EDGE ACADEMY)
-        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+        ═══════════════════════════════════════════════ */
         
         .attendance-page-container {
             width: 100%;
@@ -36,7 +36,7 @@
             box-sizing: border-box;
         }
 
-        /* â”€â”€â”€ Modern Setup Panel â”€â”€â”€ */
+        /* ─── Modern Setup Panel ─── */
         .panel-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -347,7 +347,7 @@
             color: #fff;
         }
 
-        /* â”€â”€â”€ Modern Logs Card â”€â”€â”€ */
+        /* ─── Modern Logs Card ─── */
         .logs-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -495,7 +495,7 @@
             to { transform: translate(-50%, 0); opacity: 1; }
         }
 
-        /* â”€â”€â”€ MOBILE RESPONSIVE â”€â”€â”€ */
+        /* ─── MOBILE RESPONSIVE ─── */
         @media (max-width: 768px) {
             .attendance-page-container {
                 padding: 14px 12px 50px;
@@ -536,7 +536,7 @@
             }
         }
 
-        /* â•â•â•â•â•â•â•â•â•â•â•â• OFFLINE & AUTO-SYNC UI STYLES â•â•â•â•â•â•â•â•â•â•â•â• */
+        /* ════════════ OFFLINE & AUTO-SYNC UI STYLES ════════════ */
         .network-status-banner {
             display: flex;
             align-items: center;
@@ -714,21 +714,21 @@
 </head>
 <body class="attendance-page">
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• OFFICIAL PLATFORM NAVBAR â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ════════════ OFFICIAL PLATFORM NAVBAR ════════════ -->
 <header>
     <div class="header-inner">
-        <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø²Ø± Ø±Ø¬ÙˆØ¹ ÙˆØ´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ù…ØªØºÙŠØ± ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¹ Ø§Ù„Ø«ÙŠÙ… ÙˆØ²Ø± Ø§Ù„Ù„ØºØ© -->
+        <!-- اليمين: زر رجوع وشعار المنصة المتغير تلقائياً مع الثيم وزر اللغة -->
         <div class="header-right">
-            <button type="button" class="nav-back-btn" onclick="goBack()" title="Ø±Ø¬ÙˆØ¹ Ù„Ù„ØµÙØ­Ø© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
                 <i class="ti ti-arrow-right"></i>
-                <span>Ø±Ø¬ÙˆØ¹</span>
+                <span>رجوع</span>
             </button>
             <a href="assistant-hub" class="header-brand" aria-label="EDGE Academy">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
-            <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨ Ø§Ù„Ù„ÙˆØ¬Ùˆ -->
-            <button type="button" class="language-switcher" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ©" title="Switch Language">
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
                 <span>EN</span>
                 <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -738,74 +738,74 @@
             </button>
         </div>
 
-        <!-- Ø§Ù„Ù…Ù†ØªØµÙ: Ø±ÙˆØ§Ø¨Ø· Ø§Ù„ØªÙ†Ù‚Ù„ Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ© Ù„Ù„Ù…Ø³Ø§Ø¹Ø¯ -->
+        <!-- المنتصف: روابط التنقل الأساسية للمساعد -->
         <div class="header-center">
-            <a href="assistant-dashboard" class="nav-link-item ">ðŸ“Š Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-            <a href="attendance" class="nav-link-item active" style="color:var(--primary); font-weight:800;">ðŸ“² Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ±</a>
-            <a href="assistant" class="nav-link-item ">ðŸ’¬ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-            <a href="assistant-exams" class="nav-link-item ">ðŸ“ Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
-            <a href="assistant-hub" class="nav-link-item ">ðŸŽ“ Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</a>
+            <a href="assistant-dashboard" class="nav-link-item ">📊 متابعة الطلاب</a>
+            <a href="attendance" class="nav-link-item active" style="color:var(--primary); font-weight:800;">📲 بوابة الحضور</a>
+            <a href="assistant" class="nav-link-item ">💬 أسئلة الطلاب</a>
+            <a href="assistant-exams" class="nav-link-item ">📝 إدارة الامتحانات</a>
+            <a href="assistant-hub" class="nav-link-item ">🎓 بوابة المساعد</a>
         </div>
 
-        <!-- Ø§Ù„ÙŠØ³Ø§Ø±: Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆÙ…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ -->
+        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
         <div class="header-left">
             <nav class="header-actions" id="authActions" style="display:none;"></nav>
 
-            <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ -->
+            <!-- قائمة المستخدم عند تسجيل الدخول -->
             <div class="user-dropdown-container" id="userDropdownArea">
                 <button class="user-menu-btn" onclick="toggleUserMenu()">
-                    <span id="navUserName">Ù…Ø³Ø§Ø¹Ø¯ Ø§Ù„Ù…Ø¹Ù„Ù…</span>
-                    <div class="user-icon-circle">ðŸ‘¤</div>
+                    <span id="navUserName">مساعد المعلم</span>
+                    <div class="user-icon-circle">👤</div>
                 </button>
                 <div class="user-dropdown-menu" id="userMenu">
                     <a href="assistant-dashboard" class="menu-item">
-                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> Ù„ÙˆØ­Ø© Ø§Ù„Ù…ØªØ§Ø¨Ø¹Ø©
+                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> لوحة المتابعة
                     </a>
                     <a href="attendance" class="menu-item">
-                        <i class="ti ti-scan" style="margin-left:6px;"></i> Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ø±ÙŠØ¹
+                        <i class="ti ti-scan" style="margin-left:6px;"></i> بوابة الحضور السريع
                     </a>
                     <a href="assistant" class="menu-item">
-                        <i class="ti ti-messages" style="margin-left:6px;"></i> Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨
+                        <i class="ti ti-messages" style="margin-left:6px;"></i> أسئلة الطلاب
                     </a>
                     <a href="assistant-exams" class="menu-item">
-                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª
+                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> إدارة الامتحانات
                     </a>
                     <a href="assistant-hub" class="menu-item">
-                        <i class="ti ti-home" style="margin-left:6px;"></i> Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©
+                        <i class="ti ti-home" style="margin-left:6px;"></i> بوابة المساعد الرئيسية
                     </a>
                     <hr>
                     <button onclick="handleLogout()" class="menu-item logout-btn" style="width:100%; text-align:right; border:none; background:none; cursor:pointer;">
-                        ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬
+                        🚪 تسجيل خروج
                     </button>
                 </div>
             </div>
 
-            <!-- Ù…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ Ø¨ØªØµÙ…ÙŠÙ… ÙƒØ¨Ø³ÙˆÙ„Ø© Ø£Ù†ÙŠÙ‚Ø© (Ø§Ù„Ù†Ù‡Ø§Ø± / Ø§Ù„Ù„ÙŠÙ„) Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ Ø¨Ø§Ù„Ù…Ù†ØµØ© -->
-            <div class="theme-capsule" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¸Ù‡Ø±">
-                <button class="icon-btn theme-switcher" data-theme="light" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±" title="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±">â˜€</button>
-                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…" title="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…">ðŸŒ™</button>
+            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) المعتمد بالمنصة -->
+            <div class="theme-capsule" aria-label="تبديل المظهر">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
             </div>
 
-            <!-- Ø²Ø± Ø§Ù„Ù‡Ø§Ù…Ø¨Ø±ØºØ± Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ -->
-            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">
+            <!-- زر الهامبرغر للموبايل -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </div>
 
-    <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ Ø§Ù„Ù…Ù†Ø³Ø¯Ù„Ø© Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø© Ø¨Ø§Ù„Ù…Ù†ØµØ© -->
+    <!-- قائمة الموبايل المنسدلة المعتمدة بالمنصة -->
     <div class="mobile-nav-menu" id="mobileNavMenu">
         <a href="javascript:void(0)" onclick="goBack()" class="mobile-nav-link" style="color:var(--primary); font-weight:900; background:rgba(26,107,219,0.1); border-radius:12px; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-            <i class="ti ti-arrow-right"></i> â†©ï¸ Ø±Ø¬ÙˆØ¹ Ù„Ù„ØµÙØ­Ø© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©
+            <i class="ti ti-arrow-right"></i> ↩️ رجوع للصفحة السابقة
         </a>
-        <a href="assistant-dashboard" class="mobile-nav-link ">ðŸ“Š Ù„ÙˆØ­Ø© Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-        <a href="attendance" class="mobile-nav-link active">ðŸ“² Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ø±ÙŠØ¹</a>
-        <a href="assistant" class="mobile-nav-link ">ðŸ’¬ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-        <a href="assistant-exams" class="mobile-nav-link ">ðŸ“ Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
-        <a href="assistant-hub" class="mobile-nav-link ">ðŸŽ“ Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</a>
+        <a href="assistant-dashboard" class="mobile-nav-link ">📊 لوحة متابعة الطلاب</a>
+        <a href="attendance" class="mobile-nav-link active">📲 بوابة الحضور السريع</a>
+        <a href="assistant" class="mobile-nav-link ">💬 أسئلة الطلاب</a>
+        <a href="assistant-exams" class="mobile-nav-link ">📝 إدارة الامتحانات</a>
+        <a href="assistant-hub" class="mobile-nav-link ">🎓 بوابة المساعد</a>
         <div class="mobile-menu-auth" style="border-top:1px solid var(--border); padding-top:10px; margin-top:8px;">
             <button onclick="handleLogout()" class="mobile-nav-link" style="background:none; border:none; cursor:pointer; width:100%; text-align:right; color:#e74c3c; font-family:inherit; font-weight:800; display:flex; align-items:center; gap:8px;">
-                ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬
+                🚪 تسجيل خروج
             </button>
         </div>
     </div>
@@ -821,16 +821,16 @@
         <div class="network-status-left">
             <span class="status-indicator-dot"></span>
             <div class="status-texts">
-                <span class="status-title" id="networkStatusTitle">ðŸŸ¢ Ù…ØªØµÙ„ Ø¨Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª (ÙˆØ¶Ø¹ Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±)</span>
-                <span class="status-subtitle" id="networkStatusDesc">ÙŠØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¶ÙˆØ± ÙˆØ±ÙØ¹Ù‡ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù„Ù„Ù…ÙˆÙ‚Ø¹ ÙÙˆØ±Ø§Ù‹. ÙÙŠ Ø­Ø§Ù„ Ø§Ù†Ù‚Ø·Ø§Ø¹ Ø§Ù„Ù†Øª Ø³ÙŠØ¹Ù…Ù„ Ø§Ù„Ù†Ø¸Ø§Ù… Ø£ÙˆÙÙ„Ø§ÙŠÙ† Ø¯ÙˆÙ† ØªÙˆÙ‚Ù!</span>
+                <span class="status-title" id="networkStatusTitle">🟢 متصل بالإنترنت (وضع المزامنة المباشر)</span>
+                <span class="status-subtitle" id="networkStatusDesc">يتم تسجيل الحضور ورفعه تلقائياً للموقع فوراً. في حال انقطاع النت سيعمل النظام أوفلاين دون توقف!</span>
             </div>
         </div>
         <div class="network-status-actions">
             <div id="offlineQueueBadge" class="offline-queue-badge hidden">
-                <i class="ti ti-clock"></i> <span id="offlineQueueCount">0</span> Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©
+                <i class="ti ti-clock"></i> <span id="offlineQueueCount">0</span> بانتظار المزامنة
             </div>
-            <button type="button" id="manualSyncBtn" onclick="triggerManualSync()" class="btn-manual-sync hidden" title="Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„Ø§Øª Ø§Ù„Ù…Ø­ÙÙˆØ¸Ø© Ù…Ø¹ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø¢Ù†">
-                <i class="ti ti-refresh"></i> Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ø¢Ù† Ù„Ù„Ù…ÙˆÙ‚Ø¹
+            <button type="button" id="manualSyncBtn" onclick="triggerManualSync()" class="btn-manual-sync hidden" title="مزامنة التسجيلات المحفوظة مع الموقع الآن">
+                <i class="ti ti-refresh"></i> مزامنة الآن للموقع
             </button>
         </div>
     </div>
@@ -841,98 +841,98 @@
         <div class="card-hero-head">
             <div class="hero-icon-box"><i class="ti ti-scan"></i></div>
             <div>
-                <h2>Ø¬Ù„Ø³Ø© Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ù†ØªØ± Ø§Ù„Ø°ÙƒÙŠØ©</h2>
-                <p>Ø§Ø®ØªØ± Ø§Ù„Ø³Ù†ØªØ± ÙˆØ§Ù„Ù…Ø¬Ù…ÙˆØ¹Ø© Ù„Ø¨Ø¯Ø¡ Ø§Ù„ØªØ­Ø¶ÙŠØ± Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ Ø¨Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§ Ø£Ùˆ Ø¥Ø¯Ø®Ø§Ù„ ÙƒÙˆØ¯ Ø§Ù„Ø·Ø§Ù„Ø¨</p>
+                <h2>جلسة حضور السنتر الذكية</h2>
+                <p>اختر السنتر والمجموعة لبدء التحضير التلقائي بالكاميرا أو إدخال كود الطالب</p>
             </div>
         </div>
 
         <div class="form-field">
-            <label><i class="ti ti-building-community"></i> Ø¨ÙŠØ§Ù†Ø§Øª Ø­ØµØ© Ø§Ù„Ø³Ù†ØªØ± ÙˆØ§Ù„Ù…Ø¬Ù…ÙˆØ¹Ø© *</label>
+            <label><i class="ti ti-building-community"></i> بيانات حصة السنتر والمجموعة *</label>
             <div class="schedule-grid">
                 <div class="schedule-choice">
-                    <label for="setup-center"><i class="ti ti-building"></i> Ø§Ù„Ø³Ù†ØªØ±</label>
+                    <label for="setup-center"><i class="ti ti-building"></i> السنتر</label>
                     <select id="setup-center" class="form-control" onchange="onCenterChange()">
-                        <option value="">-- Ø§Ø®ØªØ± Ø§Ù„Ø³Ù†ØªØ± --</option>
+                        <option value="">-- اختر السنتر --</option>
                     </select>
                 </div>
                 <div class="schedule-choice">
-                    <label for="setup-grade"><i class="ti ti-school"></i> Ø§Ù„ØµÙ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠ</label>
+                    <label for="setup-grade"><i class="ti ti-school"></i> الصف الدراسي</label>
                     <select id="setup-grade" class="form-control" onchange="onGradeChange()" disabled>
-                        <option value="">-- Ø§Ø®ØªØ± Ø§Ù„ØµÙ --</option>
+                        <option value="">-- اختر الصف --</option>
                     </select>
                 </div>
                 <div class="schedule-choice">
-                    <label for="setup-day"><i class="ti ti-calendar"></i> Ø§Ù„ÙŠÙˆÙ…</label>
+                    <label for="setup-day"><i class="ti ti-calendar"></i> اليوم</label>
                     <select id="setup-day" class="form-control" onchange="onDayChange()" disabled>
-                        <option value="">-- Ø§Ø®ØªØ± Ø§Ù„ÙŠÙˆÙ… --</option>
+                        <option value="">-- اختر اليوم --</option>
                     </select>
                 </div>
                 <div class="schedule-choice">
-                    <label for="setup-time"><i class="ti ti-clock"></i> Ø§Ù„Ø³Ø§Ø¹Ø© / Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹Ø©</label>
+                    <label for="setup-time"><i class="ti ti-clock"></i> الساعة / المجموعة</label>
                     <select id="setup-time" class="form-control" onchange="onTimeChange()" disabled>
-                        <option value="">-- Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø© --</option>
+                        <option value="">-- اختر الساعة --</option>
                     </select>
                 </div>
             </div>
             <small id="schedule-help" class="help-pill">
-                <i class="ti ti-info-circle"></i> Ø§Ø®ØªØ± Ø§Ù„Ø³Ù†ØªØ± Ø£ÙˆÙ„Ø§Ù‹ØŒ Ø«Ù… Ø£ÙƒÙ…Ù„ Ø¨Ø§Ù‚ÙŠ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹Ø© Ø¨Ø§Ù„ØªØ±ØªÙŠØ¨.
+                <i class="ti ti-info-circle"></i> اختر السنتر أولاً، ثم أكمل باقي بيانات المجموعة بالترتيب.
             </small>
         </div>
 
         <div class="form-field">
-            <label><i class="ti ti-adjustments-horizontal"></i> Ù†ÙˆØ¹ Ø¬Ù„Ø³Ø© Ø§Ù„ØªØ­Ø¶ÙŠØ± *</label>
+            <label><i class="ti ti-adjustments-horizontal"></i> نوع جلسة التحضير *</label>
             <div class="mode-cards-grid">
                 <label class="mode-card active" id="label-mode-regular">
                     <input type="radio" name="attendMode" value="regular" id="mode-regular" checked onchange="onAttendModeChange()">
                     <div>
-                        <span class="mode-card-title"><i class="ti ti-user-check" style="color:#00b894;"></i> ØªØ­Ø¶ÙŠØ± Ø³Ù†ØªØ± Ø¹Ø§Ø¯ÙŠ</span>
-                        <span class="mode-card-sub">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¶ÙˆØ± Ø¨Ø§Ù„Ø³Ù†ØªØ± ÙÙ‚Ø· Ø¨Ø¯ÙˆÙ† Ø±Ø¨Ø· Ø¨ÙÙŠØ¯ÙŠÙˆ</span>
+                        <span class="mode-card-title"><i class="ti ti-user-check" style="color:#00b894;"></i> تحضير سنتر عادي</span>
+                        <span class="mode-card-sub">تسجيل الحضور بالسنتر فقط بدون ربط بفيديو</span>
                     </div>
                 </label>
                 <label class="mode-card" id="label-mode-video">
                     <input type="radio" name="attendMode" value="video" id="mode-video" onchange="onAttendModeChange()">
                     <div>
-                        <span class="mode-card-title"><i class="ti ti-video" style="color:var(--primary);"></i> ØªØ­Ø¶ÙŠØ± Ù…Ø¹ Ù…Ø­Ø§Ø¶Ø±Ø© Ø£ÙˆÙ†Ù„Ø§ÙŠÙ†</span>
-                        <span class="mode-card-sub">ÙØªØ­ Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø© ÙÙŠ Ø­Ø³Ø§Ø¨ Ø§Ù„Ø·Ø§Ù„Ø¨ ÙÙˆØ± ØªØ­Ø¶ÙŠØ±Ù‡</span>
+                        <span class="mode-card-title"><i class="ti ti-video" style="color:var(--primary);"></i> تحضير مع محاضرة أونلاين</span>
+                        <span class="mode-card-sub">فتح المحاضرة في حساب الطالب فور تحضيره</span>
                     </div>
                 </label>
             </div>
         </div>
 
         <div class="form-field" id="video-select-group" style="display:none;">
-            <label><i class="ti ti-player-play"></i> Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø© Ø§Ù„Ø£ÙˆÙ†Ù„Ø§ÙŠÙ† Ø§Ù„Ù…Ø±Ø§Ø¯ ØªÙØ¹ÙŠÙ„Ù‡Ø§ Ù„Ù„Ø·Ù„Ø§Ø¨ *</label>
+            <label><i class="ti ti-player-play"></i> المحاضرة الأونلاين المراد تفعيلها للطلاب *</label>
             <select id="setup-video" class="form-control">
-                <option value="">-- Ø£ÙƒÙ…Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø­ØµØ© Ø§Ù„Ø³Ù†ØªØ± Ø£ÙˆÙ„Ø§Ù‹ --</option>
+                <option value="">-- أكمل بيانات حصة السنتر أولاً --</option>
             </select>
         </div>
 
-        <!-- Ø­Ù‚Ù„ ÙƒØªØ§Ø¨Ø© Ø§Ù„ÙƒÙˆØ¯ ÙŠØ¯ÙˆÙŠØ§Ù‹ ÙƒØ®ÙŠØ§Ø± Ø¨Ø¯ÙŠÙ„ ÙˆØ³Ø±ÙŠØ¹ Ù„Ù„Ù…Ø³Ø§Ø¹Ø¯ -->
+        <!-- حقل كتابة الكود يدوياً كخيار بديل وسريع للمساعد -->
         <div class="manual-box">
             <label style="font-size:0.86rem; font-weight:800; color:var(--text-dark); display:flex; align-items:center; gap:6px;">
-                <i class="ti ti-keyboard" style="color:var(--primary);"></i> Ø£Ùˆ Ø§Ù„ØªØ­Ø¶ÙŠØ± Ø§Ù„Ø³Ø±ÙŠØ¹ Ø¨ÙƒØªØ§Ø¨Ø© Ø¨Ø±ÙŠØ¯ / ÙƒÙˆØ¯ Ø§Ù„Ø·Ø§Ù„Ø¨ ÙŠØ¯ÙˆÙŠØ§Ù‹
+                <i class="ti ti-keyboard" style="color:var(--primary);"></i> أو التحضير السريع بكتابة بريد / كود الطالب يدوياً
             </label>
             <div class="manual-input-row">
-                <input type="text" id="manual-student-id" placeholder="Ø§ÙƒØªØ¨ Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø·Ø§Ù„Ø¨ (Ù…Ø«Ø§Ù„: ahmed) Ø£Ùˆ Ø±Ù‚Ù…Ù‡..." onkeydown="if(event.key==='Enter') submitManualAttendance()">
+                <input type="text" id="manual-student-id" placeholder="اكتب بريد الطالب (مثال: ahmed) أو رقمه..." onkeydown="if(event.key==='Enter') submitManualAttendance()">
                 <button type="button" id="manual-attendance-btn" onclick="submitManualAttendance()" class="btn-manual-submit">
-                    <i class="ti ti-check"></i> ØªØ­Ø¶ÙŠØ± ÙŠØ¯ÙˆÙŠØ§Ù‹
+                    <i class="ti ti-check"></i> تحضير يدوياً
                 </button>
             </div>
         </div>
 
-        <!-- Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§ ÙˆØ§Ù„Ù…Ø³Ø­ -->
+        <!-- الكاميرا والمسح -->
         <div id="qr-reader-container">
             <div id="qr-reader" style="width: 100%;"></div>
         </div>
 
         <button id="action-btn" onclick="toggleSession()" class="btn-action-start">
-            <i class="ti ti-scan"></i> Ø¨Ø¯Ø¡ Ø¬Ù„Ø³Ø© Ø§Ù„ØªØ­Ø¶ÙŠØ± ÙˆØªØ´ØºÙŠÙ„ Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§
+            <i class="ti ti-scan"></i> بدء جلسة التحضير وتشغيل الكاميرا
         </button>
     </div>
 
     <!-- Live logs -->
     <div class="logs-card">
         <div class="logs-header">
-            <h3><i class="ti ti-users-group" style="color:var(--primary);"></i> Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„Ø­Ø§Ø¶Ø±ÙŠÙ† Ø§Ù„ÙŠÙˆÙ…</h3>
+            <h3><i class="ti ti-users-group" style="color:var(--primary);"></i> الطلاب الحاضرين اليوم</h3>
             <span class="logs-count" id="live-count"><i class="ti ti-check"></i> 0</span>
         </div>
         <div class="logs-table-wrapper">
@@ -940,17 +940,17 @@
                 <thead>
                     <tr>
                         <th style="width: 45px; text-align: center;">#</th>
-                        <th>Ø§Ù„Ø·Ø§Ù„Ø¨</th>
-                        <th>Ø§Ù„Ø³Ù†ØªØ± ÙˆØ§Ù„Ù…Ø¬Ù…ÙˆØ¹Ø©</th>
-                        <th>ØªÙˆÙ‚ÙŠØª Ø§Ù„ØªØ­Ø¶ÙŠØ±</th>
-                        <th style="text-align: center;">Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©</th>
+                        <th>الطالب</th>
+                        <th>السنتر والمجموعة</th>
+                        <th>توقيت التحضير</th>
+                        <th style="text-align: center;">حالة المزامنة</th>
                     </tr>
                 </thead>
                 <tbody id="logs-tbody">
                     <tr id="empty-row">
                         <td colspan="5" style="text-align: center; color: var(--gray); padding: 32px 14px;">
                             <i class="ti ti-scan" style="font-size: 2.2rem; display: block; margin-bottom: 8px; opacity: 0.4;"></i>
-                            Ù„Ù… ÙŠØªÙ… Ù…Ø³Ø­ Ø£ÙŠ Ø·Ø§Ù„Ø¨ Ø¨Ø¹Ø¯ ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„Ø¬Ù„Ø³Ø©.
+                            لم يتم مسح أي طالب بعد في هذه الجلسة.
                         </td>
                     </tr>
                 </tbody>
@@ -964,10 +964,10 @@
 <script src="script.js"></script>
 
 <script>
-    // ===== Ø§Ù„Ø­Ø§Ø¬Ø² Ø§Ù„Ø£Ù…Ù†ÙŠ Ù„Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ù†ØªØ± =====
+    // ===== الحاجز الأمني لبوابة الحضور السنتر =====
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser || (currentUser.role !== 'assistant' && currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
-        alert('ðŸš« ØºÙŠØ± Ù…ØµØ±Ø­ Ø¨Ø§Ù„Ø¯Ø®ÙˆÙ„: Ù‡Ø°Ù‡ Ø§Ù„Ø¨ÙˆØ§Ø¨Ø© Ù…Ø®ØµØµØ© Ù„Ù„Ù…Ø¹Ù„Ù…ÙŠÙ† ÙˆØ§Ù„Ù…Ø³Ø§Ø¹Ø¯ÙŠÙ† Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ÙŠÙ† ÙÙ‚Ø·.');
+        alert('🚫 غير مصرح بالدخول: هذه البوابة مخصصة للمعلمين والمساعدين المعتمدين فقط.');
         window.location.href = 'login';
     }
 
@@ -976,7 +976,7 @@
     let isSessionActive = false;
     let scannerInstance = null;
     let attendedCount = 0;
-    let _teacherSchedule = []; // Ù…ØµÙÙˆÙØ© Ù„Ø­ÙØ¸ Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø­ØµØµ Ø§Ù„ÙØ¹Ù„ÙŠ Ù„Ù„Ù…Ø¯Ø±Ø³
+    let _teacherSchedule = []; // مصفوفة لحفظ جدول الحصص الفعلي للمدرس
     let _allVideos = [];
     let _activeTeacherId = null;
     let isSyncing = false;
@@ -986,13 +986,13 @@
     const VIDEOS_CACHE_KEY = 'EDGE_OFFLINE_VIDEOS_CACHE';
 
     const normalizeArabic = value => String(value || '')
-        .replace(/[Ø£Ø¥Ø¢]/g, 'Ø§').replace(/Ù‰/g, 'ÙŠ').replace(/\s+/g, ' ').trim().toLowerCase();
+        .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
 
     const meaningfulNameWords = value => normalizeArabic(value)
-        .replace(/[^Ø¡-ÙŠa-z0-9\s]/g, ' ').split(' ')
-        .filter(word => word.length >= 3 && !['Ù…Ø³Ø§Ø¹Ø¯', 'Ø§Ù„ØªØ¹Ù„ÙŠÙ…ÙŠ', 'Ø§Ø³ØªØ§Ø°', 'Ø§Ù„Ø§Ø³ØªØ§Ø°'].includes(word));
+        .replace(/[^ء-يa-z0-9\s]/g, ' ').split(' ')
+        .filter(word => word.length >= 3 && !['مساعد', 'التعليمي', 'استاذ', 'الاستاذ'].includes(word));
 
-    // Ø¯ÙˆØ§Ù„ Ø¥Ø¯Ø§Ø±Ø© Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø± Ø£ÙˆÙÙ„Ø§ÙŠÙ†
+    // دوال إدارة قائمة الانتظار أوفلاين
     function getOfflineQueue() {
         try {
             return JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY) || '[]');
@@ -1011,14 +1011,14 @@
 
     function addToOfflineQueue(record) {
         const queue = getOfflineQueue();
-        // Ù…Ù†Ø¹ Ø§Ù„ØªÙƒØ±Ø§Ø± ÙÙŠ Ø·Ø§Ø¨ÙˆØ± Ø§Ù„Ø£ÙˆÙÙ„Ø§ÙŠÙ† Ù„Ù†ÙØ³ Ø§Ù„Ø·Ø§Ù„Ø¨ ÙˆØ§Ù„Ø³Ù†ØªØ± ÙˆØ§Ù„ÙŠÙˆÙ…
+        // منع التكرار في طابور الأوفلاين لنفس الطالب والسنتر واليوم
         const isDup = queue.some(r =>
             String(r.studentId).trim().toLowerCase() === String(record.studentId).trim().toLowerCase() &&
             r.centerName === record.centerName &&
             r.day === record.day
         );
         if (isDup) {
-            return { success: false, duplicate: true, message: 'Ø§Ù„Ø·Ø§Ù„Ø¨ Ù…Ø³Ø¬Ù„ Ø¨Ø§Ù„ÙØ¹Ù„ ÙÙŠ Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø­Ø§Ù„ÙŠØ©!' };
+            return { success: false, duplicate: true, message: 'الطالب مسجل بالفعل في قائمة الانتظار الحالية!' };
         }
         queue.push(record);
         saveOfflineQueue(queue);
@@ -1026,7 +1026,7 @@
         return { success: true };
     }
 
-    // ØªØ­Ø¯ÙŠØ« Ø´Ø±ÙŠØ· Ø­Ø§Ù„Ø© Ø§Ù„Ø§ØªØµØ§Ù„ ÙˆØ§Ù„Ù…Ø²Ø§Ù…Ù†Ø© ÙÙŠ ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…
+    // تحديث شريط حالة الاتصال والمزامنة في واجهة المستخدم
     function updateNetworkStatusUI() {
         const banner = document.getElementById('networkStatusBanner');
         const title = document.getElementById('networkStatusTitle');
@@ -1056,24 +1056,24 @@
 
         if (isSyncing) {
             banner.className = 'network-status-banner syncing';
-            title.innerHTML = '<i class="ti ti-refresh" style="animation:spin 1s linear infinite;"></i> Ø¬Ø§Ø±ÙŠ Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ù…Ø¹ Ø§Ù„Ù…ÙˆÙ‚Ø¹...';
-            desc.textContent = `Ø¬Ø§Ø±ÙŠ Ø±ÙØ¹ ÙˆØªØ­Ø¯ÙŠØ« ${queue.length} ØªØ³Ø¬ÙŠÙ„ Ø­Ø¶ÙˆØ± Ø¥Ù„Ù‰ Ø§Ù„Ù…Ù†ØµØ©...`;
+            title.innerHTML = '<i class="ti ti-refresh" style="animation:spin 1s linear infinite;"></i> جاري المزامنة مع الموقع...';
+            desc.textContent = `جاري رفع وتحديث ${queue.length} تسجيل حضور إلى المنصة...`;
         } else if (isOnline) {
             banner.className = 'network-status-banner online';
-            title.innerHTML = 'ðŸŸ¢ Ù…ØªØµÙ„ Ø¨Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª (ÙˆØ¶Ø¹ Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ù…Ø¨Ø§Ø´Ø±)';
+            title.innerHTML = '🟢 متصل بالإنترنت (وضع المزامنة المباشر)';
             if (queue.length > 0) {
-                desc.textContent = `Ù„Ø¯ÙŠÙƒ ${queue.length} ØªØ³Ø¬ÙŠÙ„Ø§Øª Ù…Ø­ÙÙˆØ¸Ø© ØªÙ… ØªØ­Ø¶ÙŠØ±Ù‡Ø§ Ø¯ÙˆÙ† Ù†ØªØŒ Ø§Ø¶ØºØ· "Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ø¢Ù†" Ø£Ùˆ Ø³ÙŠØªÙ… Ø±ÙØ¹Ù‡Ø§ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.`;
+                desc.textContent = `لديك ${queue.length} تسجيلات محفوظة تم تحضيرها دون نت، اضغط "مزامنة الآن" أو سيتم رفعها تلقائياً.`;
             } else {
-                desc.textContent = 'ÙŠØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¶ÙˆØ± ÙˆØ±ÙØ¹Ù‡ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù„Ù„Ù…ÙˆÙ‚Ø¹ ÙÙˆØ±Ø§Ù‹. ÙÙŠ Ø­Ø§Ù„ Ø§Ù†Ù‚Ø·Ø§Ø¹ Ø§Ù„Ù†Øª Ø³ÙŠØ¹Ù…Ù„ Ø§Ù„Ù†Ø¸Ø§Ù… Ø£ÙˆÙÙ„Ø§ÙŠÙ† Ø¯ÙˆÙ† ØªÙˆÙ‚Ù!';
+                desc.textContent = 'يتم تسجيل الحضور ورفعه تلقائياً للموقع فوراً. في حال انقطاع النت سيعمل النظام أوفلاين دون توقف!';
             }
         } else {
             banner.className = 'network-status-banner offline';
-            title.innerHTML = 'ðŸŸ¡ ÙˆØ¶Ø¹ Ø¹Ø¯Ù… Ø§Ù„Ø§ØªØµØ§Ù„ (Ø£ÙˆÙÙ„Ø§ÙŠÙ† Ø¨Ø¯ÙˆÙ† Ù†Øª)';
-            desc.textContent = `Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª ØºÙŠØ± Ù…ØªÙˆÙØ± Ø­Ø§Ù„ÙŠØ§Ù‹. ØªÙ… Ø­ÙØ¸ ${queue.length} ØªØ³Ø¬ÙŠÙ„ Ù…Ø­Ù„ÙŠØ§Ù‹ ÙˆØ³ÙŠØªÙ… Ø±ÙØ¹Ù‡Ø§ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ ÙÙˆØ± ØªÙˆÙØ± Ø§Ù„Ø§ØªØµØ§Ù„!`;
+            title.innerHTML = '🟡 وضع عدم الاتصال (أوفلاين بدون نت)';
+            desc.textContent = `الإنترنت غير متوفر حالياً. تم حفظ ${queue.length} تسجيل محلياً وسيتم رفعها تلقائياً فور توفر الاتصال!`;
         }
     }
 
-    // Ù…Ø­Ø±Ùƒ Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠØ© ÙˆØ§Ù„ÙŠØ¯ÙˆÙŠØ©
+    // محرك المزامنة التلقائية واليدوية
     async function syncOfflineAttendanceQueue() {
         if (isSyncing || !navigator.onLine) return;
         const queue = getOfflineQueue();
@@ -1101,11 +1101,11 @@
                 saveOfflineQueue([]);
                 document.querySelectorAll('.sync-tag.pending').forEach(el => {
                     el.className = 'sync-tag synced';
-                    el.innerHTML = '<i class="ti ti-cloud-check"></i> ØªÙ… Ø§Ù„Ø±ÙØ¹ Ù„Ù„Ù…ÙˆÙ‚Ø¹';
+                    el.innerHTML = '<i class="ti ti-cloud-check"></i> تم الرفع للموقع';
                 });
-                showAlert(`ðŸš€ ØªÙ…Øª Ù…Ø²Ø§Ù…Ù†Ø© ÙˆØ±ÙØ¹ ${data.syncedCount || queue.length} ØªØ³Ø¬ÙŠÙ„ Ø­Ø¶ÙˆØ± Ù„Ù„Ù…ÙˆÙ‚Ø¹ Ø¨Ù†Ø¬Ø§Ø­!`, 'green');
+                showAlert(`🚀 تمت مزامنة ورفع ${data.syncedCount || queue.length} تسجيل حضور للموقع بنجاح!`, 'green');
             } else {
-                showAlert(`âš ï¸ ØªØ¹Ø°Ø± Ø§ÙƒØªÙ…Ø§Ù„ Ø§Ù„Ù…Ø²Ø§Ù…Ù†Ø©: ${data.message}`, 'orange');
+                showAlert(`⚠️ تعذر اكتمال المزامنة: ${data.message}`, 'orange');
             }
         } catch (err) {
             console.warn('Auto sync attempt failed:', err);
@@ -1117,13 +1117,13 @@
 
     function triggerManualSync() {
         if (!navigator.onLine) {
-            showAlert('âš ï¸ Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª Ø­Ø§Ù„ÙŠØ§Ù‹ Ù„Ù„Ù…Ø²Ø§Ù…Ù†Ø©!', 'orange');
+            showAlert('⚠️ لا يوجد اتصال بالإنترنت حالياً للمزامنة!', 'orange');
             return;
         }
         syncOfflineAttendanceQueue();
     }
 
-    // ØªØ­Ù…ÙŠÙ„ Ø¬Ø¯ÙˆÙ„ Ø­ØµØµ Ø§Ù„Ù…Ø¯Ø±Ø³ ÙˆØ§Ù„ÙÙŠØ¯ÙŠÙˆÙ‡Ø§Øª ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ø¹Ù†Ø¯ ÙØªØ­ Ø§Ù„ØµÙØ­Ø©
+    // تحميل جدول حصص المدرس والفيديوهات تلقائياً عند فتح الصفحة
     document.addEventListener('DOMContentLoaded', async () => {
         updateNetworkStatusUI();
 
@@ -1135,7 +1135,7 @@
             updateNetworkStatusUI();
         });
 
-        // ØªØ­Ù‚Ù‚ Ø¯ÙˆØ±ÙŠ Ù„Ù„Ù…Ø²Ø§Ù…Ù†Ø© ÙƒÙ„ 25 Ø«Ø§Ù†ÙŠØ©
+        // تحقق دوري للمزامنة كل 25 ثانية
         setInterval(() => {
             if (navigator.onLine && getOfflineQueue().length > 0 && !isSyncing) {
                 syncOfflineAttendanceQueue();
@@ -1143,11 +1143,11 @@
         }, 25000);
 
         try {
-            // 1. Ø¬Ù„Ø¨ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¯Ø±Ø³ÙŠÙ† Ù„Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø¬Ø¯ÙˆÙ„ Ù‡Ø°Ø§ Ø§Ù„Ù…Ø¯Ø±Ø³
+            // 1. جلب بيانات المدرسين للعثور على جدول هذا المدرس
             const tRes = await fetch(`${API}/api/teachers`);
             const teachers = await tRes.json();
             
-            // Ø¥Ø°Ø§ ÙƒØ§Ù† Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø³Ø§Ø¹Ø¯Ø§Ù‹ Ø¹Ø§Ù…Ø§Ù‹ (teacherId=null) Ù†Ø¹Ø±Ø¶ Ø­ØµØµ ÙƒÙ„ Ø§Ù„Ù…Ø¯Ø±Ø³ÙŠÙ†
+            // إذا كان المستخدم مساعداً عاماً (teacherId=null) نعرض حصص كل المدرسين
             if (!currentUser.teacherId) {
                 _teacherSchedule = [];
                 teachers.forEach(teacher => {
@@ -1159,7 +1159,7 @@
             } else {
                 let activeTeacher = teachers.find(t => String(t._id) === String(currentUser.teacherId));
                 const teacherNameHint = currentUser.teacherNameHint ||
-                    (currentUser.phone === '050068792049' ? 'ÙˆØ§Ø¦Ù„ Ù„Ø§Ø´ÙŠÙ†' : '');
+                    (currentUser.phone === '050068792049' ? 'وائل لاشين' : '');
                 if (!activeTeacher && teacherNameHint) {
                     const hint = normalizeArabic(teacherNameHint);
                     activeTeacher = teachers.find(t => {
@@ -1185,21 +1185,21 @@
                 }
             }
 
-            // Ø­ÙØ¸ Ø§Ù„Ø¬Ø¯ÙˆÙ„ Ù…Ø­Ù„ÙŠØ§Ù‹ Ù„Ø¯Ø¹Ù… Ø§Ù„Ø¹Ù…Ù„ Ø£ÙˆÙÙ„Ø§ÙŠÙ† ÙÙŠ Ù‚Ø§Ø¹Ø§Øª ÙˆØ³Ù†Ø§ØªØ± Ø§Ù„Ø³Ø±Ø¯Ø§Ø¨
+            // حفظ الجدول محلياً لدعم العمل أوفلاين في قاعات وسناتر السرداب
             if (_teacherSchedule && _teacherSchedule.length > 0) {
                 localStorage.setItem(SCHEDULE_CACHE_KEY, JSON.stringify(_teacherSchedule));
             }
 
             populateScheduleFilters();
 
-            // 2. Ø¬Ù„Ø¨ Ø§Ù„ÙÙŠØ¯ÙŠÙˆÙ‡Ø§Øª ÙˆØªØ®Ø²ÙŠÙ†Ù‡Ø§ Ù„ÙÙ„ØªØ±ØªÙ‡Ø§ Ù„Ø§Ø­Ù‚Ø§Ù‹ Ø­Ø³Ø¨ Ø§Ù„Ø­ØµØ© Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©
+            // 2. جلب الفيديوهات وتخزينها لفلترتها لاحقاً حسب الحصة المختارة
             const vRes = await fetch(`${API}/api/videos`);
             _allVideos = await vRes.json();
             if (_allVideos && _allVideos.length > 0) {
                 localStorage.setItem(VIDEOS_CACHE_KEY, JSON.stringify(_allVideos));
             }
 
-            // Ù…Ø­Ø§ÙˆÙ„Ø© Ø±ÙØ¹ Ø£ÙŠ Ø­Ø¶ÙˆØ± Ù…Ø¹Ù„Ù‚ Ø³Ø§Ø¨Ù‚Ø§Ù‹ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹
+            // محاولة رفع أي حضور معلق سابقاً تلقائياً
             if (navigator.onLine && getOfflineQueue().length > 0) {
                 setTimeout(syncOfflineAttendanceQueue, 1000);
             }
@@ -1211,7 +1211,7 @@
                 try {
                     _teacherSchedule = JSON.parse(cachedSched);
                     populateScheduleFilters();
-                    showAlert('âš¡ ÙˆØ¶Ø¹ Ø£ÙˆÙÙ„Ø§ÙŠÙ†: ØªÙ… ØªØ­Ù…ÙŠÙ„ Ø¬Ø¯ÙˆÙ„ Ø§Ù„Ø­ØµØµ Ù…Ù† Ø§Ù„Ø°Ø§ÙƒØ±Ø© Ø§Ù„Ù…Ø¤Ù‚ØªØ©!', 'orange');
+                    showAlert('⚡ وضع أوفلاين: تم تحميل جدول الحصص من الذاكرة المؤقتة!', 'orange');
                 } catch(e) {}
             }
             const cachedVids = localStorage.getItem(VIDEOS_CACHE_KEY);
@@ -1235,10 +1235,10 @@
 
     function populateScheduleFilters() {
         const centers = uniqueValues(_teacherSchedule, 'centerName');
-        fillSelect('setup-center', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ù†ØªØ±', centers, false);
-        fillSelect('setup-grade', 'Ø§Ø®ØªØ± Ø§Ù„ØµÙ', [], true);
-        fillSelect('setup-day', 'Ø§Ø®ØªØ± Ø§Ù„ÙŠÙˆÙ…', [], true);
-        fillSelect('setup-time', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø©', [], true);
+        fillSelect('setup-center', 'اختر السنتر', centers, false);
+        fillSelect('setup-grade', 'اختر الصف', [], true);
+        fillSelect('setup-day', 'اختر اليوم', [], true);
+        fillSelect('setup-time', 'اختر الساعة', [], true);
         updateScheduleHelp();
         populateVideoOptions();
     }
@@ -1246,15 +1246,15 @@
     function onCenterChange() {
         const center = document.getElementById('setup-center').value;
         if (!center) {
-            fillSelect('setup-grade', 'Ø§Ø®ØªØ± Ø§Ù„ØµÙ', [], true);
-            fillSelect('setup-day', 'Ø§Ø®ØªØ± Ø§Ù„ÙŠÙˆÙ…', [], true);
-            fillSelect('setup-time', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø©', [], true);
+            fillSelect('setup-grade', 'اختر الصف', [], true);
+            fillSelect('setup-day', 'اختر اليوم', [], true);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
         } else {
             const filtered = _teacherSchedule.filter(s => s.centerName === center);
             const grades = uniqueValues(filtered, 'grade');
-            fillSelect('setup-grade', 'Ø§Ø®ØªØ± Ø§Ù„ØµÙ', grades, false);
-            fillSelect('setup-day', 'Ø§Ø®ØªØ± Ø§Ù„ÙŠÙˆÙ…', [], true);
-            fillSelect('setup-time', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø©', [], true);
+            fillSelect('setup-grade', 'اختر الصف', grades, false);
+            fillSelect('setup-day', 'اختر اليوم', [], true);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
         }
         updateScheduleHelp();
         populateVideoOptions();
@@ -1264,13 +1264,13 @@
         const center = document.getElementById('setup-center').value;
         const grade = document.getElementById('setup-grade').value;
         if (!grade) {
-            fillSelect('setup-day', 'Ø§Ø®ØªØ± Ø§Ù„ÙŠÙˆÙ…', [], true);
-            fillSelect('setup-time', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø©', [], true);
+            fillSelect('setup-day', 'اختر اليوم', [], true);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
         } else {
             const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade);
             const days = uniqueValues(filtered, 'day');
-            fillSelect('setup-day', 'Ø§Ø®ØªØ± Ø§Ù„ÙŠÙˆÙ…', days, false);
-            fillSelect('setup-time', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø©', [], true);
+            fillSelect('setup-day', 'اختر اليوم', days, false);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
         }
         updateScheduleHelp();
         populateVideoOptions();
@@ -1281,11 +1281,11 @@
         const grade = document.getElementById('setup-grade').value;
         const day = document.getElementById('setup-day').value;
         if (!day) {
-            fillSelect('setup-time', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø©', [], true);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
         } else {
             const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade && s.day === day);
             const times = uniqueValues(filtered, 'time');
-            fillSelect('setup-time', 'Ø§Ø®ØªØ± Ø§Ù„Ø³Ø§Ø¹Ø©', times, false);
+            fillSelect('setup-time', 'اختر الساعة', times, false);
         }
         updateScheduleHelp();
         populateVideoOptions();
@@ -1301,10 +1301,10 @@
         const sched = selectedSchedule();
         if (sched) {
             help.className = 'help-pill complete';
-            help.innerHTML = `<i class="ti ti-check"></i> ØªÙ… Ø¶Ø¨Ø· Ø§Ù„Ø­ØµØ©: <strong>${escapeHtml(sched.centerName)}</strong> - ${escapeHtml(sched.grade)} (${escapeHtml(sched.day)} ${escapeHtml(sched.time)})`;
+            help.innerHTML = `<i class="ti ti-check"></i> تم ضبط الحصة: <strong>${escapeHtml(sched.centerName)}</strong> - ${escapeHtml(sched.grade)} (${escapeHtml(sched.day)} ${escapeHtml(sched.time)})`;
         } else {
             help.className = 'help-pill';
-            help.innerHTML = '<i class="ti ti-info-circle"></i> Ø§Ø®ØªØ± Ø§Ù„Ø³Ù†ØªØ± Ø£ÙˆÙ„Ø§Ù‹ØŒ Ø«Ù… Ø£ÙƒÙ…Ù„ Ø¨Ø§Ù‚ÙŠ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹Ø© Ø¨Ø§Ù„ØªØ±ØªÙŠØ¨.';
+            help.innerHTML = '<i class="ti ti-info-circle"></i> اختر السنتر أولاً، ثم أكمل باقي بيانات المجموعة بالترتيب.';
         }
     }
 
@@ -1332,7 +1332,7 @@
 
         const sched = selectedSchedule();
         if (!sched) {
-            videoSelect.innerHTML = '<option value="">-- Ø£ÙƒÙ…Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø­ØµØ© Ø§Ù„Ø³Ù†ØªØ± Ø£ÙˆÙ„Ø§Ù‹ --</option>';
+            videoSelect.innerHTML = '<option value="">-- أكمل بيانات حصة السنتر أولاً --</option>';
             return;
         }
 
@@ -1343,12 +1343,12 @@
         });
 
         if (filtered.length === 0) {
-            videoSelect.innerHTML = '<option value="">-- Ù„Ø§ ØªÙˆØ¬Ø¯ Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ù…Ø·Ø§Ø¨Ù‚Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„ØµÙ Ø¨Ø¹Ø¯ --</option>';
+            videoSelect.innerHTML = '<option value="">-- لا توجد محاضرات مطابقة لهذا الصف بعد --</option>';
             return;
         }
 
-        videoSelect.innerHTML = '<option value="">-- Ø§Ø®ØªØ± Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø© Ø§Ù„ØªÙŠ Ø³ØªÙÙØªØ­ --</option>' +
-            filtered.map(v => `<option value="${v._id}">${escapeHtml(v.title)} (${escapeHtml(v.grade || 'Ø¹Ø§Ù…')})</option>`).join('');
+        videoSelect.innerHTML = '<option value="">-- اختر المحاضرة التي ستُفتح --</option>' +
+            filtered.map(v => `<option value="${v._id}">${escapeHtml(v.title)} (${escapeHtml(v.grade || 'عام')})</option>`).join('');
     }
 
     function getTargetVideoId() {
@@ -1357,7 +1357,7 @@
         return document.getElementById('setup-video')?.value || '';
     }
 
-    // Ø¨Ø¯Ø¡ / Ø¥Ù†Ù‡Ø§Ø¡ Ø¬Ù„Ø³Ø© Ø§Ù„ØªØ­Ø¶ÙŠØ±
+    // بدء / إنهاء جلسة التحضير
     function toggleSession() {
         const btn = document.getElementById('action-btn');
         const container = document.getElementById('qr-reader-container');
@@ -1365,35 +1365,35 @@
         if (!isSessionActive) {
             const activeSched = selectedSchedule();
             if (!activeSched) {
-                showAlert('âš ï¸ ÙŠØ±Ø¬Ù‰ Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ø³Ù†ØªØ± ÙˆØ§Ù„ØµÙ ÙˆØ§Ù„ÙŠÙˆÙ… ÙˆØ§Ù„Ø³Ø§Ø¹Ø© Ø£ÙˆÙ„Ø§Ù‹!', 'orange');
+                showAlert('⚠️ يرجى اختيار السنتر والصف واليوم والساعة أولاً!', 'orange');
                 return;
             }
 
             const isVideo = document.getElementById('mode-video')?.checked;
             const videoId = getTargetVideoId();
             if (isVideo && !videoId) {
-                showAlert('âš ï¸ ÙŠØ±Ø¬Ù‰ Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø© Ø§Ù„ØªÙŠ Ø³ØªÙÙØªØ­ Ù„Ù„Ø·Ù„Ø§Ø¨ Ø£ÙˆÙ„Ø§Ù‹!', 'orange');
+                showAlert('⚠️ يرجى اختيار المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
                 return;
             }
 
             isSessionActive = true;
             btn.className = 'btn-action-stop';
-            btn.innerHTML = '<i class="ti ti-player-stop"></i> Ø¥Ù†Ù‡Ø§Ø¡ Ø§Ù„Ø¬Ù„Ø³Ø© ÙˆØ¥ÙŠÙ‚Ø§Ù Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§';
+            btn.innerHTML = '<i class="ti ti-player-stop"></i> إنهاء الجلسة وإيقاف الكاميرا';
             container.style.display = 'block';
 
-            // ØªØ¬Ù…ÙŠØ¯ Ø§Ù„Ù‚ÙˆØ§Ø¦Ù… Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„Ø¬Ù„Ø³Ø©
+            // تجميد القوائم أثناء الجلسة
             ['setup-center', 'setup-grade', 'setup-day', 'setup-time', 'setup-video'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.disabled = true;
             });
 
             startScanner();
-            showAlert('ðŸŽ¥ ØªÙ… Ø¨Ø¯Ø¡ Ø¬Ù„Ø³Ø© Ø§Ù„ØªØ­Ø¶ÙŠØ± Ø¨Ù†Ø¬Ø§Ø­! ÙˆØ¬Ø§Ù‡Ø² Ù„Ù…Ø³Ø­ Ø£ÙƒÙˆØ§Ø¯ Ø§Ù„Ø·Ù„Ø§Ø¨.', 'green');
+            showAlert('🎥 تم بدء جلسة التحضير بنجاح! وجاهز لمسح أكواد الطلاب.', 'green');
 
         } else {
             isSessionActive = false;
             btn.className = 'btn-action-start';
-            btn.innerHTML = '<i class="ti ti-scan"></i> Ø¨Ø¯Ø¡ Ø¬Ù„Ø³Ø© Ø§Ù„ØªØ­Ø¶ÙŠØ± ÙˆØªØ´ØºÙŠÙ„ Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§';
+            btn.innerHTML = '<i class="ti ti-scan"></i> بدء جلسة التحضير وتشغيل الكاميرا';
             container.style.display = 'none';
 
             ['setup-center', 'setup-grade', 'setup-day', 'setup-time'].forEach(id => {
@@ -1406,7 +1406,7 @@
             }
 
             stopScanner();
-            showAlert('ðŸ›‘ ØªÙ… Ø¥Ù†Ù‡Ø§Ø¡ Ø¬Ù„Ø³Ø© Ø§Ù„ØªØ­Ø¶ÙŠØ± ÙˆØ¥ÙŠÙ‚Ø§Ù Ø§Ù„ÙƒØ§Ù…ÙŠØ±Ø§.', 'orange');
+            showAlert('🛑 تم إنهاء جلسة التحضير وإيقاف الكاميرا.', 'orange');
         }
     }
 
@@ -1433,7 +1433,7 @@
         }
     }
 
-    // Ø¥Ø±Ø³Ø§Ù„ ÙƒÙˆØ¯ Ø§Ù„Ø·Ø§Ù„Ø¨ Ø§Ù„Ù…Ø³Ø­ÙˆØ¨ ÙŠØ¯ÙˆÙŠØ§Ù‹ (Ù…Ø¹ Ø¯Ø¹Ù… Ø£ÙˆÙÙ„Ø§ÙŠÙ† ÙƒØ§Ù…Ù„ ÙˆØ§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠØ©)
+    // إرسال كود الطالب المسحوب يدوياً (مع دعم أوفلاين كامل والمزامنة التلقائية)
     async function submitManualAttendance() {
         const studentIdInput = document.getElementById('manual-student-id');
         const studentId = studentIdInput.value.trim();
@@ -1442,24 +1442,24 @@
         const videoId = getTargetVideoId();
 
         if (!activeSched) {
-            showAlert('âš ï¸ Ø§Ø®ØªØ± Ø§Ù„Ø³Ù†ØªØ± ÙˆØ§Ù„ØµÙ ÙˆØ§Ù„ÙŠÙˆÙ… ÙˆØ§Ù„Ø³Ø§Ø¹Ø© Ø£ÙˆÙ„Ø§Ù‹!', 'orange');
+            showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
             return;
         }
 
         if (isVideo && !videoId) {
-            showAlert('âš ï¸ Ø§Ø®ØªØ± Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø© Ø§Ù„ØªÙŠ Ø³ØªÙÙØªØ­ Ù„Ù„Ø·Ù„Ø§Ø¨ Ø£ÙˆÙ„Ø§Ù‹!', 'orange');
+            showAlert('⚠️ اختر المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
             return;
         }
 
         if (!studentId) {
-            showAlert('âš ï¸ ÙŠØ±Ø¬Ù‰ ÙƒØªØ§Ø¨Ø© Ø¨Ø±ÙŠØ¯ Ø£Ùˆ ÙƒÙˆØ¯ Ø§Ù„Ø·Ø§Ù„Ø¨ Ø£ÙˆÙ„Ø§Ù‹!', 'orange');
+            showAlert('⚠️ يرجى كتابة بريد أو كود الطالب أولاً!', 'orange');
             studentIdInput.focus();
             return;
         }
 
         const submitBtn = document.getElementById('manual-attendance-btn');
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite;"></i> Ø¬Ø§Ø±ÙŠ...';
+        submitBtn.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite;"></i> جاري...';
 
         const recordId = 'off_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         const record = {
@@ -1475,25 +1475,25 @@
             scannedAt: new Date().toISOString()
         };
 
-        // ÙˆØ¶Ø¹ Ø§Ù„Ø£ÙˆÙÙ„Ø§ÙŠÙ†: Ø­ÙØ¸ ÙÙˆØ±ÙŠ Ø¯ÙˆÙ† Ø§ØªØµØ§Ù„
+        // وضع الأوفلاين: حفظ فوري دون اتصال
         if (!navigator.onLine) {
             const addRes = addToOfflineQueue(record);
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="ti ti-check"></i> ØªØ­Ø¶ÙŠØ± ÙŠØ¯ÙˆÙŠØ§Ù‹';
+            submitBtn.innerHTML = '<i class="ti ti-check"></i> تحضير يدوياً';
             if (!addRes.success) {
                 playBeep(false);
-                showAlert(`âš ï¸ ${addRes.message}`, 'orange');
+                showAlert(`⚠️ ${addRes.message}`, 'orange');
                 return;
             }
             playBeep(true);
-            showAlert('âš¡ ØªÙ… Ø­ÙØ¸ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ø§Ù„Ø¨ Ù…Ø­Ù„ÙŠØ§Ù‹ (ÙˆØ¶Ø¹ Ø£ÙˆÙÙ„Ø§ÙŠÙ†)! Ø³ÙŠØªÙ… Ø§Ù„Ø±ÙØ¹ ÙÙˆØ± ØªÙˆÙØ± Ø§Ù„Ù†Øª.', 'orange');
+            showAlert('⚡ تم حفظ حضور الطالب محلياً (وضع أوفلاين)! سيتم الرفع فور توفر النت.', 'orange');
             addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
             studentIdInput.value = '';
             studentIdInput.focus();
             return;
         }
 
-        // ÙˆØ¶Ø¹ Ø§Ù„Ø§ØªØµØ§Ù„ Ø§Ù„Ù…Ø¨Ø§Ø´Ø± Ù…Ø¹ Fallback ØªÙ„Ù‚Ø§Ø¦ÙŠ Ù„Ù„Ø£ÙˆÙÙ„Ø§ÙŠÙ†
+        // وضع الاتصال المباشر مع Fallback تلقائي للأوفلاين
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 4500);
@@ -1508,31 +1508,31 @@
 
             const data = await res.json();
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="ti ti-check"></i> ØªØ­Ø¶ÙŠØ± ÙŠØ¯ÙˆÙŠØ§Ù‹';
+            submitBtn.innerHTML = '<i class="ti ti-check"></i> تحضير يدوياً';
 
             if (data.success) {
                 playBeep(true);
-                showAlert(`âœ… ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ø§Ù„Ø¨ (${data.studentName}) Ø¨Ù†Ø¬Ø§Ø­!`, 'green');
+                showAlert(`✅ تم تسجيل حضور الطالب (${data.studentName}) بنجاح!`, 'green');
                 addLogToTable(data.studentName, activeSched.centerName, 'synced', recordId);
                 studentIdInput.value = '';
                 studentIdInput.focus();
             } else {
                 playBeep(false);
-                showAlert(`âŒ ${data.message}`, 'red');
+                showAlert(`❌ ${data.message}`, 'red');
             }
         } catch (err) {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="ti ti-check"></i> ØªØ­Ø¶ÙŠØ± ÙŠØ¯ÙˆÙŠØ§Ù‹';
+            submitBtn.innerHTML = '<i class="ti ti-check"></i> تحضير يدوياً';
             const addRes = addToOfflineQueue(record);
             playBeep(true);
-            showAlert('âš¡ Ø§Ù†Ù‚Ø·Ø¹ Ø§Ù„Ø§ØªØµØ§Ù„! ØªÙ… Ø­ÙØ¸ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ø§Ù„Ø¨ Ù…Ø­Ù„ÙŠØ§Ù‹ Ø¨Ù†Ø¬Ø§Ø­ ÙˆØ³ÙŠØªÙ… Ø±ÙØ¹Ù‡ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ ÙÙˆØ± ØªÙˆÙØ± Ø§Ù„Ù†Øª.', 'orange');
+            showAlert('⚡ انقطع الاتصال! تم حفظ حضور الطالب محلياً بنجاح وسيتم رفعه تلقائياً فور توفر النت.', 'orange');
             addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
             studentIdInput.value = '';
             studentIdInput.focus();
         }
     }
 
-    // Ø¹Ù†Ø¯ Ù…Ø³Ø­ QR Ø¨Ù†Ø¬Ø§Ø­ (Ù…Ø¹ Ø¯Ø¹Ù… Ø£ÙˆÙÙ„Ø§ÙŠÙ† ÙƒØ§Ù…Ù„ ÙˆØ§Ù„Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠØ©)
+    // عند مسح QR بنجاح (مع دعم أوفلاين كامل والمزامنة التلقائية)
     async function onScanSuccess(studentId) {
         if (!isSessionActive) return;
 
@@ -1560,10 +1560,10 @@
             const addRes = addToOfflineQueue(record);
             if (!addRes.success) {
                 playBeep(false);
-                showAlert(`âš ï¸ ${addRes.message}`, 'orange');
+                showAlert(`⚠️ ${addRes.message}`, 'orange');
             } else {
                 playBeep(true);
-                showAlert('âš¡ ØªÙ… Ø­ÙØ¸ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ø§Ù„Ø¨ Ù…Ø­Ù„ÙŠØ§Ù‹ (ÙˆØ¶Ø¹ Ø£ÙˆÙÙ„Ø§ÙŠÙ†)!', 'orange');
+                showAlert('⚡ تم حفظ حضور الطالب محلياً (وضع أوفلاين)!', 'orange');
                 addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
             }
             setTimeout(() => {
@@ -1587,16 +1587,16 @@
             const data = await res.json();
             if (data.success) {
                 playBeep(true);
-                showAlert(`âœ… ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ø§Ù„Ø¨ (${data.studentName}) Ø¨Ù†Ø¬Ø§Ø­!`, 'green');
+                showAlert(`✅ تم تسجيل حضور الطالب (${data.studentName}) بنجاح!`, 'green');
                 addLogToTable(data.studentName, activeSched.centerName, 'synced', recordId);
             } else {
                 playBeep(false);
-                showAlert(`âŒ ${data.message}`, 'red');
+                showAlert(`❌ ${data.message}`, 'red');
             }
         } catch (err) {
             const addRes = addToOfflineQueue(record);
             playBeep(true);
-            showAlert('âš¡ Ø§Ù†Ù‚Ø·Ø¹ Ø§Ù„Ø§ØªØµØ§Ù„! ØªÙ… Ø­ÙØ¸ Ø­Ø¶ÙˆØ± Ø§Ù„Ø·Ø§Ù„Ø¨ Ù…Ø­Ù„ÙŠØ§Ù‹ ÙˆØ³ÙŠØªÙ… Ø±ÙØ¹Ù‡ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.', 'orange');
+            showAlert('⚡ انقطع الاتصال! تم حفظ حضور الطالب محلياً وسيتم رفعه تلقائياً.', 'orange');
             addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
         } finally {
             setTimeout(() => {
@@ -1615,8 +1615,8 @@
 
         const isSynced = syncStatus === 'synced';
         const syncTagHtml = isSynced
-            ? '<span class="sync-tag synced"><i class="ti ti-cloud-check"></i> ØªÙ… Ø§Ù„Ø±ÙØ¹ Ù„Ù„Ù…ÙˆÙ‚Ø¹</span>'
-            : `<span class="sync-tag pending" id="tag-${recordId}"><i class="ti ti-clock"></i> ÙÙŠ Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ù†Øª</span>`;
+            ? '<span class="sync-tag synced"><i class="ti ti-cloud-check"></i> تم الرفع للموقع</span>'
+            : `<span class="sync-tag pending" id="tag-${recordId}"><i class="ti ti-clock"></i> في انتظار النت</span>`;
 
         const tr = document.createElement('tr');
         tr.innerHTML = `

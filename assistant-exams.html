@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <!-- EDGE Academy Favicon -->
@@ -8,7 +8,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª ÙˆØ§Ù„Ù†ØªØ§Ø¦Ø¬ | Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</title>
+    <title>إدارة الامتحانات والنتائج | بوابة المساعد</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
     <style>
@@ -44,7 +44,7 @@
             flex-direction: column;
         }
 
-        /* â”€â”€â”€ TOPBAR â”€â”€â”€ */
+        /* ─── TOPBAR ─── */
         .topbar {
             background: rgba(22, 27, 39, 0.85);
             backdrop-filter: blur(12px);
@@ -133,7 +133,7 @@
             background: rgba(230, 57, 70, 0.16);
         }
 
-        /* â”€â”€â”€ MAIN CONTENT â”€â”€â”€ */
+        /* ─── MAIN CONTENT ─── */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -142,7 +142,7 @@
             flex: 1;
         }
 
-        /* â”€â”€â”€ FILTER BAR â”€â”€â”€ */
+        /* ─── FILTER BAR ─── */
         .filter-panel {
             background: var(--bg2);
             border: 1px solid var(--border);
@@ -204,7 +204,7 @@
         }
         .stat-chip strong { color: var(--green); font-size: 0.95rem; }
 
-        /* â”€â”€â”€ EXAMS GRID â”€â”€â”€ */
+        /* ─── EXAMS GRID ─── */
         .exams-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -328,7 +328,7 @@
             transform: translateY(-1px);
         }
 
-        /* â”€â”€â”€ RESULTS PANEL (DRILL-DOWN) â”€â”€â”€ */
+        /* ─── RESULTS PANEL (DRILL-DOWN) ─── */
         .results-section {
             display: none;
         }
@@ -404,7 +404,7 @@
             background: rgba(6, 214, 160, 0.18);
         }
 
-        /* â”€â”€â”€ TABLE â”€â”€â”€ */
+        /* ─── TABLE ─── */
         .table-wrap {
             background: var(--bg2);
             border: 1px solid var(--border);
@@ -551,7 +551,7 @@
             border-color: var(--red);
         }
 
-        /* â”€â”€â”€ MODAL â”€â”€â”€ */
+        /* ─── MODAL ─── */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -686,7 +686,7 @@
         }
         .grade-input-row input:focus { border-color: var(--primary); }
 
-        /* â”€â”€â”€ TOAST â”€â”€â”€ */
+        /* ─── TOAST ─── */
         .toast-container {
             position: fixed;
             bottom: 24px;
@@ -749,21 +749,21 @@
 </head>
 <body>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â• OFFICIAL PLATFORM NAVBAR â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ════════════ OFFICIAL PLATFORM NAVBAR ════════════ -->
 <header>
     <div class="header-inner">
-        <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø²Ø± Ø±Ø¬ÙˆØ¹ ÙˆØ´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ù…ØªØºÙŠØ± ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¹ Ø§Ù„Ø«ÙŠÙ… ÙˆØ²Ø± Ø§Ù„Ù„ØºØ© -->
+        <!-- اليمين: زر رجوع وشعار المنصة المتغير تلقائياً مع الثيم وزر اللغة -->
         <div class="header-right">
-            <button type="button" class="nav-back-btn" onclick="goBack()" title="Ø±Ø¬ÙˆØ¹ Ù„Ù„ØµÙØ­Ø© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
                 <i class="ti ti-arrow-right"></i>
-                <span>Ø±Ø¬ÙˆØ¹</span>
+                <span>رجوع</span>
             </button>
             <a href="assistant-hub" class="header-brand" aria-label="EDGE Academy">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
-            <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨ Ø§Ù„Ù„ÙˆØ¬Ùˆ -->
-            <button type="button" class="language-switcher" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ©" title="Switch Language">
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
                 <span>EN</span>
                 <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -773,74 +773,74 @@
             </button>
         </div>
 
-        <!-- Ø§Ù„Ù…Ù†ØªØµÙ: Ø±ÙˆØ§Ø¨Ø· Ø§Ù„ØªÙ†Ù‚Ù„ Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ© Ù„Ù„Ù…Ø³Ø§Ø¹Ø¯ -->
+        <!-- المنتصف: روابط التنقل الأساسية للمساعد -->
         <div class="header-center">
-            <a href="assistant-dashboard" class="nav-link-item ">ðŸ“Š Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-            <a href="attendance" class="nav-link-item ">ðŸ“² Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ±</a>
-            <a href="assistant" class="nav-link-item ">ðŸ’¬ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-            <a href="assistant-exams" class="nav-link-item active" style="color:var(--primary); font-weight:800;">ðŸ“ Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
-            <a href="assistant-hub" class="nav-link-item ">ðŸŽ“ Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</a>
+            <a href="assistant-dashboard" class="nav-link-item ">📊 متابعة الطلاب</a>
+            <a href="attendance" class="nav-link-item ">📲 بوابة الحضور</a>
+            <a href="assistant" class="nav-link-item ">💬 أسئلة الطلاب</a>
+            <a href="assistant-exams" class="nav-link-item active" style="color:var(--primary); font-weight:800;">📝 إدارة الامتحانات</a>
+            <a href="assistant-hub" class="nav-link-item ">🎓 بوابة المساعد</a>
         </div>
 
-        <!-- Ø§Ù„ÙŠØ³Ø§Ø±: Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆÙ…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ -->
+        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
         <div class="header-left">
             <nav class="header-actions" id="authActions" style="display:none;"></nav>
 
-            <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ -->
+            <!-- قائمة المستخدم عند تسجيل الدخول -->
             <div class="user-dropdown-container" id="userDropdownArea">
                 <button class="user-menu-btn" onclick="toggleUserMenu()">
-                    <span id="navUserName">Ù…Ø³Ø§Ø¹Ø¯ Ø§Ù„Ù…Ø¹Ù„Ù…</span>
-                    <div class="user-icon-circle">ðŸ‘¤</div>
+                    <span id="navUserName">مساعد المعلم</span>
+                    <div class="user-icon-circle">👤</div>
                 </button>
                 <div class="user-dropdown-menu" id="userMenu">
                     <a href="assistant-dashboard" class="menu-item">
-                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> Ù„ÙˆØ­Ø© Ø§Ù„Ù…ØªØ§Ø¨Ø¹Ø©
+                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> لوحة المتابعة
                     </a>
                     <a href="attendance" class="menu-item">
-                        <i class="ti ti-scan" style="margin-left:6px;"></i> Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ø±ÙŠØ¹
+                        <i class="ti ti-scan" style="margin-left:6px;"></i> بوابة الحضور السريع
                     </a>
                     <a href="assistant" class="menu-item">
-                        <i class="ti ti-messages" style="margin-left:6px;"></i> Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨
+                        <i class="ti ti-messages" style="margin-left:6px;"></i> أسئلة الطلاب
                     </a>
                     <a href="assistant-exams" class="menu-item">
-                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª
+                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> إدارة الامتحانات
                     </a>
                     <a href="assistant-hub" class="menu-item">
-                        <i class="ti ti-home" style="margin-left:6px;"></i> Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©
+                        <i class="ti ti-home" style="margin-left:6px;"></i> بوابة المساعد الرئيسية
                     </a>
                     <hr>
                     <button onclick="handleLogout()" class="menu-item logout-btn" style="width:100%; text-align:right; border:none; background:none; cursor:pointer;">
-                        ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬
+                        🚪 تسجيل خروج
                     </button>
                 </div>
             </div>
 
-            <!-- Ù…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ Ø¨ØªØµÙ…ÙŠÙ… ÙƒØ¨Ø³ÙˆÙ„Ø© Ø£Ù†ÙŠÙ‚Ø© (Ø§Ù„Ù†Ù‡Ø§Ø± / Ø§Ù„Ù„ÙŠÙ„) Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ Ø¨Ø§Ù„Ù…Ù†ØµØ© -->
-            <div class="theme-capsule" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¸Ù‡Ø±">
-                <button class="icon-btn theme-switcher" data-theme="light" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±" title="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±">â˜€</button>
-                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…" title="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…">ðŸŒ™</button>
+            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) المعتمد بالمنصة -->
+            <div class="theme-capsule" aria-label="تبديل المظهر">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
             </div>
 
-            <!-- Ø²Ø± Ø§Ù„Ù‡Ø§Ù…Ø¨Ø±ØºØ± Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ -->
-            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">
+            <!-- زر الهامبرغر للموبايل -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </div>
 
-    <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ Ø§Ù„Ù…Ù†Ø³Ø¯Ù„Ø© Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø© Ø¨Ø§Ù„Ù…Ù†ØµØ© -->
+    <!-- قائمة الموبايل المنسدلة المعتمدة بالمنصة -->
     <div class="mobile-nav-menu" id="mobileNavMenu">
         <a href="javascript:void(0)" onclick="goBack()" class="mobile-nav-link" style="color:var(--primary); font-weight:900; background:rgba(26,107,219,0.1); border-radius:12px; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-            <i class="ti ti-arrow-right"></i> â†©ï¸ Ø±Ø¬ÙˆØ¹ Ù„Ù„ØµÙØ­Ø© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©
+            <i class="ti ti-arrow-right"></i> ↩️ رجوع للصفحة السابقة
         </a>
-        <a href="assistant-dashboard" class="mobile-nav-link ">ðŸ“Š Ù„ÙˆØ­Ø© Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-        <a href="attendance" class="mobile-nav-link ">ðŸ“² Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ø±ÙŠØ¹</a>
-        <a href="assistant" class="mobile-nav-link ">ðŸ’¬ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
-        <a href="assistant-exams" class="mobile-nav-link active">ðŸ“ Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
-        <a href="assistant-hub" class="mobile-nav-link ">ðŸŽ“ Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</a>
+        <a href="assistant-dashboard" class="mobile-nav-link ">📊 لوحة متابعة الطلاب</a>
+        <a href="attendance" class="mobile-nav-link ">📲 بوابة الحضور السريع</a>
+        <a href="assistant" class="mobile-nav-link ">💬 أسئلة الطلاب</a>
+        <a href="assistant-exams" class="mobile-nav-link active">📝 إدارة الامتحانات</a>
+        <a href="assistant-hub" class="mobile-nav-link ">🎓 بوابة المساعد</a>
         <div class="mobile-menu-auth" style="border-top:1px solid var(--border); padding-top:10px; margin-top:8px;">
             <button onclick="handleLogout()" class="mobile-nav-link" style="background:none; border:none; cursor:pointer; width:100%; text-align:right; color:#e74c3c; font-family:inherit; font-weight:800; display:flex; align-items:center; gap:8px;">
-                ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬
+                🚪 تسجيل خروج
             </button>
         </div>
     </div>
@@ -848,35 +848,35 @@
 
 <main class="container">
 
-    <!-- â•â•â• EXAMS LIST SECTION â•â•â• -->
+    <!-- ═══ EXAMS LIST SECTION ═══ -->
     <section id="examsSection">
         <div class="filter-panel">
             <div class="filter-group">
                 <div class="filter-label">
-                    <i class="ti ti-filter"></i> Ø§Ù„Ù…Ø±Ø­Ù„Ø© / Ø§Ù„ØµÙ:
+                    <i class="ti ti-filter"></i> المرحلة / الصف:
                 </div>
                 <select id="gradeSelect" class="select-input" onchange="applyFilters()">
-                    <option value="all">ÙƒÙ„ Ø§Ù„Ù…Ø±Ø§Ø­Ù„</option>
-                    <option value="Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ</option>
-                    <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ</option>
-                    <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ</option>
-                    <option value="Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ</option>
-                    <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ</option>
-                    <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ</option>
+                    <option value="all">كل المراحل</option>
+                    <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                    <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+                    <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+                    <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
+                    <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
+                    <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
                 </select>
-                <input type="text" id="searchInput" class="text-input" placeholder="Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø£Ùˆ Ø§Ù„Ù…Ø§Ø¯Ø©..." oninput="applyFilters()">
+                <input type="text" id="searchInput" class="text-input" placeholder="بحث باسم الامتحان أو المادة..." oninput="applyFilters()">
             </div>
             <div class="stats-strip">
                 <div class="stat-chip">
-                    <span>Ø¹Ø¯Ø¯ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª:</span>
+                    <span>عدد الامتحانات:</span>
                     <strong id="examsCount">0</strong>
                 </div>
                 <div class="stat-chip">
-                    <span>Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø§Øª:</span>
+                    <span>إجمالي الإجابات:</span>
                     <strong id="totalResultsCount">0</strong>
                 </div>
-                <button class="back-to-exams-btn" onclick="loadExams()" title="ØªØ­Ø¯ÙŠØ«">
-                    <i class="ti ti-refresh"></i> ØªØ­Ø¯ÙŠØ«
+                <button class="back-to-exams-btn" onclick="loadExams()" title="تحديث">
+                    <i class="ti ti-refresh"></i> تحديث
                 </button>
             </div>
         </div>
@@ -884,17 +884,17 @@
         <div id="examsGrid" class="exams-grid">
             <div class="empty-state">
                 <i class="ti ti-loader-2 ti-spin"></i>
-                <h3>Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª...</h3>
+                <h3>جاري تحميل الامتحانات...</h3>
             </div>
         </div>
     </section>
 
-    <!-- â•â•â• RESULTS DRILL-DOWN SECTION â•â•â• -->
+    <!-- ═══ RESULTS DRILL-DOWN SECTION ═══ -->
     <section id="resultsSection" class="results-section">
         <div class="results-header-card">
             <div class="results-header-info">
                 <h2 id="activeExamTitle">
-                    <i class="ti ti-file-text"></i> Ù†ØªØ§Ø¦Ø¬ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†
+                    <i class="ti ti-file-text"></i> نتائج الامتحان
                 </h2>
                 <div class="exam-meta-row" id="activeExamMeta">
                     <!-- Dynamic details -->
@@ -902,26 +902,26 @@
             </div>
             <div class="results-toolbar">
                 <button class="export-btn" onclick="exportResultsCSV()">
-                    <i class="ti ti-file-spreadsheet"></i> ØªØµØ¯ÙŠØ± Ø¥ÙƒØ³ÙŠÙ„
+                    <i class="ti ti-file-spreadsheet"></i> تصدير إكسيل
                 </button>
                 <button class="back-to-exams-btn" onclick="showExamsList()">
-                    <i class="ti ti-arrow-right"></i> Ø§Ù„Ø±Ø¬ÙˆØ¹ Ù„Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª
+                    <i class="ti ti-arrow-right"></i> الرجوع لقائمة الامتحانات
                 </button>
             </div>
         </div>
 
         <div class="filter-panel" style="margin-bottom:16px;">
             <div class="filter-group">
-                <input type="text" id="studentSearchInput" class="text-input" placeholder="Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨ Ø£Ùˆ Ø§Ù„Ù‡Ø§ØªÙ..." oninput="filterResultsTable()">
+                <input type="text" id="studentSearchInput" class="text-input" placeholder="بحث باسم الطالب أو الهاتف..." oninput="filterResultsTable()">
                 <select id="statusFilterSelect" class="select-input" onchange="filterResultsTable()">
-                    <option value="all">ÙƒÙ„ Ø§Ù„Ø­Ø§Ù„Ø§Øª</option>
-                    <option value="pending">Ø¨Ø§Ù†ØªØ¸Ø§Ø± ØªØµØ­ÙŠØ­ Ø§Ù„Ù…Ù‚Ø§Ù„ÙŠ</option>
-                    <option value="graded">ØªÙ… Ø§Ù„ØªØµØ­ÙŠØ­ Ø¨Ø§Ù„ÙƒØ§Ù…Ù„</option>
+                    <option value="all">كل الحالات</option>
+                    <option value="pending">بانتظار تصحيح المقالي</option>
+                    <option value="graded">تم التصحيح بالكامل</option>
                 </select>
             </div>
             <div class="stats-strip">
                 <div class="stat-chip">
-                    <span>Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„Ù…Ù…ØªØ­Ù†ÙŠÙ†:</span>
+                    <span>الطلاب الممتحنين:</span>
                     <strong id="studentsCount">0</strong>
                 </div>
             </div>
@@ -932,13 +932,13 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Ø§Ù„Ø·Ø§Ù„Ø¨</th>
-                        <th>Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ</th>
-                        <th>Ø§Ù„Ø¯Ø±Ø¬Ø©</th>
-                        <th>Ø§Ù„Ù†Ø³Ø¨Ø©</th>
-                        <th>Ø­Ø§Ù„Ø© Ø§Ù„ØªØµØ­ÙŠØ­</th>
-                        <th>ØªØ§Ø±ÙŠØ® Ø§Ù„ØªØ³Ù„ÙŠÙ…</th>
-                        <th style="text-align:center;">Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡Ø§Øª</th>
+                        <th>الطالب</th>
+                        <th>رقم الهاتف</th>
+                        <th>الدرجة</th>
+                        <th>النسبة</th>
+                        <th>حالة التصحيح</th>
+                        <th>تاريخ التسليم</th>
+                        <th style="text-align:center;">الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="resultsTableBody">
@@ -950,44 +950,44 @@
 
 </main>
 
-<!-- â•â•â• ESSAY GRADING MODAL â•â•â• -->
+<!-- ═══ ESSAY GRADING MODAL ═══ -->
 <div class="modal-overlay" id="gradeEssayModal">
     <div class="modal-card">
         <div class="modal-header">
-            <h3><i class="ti ti-checklist" style="color:var(--primary);"></i> ØªØµØ­ÙŠØ­ Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ù…Ù‚Ø§Ù„ÙŠØ©</h3>
+            <h3><i class="ti ti-checklist" style="color:var(--primary);"></i> تصحيح الأسئلة المقالية</h3>
             <button class="modal-close-btn" onclick="closeGradeModal()">&times;</button>
         </div>
         <div class="modal-body">
             <div style="background:var(--surface2); padding:10px 14px; border-radius:10px; margin-bottom:16px; font-size:0.9rem;">
-                Ø·Ø§Ù„Ø¨: <strong id="modalStudentName" style="color:var(--primary);"></strong>
+                طالب: <strong id="modalStudentName" style="color:var(--primary);"></strong>
             </div>
             <div id="essayGradingFields">
                 <!-- Essay questions injected here -->
             </div>
         </div>
         <div class="modal-footer">
-            <button class="back-to-exams-btn" onclick="closeGradeModal()">Ø¥Ù„ØºØ§Ø¡</button>
+            <button class="back-to-exams-btn" onclick="closeGradeModal()">إلغاء</button>
             <button class="view-results-btn" onclick="saveEssayGrades()">
-                <i class="ti ti-device-floppy"></i> Ø­ÙØ¸ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª ÙˆØ§Ø¹ØªÙ…Ø§Ø¯ Ø§Ù„Ù†ØªÙŠØ¬Ø©
+                <i class="ti ti-device-floppy"></i> حفظ الدرجات واعتماد النتيجة
             </button>
         </div>
     </div>
 </div>
 
-<!-- â•â•â• CONFIRMATION MODAL â•â•â• -->
+<!-- ═══ CONFIRMATION MODAL ═══ -->
 <div class="modal-overlay" id="confirmModal">
     <div class="modal-card" style="max-width: 440px;">
         <div class="modal-header">
-            <h3 id="confirmTitle" style="color:var(--red);">ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¥Ø¬Ø±Ø§Ø¡</h3>
+            <h3 id="confirmTitle" style="color:var(--red);">تأكيد الإجراء</h3>
             <button class="modal-close-btn" onclick="closeConfirmModal()">&times;</button>
         </div>
         <div class="modal-body">
             <p id="confirmMessage" style="color:var(--txt); line-height:1.6; font-size:0.95rem;"></p>
         </div>
         <div class="modal-footer">
-            <button class="back-to-exams-btn" onclick="closeConfirmModal()">ØªØ±Ø§Ø¬Ø¹</button>
+            <button class="back-to-exams-btn" onclick="closeConfirmModal()">تراجع</button>
             <button class="btn-action btn-reset" id="confirmActionBtn" style="padding:9px 18px;">
-                ØªØ£ÙƒÙŠØ¯
+                تأكيد
             </button>
         </div>
     </div>
@@ -997,21 +997,21 @@
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-    // â”€â”€â”€ AUTH & SETUP â”€â”€â”€
+    // ─── AUTH & SETUP ───
     const API = window.location.origin;
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     const isAssistantSession = sessionStorage.getItem('assistantLoggedIn') === '1';
     const isAllowedRole = currentUser && (currentUser.role === 'assistant' || currentUser.role === 'teacher' || currentUser.role === 'admin') && !currentUser.isTeacherAccount;
 
     if (!isAssistantSession && !isAllowedRole) {
-        alert('Ø¬Ù„Ø³Ø© Ø§Ù„Ø¯Ø®ÙˆÙ„ ØºÙŠØ± ØµØ§Ù„Ø­Ø©ØŒ ÙŠØ±Ø¬Ù‰ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹.');
+        alert('جلسة الدخول غير صالحة، يرجى تسجيل الدخول أولاً.');
         window.location.href = 'login';
     }
 
     // Set Name in Topbar
     const nameEl = document.getElementById('userName');
     if (currentUser) {
-        const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '') || currentUser.name || 'Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯';
+        const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '') || currentUser.name || 'المساعد';
         nameEl.textContent = fullName.trim();
     }
 
@@ -1036,7 +1036,7 @@
         window.location.href = 'login';
     }
 
-    // â”€â”€â”€ STATE â”€â”€â”€
+    // ─── STATE ───
     let allExams = [];
     let currentExam = null;
     let currentExamResults = [];
@@ -1058,13 +1058,13 @@
         }, 3500);
     }
 
-    // â”€â”€â”€ FETCH EXAMS â”€â”€â”€
+    // ─── FETCH EXAMS ───
     async function loadExams() {
         const grid = document.getElementById('examsGrid');
         grid.innerHTML = `
             <div class="empty-state">
                 <i class="ti ti-loader-2 ti-spin"></i>
-                <h3>Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª...</h3>
+                <h3>جاري تحميل الامتحانات...</h3>
             </div>
         `;
 
@@ -1085,8 +1085,8 @@
                 grid.innerHTML = `
                     <div class="empty-state">
                         <i class="ti ti-alert-triangle" style="color:var(--red);"></i>
-                        <h3>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</h3>
-                        <p>${data.message || 'Ø­Ø¯Ø« Ø®Ø·Ø£ ØºÙŠØ± Ù…ØªÙˆÙ‚Ø¹'}</p>
+                        <h3>تعذر تحميل الامتحانات</h3>
+                        <p>${data.message || 'حدث خطأ غير متوقع'}</p>
                     </div>
                 `;
                 return;
@@ -1099,14 +1099,14 @@
             grid.innerHTML = `
                 <div class="empty-state">
                     <i class="ti ti-wifi-off" style="color:var(--red);"></i>
-                    <h3>Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù…</h3>
-                    <p>ÙŠØ±Ø¬Ù‰ Ø§Ù„ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØ§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª</p>
+                    <h3>خطأ في الاتصال بالخادم</h3>
+                    <p>يرجى التأكد من تشغيل الخادم والاتصال بالإنترنت</p>
                 </div>
             `;
         }
     }
 
-    // â”€â”€â”€ FILTER & RENDER EXAMS â”€â”€â”€
+    // ─── FILTER & RENDER EXAMS ───
     function applyFilters() {
         const selectedGrade = document.getElementById('gradeSelect').value;
         const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -1139,8 +1139,8 @@
             grid.innerHTML = `
                 <div class="empty-state">
                     <i class="ti ti-notes-off"></i>
-                    <h3>Ù„Ø§ ØªÙˆØ¬Ø¯ Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ù…Ø¶Ø§ÙØ©</h3>
-                    <p>Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø§Ù…ØªØ­Ø§Ù†Ø§Øª ØªØ·Ø§Ø¨Ù‚ Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ø¨Ø­Ø« Ø§Ù„Ø­Ø§Ù„ÙŠØ©</p>
+                    <h3>لا توجد امتحانات مضافة</h3>
+                    <p>لم يتم العثور على امتحانات تطابق خيارات البحث الحالية</p>
                 </div>
             `;
             return;
@@ -1149,7 +1149,7 @@
         grid.innerHTML = exams.map(exam => {
             const gradesBadges = Array.isArray(exam.grades) && exam.grades.length > 0 
                 ? exam.grades.map(g => `<span class="grade-pill">${g}</span>`).join('') 
-                : '<span class="grade-pill">Ø¹Ø§Ù…</span>';
+                : '<span class="grade-pill">عام</span>';
 
             const questionsCount = Array.isArray(exam.questions) ? exam.questions.length : 0;
             const essayCount = Array.isArray(exam.questions) ? exam.questions.filter(q => q.type === 'essay').length : 0;
@@ -1159,7 +1159,7 @@
                 <div class="exam-card">
                     <div class="exam-card-header">
                         <div class="exam-card-title">${exam.title}</div>
-                        <span class="exam-subject-badge">${exam.subject || 'Ø¹Ø§Ù…'}</span>
+                        <span class="exam-subject-badge">${exam.subject || 'عام'}</span>
                     </div>
 
                     <div class="grades-pills">
@@ -1168,17 +1168,17 @@
 
                     <div class="exam-meta-row">
                         <div class="exam-meta-item">
-                            <i class="ti ti-clock"></i> ${exam.duration || 30} Ø¯Ù‚ÙŠÙ‚Ø©
+                            <i class="ti ti-clock"></i> ${exam.duration || 30} دقيقة
                         </div>
                         <div class="exam-meta-item">
-                            <i class="ti ti-star"></i> ${exam.totalMarks || 0} Ø¯Ø±Ø¬Ø©
+                            <i class="ti ti-star"></i> ${exam.totalMarks || 0} درجة
                         </div>
                         <div class="exam-meta-item">
-                            <i class="ti ti-help-circle"></i> ${questionsCount} Ø³Ø¤Ø§Ù„
+                            <i class="ti ti-help-circle"></i> ${questionsCount} سؤال
                         </div>
                         ${essayCount > 0 ? `
                         <div class="exam-meta-item" style="color:var(--gold); background:rgba(221,168,82,0.1);">
-                            <i class="ti ti-pencil"></i> ${essayCount} Ù…Ù‚Ø§Ù„ÙŠ
+                            <i class="ti ti-pencil"></i> ${essayCount} مقالي
                         </div>
                         ` : ''}
                     </div>
@@ -1186,10 +1186,10 @@
                     <div class="exam-footer">
                         <div class="results-count-box">
                             <i class="ti ti-users"></i>
-                            <span>Ø§Ù„Ù…Ù…ØªØ­Ù†ÙŠÙ†: <strong>${resultsCount}</strong></span>
+                            <span>الممتحنين: <strong>${resultsCount}</strong></span>
                         </div>
                         <button class="view-results-btn" onclick="openExamResults('${exam._id}')">
-                            <i class="ti ti-list-details"></i> Ø§Ø³ØªØ¹Ø±Ø§Ø¶ Ø§Ù„Ù†ØªØ§Ø¦Ø¬
+                            <i class="ti ti-list-details"></i> استعراض النتائج
                         </button>
                     </div>
                 </div>
@@ -1197,9 +1197,9 @@
         }).join('');
     }
 
-    // â”€â”€â”€ DRILL-DOWN: OPEN RESULTS â”€â”€â”€
+    // ─── DRILL-DOWN: OPEN RESULTS ───
     async function openExamResults(examId) {
-        showToast('Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ù†ØªØ§Ø¦Ø¬ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†...', 'info');
+        showToast('جاري تحميل نتائج الامتحان...', 'info');
 
         try {
             // Fetch complete exam with results and questions
@@ -1207,7 +1207,7 @@
             const data = await res.json();
 
             if (!data.success || !data.exam) {
-                showToast('ØªØ¹Ø°Ø± Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†', 'error');
+                showToast('تعذر العثور على بيانات الامتحان', 'error');
                 return;
             }
 
@@ -1217,15 +1217,15 @@
             // Populate active exam header
             document.getElementById('activeExamTitle').innerHTML = `
                 <i class="ti ti-file-text"></i> ${currentExam.title}
-                <span class="exam-subject-badge">${currentExam.subject || 'Ø¹Ø§Ù…'}</span>
+                <span class="exam-subject-badge">${currentExam.subject || 'عام'}</span>
             `;
 
             const essayCount = (currentExam.questions || []).filter(q => q.type === 'essay').length;
             document.getElementById('activeExamMeta').innerHTML = `
-                <div class="exam-meta-item"><i class="ti ti-star"></i> Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„ÙƒÙ„ÙŠØ©: ${currentExam.totalMarks || 0}</div>
-                <div class="exam-meta-item"><i class="ti ti-help-circle"></i> Ø§Ù„Ø£Ø³Ø¦Ù„Ø©: ${(currentExam.questions || []).length}</div>
-                ${essayCount > 0 ? `<div class="exam-meta-item" style="color:var(--gold);"><i class="ti ti-pencil"></i> ${essayCount} Ø³Ø¤Ø§Ù„ Ù…Ù‚Ø§Ù„ÙŠ</div>` : ''}
-                <div class="exam-meta-item"><i class="ti ti-calendar"></i> ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¥Ø¶Ø§ÙØ©: ${new Date(currentExam.createdAt).toLocaleDateString('ar-EG')}</div>
+                <div class="exam-meta-item"><i class="ti ti-star"></i> الدرجة الكلية: ${currentExam.totalMarks || 0}</div>
+                <div class="exam-meta-item"><i class="ti ti-help-circle"></i> الأسئلة: ${(currentExam.questions || []).length}</div>
+                ${essayCount > 0 ? `<div class="exam-meta-item" style="color:var(--gold);"><i class="ti ti-pencil"></i> ${essayCount} سؤال مقالي</div>` : ''}
+                <div class="exam-meta-item"><i class="ti ti-calendar"></i> تاريخ الإضافة: ${new Date(currentExam.createdAt).toLocaleDateString('ar-EG')}</div>
             `;
 
             // Switch views
@@ -1240,7 +1240,7 @@
 
         } catch (err) {
             console.error('Error fetching exam results:', err);
-            showToast('Ø®Ø·Ø£ ÙÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ù†ØªØ§Ø¦Ø¬', 'error');
+            showToast('خطأ في تحميل النتائج', 'error');
         }
     }
 
@@ -1252,7 +1252,7 @@
         loadExams(); // refresh count
     }
 
-    // â”€â”€â”€ FILTER RESULTS TABLE â”€â”€â”€
+    // ─── FILTER RESULTS TABLE ───
     function filterResultsTable() {
         const query = document.getElementById('studentSearchInput').value.trim().toLowerCase();
         const status = document.getElementById('statusFilterSelect').value;
@@ -1284,7 +1284,7 @@
                 <tr>
                     <td colspan="8" style="text-align:center; padding:40px; color:var(--txt2);">
                         <i class="ti ti-user-x" style="font-size:2rem; display:block; margin-bottom:8px; color:var(--txt3);"></i>
-                        Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø·Ù„Ø§Ø¨ Ù…Ø·Ø§Ø¨Ù‚ÙŠÙ† Ù„Ù„Ø¨Ø­Ø« Ø£Ùˆ Ù„Ù… ÙŠÙ‚Ù… Ø£Ø­Ø¯ Ø¨Ø§Ù„Ø§Ø®ØªØ¨Ø§Ø± Ø¨Ø¹Ø¯
+                        لا يوجد طلاب مطابقين للبحث أو لم يقم أحد بالاختبار بعد
                     </td>
                 </tr>
             `;
@@ -1301,8 +1301,8 @@
 
             const isGraded = r.isGraded !== false;
             const statusHtml = isGraded
-                ? `<span class="status-badge status-graded"><i class="ti ti-check"></i> Ù…ÙƒØªÙ…Ù„</span>`
-                : `<span class="status-badge status-pending"><i class="ti ti-clock"></i> Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ù…Ù‚Ø§Ù„ÙŠ</span>`;
+                ? `<span class="status-badge status-graded"><i class="ti ti-check"></i> مكتمل</span>`
+                : `<span class="status-badge status-pending"><i class="ti ti-clock"></i> بانتظار المقالي</span>`;
 
             const dateStr = r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('ar-EG', {
                 month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
@@ -1315,16 +1315,16 @@
                     <td style="color:var(--txt3); font-weight:700;">${index + 1}</td>
                     <td>
                         <div class="student-cell">
-                            <div class="student-avatar">${escapeHtml((r.studentName || 'Ø·')[0])}</div>
+                            <div class="student-avatar">${escapeHtml((r.studentName || 'ط')[0])}</div>
                             <div>
-                                <div style="font-weight:700;">${escapeHtml(r.studentName || 'Ø·Ø§Ù„Ø¨ Ù…Ø¬Ù‡ÙˆÙ„')}</div>
+                                <div style="font-weight:700;">${escapeHtml(r.studentName || 'طالب مجهول')}</div>
                                 <div style="font-size:0.75rem; color:var(--txt3);">${escapeHtml(r.studentId || '')}</div>
                             </div>
                         </div>
                     </td>
                     <td>
                         ${r.studentPhone ? `
-                            <a href="https://wa.me/2${phoneClean}" target="_blank" class="phone-link" title="Ù…Ø±Ø§Ø³Ù„Ø© Ø¹Ø¨Ø± ÙˆØ§ØªØ³Ø§Ø¨">
+                            <a href="https://wa.me/2${phoneClean}" target="_blank" class="phone-link" title="مراسلة عبر واتساب">
                                 <i class="ti ti-brand-whatsapp" style="color:var(--green);"></i>
                                 ${r.studentPhone}
                             </a>
@@ -1343,12 +1343,12 @@
                     <td>
                         <div class="actions-cell">
                             ${hasEssayQuestions ? `
-                                <button class="btn-action btn-grade" onclick="openGradeModal('${r.studentId}', '${escapeHtml(r.studentName || '')}')" title="ØªØµØ­ÙŠØ­ Ø§Ù„Ù…Ù‚Ø§Ù„ÙŠ">
-                                    <i class="ti ti-checklist"></i> ØªØµØ­ÙŠØ­
+                                <button class="btn-action btn-grade" onclick="openGradeModal('${r.studentId}', '${escapeHtml(r.studentName || '')}')" title="تصحيح المقالي">
+                                    <i class="ti ti-checklist"></i> تصحيح
                                 </button>
                             ` : ''}
-                            <button class="btn-action btn-reset" onclick="confirmResetAttempt('${r.studentId}', '${escapeHtml(r.studentName || '')}')" title="Ø§Ù„Ø³Ù…Ø§Ø­ Ù„Ù„Ø·Ø§Ù„Ø¨ Ø¨Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†">
-                                <i class="ti ti-refresh"></i> Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†
+                            <button class="btn-action btn-reset" onclick="confirmResetAttempt('${r.studentId}', '${escapeHtml(r.studentName || '')}')" title="السماح للطالب بإعادة الامتحان">
+                                <i class="ti ti-refresh"></i> إعادة الامتحان
                             </button>
                         </div>
                     </td>
@@ -1361,14 +1361,14 @@
         return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
     }
 
-    // â”€â”€â”€ ESSAY GRADING MODAL â”€â”€â”€
+    // ─── ESSAY GRADING MODAL ───
     function openGradeModal(studentId, studentName) {
         activeGradingStudentId = studentId;
         document.getElementById('modalStudentName').textContent = studentName;
         
         const result = currentExamResults.find(r => r.studentId === studentId);
         if (!result) {
-            showToast('Ù„Ù… ÙŠØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø¥Ø¬Ø§Ø¨Ø© Ø§Ù„Ø·Ø§Ù„Ø¨', 'error');
+            showToast('لم يتم العثور على إجابة الطالب', 'error');
             return;
         }
 
@@ -1379,25 +1379,25 @@
         currentExam.questions.forEach((q, i) => {
             if (q.type === 'essay') {
                 essayIdx++;
-                const studentAns = (result.answers && result.answers[i]) ? result.answers[i] : 'Ù„Ù… ÙŠÙ‚Ø¯Ù… Ø¥Ø¬Ø§Ø¨Ø©';
+                const studentAns = (result.answers && result.answers[i]) ? result.answers[i] : 'لم يقدم إجابة';
                 const currentScore = (result.essayScores && result.essayScores.find(s => s.questionIndex === i)?.score) || 0;
 
                 html += `
                     <div class="essay-card">
                         <div class="essay-question-text">
-                            <strong>Ø³Ø¤Ø§Ù„ ${essayIdx}:</strong> ${q.text}
+                            <strong>سؤال ${essayIdx}:</strong> ${q.text}
                         </div>
                         <div class="student-answer-box">
-                            <span style="font-size:0.78rem; color:var(--txt2); font-weight:700; display:block; margin-bottom:4px;">Ø¥Ø¬Ø§Ø¨Ø© Ø§Ù„Ø·Ø§Ù„Ø¨:</span>
+                            <span style="font-size:0.78rem; color:var(--txt2); font-weight:700; display:block; margin-bottom:4px;">إجابة الطالب:</span>
                             ${studentAns}
                         </div>
                         ${q.correctAnswer ? `
                             <div class="model-answer-box">
-                                <strong>ðŸ’¡ Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø© Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ÙŠØ©:</strong> ${q.correctAnswer}
+                                <strong>💡 الإجابة النموذجية:</strong> ${q.correctAnswer}
                             </div>
                         ` : ''}
                         <div class="grade-input-row">
-                            <label>Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„Ù…Ù…Ù†ÙˆØ­Ø©:</label>
+                            <label>الدرجة الممنوحة:</label>
                             <input type="number" class="essay-score-input" data-index="${i}" value="${currentScore}" min="0" step="0.5">
                         </div>
                     </div>
@@ -1405,7 +1405,7 @@
             }
         });
 
-        container.innerHTML = html || '<p style="text-align:center; color:var(--txt2); padding:20px;">Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø³Ø¦Ù„Ø© Ù…Ù‚Ø§Ù„ÙŠØ© ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†</p>';
+        container.innerHTML = html || '<p style="text-align:center; color:var(--txt2); padding:20px;">لا توجد أسئلة مقالية في هذا الامتحان</p>';
         document.getElementById('gradeEssayModal').classList.add('open');
     }
 
@@ -1424,7 +1424,7 @@
             grades[idx] = parseFloat(input.value) || 0;
         });
 
-        showToast('Ø¬Ø§Ø±ÙŠ Ø­ÙØ¸ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ù†ØªÙŠØ¬Ø©...', 'info');
+        showToast('جاري حفظ الدرجات وتحديث النتيجة...', 'info');
 
         try {
             const res = await fetch(`${API}/api/exams/${currentExam._id}/grade-essay`, {
@@ -1438,7 +1438,7 @@
 
             const data = await res.json();
             if (data.success) {
-                showToast('ØªÙ… Ø­ÙØ¸ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø¨Ù†Ø¬Ø§Ø­', 'success');
+                showToast('تم حفظ الدرجات وتحديث النتيجة بنجاح', 'success');
                 closeGradeModal();
 
                 // Update local student in currentExamResults
@@ -1448,27 +1448,27 @@
                 }
                 filterResultsTable();
             } else {
-                showToast(data.message || 'ÙØ´Ù„ Ø­ÙØ¸ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª', 'error');
+                showToast(data.message || 'فشل حفظ الدرجات', 'error');
             }
         } catch (err) {
             console.error('Error grading essays:', err);
-            showToast('Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù… Ø£Ø«Ù†Ø§Ø¡ Ø­ÙØ¸ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª', 'error');
+            showToast('خطأ في الاتصال بالخادم أثناء حفظ الدرجات', 'error');
         }
     }
 
-    // â”€â”€â”€ RESET STUDENT ATTEMPT â”€â”€â”€
+    // ─── RESET STUDENT ATTEMPT ───
     let pendingResetCallback = null;
 
     function confirmResetAttempt(studentId, studentName) {
-        document.getElementById('confirmTitle').textContent = 'Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ù„Ù„Ø·Ø§Ù„Ø¨';
+        document.getElementById('confirmTitle').textContent = 'إعادة الامتحان للطالب';
         document.getElementById('confirmMessage').innerHTML = `
-            Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø­Ø°Ù Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ù„Ø·Ø§Ù„Ø¨ <strong>"${studentName}"</strong> ÙˆØ§Ù„Ø³Ù…Ø§Ø­ Ù„Ù‡ Ø¨Ø¥Ø¹Ø§Ø¯Ø© Ù‡Ø°Ø§ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ØŸ<br>
-            <span style="color:var(--txt3); font-size:0.85rem; display:block; margin-top:6px;">âš ï¸ Ø³ÙŠØªÙ… Ù…Ø³Ø­ Ø¯Ø±Ø¬ØªÙ‡ Ø§Ù„Ø­Ø§Ù„ÙŠØ© ÙˆØ¥ØªØ§Ø­Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ù„Ù‡ Ù…Ù† Ø¬Ø¯ÙŠØ¯.</span>
+            هل أنت متأكد من حذف محاولة الطالب <strong>"${studentName}"</strong> والسماح له بإعادة هذا الامتحان مرة أخرى؟<br>
+            <span style="color:var(--txt3); font-size:0.85rem; display:block; margin-top:6px;">⚠️ سيتم مسح درجته الحالية وإتاحة الامتحان له من جديد.</span>
         `;
 
         pendingResetCallback = async () => {
             closeConfirmModal();
-            showToast('Ø¬Ø§Ø±ÙŠ Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ù„Ø·Ø§Ù„Ø¨...', 'info');
+            showToast('جاري إعادة تعيين محاولة الطالب...', 'info');
 
             try {
                 const res = await fetch(`${API}/api/exams/${currentExam._id}/results/${studentId}`, {
@@ -1477,16 +1477,16 @@
 
                 const data = await res.json();
                 if (data.success) {
-                    showToast('ØªÙ…Øª Ø¥Ø¹Ø§Ø¯Ø© ÙØªØ­ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ù„Ù„Ø·Ø§Ù„Ø¨ Ø¨Ù†Ø¬Ø§Ø­!', 'success');
+                    showToast('تمت إعادة فتح الامتحان للطالب بنجاح!', 'success');
                     // Remove from local results
                     currentExamResults = currentExamResults.filter(r => r.studentId !== studentId);
                     filterResultsTable();
                 } else {
-                    showToast(data.message || 'ØªØ¹Ø°Ø± Ø¥Ø¹Ø§Ø¯Ø© ØªØ¹ÙŠÙŠÙ† Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†', 'error');
+                    showToast(data.message || 'تعذر إعادة تعيين الامتحان', 'error');
                 }
             } catch (err) {
                 console.error('Error resetting exam:', err);
-                showToast('Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù…', 'error');
+                showToast('خطأ في الاتصال بالخادم', 'error');
             }
         };
 
@@ -1500,18 +1500,18 @@
         pendingResetCallback = null;
     }
 
-    // â”€â”€â”€ EXPORT CSV â”€â”€â”€
+    // ─── EXPORT CSV ───
     function exportResultsCSV() {
         if (!currentExamResults || !currentExamResults.length) {
-            showToast('Ù„Ø§ ØªÙˆØ¬Ø¯ Ù†ØªØ§Ø¦Ø¬ Ù„ØªØµØ¯ÙŠØ±Ù‡Ø§ Ù„Ù‡Ø°Ø§ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†', 'error');
+            showToast('لا توجد نتائج لتصديرها لهذا الامتحان', 'error');
             return;
         }
 
-        const title = currentExam ? currentExam.title : 'Ù†ØªØ§Ø¦Ø¬_Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†';
-        let csv = '\uFEFFÙ…,Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨,Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ,Ø§Ù„Ø¯Ø±Ø¬Ø©,Ø§Ù„Ù†Ø³Ø¨Ø©,Ø§Ù„Ø­Ø§Ù„Ø©,ØªØ§Ø±ÙŠØ® Ø§Ù„ØªØ³Ù„ÙŠÙ…\n';
+        const title = currentExam ? currentExam.title : 'نتائج_الامتحان';
+        let csv = '\uFEFFم,اسم الطالب,رقم الهاتف,الدرجة,النسبة,الحالة,تاريخ التسليم\n';
 
         currentExamResults.forEach((r, i) => {
-            const status = r.isGraded !== false ? 'ØªÙ… Ø§Ù„ØªØµØ­ÙŠØ­' : 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± ØªØµØ­ÙŠØ­ Ø§Ù„Ù…Ù‚Ø§Ù„ÙŠ';
+            const status = r.isGraded !== false ? 'تم التصحيح' : 'بانتظار تصحيح المقالي';
             const date = r.submittedAt ? new Date(r.submittedAt).toLocaleDateString('ar-EG') : '';
             const pct = typeof r.percentage === 'number' ? r.percentage : Math.round((r.score / (currentExam.totalMarks || 1)) * 100);
             csv += `${i + 1},"${r.studentName || ''}",${r.studentPhone || ''},${r.score || 0},${pct}%,${status},${date}\n`;
@@ -1520,9 +1520,9 @@
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `Ù†ØªØ§Ø¦Ø¬_${title}_${Date.now()}.csv`;
+        a.download = `نتائج_${title}_${Date.now()}.csv`;
         a.click();
-        showToast('ØªÙ… ØªØµØ¯ÙŠØ± Ù…Ù„Ù Ø§Ù„Ù†ØªØ§Ø¦Ø¬ Ø¨Ù†Ø¬Ø§Ø­', 'success');
+        showToast('تم تصدير ملف النتائج بنجاح', 'success');
     }
 
     // Initial Load
