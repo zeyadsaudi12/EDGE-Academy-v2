@@ -16,9 +16,20 @@
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background: var(--bg, #f4f7fb);
-            color: var(--text-dark, #0f172a);
+            background: #f0f4ff;
+            color: #1a2744;
             min-height: 100vh;
+        }
+        body.dark-mode {
+            background: #0d1526;
+            color: #e8effe;
+        }
+        #dashPage > header {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            left: 0 !important;
+            z-index: 10000 !important;
         }
 
         /* ─── LOGIN PAGE ─── */
@@ -670,7 +681,7 @@
 
     function showDash() {
         const { currentUser } = checkAuth();
-        const nameEl = document.getElementById('assistantNameDisplay');
+        const nameEl = document.getElementById('navUserName') || document.getElementById('assistantNameDisplay');
         if (nameEl && currentUser && currentUser.firstName) {
             nameEl.textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
         }
@@ -706,7 +717,7 @@
                 allQuestions = data.data;
                 renderGrid();
             } else {
-                grid.innerHTML = '<div class="empty-state"><i class="ti ti-alert-circle"></i>حدث خطأ في جلب الأسئلة</div>';
+                grid.innerHTML = `<div class="empty-state"><i class="ti ti-alert-circle"></i>${escapeHtml(data.message || 'حدث خطأ في جلب الأسئلة')}</div>`;
             }
         } catch(e) {
             grid.innerHTML = `<div class="empty-state"><i class="ti ti-wifi-off"></i>تعذّر الاتصال بالسيرفر<br><small>${e.message}</small></div>`;

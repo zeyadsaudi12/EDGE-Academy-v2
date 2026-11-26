@@ -1001,7 +1001,7 @@
     const API = window.location.origin;
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     const isAssistantSession = sessionStorage.getItem('assistantLoggedIn') === '1';
-    const isAllowedRole = currentUser && (currentUser.role === 'assistant' || currentUser.role === 'teacher' || currentUser.role === 'admin') && !currentUser.isTeacherAccount;
+    const isAllowedRole = currentUser && (currentUser.role === 'assistant' || ((currentUser.role === 'teacher' || currentUser.role === 'admin') && !currentUser.isTeacherAccount));
 
     if (!isAssistantSession && !isAllowedRole) {
         alert('جلسة الدخول غير صالحة، يرجى تسجيل الدخول أولاً.');
@@ -1009,10 +1009,10 @@
     }
 
     // Set Name in Topbar
-    const nameEl = document.getElementById('userName');
-    if (currentUser) {
-        const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '') || currentUser.name || 'المساعد';
-        nameEl.textContent = fullName.trim();
+    const nameEl = document.getElementById('navUserName') || document.getElementById('userName');
+    if (nameEl && currentUser) {
+        const fullName = ((currentUser.firstName || '') + ' ' + (currentUser.lastName || '')).trim() || currentUser.name || 'المساعد';
+        nameEl.textContent = fullName;
     }
 
     
@@ -1078,7 +1078,7 @@
                 params.append('teacherId', currentUser.teacherId);
             }
 
-            const res = await fetch(`${API}/api/exams?${params.toString()}`);
+            const res = await fetch(`${API}/api/exams?${params.toString()}`, { credentials: 'include' });
             const data = await res.json();
 
             if (!data.success) {
