@@ -7159,3 +7159,37 @@ img, video, iframe {
         min-height: 30px !important;
     }
 }
+
+/* ══ Auth Pages – Final Mobile Override (v20) ══ */
+/* Ensures no floating card on login/register mobile - overrides all previous rules */
+@media (max-width: 599px) {
+    /* Login right panel: full-width, top-aligned, transparent */
+    body.auth-body.login-page section.auth-right,
+    body.auth-body.login-page .auth-right,
+    body.auth-body.login-page .login-form-panel {
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        min-height: 100dvh !important;
+        background: #ffffff !important;
+    }
+    body.dark-mode.auth-body.login-page section.auth-right,
+    body.dark-mode.auth-body.login-page .auth-right {
+        background: #0f172a !important;
+    }
+    /* form-panel full width, no card appearance */
+    body.auth-body.login-page .form-panel,
+    body.auth-body.login-page .form-panel.auth-card,
+    body.auth-body.register-page .form-panel,
+    body.auth-body.register-page .form-panel.auth-card {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        backdrop-filter: none !important;
+        padding: max(12px, env(safe-area-inset-top)) 14px max(24px, env(safe-area-inset-bottom)) !important;
+    }
+}
+

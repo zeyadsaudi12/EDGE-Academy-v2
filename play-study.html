@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <!-- EDGE Academy Favicon -->
@@ -8,9 +8,9 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=20261126-v19">
+    <link rel="stylesheet" href="style.css?v=20261126-v20">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Play & Study | العب واتعلم واكسب جوائز - EDGE Academy</title>
+    <title>Play & Study | Ø§Ù„Ø¹Ø¨ ÙˆØ§ØªØ¹Ù„Ù… ÙˆØ§ÙƒØ³Ø¨ Ø¬ÙˆØ§Ø¦Ø² - EDGE Academy</title>
     <style>
         :root {
             --ps-primary: #1a6bdb;
@@ -57,7 +57,7 @@
         }
 
         .ps-hero-banner::after {
-            content: "🎮";
+            content: "ðŸŽ®";
             position: absolute;
             left: -20px;
             bottom: -30px;
@@ -84,7 +84,7 @@
             line-height: 1.6;
         }
 
-        /* ── HUD Widgets (Points & Energy) ── */
+        /* â”€â”€ HUD Widgets (Points & Energy) â”€â”€ */
         .ps-hud-cards {
             display: flex;
             align-items: center;
@@ -129,7 +129,7 @@
             color: #fff;
         }
 
-        /* ── Master Grid Container ── */
+        /* â”€â”€ Master Grid Container â”€â”€ */
         .ps-container {
             max-width: 1240px;
             margin: 0 auto 60px;
@@ -140,7 +140,7 @@
             align-items: start;
         }
 
-        /* ── Main Arena Card ── */
+        /* â”€â”€ Main Arena Card â”€â”€ */
         .ps-arena-card {
             background: var(--ps-card);
             border: 1px solid var(--ps-border);
@@ -250,7 +250,7 @@
             box-shadow: 0 10px 30px rgba(0, 184, 148, 0.4);
         }
 
-        /* ── Quiz Playing View ── */
+        /* â”€â”€ Quiz Playing View â”€â”€ */
         #quizPlayView {
             display: none;
         }
@@ -319,7 +319,7 @@
             color: #1a6bdb !important;
         }
 
-        /* ── Sidebar (Redeem Store & Leaderboard) ── */
+        /* â”€â”€ Sidebar (Redeem Store & Leaderboard) â”€â”€ */
         .ps-side-col {
             display: flex;
             flex-direction: column;
@@ -446,17 +446,17 @@
 </head>
 <body class="royal-dashboard">
 
-<!-- Header الموحد للمنصة -->
+<!-- Header Ø§Ù„Ù…ÙˆØ­Ø¯ Ù„Ù„Ù…Ù†ØµØ© -->
 <header>
     <div class="header-inner">
-        <!-- اليمين: شعار المنصة وزر تبديل اللغة بجانبه -->
+        <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© ÙˆØ²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨Ù‡ -->
         <div class="header-right">
-            <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+            <a href="/" class="header-brand" aria-label="EDGE Academy Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
-            <!-- زر تبديل اللغة بجانب اللوجو -->
-            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+            <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨ Ø§Ù„Ù„ÙˆØ¬Ùˆ -->
+            <button type="button" class="language-switcher" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ©" title="Switch Language">
                 <span>EN</span>
                 <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -466,79 +466,79 @@
             </button>
         </div>
 
-        <!-- المنتصف: روابط التنقل -->
+        <!-- Ø§Ù„Ù…Ù†ØªØµÙ: Ø±ÙˆØ§Ø¨Ø· Ø§Ù„ØªÙ†Ù‚Ù„ -->
         <div class="header-center">
-            <a href="/" class="nav-link-item">الرئيسية</a>
-            <a href="teachers" class="nav-link-item">المعلمين</a>
-            <a href="subjects" class="nav-link-item">المواد الدراسية</a>
-            <a href="courses" class="nav-link-item">الكورسات</a>
-            <a href="exams" class="nav-link-item">الامتحانات</a>
-            <a href="play-study" class="nav-link-item play-study-nav-btn active">🎮 Play & Study</a>
-            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="/" class="nav-link-item">Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a>
+            <a href="teachers" class="nav-link-item">Ø§Ù„Ù…Ø¹Ù„Ù…ÙŠÙ†</a>
+            <a href="subjects" class="nav-link-item">Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©</a>
+            <a href="courses" class="nav-link-item">Ø§Ù„ÙƒÙˆØ±Ø³Ø§Øª</a>
+            <a href="exams" class="nav-link-item">Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
+            <a href="play-study" class="nav-link-item play-study-nav-btn active">ðŸŽ® Play & Study</a>
+            <!-- Ø²Ø± Ù„ÙˆØ­Ø© ØªØ­ÙƒÙ… Ø§Ù„Ø£Ø¯Ù…Ù† (ÙŠØ¸Ù‡Ø± ÙÙ‚Ø· Ø¥Ø°Ø§ ÙƒØ§Ù† Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø³Ø¬Ù„ ÙƒÙ€ Admin) -->
             <a href="admin" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none;">
-                <i class="fas fa-crown"></i> صفحة الادمن
+                <i class="fas fa-crown"></i> ØµÙØ­Ø© Ø§Ù„Ø§Ø¯Ù…Ù†
             </a>
         </div>
 
-        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
+        <!-- Ø§Ù„ÙŠØ³Ø§Ø±: Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆÙ…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ -->
         <div class="header-left">
-            <!-- أزرار الزائر -->
+            <!-- Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ø²Ø§Ø¦Ø± -->
             <nav class="header-actions" id="authActions">
-                <a href="login" class="btn-outline">تسجيل الدخول</a>
-                <a href="register" class="btn-fill">سجل الآن</a>
+                <a href="login" class="btn-outline">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>
+                <a href="register" class="btn-fill">Ø³Ø¬Ù„ Ø§Ù„Ø¢Ù†</a>
             </nav>
 
-            <!-- قائمة الطالب عند تسجيل الدخول -->
+            <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ø·Ø§Ù„Ø¨ Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ -->
             <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
                 <button class="user-menu-btn" onclick="toggleUserMenu()">
-                    <span id="navUserName">الطالب</span>
-                    <div class="user-icon-circle">👤</div>
+                    <span id="navUserName">Ø§Ù„Ø·Ø§Ù„Ø¨</span>
+                    <div class="user-icon-circle">ðŸ‘¤</div>
                 </button>
                 <div class="user-dropdown-menu" id="userMenu">
                     <a href="admin" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
-                        👑 صفحة الادمن
+                        ðŸ‘‘ ØµÙØ­Ø© Ø§Ù„Ø§Ø¯Ù…Ù†
                     </a>
-                    <a href="profile" class="menu-item">👤 البروفايل</a>
+                    <a href="profile" class="menu-item">ðŸ‘¤ Ø§Ù„Ø¨Ø±ÙˆÙØ§ÙŠÙ„</a>
                     <div class="menu-item balance-item">
-                        <span>💰 الرصيد:</span>
-                        <span id="userPoints">0</span> ج.م
+                        <span>ðŸ’° Ø§Ù„Ø±ØµÙŠØ¯:</span>
+                        <span id="userPoints">0</span> Ø¬.Ù…
                     </div>
                     <hr>
-                    <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+                    <button onclick="handleLogout()" class="menu-item logout-btn">ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬</button>
                 </div>
             </div>
 
-            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) -->
-            <div class="theme-capsule" aria-label="تبديل المظهر">
-                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
-                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
+            <!-- Ù…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ Ø¨ØªØµÙ…ÙŠÙ… ÙƒØ¨Ø³ÙˆÙ„Ø© Ø£Ù†ÙŠÙ‚Ø© (Ø§Ù„Ù†Ù‡Ø§Ø± / Ø§Ù„Ù„ÙŠÙ„) -->
+            <div class="theme-capsule" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¸Ù‡Ø±">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±" title="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±">â˜€</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…" title="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…">ðŸŒ™</button>
             </div>
 
-            <!-- زر الهامبرغر للموبايل -->
-            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+            <!-- Ø²Ø± Ø§Ù„Ù‡Ø§Ù…Ø¨Ø±ØºØ± Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </div>
 
-    <!-- قائمة الموبايل المنسدلة -->
+    <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ Ø§Ù„Ù…Ù†Ø³Ø¯Ù„Ø© -->
     <div class="mobile-nav-menu" id="mobileNavMenu">
         <a href="admin" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
-            👑 صفحة الادمن
+            ðŸ‘‘ ØµÙØ­Ø© Ø§Ù„Ø§Ø¯Ù…Ù†
         </a>
-        <a href="/" class="mobile-nav-link">🏠 الرئيسية</a>
-        <a href="teachers" class="mobile-nav-link">👨‍🏫 المعلمين</a>
-        <a href="subjects" class="mobile-nav-link">📚 المواد الدراسية</a>
-        <a href="courses" class="mobile-nav-link">🎥 الكورسات</a>
-        <a href="exams" class="mobile-nav-link">📝 الامتحانات</a>
-        <a href="play-study" class="mobile-nav-link play-study-nav-btn active">🎮 Play & Study</a>
+        <a href="/" class="mobile-nav-link">ðŸ  Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a>
+        <a href="teachers" class="mobile-nav-link">ðŸ‘¨â€ðŸ« Ø§Ù„Ù…Ø¹Ù„Ù…ÙŠÙ†</a>
+        <a href="subjects" class="mobile-nav-link">ðŸ“š Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©</a>
+        <a href="courses" class="mobile-nav-link">ðŸŽ¥ Ø§Ù„ÙƒÙˆØ±Ø³Ø§Øª</a>
+        <a href="exams" class="mobile-nav-link">ðŸ“ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
+        <a href="play-study" class="mobile-nav-link play-study-nav-btn active">ðŸŽ® Play & Study</a>
         <div class="mobile-menu-auth" id="mobileAuthGuest">
-            <a href="login" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
-            <a href="register" class="btn-fill" style="text-align:center;">سجل الآن</a>
+            <a href="login" class="btn-outline" style="text-align:center;">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>
+            <a href="register" class="btn-fill" style="text-align:center;">Ø³Ø¬Ù„ Ø§Ù„Ø¢Ù†</a>
         </div>
         <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
-            <a href="profile" class="mobile-nav-link">👤 البروفايل</a>
-            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
+            <a href="profile" class="mobile-nav-link">ðŸ‘¤ Ø§Ù„Ø¨Ø±ÙˆÙØ§ÙŠÙ„</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬</button>
         </div>
     </div>
 </header>
@@ -547,8 +547,8 @@
     <!-- Hero Banner with HUD -->
     <div class="ps-hero-banner">
         <div class="ps-title-wrap">
-            <h1>🎮 Play & Study | العب، اتعلم واكسب</h1>
-            <p>تحدَّ نفسك في كويزات سريعة من 5 أسئلة، اجمع النقاط يومياً واستبدل كل 200 نقطة بكود مجاني بقيمة 100 جنيه لأي محاضرة تختارها!</p>
+            <h1>ðŸŽ® Play & Study | Ø§Ù„Ø¹Ø¨ØŒ Ø§ØªØ¹Ù„Ù… ÙˆØ§ÙƒØ³Ø¨</h1>
+            <p>ØªØ­Ø¯ÙŽÙ‘ Ù†ÙØ³Ùƒ ÙÙŠ ÙƒÙˆÙŠØ²Ø§Øª Ø³Ø±ÙŠØ¹Ø© Ù…Ù† 5 Ø£Ø³Ø¦Ù„Ø©ØŒ Ø§Ø¬Ù…Ø¹ Ø§Ù„Ù†Ù‚Ø§Ø· ÙŠÙˆÙ…ÙŠØ§Ù‹ ÙˆØ§Ø³ØªØ¨Ø¯Ù„ ÙƒÙ„ 200 Ù†Ù‚Ø·Ø© Ø¨ÙƒÙˆØ¯ Ù…Ø¬Ø§Ù†ÙŠ Ø¨Ù‚ÙŠÙ…Ø© 100 Ø¬Ù†ÙŠÙ‡ Ù„Ø£ÙŠ Ù…Ø­Ø§Ø¶Ø±Ø© ØªØ®ØªØ§Ø±Ù‡Ø§!</p>
         </div>
         
         <div class="ps-hud-cards">
@@ -556,7 +556,7 @@
             <div class="hud-card">
                 <div class="hud-icon gold"><i class="fas fa-coins"></i></div>
                 <div class="hud-info">
-                    <small>رصيد النقاط</small>
+                    <small>Ø±ØµÙŠØ¯ Ø§Ù„Ù†Ù‚Ø§Ø·</small>
                     <strong id="hudPoints">0</strong>
                 </div>
             </div>
@@ -565,7 +565,7 @@
             <div class="hud-card">
                 <div class="hud-icon energy"><i class="fas fa-bolt"></i></div>
                 <div class="hud-info">
-                    <small>المحاولات اليومية</small>
+                    <small>Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø§Øª Ø§Ù„ÙŠÙˆÙ…ÙŠØ©</small>
                     <strong id="hudEnergy">4 / 4</strong>
                 </div>
             </div>
@@ -581,52 +581,52 @@
             <!-- VIEW 1: Lobby / Subject Select -->
             <div id="quizLobbyView">
                 <div class="arena-header">
-                    <h2><i class="fas fa-gamepad" style="color:#1a6bdb;"></i> ساحة التحدي السريع</h2>
-                    <span style="font-weight:800; font-size:0.88rem; color:var(--ps-muted);">5 أسئلة • اختيار من متعدد</span>
+                    <h2><i class="fas fa-gamepad" style="color:#1a6bdb;"></i> Ø³Ø§Ø­Ø© Ø§Ù„ØªØ­Ø¯ÙŠ Ø§Ù„Ø³Ø±ÙŠØ¹</h2>
+                    <span style="font-weight:800; font-size:0.88rem; color:var(--ps-muted);">5 Ø£Ø³Ø¦Ù„Ø© â€¢ Ø§Ø®ØªÙŠØ§Ø± Ù…Ù† Ù…ØªØ¹Ø¯Ø¯</span>
                 </div>
 
                 <!-- Rules Pill Row -->
                 <div class="rules-badge-row">
-                    <div class="rule-pill highlight"><i class="fas fa-crown"></i> 100% الدرجة النهائية = <b>+10 نقاط</b></div>
-                    <div class="rule-pill"><i class="fas fa-star-half-alt"></i> من 70% إلى 99% = <b>+5 نقاط</b></div>
-                    <div class="rule-pill"><i class="fas fa-times-circle"></i> أقل من 70% = 0 نقطة</div>
-                    <div class="rule-pill"><i class="fas fa-battery-half"></i> 4 محاولات يومياً</div>
+                    <div class="rule-pill highlight"><i class="fas fa-crown"></i> 100% Ø§Ù„Ø¯Ø±Ø¬Ø© Ø§Ù„Ù†Ù‡Ø§Ø¦ÙŠØ© = <b>+10 Ù†Ù‚Ø§Ø·</b></div>
+                    <div class="rule-pill"><i class="fas fa-star-half-alt"></i> Ù…Ù† 70% Ø¥Ù„Ù‰ 99% = <b>+5 Ù†Ù‚Ø§Ø·</b></div>
+                    <div class="rule-pill"><i class="fas fa-times-circle"></i> Ø£Ù‚Ù„ Ù…Ù† 70% = 0 Ù†Ù‚Ø·Ø©</div>
+                    <div class="rule-pill"><i class="fas fa-battery-half"></i> 4 Ù…Ø­Ø§ÙˆÙ„Ø§Øª ÙŠÙˆÙ…ÙŠØ§Ù‹</div>
                 </div>
 
                 <!-- Section: Watched Lectures Ready for Quiz -->
                 <div style="margin-bottom:24px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
                         <h3 style="margin:0; font-size:1.15rem; font-weight:900; color:var(--ps-text); display:flex; align-items:center; gap:8px;">
-                            <i class="fas fa-play-circle" style="color:#10b981;"></i> المحاضرات التي شاهدتها ومتاحة للاختبار:
+                            <i class="fas fa-play-circle" style="color:#10b981;"></i> Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„ØªÙŠ Ø´Ø§Ù‡Ø¯ØªÙ‡Ø§ ÙˆÙ…ØªØ§Ø­Ø© Ù„Ù„Ø§Ø®ØªØ¨Ø§Ø±:
                         </h3>
                         <span style="font-size:0.8rem; font-weight:800; color:#10b981; background:rgba(16,185,129,0.1); padding:4px 12px; border-radius:50px;">
-                            ✅ فقط ما أتممت مشاهدته
+                            âœ… ÙÙ‚Ø· Ù…Ø§ Ø£ØªÙ…Ù…Øª Ù…Ø´Ø§Ù‡Ø¯ØªÙ‡
                         </span>
                     </div>
 
                     <!-- Watched Lectures Container -->
                     <div id="watchedLecturesGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:14px; margin-bottom:18px;">
                         <div style="text-align:center; padding:30px; grid-column:1/-1; color:var(--ps-muted); font-size:0.9rem; font-weight:700;">
-                            <i class="fas fa-spinner fa-spin"></i> جاري جلب المحاضرات التي شاهدتها...
+                            <i class="fas fa-spinner fa-spin"></i> Ø¬Ø§Ø±ÙŠ Ø¬Ù„Ø¨ Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø§Ù„ØªÙŠ Ø´Ø§Ù‡Ø¯ØªÙ‡Ø§...
                         </div>
                     </div>
                 </div>
 
                 <!-- Start Button (Enabled ONLY when a watched lecture is selected) -->
                 <button class="btn-launch-quiz" id="btnLaunchQuiz" onclick="startPlayStudyQuiz()" disabled style="background:#94a3b8; cursor:not-allowed; opacity:0.85;">
-                    <i class="fas fa-lock" id="btnLaunchIcon"></i> <span id="btnLaunchText">حدد محاضرة شاهدتها لبدء التحدي</span>
+                    <i class="fas fa-lock" id="btnLaunchIcon"></i> <span id="btnLaunchText">Ø­Ø¯Ø¯ Ù…Ø­Ø§Ø¶Ø±Ø© Ø´Ø§Ù‡Ø¯ØªÙ‡Ø§ Ù„Ø¨Ø¯Ø¡ Ø§Ù„ØªØ­Ø¯ÙŠ</span>
                 </button>
             </div>
 
             <!-- VIEW 2: Active Quiz Playing -->
             <div id="quizPlayView">
                 <div class="arena-header">
-                    <h2><i class="fas fa-question-circle" style="color:#00b894;"></i> السؤال <span id="qCurrentIndex">1</span> من 5</h2>
+                    <h2><i class="fas fa-question-circle" style="color:#00b894;"></i> Ø§Ù„Ø³Ø¤Ø§Ù„ <span id="qCurrentIndex">1</span> Ù…Ù† 5</h2>
                     <div style="display:flex; align-items:center; gap:16px;">
-                        <div id="quizTimer" style="font-weight:900; color:#e11d48; font-size:1.1rem;"><i class="fas fa-stopwatch"></i> <span id="timerVal">25</span> ث</div>
+                        <div id="quizTimer" style="font-weight:900; color:#e11d48; font-size:1.1rem;"><i class="fas fa-stopwatch"></i> <span id="timerVal">25</span> Ø«</div>
                         <!-- Exit Button (Cancels game & consumes attempt) -->
                         <button onclick="confirmExitQuiz()" type="button" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:6px 14px; border-radius:10px; font-weight:800; font-size:0.82rem; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
-                            <i class="fas fa-sign-out-alt"></i> انسحاب وخروج
+                            <i class="fas fa-sign-out-alt"></i> Ø§Ù†Ø³Ø­Ø§Ø¨ ÙˆØ®Ø±ÙˆØ¬
                         </button>
                     </div>
                 </div>
@@ -636,41 +636,41 @@
                 </div>
 
                 <div class="quiz-question-box">
-                    <h3 class="quiz-question-title" id="qTitle">جاري تحميل السؤال...</h3>
+                    <h3 class="quiz-question-title" id="qTitle">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø³Ø¤Ø§Ù„...</h3>
                     <div class="options-list" id="qOptionsList">
                         <!-- Options injected dynamically -->
                     </div>
                 </div>
 
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:0.85rem; color:var(--ps-muted); font-weight:700;" id="quizSubjectLabel">مادة: عام</span>
+                    <span style="font-size:0.85rem; color:var(--ps-muted); font-weight:700;" id="quizSubjectLabel">Ù…Ø§Ø¯Ø©: Ø¹Ø§Ù…</span>
                     <button id="btnNextQuestion" onclick="nextQuestion()" style="background:#1a6bdb; color:#fff; border:none; padding:12px 28px; border-radius:12px; font-weight:800; font-size:1rem; cursor:pointer;" disabled>
-                        التالي <i class="fas fa-arrow-left"></i>
+                        Ø§Ù„ØªØ§Ù„ÙŠ <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
             </div>
 
             <!-- VIEW 3: Result Summary -->
             <div id="quizResultView" style="display:none; text-align:center; padding:20px 0;">
-                <div id="resultIcon" style="font-size:4rem; margin-bottom:12px;">🎉</div>
-                <h2 id="resultHeading" style="margin:0 0 8px; font-weight:900;">نتيجة التحدي</h2>
-                <p id="resultMsg" style="font-size:1.05rem; color:var(--ps-muted); font-weight:700; margin:0 0 20px;">لقد حصلت على 5 من 5</p>
+                <div id="resultIcon" style="font-size:4rem; margin-bottom:12px;">ðŸŽ‰</div>
+                <h2 id="resultHeading" style="margin:0 0 8px; font-weight:900;">Ù†ØªÙŠØ¬Ø© Ø§Ù„ØªØ­Ø¯ÙŠ</h2>
+                <p id="resultMsg" style="font-size:1.05rem; color:var(--ps-muted); font-weight:700; margin:0 0 20px;">Ù„Ù‚Ø¯ Ø­ØµÙ„Øª Ø¹Ù„Ù‰ 5 Ù…Ù† 5</p>
                 
                 <div style="display:inline-flex; align-items:center; gap:20px; background:var(--ps-card-alt); padding:16px 30px; border-radius:20px; margin-bottom:24px;">
                     <div>
-                        <small style="display:block; color:var(--ps-muted); font-weight:800;">النسبة المئوية</small>
+                        <small style="display:block; color:var(--ps-muted); font-weight:800;">Ø§Ù„Ù†Ø³Ø¨Ø© Ø§Ù„Ù…Ø¦ÙˆÙŠØ©</small>
                         <strong id="resPercentage" style="font-size:1.4rem; color:#1a6bdb;">100%</strong>
                     </div>
                     <div style="width:1px; height:36px; background:var(--ps-border);"></div>
                     <div>
-                        <small style="display:block; color:var(--ps-muted); font-weight:800;">النقاط المكتسبة</small>
-                        <strong id="resEarnedPoints" style="font-size:1.4rem; color:#f59e0b;">+10 نقاط</strong>
+                        <small style="display:block; color:var(--ps-muted); font-weight:800;">Ø§Ù„Ù†Ù‚Ø§Ø· Ø§Ù„Ù…ÙƒØªØ³Ø¨Ø©</small>
+                        <strong id="resEarnedPoints" style="font-size:1.4rem; color:#f59e0b;">+10 Ù†Ù‚Ø§Ø·</strong>
                     </div>
                 </div>
 
                 <div>
                     <button onclick="returnToLobby()" style="background:#1a6bdb; color:#fff; border:none; padding:12px 30px; border-radius:50px; font-weight:800; font-size:1rem; cursor:pointer;">
-                        <i class="fas fa-redo"></i> العودة للساحة
+                        <i class="fas fa-redo"></i> Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„Ø³Ø§Ø­Ø©
                     </button>
                 </div>
             </div>
@@ -682,34 +682,34 @@
             
             <!-- 1. Redeem Store -->
             <div class="side-widget-card">
-                <h3 class="widget-title"><i class="fas fa-gift" style="color:#f59e0b;"></i> متجر استبدال الجوائز</h3>
+                <h3 class="widget-title"><i class="fas fa-gift" style="color:#f59e0b;"></i> Ù…ØªØ¬Ø± Ø§Ø³ØªØ¨Ø¯Ø§Ù„ Ø§Ù„Ø¬ÙˆØ§Ø¦Ø²</h3>
                 
                 <div class="redeem-box">
-                    <h4>🎁 كود بقيمة 100 جنيه</h4>
-                    <p style="margin:0; font-size:0.84rem; color:var(--ps-muted); font-weight:700;">صالح لتفعيل أي فيديو أو محاضرة من اختيارك على المنصة.</p>
+                    <h4>ðŸŽ ÙƒÙˆØ¯ Ø¨Ù‚ÙŠÙ…Ø© 100 Ø¬Ù†ÙŠÙ‡</h4>
+                    <p style="margin:0; font-size:0.84rem; color:var(--ps-muted); font-weight:700;">ØµØ§Ù„Ø­ Ù„ØªÙØ¹ÙŠÙ„ Ø£ÙŠ ÙÙŠØ¯ÙŠÙˆ Ø£Ùˆ Ù…Ø­Ø§Ø¶Ø±Ø© Ù…Ù† Ø§Ø®ØªÙŠØ§Ø±Ùƒ Ø¹Ù„Ù‰ Ø§Ù„Ù…Ù†ØµØ©.</p>
                     <div class="redeem-progress-bar">
                         <div class="redeem-progress-fill" id="redeemFill" style="width:0%;"></div>
                     </div>
-                    <small style="font-weight:800; color:var(--ps-muted); font-size:0.78rem;" id="redeemText">0 / 200 نقطة</small>
+                    <small style="font-weight:800; color:var(--ps-muted); font-size:0.78rem;" id="redeemText">0 / 200 Ù†Ù‚Ø·Ø©</small>
                 </div>
 
                 <button class="btn-redeem" id="btnRedeem" onclick="redeemCoupon()" disabled>
-                    <i class="fas fa-exchange-alt"></i> استبدال 200 نقطة بكود 100 ج
+                    <i class="fas fa-exchange-alt"></i> Ø§Ø³ØªØ¨Ø¯Ø§Ù„ 200 Ù†Ù‚Ø·Ø© Ø¨ÙƒÙˆØ¯ 100 Ø¬
                 </button>
 
                 <!-- List of Redeemed Coupons -->
                 <div id="myCouponsList" style="margin-top:16px; display:none;">
-                    <h5 style="margin:0 0 8px; font-size:0.85rem; font-weight:800; color:var(--ps-muted);">أكوادك المستبدلة:</h5>
+                    <h5 style="margin:0 0 8px; font-size:0.85rem; font-weight:800; color:var(--ps-muted);">Ø£ÙƒÙˆØ§Ø¯Ùƒ Ø§Ù„Ù…Ø³ØªØ¨Ø¯Ù„Ø©:</h5>
                     <div id="couponsContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
                 </div>
             </div>
 
             <!-- 2. Leaderboard -->
             <div class="side-widget-card">
-                <h3 class="widget-title"><i class="fas fa-trophy" style="color:#f59e0b;"></i> أبطال التحدي (المتصدرون)</h3>
+                <h3 class="widget-title"><i class="fas fa-trophy" style="color:#f59e0b;"></i> Ø£Ø¨Ø·Ø§Ù„ Ø§Ù„ØªØ­Ø¯ÙŠ (Ø§Ù„Ù…ØªØµØ¯Ø±ÙˆÙ†)</h3>
                 <div class="leaderboard-list" id="leaderboardList">
                     <div style="text-align:center; padding:15px; color:var(--ps-muted); font-size:0.85rem; font-weight:700;">
-                        جاري تحميل لوحة الشرف...
+                        Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ù„ÙˆØ­Ø© Ø§Ù„Ø´Ø±Ù...
                     </div>
                 </div>
             </div>
@@ -724,7 +724,7 @@
 <script>
 (() => {
     let currentUser = null;
-    let selectedSubject = 'الكل';
+    let selectedSubject = 'Ø§Ù„ÙƒÙ„';
     let selectedVideoId = null;
     let eligibleLecturesList = [];
     let currentQuiz = null;
@@ -747,9 +747,9 @@
         if (!userId) {
             Swal.fire({
                 icon: 'warning',
-                title: 'تسجيل الدخول مطلوب',
-                text: 'يجب تسجيل الدخول كطالب لتتمكن من اللعب وجمع النقاط واستبدالها.',
-                confirmButtonText: 'تسجيل الدخول'
+                title: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ø·Ù„ÙˆØ¨',
+                text: 'ÙŠØ¬Ø¨ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ ÙƒØ·Ø§Ù„Ø¨ Ù„ØªØªÙ…ÙƒÙ† Ù…Ù† Ø§Ù„Ù„Ø¹Ø¨ ÙˆØ¬Ù…Ø¹ Ø§Ù„Ù†Ù‚Ø§Ø· ÙˆØ§Ø³ØªØ¨Ø¯Ø§Ù„Ù‡Ø§.',
+                confirmButtonText: 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„'
             }).then(() => window.location.href = 'login');
             return;
         }
@@ -762,12 +762,12 @@
             if (res.status === 403 || json.isBanned) {
                 Swal.fire({
                     icon: 'error',
-                    title: '🚫 تم إيقاف اللعبة وحسابك محظور',
-                    text: json.message || 'لقد تم حظرك بسبب الغش!',
+                    title: 'ðŸš« ØªÙ… Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„Ù„Ø¹Ø¨Ø© ÙˆØ­Ø³Ø§Ø¨Ùƒ Ù…Ø­Ø¸ÙˆØ±',
+                    text: json.message || 'Ù„Ù‚Ø¯ ØªÙ… Ø­Ø¸Ø±Ùƒ Ø¨Ø³Ø¨Ø¨ Ø§Ù„ØºØ´!',
                     allowOutsideClick: false,
                     allowEscapeKey: false,
                     showConfirmButton: true,
-                    confirmButtonText: 'العودة للرئيسية',
+                    confirmButtonText: 'Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„Ø±Ø¦ÙŠØ³ÙŠØ©',
                     confirmButtonColor: '#e11d48'
                 }).then(() => {
                     window.location.href = '/';
@@ -775,7 +775,7 @@
                 document.querySelector('.ps-container').innerHTML = `
                     <div style="grid-column:1/-1; background:#fee2e2; border:2px solid #ef4444; border-radius:20px; padding:40px; text-align:center; color:#991b1b;">
                         <i class="fas fa-ban" style="font-size:3.5rem; margin-bottom:16px;"></i>
-                        <h2 style="margin:0 0 10px; font-weight:900;">لقد تم حظرك بسبب الغش!</h2>
+                        <h2 style="margin:0 0 10px; font-weight:900;">Ù„Ù‚Ø¯ ØªÙ… Ø­Ø¸Ø±Ùƒ Ø¨Ø³Ø¨Ø¨ Ø§Ù„ØºØ´!</h2>
                         <p style="margin:0; font-size:1.1rem; font-weight:700;">${json.message}</p>
                     </div>
                 `;
@@ -790,7 +790,7 @@
                 // Update Redeem progress
                 const pct = Math.min(100, Math.round((d.points / 200) * 100));
                 document.getElementById('redeemFill').style.width = pct + '%';
-                document.getElementById('redeemText').textContent = `${d.points} / 200 نقطة`;
+                document.getElementById('redeemText').textContent = `${d.points} / 200 Ù†Ù‚Ø·Ø©`;
                 
                 const btnRedeem = document.getElementById('btnRedeem');
                 if (d.points >= 200) {
@@ -807,7 +807,7 @@
                     document.getElementById('couponsContainer').innerHTML = d.redeemedCoupons.map(c => `
                         <div style="background:var(--ps-card-alt); border:1px solid var(--ps-border); padding:8px 12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;">
                             <span style="font-family:monospace; font-weight:900; color:#1a6bdb;">${c.code}</span>
-                            <span style="font-weight:800; color:#10b981;">100 ج</span>
+                            <span style="font-weight:800; color:#10b981;">100 Ø¬</span>
                         </div>
                     `).join('');
                 }
@@ -818,7 +818,7 @@
                 const lb = d.leaderboard || [];
                 const lbContainer = document.getElementById('leaderboardList');
                 if (lb.length === 0) {
-                    lbContainer.innerHTML = '<div style="text-align:center; padding:15px; color:var(--ps-muted); font-size:0.85rem;">لا يوجد متصدرين بعد. كن الأول!</div>';
+                    lbContainer.innerHTML = '<div style="text-align:center; padding:15px; color:var(--ps-muted); font-size:0.85rem;">Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù…ØªØµØ¯Ø±ÙŠÙ† Ø¨Ø¹Ø¯. ÙƒÙ† Ø§Ù„Ø£ÙˆÙ„!</div>';
                 } else {
                     lbContainer.innerHTML = lb.map((p, idx) => {
                         const rankClass = idx === 0 ? 'r1' : idx === 1 ? 'r2' : idx === 2 ? 'r3' : '';
@@ -828,7 +828,7 @@
                                     <span class="lb-rank ${rankClass}">${p.rank}</span>
                                     <span>${p.name}</span>
                                 </div>
-                                <span style="color:#f59e0b; font-weight:900;">${p.points} نقطة</span>
+                                <span style="color:#f59e0b; font-weight:900;">${p.points} Ù†Ù‚Ø·Ø©</span>
                             </div>
                         `;
                     }).join('');
@@ -844,11 +844,11 @@
         const container = document.getElementById('topicsChipsList');
         if (!container) return;
         
-        let chipsHtml = `<button class="subject-btn ${selectedTopic === 'الكل' ? 'active' : ''}" style="padding:8px 16px; font-size:0.85rem;" data-topic="الكل" onclick="pickTopic('الكل', this)">🌟 شامل كل ما درسته</button>`;
+        let chipsHtml = `<button class="subject-btn ${selectedTopic === 'Ø§Ù„ÙƒÙ„' ? 'active' : ''}" style="padding:8px 16px; font-size:0.85rem;" data-topic="Ø§Ù„ÙƒÙ„" onclick="pickTopic('Ø§Ù„ÙƒÙ„', this)">ðŸŒŸ Ø´Ø§Ù…Ù„ ÙƒÙ„ Ù…Ø§ Ø¯Ø±Ø³ØªÙ‡</button>`;
         
-        if (selectedSubject !== 'الكل' && availableTopicsMap[selectedSubject]) {
+        if (selectedSubject !== 'Ø§Ù„ÙƒÙ„' && availableTopicsMap[selectedSubject]) {
             availableTopicsMap[selectedSubject].forEach(t => {
-                chipsHtml += `<button class="subject-btn ${selectedTopic === t ? 'active' : ''}" style="padding:8px 16px; font-size:0.85rem;" data-topic="${t}" onclick="pickTopic('${t}', this)">📌 ${t}</button>`;
+                chipsHtml += `<button class="subject-btn ${selectedTopic === t ? 'active' : ''}" style="padding:8px 16px; font-size:0.85rem;" data-topic="${t}" onclick="pickTopic('${t}', this)">ðŸ“Œ ${t}</button>`;
             });
         }
         
@@ -873,18 +873,18 @@
                 btn.style.background = '#94a3b8';
                 btn.style.cursor = 'not-allowed';
                 btn.style.opacity = '0.7';
-                document.getElementById('btnLaunchText').textContent = 'يجب مشاهدة محاضرة أولاً لفتح التحدي';
+                document.getElementById('btnLaunchText').textContent = 'ÙŠØ¬Ø¨ Ù…Ø´Ø§Ù‡Ø¯Ø© Ù…Ø­Ø§Ø¶Ø±Ø© Ø£ÙˆÙ„Ø§Ù‹ Ù„ÙØªØ­ Ø§Ù„ØªØ­Ø¯ÙŠ';
             }
 
             grid.innerHTML = `
                 <div style="grid-column:1/-1; background:rgba(26,107,219,0.04); border:1.5px dashed var(--ps-border); border-radius:16px; padding:30px 20px; text-align:center;">
                     <i class="fas fa-video-slash" style="font-size:2.2rem; color:var(--ps-primary); margin-bottom:10px;"></i>
-                    <h4 style="margin:0 0 6px; font-weight:900; color:var(--ps-text);">لم تشاهد أي محاضرات بعد!</h4>
+                    <h4 style="margin:0 0 6px; font-weight:900; color:var(--ps-text);">Ù„Ù… ØªØ´Ø§Ù‡Ø¯ Ø£ÙŠ Ù…Ø­Ø§Ø¶Ø±Ø§Øª Ø¨Ø¹Ø¯!</h4>
                     <p style="margin:0 0 16px; font-size:0.88rem; color:var(--ps-muted); font-weight:700;">
-                        عندما تشاهد وتتم أي محاضرة على المنصة، ستظهر هنا فوراً لتمتحن على ما درسته بالضبط وتكسب النقاط!
+                        Ø¹Ù†Ø¯Ù…Ø§ ØªØ´Ø§Ù‡Ø¯ ÙˆØªØªÙ… Ø£ÙŠ Ù…Ø­Ø§Ø¶Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ù…Ù†ØµØ©ØŒ Ø³ØªØ¸Ù‡Ø± Ù‡Ù†Ø§ ÙÙˆØ±Ø§Ù‹ Ù„ØªÙ…ØªØ­Ù† Ø¹Ù„Ù‰ Ù…Ø§ Ø¯Ø±Ø³ØªÙ‡ Ø¨Ø§Ù„Ø¶Ø¨Ø· ÙˆØªÙƒØ³Ø¨ Ø§Ù„Ù†Ù‚Ø§Ø·!
                     </p>
                     <a href="courses" style="display:inline-flex; align-items:center; gap:6px; background:#1a6bdb; color:#fff; text-decoration:none; padding:8px 20px; border-radius:50px; font-size:0.85rem; font-weight:800;">
-                        <i class="fas fa-play"></i> تصفح المحاضرات وابدأ المذاكرة
+                        <i class="fas fa-play"></i> ØªØµÙØ­ Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø§Øª ÙˆØ§Ø¨Ø¯Ø£ Ø§Ù„Ù…Ø°Ø§ÙƒØ±Ø©
                     </a>
                 </div>
             `;
@@ -901,7 +901,7 @@
                         </div>
                         <div style="min-width:0; flex:1;">
                             <div style="font-weight:900; font-size:0.92rem; color:var(--ps-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(lec.title)}</div>
-                            <small style="color:#10b981; font-weight:800; font-size:0.75rem;"><i class="fas fa-eye"></i> تمت مشاهدتها</small>
+                            <small style="color:#10b981; font-weight:800; font-size:0.75rem;"><i class="fas fa-eye"></i> ØªÙ…Øª Ù…Ø´Ø§Ù‡Ø¯ØªÙ‡Ø§</small>
                         </div>
                     </div>
                 </div>
@@ -930,7 +930,7 @@
             btn.style.cursor = 'pointer';
             btn.style.opacity = '1';
             if (icon) icon.className = 'fas fa-play';
-            if (text) text.textContent = 'ابدأ التحدي الآن (يستهلك 1 طاقة)';
+            if (text) text.textContent = 'Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ø¯ÙŠ Ø§Ù„Ø¢Ù† (ÙŠØ³ØªÙ‡Ù„Ùƒ 1 Ø·Ø§Ù‚Ø©)';
         }
     };
 
@@ -952,8 +952,8 @@
         if (!selectedVideoId) {
             Swal.fire({
                 icon: 'warning',
-                title: 'اختر محاضرة أولاً',
-                text: 'عليك اختيار محاضرة قمت بمشاهدتها لتوليد أسئلة خاصة بها!'
+                title: 'Ø§Ø®ØªØ± Ù…Ø­Ø§Ø¶Ø±Ø© Ø£ÙˆÙ„Ø§Ù‹',
+                text: 'Ø¹Ù„ÙŠÙƒ Ø§Ø®ØªÙŠØ§Ø± Ù…Ø­Ø§Ø¶Ø±Ø© Ù‚Ù…Øª Ø¨Ù…Ø´Ø§Ù‡Ø¯ØªÙ‡Ø§ Ù„ØªÙˆÙ„ÙŠØ¯ Ø£Ø³Ø¦Ù„Ø© Ø®Ø§ØµØ© Ø¨Ù‡Ø§!'
             });
             return;
         }
@@ -968,7 +968,7 @@
             if (!data.success) {
                 Swal.fire({
                     icon: 'info',
-                    title: 'تنبيه الطاقة',
+                    title: 'ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„Ø·Ø§Ù‚Ø©',
                     text: data.message
                 });
                 return;
@@ -986,7 +986,7 @@
             renderQuestion();
         } catch (err) {
             console.error('Start quiz error:', err);
-            Swal.fire({ icon: 'error', title: 'خطأ', text: 'تعذر بدء التحدي، حاول مجدداً.' });
+            Swal.fire({ icon: 'error', title: 'Ø®Ø·Ø£', text: 'ØªØ¹Ø°Ø± Ø¨Ø¯Ø¡ Ø§Ù„ØªØ­Ø¯ÙŠØŒ Ø­Ø§ÙˆÙ„ Ù…Ø¬Ø¯Ø¯Ø§Ù‹.' });
         }
     };
 
@@ -996,7 +996,7 @@
         
         document.getElementById('qCurrentIndex').textContent = currentQIndex + 1;
         document.getElementById('qTitle').textContent = q.text;
-        document.getElementById('quizSubjectLabel').textContent = `مادة: ${q.subject || selectedSubject}`;
+        document.getElementById('quizSubjectLabel').textContent = `Ù…Ø§Ø¯Ø©: ${q.subject || selectedSubject}`;
         
         // Progress fill
         const pct = ((currentQIndex + 1) / currentQuiz.questions.length) * 100;
@@ -1066,20 +1066,20 @@
                 document.getElementById('quizResultView').style.display = 'block';
 
                 document.getElementById('resPercentage').textContent = data.percentage + '%';
-                document.getElementById('resEarnedPoints').textContent = `+${data.pointsEarned} نقطة`;
+                document.getElementById('resEarnedPoints').textContent = `+${data.pointsEarned} Ù†Ù‚Ø·Ø©`;
 
                 if (data.percentage === 100) {
-                    document.getElementById('resultIcon').textContent = '🥇';
-                    document.getElementById('resultHeading').textContent = 'علامة كاملة خارقة! مبروك!';
-                    document.getElementById('resultMsg').textContent = `أجبت على ${data.score} من ${data.totalCount} أسئلة بشكل صحيح تماماً وكسبت 10 نقاط كاملة!`;
+                    document.getElementById('resultIcon').textContent = 'ðŸ¥‡';
+                    document.getElementById('resultHeading').textContent = 'Ø¹Ù„Ø§Ù…Ø© ÙƒØ§Ù…Ù„Ø© Ø®Ø§Ø±Ù‚Ø©! Ù…Ø¨Ø±ÙˆÙƒ!';
+                    document.getElementById('resultMsg').textContent = `Ø£Ø¬Ø¨Øª Ø¹Ù„Ù‰ ${data.score} Ù…Ù† ${data.totalCount} Ø£Ø³Ø¦Ù„Ø© Ø¨Ø´ÙƒÙ„ ØµØ­ÙŠØ­ ØªÙ…Ø§Ù…Ø§Ù‹ ÙˆÙƒØ³Ø¨Øª 10 Ù†Ù‚Ø§Ø· ÙƒØ§Ù…Ù„Ø©!`;
                 } else if (data.percentage >= 70) {
-                    document.getElementById('resultIcon').textContent = '🥈';
-                    document.getElementById('resultHeading').textContent = 'أداء رائع ومتميز!';
-                    document.getElementById('resultMsg').textContent = `أجبت على ${data.score} من ${data.totalCount} أسئلة صحيحة وتجاوزت نسبة 70% وكسبت 5 نقاط!`;
+                    document.getElementById('resultIcon').textContent = 'ðŸ¥ˆ';
+                    document.getElementById('resultHeading').textContent = 'Ø£Ø¯Ø§Ø¡ Ø±Ø§Ø¦Ø¹ ÙˆÙ…ØªÙ…ÙŠØ²!';
+                    document.getElementById('resultMsg').textContent = `Ø£Ø¬Ø¨Øª Ø¹Ù„Ù‰ ${data.score} Ù…Ù† ${data.totalCount} Ø£Ø³Ø¦Ù„Ø© ØµØ­ÙŠØ­Ø© ÙˆØªØ¬Ø§ÙˆØ²Øª Ù†Ø³Ø¨Ø© 70% ÙˆÙƒØ³Ø¨Øª 5 Ù†Ù‚Ø§Ø·!`;
                 } else {
-                    document.getElementById('resultIcon').textContent = '💪';
-                    document.getElementById('resultHeading').textContent = 'محاولة جيدة، حظ أفضل في المرة القادمة!';
-                    document.getElementById('resultMsg').textContent = `حصلت على ${data.percentage}%. تحتاج إلى 70% على الأقل لكسب النقاط.`;
+                    document.getElementById('resultIcon').textContent = 'ðŸ’ª';
+                    document.getElementById('resultHeading').textContent = 'Ù…Ø­Ø§ÙˆÙ„Ø© Ø¬ÙŠØ¯Ø©ØŒ Ø­Ø¸ Ø£ÙØ¶Ù„ ÙÙŠ Ø§Ù„Ù…Ø±Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©!';
+                    document.getElementById('resultMsg').textContent = `Ø­ØµÙ„Øª Ø¹Ù„Ù‰ ${data.percentage}%. ØªØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ 70% Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„ÙƒØ³Ø¨ Ø§Ù„Ù†Ù‚Ø§Ø·.`;
                 }
 
                 loadPlayStudyProfile();
@@ -1092,12 +1092,12 @@
     
     window.confirmExitQuiz = async () => {
         const res = await Swal.fire({
-            title: 'هل تريد الانسحاب حقاً؟',
-            text: 'إذا خرجت الآن، سيتم اعتبار المحاولة مكتملة وسيتم خصمها من محاولاتك اليومية (4/4) ولن تكسب أي نقاط!',
+            title: 'Ù‡Ù„ ØªØ±ÙŠØ¯ Ø§Ù„Ø§Ù†Ø³Ø­Ø§Ø¨ Ø­Ù‚Ø§Ù‹ØŸ',
+            text: 'Ø¥Ø°Ø§ Ø®Ø±Ø¬Øª Ø§Ù„Ø¢Ù†ØŒ Ø³ÙŠØªÙ… Ø§Ø¹ØªØ¨Ø§Ø± Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…ÙƒØªÙ…Ù„Ø© ÙˆØ³ÙŠØªÙ… Ø®ØµÙ…Ù‡Ø§ Ù…Ù† Ù…Ø­Ø§ÙˆÙ„Ø§ØªÙƒ Ø§Ù„ÙŠÙˆÙ…ÙŠØ© (4/4) ÙˆÙ„Ù† ØªÙƒØ³Ø¨ Ø£ÙŠ Ù†Ù‚Ø§Ø·!',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'نعم، انسحاب وخروج',
-            cancelButtonText: 'متابعة التحدي',
+            confirmButtonText: 'Ù†Ø¹Ù…ØŒ Ø§Ù†Ø³Ø­Ø§Ø¨ ÙˆØ®Ø±ÙˆØ¬',
+            cancelButtonText: 'Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„ØªØ­Ø¯ÙŠ',
             confirmButtonColor: '#dc2626',
             cancelButtonColor: '#1a6bdb'
         });
@@ -1119,14 +1119,14 @@
                 btn.style.background = '#94a3b8';
                 btn.style.cursor = 'not-allowed';
                 btn.style.opacity = '0.85';
-                document.getElementById('btnLaunchText').textContent = 'حدد محاضرة شاهدتها لبدء التحدي';
+                document.getElementById('btnLaunchText').textContent = 'Ø­Ø¯Ø¯ Ù…Ø­Ø§Ø¶Ø±Ø© Ø´Ø§Ù‡Ø¯ØªÙ‡Ø§ Ù„Ø¨Ø¯Ø¡ Ø§Ù„ØªØ­Ø¯ÙŠ';
                 document.getElementById('btnLaunchIcon').className = 'fas fa-lock';
             }
 
             Swal.fire({
                 icon: 'info',
-                title: 'تم الانسحاب',
-                text: 'تم إنهاء الجلسة واحتساب المحاولة المستهلكة من رصيد الطاقة اليومي.',
+                title: 'ØªÙ… Ø§Ù„Ø§Ù†Ø³Ø­Ø§Ø¨',
+                text: 'ØªÙ… Ø¥Ù†Ù‡Ø§Ø¡ Ø§Ù„Ø¬Ù„Ø³Ø© ÙˆØ§Ø­ØªØ³Ø§Ø¨ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ø§Ù„Ù…Ø³ØªÙ‡Ù„ÙƒØ© Ù…Ù† Ø±ØµÙŠØ¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠ.',
                 timer: 2000,
                 showConfirmButton: false
             });
@@ -1145,12 +1145,12 @@
         if (!userId) return;
 
         const confirm = await Swal.fire({
-            title: 'استبدال 200 نقطة؟',
-            text: 'سيتم خصم 200 نقطة وتوليد كود خصم بقيمة 100 جنيه فوري تستخدمه في أي فيديو.',
+            title: 'Ø§Ø³ØªØ¨Ø¯Ø§Ù„ 200 Ù†Ù‚Ø·Ø©ØŸ',
+            text: 'Ø³ÙŠØªÙ… Ø®ØµÙ… 200 Ù†Ù‚Ø·Ø© ÙˆØªÙˆÙ„ÙŠØ¯ ÙƒÙˆØ¯ Ø®ØµÙ… Ø¨Ù‚ÙŠÙ…Ø© 100 Ø¬Ù†ÙŠÙ‡ ÙÙˆØ±ÙŠ ØªØ³ØªØ®Ø¯Ù…Ù‡ ÙÙŠ Ø£ÙŠ ÙÙŠØ¯ÙŠÙˆ.',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'نعم، استبدل الآن',
-            cancelButtonText: 'إلغاء'
+            confirmButtonText: 'Ù†Ø¹Ù…ØŒ Ø§Ø³ØªØ¨Ø¯Ù„ Ø§Ù„Ø¢Ù†',
+            cancelButtonText: 'Ø¥Ù„ØºØ§Ø¡'
         });
 
         if (!confirm.isConfirmed) return;
@@ -1165,18 +1165,18 @@
             if (data.success) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'مبروك يا بطل! 🎉',
+                    title: 'Ù…Ø¨Ø±ÙˆÙƒ ÙŠØ§ Ø¨Ø·Ù„! ðŸŽ‰',
                     html: `
-                        <p style="font-size:1rem; margin-bottom:12px;">كود الخصم الخاص بك هو:</p>
+                        <p style="font-size:1rem; margin-bottom:12px;">ÙƒÙˆØ¯ Ø§Ù„Ø®ØµÙ… Ø§Ù„Ø®Ø§Øµ Ø¨Ùƒ Ù‡Ùˆ:</p>
                         <div style="background:#f1f5f9; padding:12px 18px; border-radius:12px; font-family:monospace; font-size:1.3rem; font-weight:900; color:#1a6bdb; letter-spacing:1px; user-select:all;">
                             ${data.code}
                         </div>
-                        <p style="font-size:0.85rem; color:#64748b; margin-top:12px;">قيمة الكود: <b>100 جنيه</b>، يمكنك استخدامه مباشرة عند شحن أي فيديو من اختيارك.</p>
+                        <p style="font-size:0.85rem; color:#64748b; margin-top:12px;">Ù‚ÙŠÙ…Ø© Ø§Ù„ÙƒÙˆØ¯: <b>100 Ø¬Ù†ÙŠÙ‡</b>ØŒ ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¹Ù†Ø¯ Ø´Ø­Ù† Ø£ÙŠ ÙÙŠØ¯ÙŠÙˆ Ù…Ù† Ø§Ø®ØªÙŠØ§Ø±Ùƒ.</p>
                     `
                 });
                 loadPlayStudyProfile();
             } else {
-                Swal.fire({ icon: 'error', title: 'تعذر الاستبدال', text: data.message });
+                Swal.fire({ icon: 'error', title: 'ØªØ¹Ø°Ø± Ø§Ù„Ø§Ø³ØªØ¨Ø¯Ø§Ù„', text: data.message });
             }
         } catch (err) {
             console.error('Redeem error:', err);

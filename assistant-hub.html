@@ -150,10 +150,10 @@
 <script>
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     const isAssistantSession = sessionStorage.getItem('assistantLoggedIn') === '1';
-    const isTeacher = currentUser && (currentUser.role === 'assistant' || currentUser.role === 'teacher' || currentUser.role === 'admin') && !currentUser.isTeacherAccount;
+    const isTeacher = currentUser && (currentUser.role === 'assistant' || ((currentUser.role === 'teacher' || currentUser.role === 'admin') && !currentUser.isTeacherAccount));
 
     if (!isAssistantSession && !isTeacher) {
-        alert('تم تسجيل دخولك، جاري التوجيه...');
+        alert('يرجى تسجيل الدخول بحساب مساعد للمتابعة.');
         window.location.href = 'login';
     }
 

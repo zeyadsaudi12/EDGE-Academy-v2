@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <!-- EDGE Academy Favicon -->
@@ -8,11 +8,11 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة المساعد - أسئلة الطلاب</title>
+    <title>Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ - Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20261126-v19">
+    <link rel="stylesheet" href="style.css?v=20261126-v20">
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -21,7 +21,7 @@
             min-height: 100vh;
         }
 
-        /* ─── LOGIN PAGE ─── */
+        /* â”€â”€â”€ LOGIN PAGE â”€â”€â”€ */
         .login-wrap {
             min-height: 100vh;
             display: flex;
@@ -101,7 +101,7 @@
             display: none;
         }
 
-        /* ─── DASHBOARD ─── */
+        /* â”€â”€â”€ DASHBOARD â”€â”€â”€ */
         .main {
             padding: 28px 24px 60px;
             max-width: 1220px;
@@ -440,37 +440,37 @@
 </head>
 <body>
 
-<!-- ════════════════ LOGIN ════════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOGIN â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="login-wrap" id="loginPage">
     <div class="login-card">
-        <div class="login-logo">🎓</div>
-        <h2>بوابة المساعد</h2>
-        <p>سجّل دخولك لعرض أسئلة الطلاب والرد عليها</p>
+        <div class="login-logo">ðŸŽ“</div>
+        <h2>Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</h2>
+        <p>Ø³Ø¬Ù‘Ù„ Ø¯Ø®ÙˆÙ„Ùƒ Ù„Ø¹Ø±Ø¶ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨ ÙˆØ§Ù„Ø±Ø¯ Ø¹Ù„ÙŠÙ‡Ø§</p>
 
-        <input type="text" class="login-input" id="assistantUser" placeholder="اسم المستخدم" />
-        <input type="password" class="login-input" id="assistantPass" placeholder="كلمة المرور" onkeydown="if(event.key==='Enter') doLogin()" />
-        <button class="login-btn" onclick="doLogin()">دخول <i class="ti ti-arrow-left"></i></button>
-        <div class="login-error" id="loginError">اسم المستخدم أو كلمة المرور غير صحيحة</div>
+        <input type="text" class="login-input" id="assistantUser" placeholder="Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…" />
+        <input type="password" class="login-input" id="assistantPass" placeholder="ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±" onkeydown="if(event.key==='Enter') doLogin()" />
+        <button class="login-btn" onclick="doLogin()">Ø¯Ø®ÙˆÙ„ <i class="ti ti-arrow-left"></i></button>
+        <div class="login-error" id="loginError">Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©</div>
     </div>
 </div>
 
-<!-- ════════════════ DASHBOARD ════════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• DASHBOARD â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="dashPage" style="display:none;">
-    <!-- ════════════ OFFICIAL PLATFORM NAVBAR ════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â• OFFICIAL PLATFORM NAVBAR â•â•â•â•â•â•â•â•â•â•â•â• -->
 <header>
     <div class="header-inner">
-        <!-- اليمين: زر رجوع وشعار المنصة المتغير تلقائياً مع الثيم وزر اللغة -->
+        <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø²Ø± Ø±Ø¬ÙˆØ¹ ÙˆØ´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ù…ØªØºÙŠØ± ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¹ Ø§Ù„Ø«ÙŠÙ… ÙˆØ²Ø± Ø§Ù„Ù„ØºØ© -->
         <div class="header-right">
-            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="Ø±Ø¬ÙˆØ¹ Ù„Ù„ØµÙØ­Ø© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©">
                 <i class="ti ti-arrow-right"></i>
-                <span>رجوع</span>
+                <span>Ø±Ø¬ÙˆØ¹</span>
             </button>
             <a href="assistant-hub" class="header-brand" aria-label="EDGE Academy">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
-            <!-- زر تبديل اللغة بجانب اللوجو -->
-            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+            <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨ Ø§Ù„Ù„ÙˆØ¬Ùˆ -->
+            <button type="button" class="language-switcher" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ©" title="Switch Language">
                 <span>EN</span>
                 <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -480,74 +480,74 @@
             </button>
         </div>
 
-        <!-- المنتصف: روابط التنقل الأساسية للمساعد -->
+        <!-- Ø§Ù„Ù…Ù†ØªØµÙ: Ø±ÙˆØ§Ø¨Ø· Ø§Ù„ØªÙ†Ù‚Ù„ Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ© Ù„Ù„Ù…Ø³Ø§Ø¹Ø¯ -->
         <div class="header-center">
-            <a href="assistant-dashboard" class="nav-link-item ">📊 متابعة الطلاب</a>
-            <a href="attendance" class="nav-link-item ">📲 بوابة الحضور</a>
-            <a href="assistant" class="nav-link-item active" style="color:var(--primary); font-weight:800;">💬 أسئلة الطلاب</a>
-            <a href="assistant-exams" class="nav-link-item ">📝 إدارة الامتحانات</a>
-            <a href="assistant-hub" class="nav-link-item ">🎓 بوابة المساعد</a>
+            <a href="assistant-dashboard" class="nav-link-item ">ðŸ“Š Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
+            <a href="attendance" class="nav-link-item ">ðŸ“² Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ±</a>
+            <a href="assistant" class="nav-link-item active" style="color:var(--primary); font-weight:800;">ðŸ’¬ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
+            <a href="assistant-exams" class="nav-link-item ">ðŸ“ Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
+            <a href="assistant-hub" class="nav-link-item ">ðŸŽ“ Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</a>
         </div>
 
-        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
+        <!-- Ø§Ù„ÙŠØ³Ø§Ø±: Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆÙ…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ -->
         <div class="header-left">
             <nav class="header-actions" id="authActions" style="display:none;"></nav>
 
-            <!-- قائمة المستخدم عند تسجيل الدخول -->
+            <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ -->
             <div class="user-dropdown-container" id="userDropdownArea">
                 <button class="user-menu-btn" onclick="toggleUserMenu()">
-                    <span id="navUserName">مساعد المعلم</span>
-                    <div class="user-icon-circle">👤</div>
+                    <span id="navUserName">Ù…Ø³Ø§Ø¹Ø¯ Ø§Ù„Ù…Ø¹Ù„Ù…</span>
+                    <div class="user-icon-circle">ðŸ‘¤</div>
                 </button>
                 <div class="user-dropdown-menu" id="userMenu">
                     <a href="assistant-dashboard" class="menu-item">
-                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> لوحة المتابعة
+                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> Ù„ÙˆØ­Ø© Ø§Ù„Ù…ØªØ§Ø¨Ø¹Ø©
                     </a>
                     <a href="attendance" class="menu-item">
-                        <i class="ti ti-scan" style="margin-left:6px;"></i> بوابة الحضور السريع
+                        <i class="ti ti-scan" style="margin-left:6px;"></i> Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ø±ÙŠØ¹
                     </a>
                     <a href="assistant" class="menu-item">
-                        <i class="ti ti-messages" style="margin-left:6px;"></i> أسئلة الطلاب
+                        <i class="ti ti-messages" style="margin-left:6px;"></i> Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨
                     </a>
                     <a href="assistant-exams" class="menu-item">
-                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> إدارة الامتحانات
+                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª
                     </a>
                     <a href="assistant-hub" class="menu-item">
-                        <i class="ti ti-home" style="margin-left:6px;"></i> بوابة المساعد الرئيسية
+                        <i class="ti ti-home" style="margin-left:6px;"></i> Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©
                     </a>
                     <hr>
                     <button onclick="handleLogout()" class="menu-item logout-btn" style="width:100%; text-align:right; border:none; background:none; cursor:pointer;">
-                        🚪 تسجيل خروج
+                        ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬
                     </button>
                 </div>
             </div>
 
-            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) المعتمد بالمنصة -->
-            <div class="theme-capsule" aria-label="تبديل المظهر">
-                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
-                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
+            <!-- Ù…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ Ø¨ØªØµÙ…ÙŠÙ… ÙƒØ¨Ø³ÙˆÙ„Ø© Ø£Ù†ÙŠÙ‚Ø© (Ø§Ù„Ù†Ù‡Ø§Ø± / Ø§Ù„Ù„ÙŠÙ„) Ø§Ù„Ù…Ø¹ØªÙ…Ø¯ Ø¨Ø§Ù„Ù…Ù†ØµØ© -->
+            <div class="theme-capsule" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¸Ù‡Ø±">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±" title="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±">â˜€</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…" title="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…">ðŸŒ™</button>
             </div>
 
-            <!-- زر الهامبرغر للموبايل -->
-            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+            <!-- Ø²Ø± Ø§Ù„Ù‡Ø§Ù…Ø¨Ø±ØºØ± Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
     </div>
 
-    <!-- قائمة الموبايل المنسدلة المعتمدة بالمنصة -->
+    <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ Ø§Ù„Ù…Ù†Ø³Ø¯Ù„Ø© Ø§Ù„Ù…Ø¹ØªÙ…Ø¯Ø© Ø¨Ø§Ù„Ù…Ù†ØµØ© -->
     <div class="mobile-nav-menu" id="mobileNavMenu">
         <a href="javascript:void(0)" onclick="goBack()" class="mobile-nav-link" style="color:var(--primary); font-weight:900; background:rgba(26,107,219,0.1); border-radius:12px; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-            <i class="ti ti-arrow-right"></i> ↩️ رجوع للصفحة السابقة
+            <i class="ti ti-arrow-right"></i> â†©ï¸ Ø±Ø¬ÙˆØ¹ Ù„Ù„ØµÙØ­Ø© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©
         </a>
-        <a href="assistant-dashboard" class="mobile-nav-link ">📊 لوحة متابعة الطلاب</a>
-        <a href="attendance" class="mobile-nav-link ">📲 بوابة الحضور السريع</a>
-        <a href="assistant" class="mobile-nav-link active">💬 أسئلة الطلاب</a>
-        <a href="assistant-exams" class="mobile-nav-link ">📝 إدارة الامتحانات</a>
-        <a href="assistant-hub" class="mobile-nav-link ">🎓 بوابة المساعد</a>
+        <a href="assistant-dashboard" class="mobile-nav-link ">ðŸ“Š Ù„ÙˆØ­Ø© Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
+        <a href="attendance" class="mobile-nav-link ">ðŸ“² Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø³Ø±ÙŠØ¹</a>
+        <a href="assistant" class="mobile-nav-link active">ðŸ’¬ Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø·Ù„Ø§Ø¨</a>
+        <a href="assistant-exams" class="mobile-nav-link ">ðŸ“ Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
+        <a href="assistant-hub" class="mobile-nav-link ">ðŸŽ“ Ø¨ÙˆØ§Ø¨Ø© Ø§Ù„Ù…Ø³Ø§Ø¹Ø¯</a>
         <div class="mobile-menu-auth" style="border-top:1px solid var(--border); padding-top:10px; margin-top:8px;">
             <button onclick="handleLogout()" class="mobile-nav-link" style="background:none; border:none; cursor:pointer; width:100%; text-align:right; color:#e74c3c; font-family:inherit; font-weight:800; display:flex; align-items:center; gap:8px;">
-                🚪 تسجيل خروج
+                ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬
             </button>
         </div>
     </div>
@@ -556,33 +556,33 @@
         <div class="toolbar">
             <h2>
                 <i class="ti ti-inbox" style="color:var(--primary, #1a6bdb);"></i>
-                الأسئلة الواردة
+                Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„ÙˆØ§Ø±Ø¯Ø©
                 <span class="count-badge" id="qCount">0</span>
             </h2>
             <div class="toolbar-actions">
-                <div class="q-filter-tabs" role="tablist" aria-label="تصفية الأسئلة">
-                    <button type="button" class="q-filter-tab active" onclick="setStatusFilter('all', this)">الكل</button>
-                    <button type="button" class="q-filter-tab" onclick="setStatusFilter('pending', this)">بانتظار الرد</button>
-                    <button type="button" class="q-filter-tab" onclick="setStatusFilter('resolved', this)">تم الرد</button>
+                <div class="q-filter-tabs" role="tablist" aria-label="ØªØµÙÙŠØ© Ø§Ù„Ø£Ø³Ø¦Ù„Ø©">
+                    <button type="button" class="q-filter-tab active" onclick="setStatusFilter('all', this)">Ø§Ù„ÙƒÙ„</button>
+                    <button type="button" class="q-filter-tab" onclick="setStatusFilter('pending', this)">Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø±Ø¯</button>
+                    <button type="button" class="q-filter-tab" onclick="setStatusFilter('resolved', this)">ØªÙ… Ø§Ù„Ø±Ø¯</button>
                 </div>
                 <button class="refresh-btn" onclick="loadQuestions()">
-                    <i class="ti ti-refresh"></i> تحديث
+                    <i class="ti ti-refresh"></i> ØªØ­Ø¯ÙŠØ«
                 </button>
             </div>
         </div>
 
         <div class="filter-bar">
-            <input type="text" id="searchInput" placeholder="🔍  ابحث باسم الطالب أو السؤال أو اسم المحاضرة..." oninput="renderGrid()" />
+            <input type="text" id="searchInput" placeholder="ðŸ”  Ø§Ø¨Ø­Ø« Ø¨Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨ Ø£Ùˆ Ø§Ù„Ø³Ø¤Ø§Ù„ Ø£Ùˆ Ø§Ø³Ù… Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø©..." oninput="renderGrid()" />
         </div>
 
         <div id="questions-grid">
-            <div class="spinner"><i class="ti ti-loader ti-spin" style="font-size:2rem;"></i><br>جاري التحميل...</div>
+            <div class="spinner"><i class="ti ti-loader ti-spin" style="font-size:2rem;"></i><br>Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</div>
         </div>
     </div>
 </div>
 
 <script>
-    // ══════════════ CONFIG ══════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â• CONFIG â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     const SESSION_KEY = 'assistantLoggedIn';
     const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
 
@@ -610,7 +610,7 @@
         return d.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' });
     }
 
-    // ══════════════ AUTH ══════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â• AUTH â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     // Accept: (1) DB-authenticated teacher in localStorage, OR (2) static session login
     function checkAuth() {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
@@ -634,7 +634,7 @@
             if (!localStorage.getItem('currentUser')) {
                 localStorage.setItem('currentUser', JSON.stringify({
                     _id: 'assistant-session-id', role: 'assistant', teacherId: null,
-                    firstName: 'مساعد', lastName: 'المنصة', phone: user
+                    firstName: 'Ù…Ø³Ø§Ø¹Ø¯', lastName: 'Ø§Ù„Ù…Ù†ØµØ©', phone: user
                 }));
             }
             showDash();
@@ -687,10 +687,10 @@
         showDash();
     }
 
-    // ══════════════ DATA ══════════════
+    // â•â•â•â•â•â•â•â•â•â•â•â•â•â• DATA â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     async function loadQuestions() {
         const grid = document.getElementById('questions-grid');
-        grid.innerHTML = '<div class="spinner"><i class="ti ti-loader" style="font-size:2rem;animation:spin 1s linear infinite;"></i><br>جاري التحميل...</div>';
+        grid.innerHTML = '<div class="spinner"><i class="ti ti-loader" style="font-size:2rem;animation:spin 1s linear infinite;"></i><br>Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</div>';
         try {
             const { currentUser } = checkAuth();
             const userId = currentUser && currentUser._id ? currentUser._id : '';
@@ -706,10 +706,10 @@
                 allQuestions = data.data;
                 renderGrid();
             } else {
-                grid.innerHTML = '<div class="empty-state"><i class="ti ti-alert-circle"></i>حدث خطأ في جلب الأسئلة</div>';
+                grid.innerHTML = '<div class="empty-state"><i class="ti ti-alert-circle"></i>Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ Ø¬Ù„Ø¨ Ø§Ù„Ø£Ø³Ø¦Ù„Ø©</div>';
             }
         } catch(e) {
-            grid.innerHTML = `<div class="empty-state"><i class="ti ti-wifi-off"></i>تعذّر الاتصال بالسيرفر<br><small>${e.message}</small></div>`;
+            grid.innerHTML = `<div class="empty-state"><i class="ti ti-wifi-off"></i>ØªØ¹Ø°Ù‘Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø³ÙŠØ±ÙØ±<br><small>${e.message}</small></div>`;
         }
     }
 
@@ -733,14 +733,14 @@
         document.getElementById('qCount').textContent = list.length;
 
         if (list.length === 0) {
-            document.getElementById('questions-grid').innerHTML = '<div class="empty-state"><i class="ti ti-messages-off"></i>لا توجد أسئلة</div>';
+            document.getElementById('questions-grid').innerHTML = '<div class="empty-state"><i class="ti ti-messages-off"></i>Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£Ø³Ø¦Ù„Ø©</div>';
             return;
         }
 
         document.getElementById('questions-grid').innerHTML = list.map(q => {
-            const initial = (q.studentName || 'ط')[0];
+            const initial = (q.studentName || 'Ø·')[0];
             const isResolved = resolvedIds.includes(q._id);
-            const waText = encodeURIComponent(`أهلاً ${q.studentName}، بخصوص سؤالك عن محاضرة (${q.videoTitle}):\n"${q.question}"\n\nالرد:\n`);
+            const waText = encodeURIComponent(`Ø£Ù‡Ù„Ø§Ù‹ ${q.studentName}ØŒ Ø¨Ø®ØµÙˆØµ Ø³Ø¤Ø§Ù„Ùƒ Ø¹Ù† Ù…Ø­Ø§Ø¶Ø±Ø© (${q.videoTitle}):\n"${q.question}"\n\nØ§Ù„Ø±Ø¯:\n`);
             const waLink = `https://wa.me/2${encodeURIComponent(q.studentPhone || '')}?text=${waText}`;
             const formattedDate = formatQuestionDate(q.createdAt);
 
@@ -749,19 +749,19 @@
                 <div class="q-card-header">
                     <div class="q-avatar">${escapeHtml(initial)}</div>
                     <div style="flex:1; min-width:0;">
-                        <div class="q-name">${escapeHtml(q.studentName || 'طالب مجهول')} ${isResolved ? '<span class="badge-done">✔ تم الرد</span>' : ''}</div>
-                        <div class="q-phone">${escapeHtml(q.studentPhone || '—')}</div>
+                        <div class="q-name">${escapeHtml(q.studentName || 'Ø·Ø§Ù„Ø¨ Ù…Ø¬Ù‡ÙˆÙ„')} ${isResolved ? '<span class="badge-done">âœ” ØªÙ… Ø§Ù„Ø±Ø¯</span>' : ''}</div>
+                        <div class="q-phone">${escapeHtml(q.studentPhone || 'â€”')}</div>
                     </div>
                     <div class="q-time">${formattedDate}</div>
                 </div>
-                <div class="q-video-tag"><i class="ti ti-video"></i> ${escapeHtml(q.videoTitle || '—')}</div>
+                <div class="q-video-tag"><i class="ti ti-video"></i> ${escapeHtml(q.videoTitle || 'â€”')}</div>
                 <div class="q-text">${escapeHtml(q.question)}</div>
                 <div class="q-actions">
                     <a class="btn-wa" href="${waLink}" target="_blank" onclick="markResolved('${q._id}')">
-                        <i class="fab fa-whatsapp" style="font-size:1rem;"></i> رد عبر الواتساب
+                        <i class="fab fa-whatsapp" style="font-size:1rem;"></i> Ø±Ø¯ Ø¹Ø¨Ø± Ø§Ù„ÙˆØ§ØªØ³Ø§Ø¨
                     </a>
                     <button class="btn-done" onclick="markResolved('${q._id}')">
-                        <i class="ti ti-check"></i> تم
+                        <i class="ti ti-check"></i> ØªÙ…
                     </button>
                 </div>
             </div>`;
@@ -778,7 +778,7 @@
             card.classList.add('resolved');
             const nameEl = card.querySelector('.q-name');
             if (nameEl && !nameEl.querySelector('.badge-done')) {
-                nameEl.innerHTML += ' <span class="badge-done">✔ تم الرد</span>';
+                nameEl.innerHTML += ' <span class="badge-done">âœ” ØªÙ… Ø§Ù„Ø±Ø¯</span>';
             }
         }
     }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
@@ -10,13 +10,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <link rel="stylesheet" href="style.css?v=20261126-v19">
-    <title>تسجيل الدخول | EDGE Academy</title>
+    <link rel="stylesheet" href="style.css?v=20261126-v20">
+    <title>ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ | EDGE Academy</title>
 
 <style id="auth-layout-override">
-/* ══ EDGE Academy – Auth Layout Override (highest priority) ══ */
+/* â•â• EDGE Academy â€“ Auth Layout Override (highest priority) â•â• */
 
-/* ── Shared: body & header on auth pages ── */
+/* â”€â”€ Shared: body & header on auth pages â”€â”€ */
 body.auth-body.register-page,
 body.auth-body.login-page {
     display: flex !important;
@@ -82,9 +82,9 @@ body.auth-body .form-panel.auth-card *::after {
     box-sizing: border-box;
 }
 
-/* ══════════════════════════════════════════
-   DESKTOP  ≥ 900px : Full 42/58 split
-   ══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   DESKTOP  â‰¥ 900px : Full 42/58 split
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (min-width: 900px) {
     body.auth-body.register-page,
     body.auth-body.login-page {
@@ -186,9 +186,9 @@ body.auth-body .form-panel.auth-card *::after {
     }
 }
 
-/* ══════════════════════════════════════════
-   TABLET  600–899px : Single col, no card/box
-   ══════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   TABLET  600â€“899px : Single col, no card/box
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (min-width: 600px) and (max-width: 899px) {
     body.auth-body.register-page,
     body.auth-body.login-page {
@@ -249,9 +249,9 @@ body.auth-body .form-panel.auth-card *::after {
     }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    MOBILE  < 600px : Full screen, no card
-   ══════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 599px) {
     body.auth-body.register-page,
     body.auth-body.login-page {
@@ -283,7 +283,8 @@ body.auth-body .form-panel.auth-card *::after {
     }
 
     body.auth-body.register-page section.auth-right,
-    body.auth-body.login-page section.auth-right {
+    body.auth-body.login-page section.auth-right,
+    body.auth-body.login-page section.login-form-panel {
         flex: 1 1 auto !important;
         width: 100% !important;
         max-width: 100% !important;
@@ -298,8 +299,12 @@ body.auth-body .form-panel.auth-card *::after {
         overflow: visible !important;
     }
 
+    body.auth-body.register-page .form-panel,
+    body.auth-body.login-page .form-panel,
     body.auth-body.register-page .form-panel.auth-card,
-    body.auth-body.login-page .form-panel.auth-card {
+    body.auth-body.login-page .form-panel.auth-card,
+    body.auth-body.register-page div.form-panel,
+    body.auth-body.login-page div.form-panel {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
@@ -381,10 +386,12 @@ body.auth-body .form-panel.auth-card *::after {
         min-width: 0 !important;
     }
 
-    body.auth-body .btn-fill.auth-submit {
+    body.auth-body .btn-fill.auth-submit,
+    body.auth-body button[type="submit"] {
         min-height: 42px !important;
         font-size: 0.9rem !important;
         border-radius: 12px !important;
+        width: 100% !important;
     }
 
     body.auth-body .steps-indicator {
@@ -409,22 +416,41 @@ body.auth-body .form-panel.auth-card *::after {
         min-height: 36px !important;
         min-width: 0 !important;
     }
+
+
+    /* â”€â”€ fix login-right alignment on mobile: no centering, full height â”€â”€ */
+    body.auth-body.login-page section.auth-right,
+    body.auth-body.login-page section.auth-right.login-form-panel {
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        min-height: 100dvh !important;
+        background: #ffffff !important;
+    }
+    body.dark-mode.auth-body.login-page section.auth-right,
+    body.dark-mode.auth-body.login-page section.auth-right.login-form-panel {
+        background: #0f172a !important;
+    }
+    body.auth-body.login-page .form-panel.auth-card,
+    body.auth-body.login-page div.form-panel {
+        margin-top: 0 !important;
+        align-self: flex-start !important;
+    }
 }
 </style>
 </head>
 
 <body class="auth-body login-page">
-    <header>
+    <header hidden style="display:none!important">
         <div class="header-inner">
-            <!-- اليمين: شعار المنصة المتغير تلقائياً مع الثيم -->
-            <!-- اليمين: شعار المنصة وزر تبديل اللغة بجانبه -->
+            <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ù…ØªØºÙŠØ± ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¹ Ø§Ù„Ø«ÙŠÙ… -->
+            <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© ÙˆØ²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨Ù‡ -->
         <div class="header-right">
-            <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+            <a href="/" class="header-brand" aria-label="EDGE Academy Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
-            <!-- زر تبديل اللغة بجانب اللوجو -->
-            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+            <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨ Ø§Ù„Ù„ÙˆØ¬Ùˆ -->
+            <button type="button" class="language-switcher" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ©" title="Switch Language">
                 <span>EN</span>
                 <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -434,17 +460,17 @@ body.auth-body .form-panel.auth-card *::after {
             </button>
         </div>
 
-            <!-- اليسار: أزرار التنقل ومحول الثيم وزر اللغة -->
+            <!-- Ø§Ù„ÙŠØ³Ø§Ø±: Ø£Ø²Ø±Ø§Ø± Ø§Ù„ØªÙ†Ù‚Ù„ ÙˆÙ…Ø­ÙˆÙ„ Ø§Ù„Ø«ÙŠÙ… ÙˆØ²Ø± Ø§Ù„Ù„ØºØ© -->
             <div class="header-left">
                 <nav class="header-actions">
-                    <a href="register" class="btn-fill">سجل الآن</a>
-                    <a href="/" class="btn-outline">الرئيسية</a>
+                    <a href="register" class="btn-fill">Ø³Ø¬Ù„ Ø§Ù„Ø¢Ù†</a>
+                    <a href="/" class="btn-outline">Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a>
                 </nav>
-                <div class="theme-capsule" aria-label="تبديل المظهر">
-                    <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار"
-                        title="وضع النهار">☀</button>
-                    <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام"
-                        title="وضع الظلام">🌙</button>
+                <div class="theme-capsule" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¸Ù‡Ø±">
+                    <button class="icon-btn theme-switcher" data-theme="light" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±"
+                        title="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±">â˜€</button>
+                    <button class="icon-btn theme-switcher" data-theme="dark" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…"
+                        title="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…">ðŸŒ™</button>
                 </div>
             </div>
         </div>
@@ -476,7 +502,7 @@ body.auth-body .form-panel.auth-card *::after {
                 <div class="showcase-brand-block">
                     <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="showcase-logo">
                     <p class="showcase-tagline">
-                        منصة متكاملة بتساعدك تذاكر صح، تختار مدرسينك ودكاترتك، وتوصل لأعلى درجاتك في المدارس والجامعات بكل سهولة وراحة.
+                        Ù…Ù†ØµØ© Ù…ØªÙƒØ§Ù…Ù„Ø© Ø¨ØªØ³Ø§Ø¹Ø¯Ùƒ ØªØ°Ø§ÙƒØ± ØµØ­ØŒ ØªØ®ØªØ§Ø± Ù…Ø¯Ø±Ø³ÙŠÙ†Ùƒ ÙˆØ¯ÙƒØ§ØªØ±ØªÙƒØŒ ÙˆØªÙˆØµÙ„ Ù„Ø£Ø¹Ù„Ù‰ Ø¯Ø±Ø¬Ø§ØªÙƒ ÙÙŠ Ø§Ù„Ù…Ø¯Ø§Ø±Ø³ ÙˆØ§Ù„Ø¬Ø§Ù…Ø¹Ø§Øª Ø¨ÙƒÙ„ Ø³Ù‡ÙˆÙ„Ø© ÙˆØ±Ø§Ø­Ø©.
                     </p>
                 </div>
             </div>
@@ -484,33 +510,33 @@ body.auth-body .form-panel.auth-card *::after {
         <section class="auth-right login-form-panel">
             <div class="form-panel auth-card">
                 <div class="auth-back-home-row">
-                    <a href="/" class="auth-back-home-btn">← الرجوع للرئيسية</a>
+                    <a href="/" class="auth-back-home-btn">â† Ø§Ù„Ø±Ø¬ÙˆØ¹ Ù„Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a>
                 </div>
                 <div class="auth-brand">
                     <img src="imges/logo-light-mode.png" alt="EDGE Academy"
                         class="auth-brand-logo auth-brand-logo-light">
                     <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="auth-brand-logo auth-brand-logo-dark">
                 </div>
-                <p class="form-subtitle">أهلاً تاني، جاهز للمذاكرة؟</p>
-                <p class="form-note">ادخل رقم هاتفك وكلمة المرور المسجل بهم من قبل.</p>
+                <p class="form-subtitle">Ø£Ù‡Ù„Ø§Ù‹ ØªØ§Ù†ÙŠØŒ Ø¬Ø§Ù‡Ø² Ù„Ù„Ù…Ø°Ø§ÙƒØ±Ø©ØŸ</p>
+                <p class="form-note">Ø§Ø¯Ø®Ù„ Ø±Ù‚Ù… Ù‡Ø§ØªÙÙƒ ÙˆÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ø§Ù„Ù…Ø³Ø¬Ù„ Ø¨Ù‡Ù… Ù…Ù† Ù‚Ø¨Ù„.</p>
                 <form onsubmit="return handleLogin(event)">
                     <div class="form-group">
-                        <label>رقم الهاتف</label>
-                        <input type="tel" name="phone" id="loginPhone" placeholder="رقم الهاتف" required>
+                        <label>Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ</label>
+                        <input type="tel" name="phone" id="loginPhone" placeholder="Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ" required>
                     </div>
                     <div class="form-group">
-                        <label>كلمة المرور</label>
+                        <label>ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±</label>
                         <div class="password-field">
-                            <input type="password" name="password" id="loginPassword" placeholder="كلمة السر" required>
+                            <input type="password" name="password" id="loginPassword" placeholder="ÙƒÙ„Ù…Ø© Ø§Ù„Ø³Ø±" required>
                             <button type="button" class="password-toggle"
-                                onclick="togglePasswordVisibility(this)">👁️</button>
+                                onclick="togglePasswordVisibility(this)">ðŸ‘ï¸</button>
                         </div>
                     </div>
-                    <button type="submit" class="btn-fill auth-submit" style="width:100%">تسجيل الدخول
-                        <span>←</span></button>
+                    <button type="submit" class="btn-fill auth-submit" style="width:100%">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„
+                        <span>â†</span></button>
                     <div id="loginFeedback" class="login-feedback" role="alert" aria-live="polite" hidden></div>
                 </form>
-                <p class="form-footer">ليس لديك حساب؟ <a href="register">سجل الآن</a></p>
+                <p class="form-footer">Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ <a href="register">Ø³Ø¬Ù„ Ø§Ù„Ø¢Ù†</a></p>
             </div>
         </section>
     </main>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
@@ -9,18 +9,18 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الامتحانات | EDGE Academy</title>
-    <link rel="stylesheet" href="style.css?v=20261126-v19">
+    <title>Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª | EDGE Academy</title>
+    <link rel="stylesheet" href="style.css?v=20261126-v20">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap');
 
-        /* ═══════════════════════════════════════════════
-           🎨 ثيم صفحة الامتحانات المتوافق مع المنصة
-        ═══════════════════════════════════════════════ */
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           ðŸŽ¨ Ø«ÙŠÙ… ØµÙØ­Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ø§Ù„Ù…ØªÙˆØ§ÙÙ‚ Ù…Ø¹ Ø§Ù„Ù…Ù†ØµØ©
+        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
         :root {
-            /* ☀️ الوضع النهاري الافتراضي (Light Mode) */
+            /* â˜€ï¸ Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±ÙŠ Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠ (Light Mode) */
             --bg: #f0f4ff;
             --bg2: #ffffff;
             --bg3: #f1f5fd;
@@ -43,7 +43,7 @@
             --shadow: 0 10px 30px rgba(26, 107, 219, 0.08);
         }
 
-        /* 🌙 الوضع الليلي الموحد (Dark Mode) */
+        /* ðŸŒ™ Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù„ÙŠÙ„ÙŠ Ø§Ù„Ù…ÙˆØ­Ø¯ (Dark Mode) */
         body.dark-mode,
         .dark-mode,
         html.dark-mode {
@@ -67,7 +67,7 @@
             --shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
         }
 
-        /* التوافق مع أي استدعاء legacy للـ light-mode */
+        /* Ø§Ù„ØªÙˆØ§ÙÙ‚ Ù…Ø¹ Ø£ÙŠ Ø§Ø³ØªØ¯Ø¹Ø§Ø¡ legacy Ù„Ù„Ù€ light-mode */
         body.light-mode {
             --bg: #f0f4ff;
             --bg2: #ffffff;
@@ -89,7 +89,7 @@
             --shadow: 0 10px 30px rgba(26, 107, 219, 0.08);
         }
 
-        /* ===== نافبار المنصة الموحّد — يُدار بـ style.css وscript.js ===== */
+        /* ===== Ù†Ø§ÙØ¨Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ù…ÙˆØ­Ù‘Ø¯ â€” ÙŠÙØ¯Ø§Ø± Ø¨Ù€ style.css Ùˆscript.js ===== */
 
         *,
         *::before,
@@ -126,7 +126,7 @@
             transition: background 0.3s ease;
         }
 
-        /* زر الهامبرغر للموبايل */
+        /* Ø²Ø± Ø§Ù„Ù‡Ø§Ù…Ø¨Ø±ØºØ± Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ */
         .exams-hamburger {
             display: none;
             background: none;
@@ -147,7 +147,7 @@
             color: var(--accent);
         }
 
-        /* قائمة الموبايل لصفحة الامتحانات */
+        /* Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ Ù„ØµÙØ­Ø© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª */
         .exams-mobile-menu {
             display: none;
             flex-direction: column;
@@ -961,7 +961,7 @@
             margin-top: auto;
         }
     
-        /* تحسينات كروت وتفاصيل الامتحانات للوضعين النهاري والليلي */
+        /* ØªØ­Ø³ÙŠÙ†Ø§Øª ÙƒØ±ÙˆØª ÙˆØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ù„Ù„ÙˆØ¶Ø¹ÙŠÙ† Ø§Ù„Ù†Ù‡Ø§Ø±ÙŠ ÙˆØ§Ù„Ù„ÙŠÙ„ÙŠ */
         .exam-card {
             background: var(--bg2);
             border: 1px solid var(--border);
@@ -1034,17 +1034,17 @@
 
 <body>
 
-    <!-- NAVBAR: نافبار موحّد مع بقية المنصة — يُدار تلقائياً بواسطة style.css وscript.js -->
+    <!-- NAVBAR: Ù†Ø§ÙØ¨Ø§Ø± Ù…ÙˆØ­Ù‘Ø¯ Ù…Ø¹ Ø¨Ù‚ÙŠØ© Ø§Ù„Ù…Ù†ØµØ© â€” ÙŠÙØ¯Ø§Ø± ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ø¨ÙˆØ§Ø³Ø·Ø© style.css Ùˆscript.js -->
     <header>
         <div class="header-inner">
-            <!-- اليمين: شعار المنصة وزر تبديل اللغة -->
+            <!-- Ø§Ù„ÙŠÙ…ÙŠÙ†: Ø´Ø¹Ø§Ø± Ø§Ù„Ù…Ù†ØµØ© ÙˆØ²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© -->
             <div class="header-right">
-                <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+                <a href="/" class="header-brand" aria-label="EDGE Academy Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©">
                     <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                     <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
                 </a>
-                <!-- زر تبديل اللغة بجانب اللوجو -->
-                <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+                <!-- Ø²Ø± ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ© Ø¨Ø¬Ø§Ù†Ø¨ Ø§Ù„Ù„ÙˆØ¬Ùˆ -->
+                <button type="button" class="language-switcher" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù„ØºØ©" title="Switch Language">
                     <span>EN</span>
                     <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
@@ -1054,79 +1054,79 @@
                 </button>
             </div>
 
-                    <!-- المنتصف: روابط التنقل -->
+                    <!-- Ø§Ù„Ù…Ù†ØªØµÙ: Ø±ÙˆØ§Ø¨Ø· Ø§Ù„ØªÙ†Ù‚Ù„ -->
         <div class="header-center">
-            <a href="/" class="nav-link-item">الرئيسية</a>
-            <a href="teachers" class="nav-link-item">المعلمين</a>
-            <a href="subjects" class="nav-link-item">المواد الدراسية</a>
-            <a href="courses" class="nav-link-item">الكورسات</a>
-            <a href="exams" class="nav-link-item active">الامتحانات</a>
-            <a href="play-study" class="nav-link-item play-study-nav-btn">🎮 Play & Study</a>
-            <!-- زر لوحة تحكم الأدمن (يظهر فقط إذا كان المستخدم مسجل كـ Admin) -->
+            <a href="/" class="nav-link-item">Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a>
+            <a href="teachers" class="nav-link-item">Ø§Ù„Ù…Ø¹Ù„Ù…ÙŠÙ†</a>
+            <a href="subjects" class="nav-link-item">Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©</a>
+            <a href="courses" class="nav-link-item">Ø§Ù„ÙƒÙˆØ±Ø³Ø§Øª</a>
+            <a href="exams" class="nav-link-item active">Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
+            <a href="play-study" class="nav-link-item play-study-nav-btn">ðŸŽ® Play & Study</a>
+            <!-- Ø²Ø± Ù„ÙˆØ­Ø© ØªØ­ÙƒÙ… Ø§Ù„Ø£Ø¯Ù…Ù† (ÙŠØ¸Ù‡Ø± ÙÙ‚Ø· Ø¥Ø°Ø§ ÙƒØ§Ù† Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø³Ø¬Ù„ ÙƒÙ€ Admin) -->
             <a href="admin" class="nav-link-item admin-portal-nav-btn" id="adminPortalNavBtn" style="display: none;">
-                <i class="fas fa-crown"></i> صفحة الادمن
+                <i class="fas fa-crown"></i> ØµÙØ­Ø© Ø§Ù„Ø§Ø¯Ù…Ù†
             </a>
         </div>
 
-            <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
+            <!-- Ø§Ù„ÙŠØ³Ø§Ø±: Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙˆÙ…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ -->
             <div class="header-left">
-                <!-- أزرار الزائر -->
+                <!-- Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ø²Ø§Ø¦Ø± -->
                 <nav class="header-actions" id="authActions">
-                    <a href="login" class="btn-outline">تسجيل الدخول</a>
-                    <a href="register" class="btn-fill">سجل الآن</a>
+                    <a href="login" class="btn-outline">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>
+                    <a href="register" class="btn-fill">Ø³Ø¬Ù„ Ø§Ù„Ø¢Ù†</a>
                 </nav>
 
-                <!-- قائمة المستخدم عند تسجيل الدخول -->
+                <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ -->
                 <div class="user-dropdown-container" id="userDropdownArea" style="display: none;">
                     <button class="user-menu-btn" onclick="toggleUserMenu()">
-                        <span id="navUserName">حسابي</span>
-                        <div class="user-icon-circle">👤</div>
+                        <span id="navUserName">Ø­Ø³Ø§Ø¨ÙŠ</span>
+                        <div class="user-icon-circle">ðŸ‘¤</div>
                     </button>
                     <div class="user-dropdown-menu" id="userMenu">
                         <a href="admin" class="menu-item" id="adminMenuLink" style="display: none; color: #e76f51; font-weight: 800; border-bottom: 1px dashed var(--border);">
-                            👑 صفحة الادمن
+                            ðŸ‘‘ ØµÙØ­Ø© Ø§Ù„Ø§Ø¯Ù…Ù†
                         </a>
-                        <a href="profile" class="menu-item">👤 البروفايل</a>
+                        <a href="profile" class="menu-item">ðŸ‘¤ Ø§Ù„Ø¨Ø±ÙˆÙØ§ÙŠÙ„</a>
                         <div class="menu-item balance-item">
-                            <span>💰 الرصيد:</span>
-                            <span id="userPoints">0</span> ج.م
+                            <span>ðŸ’° Ø§Ù„Ø±ØµÙŠØ¯:</span>
+                            <span id="userPoints">0</span> Ø¬.Ù…
                         </div>
                         <hr>
-                        <button onclick="handleLogout()" class="menu-item logout-btn">🚪 تسجيل خروج</button>
+                        <button onclick="handleLogout()" class="menu-item logout-btn">ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬</button>
                     </div>
                 </div>
 
-                <!-- محول الأوضاع (النهار / الليل) -->
-                <div class="theme-capsule" aria-label="تبديل المظهر">
-                    <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
-                    <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
+                <!-- Ù…Ø­ÙˆÙ„ Ø§Ù„Ø£ÙˆØ¶Ø§Ø¹ (Ø§Ù„Ù†Ù‡Ø§Ø± / Ø§Ù„Ù„ÙŠÙ„) -->
+                <div class="theme-capsule" aria-label="ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„Ù…Ø¸Ù‡Ø±">
+                    <button class="icon-btn theme-switcher" data-theme="light" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±" title="ÙˆØ¶Ø¹ Ø§Ù„Ù†Ù‡Ø§Ø±">â˜€</button>
+                    <button class="icon-btn theme-switcher" data-theme="dark" aria-label="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…" title="ÙˆØ¶Ø¹ Ø§Ù„Ø¸Ù„Ø§Ù…">ðŸŒ™</button>
                 </div>
 
-                <!-- زر الهامبرغر للموبايل -->
-                <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+                <!-- Ø²Ø± Ø§Ù„Ù‡Ø§Ù…Ø¨Ø±ØºØ± Ù„Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ -->
+                <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
 
-            <!-- قائمة الموبايل المنسدلة -->
+            <!-- Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ Ø§Ù„Ù…Ù†Ø³Ø¯Ù„Ø© -->
     <div class="mobile-nav-menu" id="mobileNavMenu">
         <a href="admin" class="mobile-nav-link" id="mobileAdminLink" style="display:none; color:#e76f51; font-weight:800; background:rgba(231,111,81,0.1); border-radius:8px; margin:4px 0;">
-            👑 صفحة الادمن
+            ðŸ‘‘ ØµÙØ­Ø© Ø§Ù„Ø§Ø¯Ù…Ù†
         </a>
-        <a href="/" class="mobile-nav-link">🏠 الرئيسية</a>
-        <a href="teachers" class="mobile-nav-link">👨‍🏫 المعلمين</a>
-        <a href="subjects" class="mobile-nav-link">📚 المواد الدراسية</a>
-        <a href="courses" class="mobile-nav-link">🎥 الكورسات</a>
-        <a href="exams" class="mobile-nav-link active">📝 الامتحانات</a>
-        <a href="play-study" class="mobile-nav-link play-study-nav-btn">🎮 Play & Study</a>
+        <a href="/" class="mobile-nav-link">ðŸ  Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</a>
+        <a href="teachers" class="mobile-nav-link">ðŸ‘¨â€ðŸ« Ø§Ù„Ù…Ø¹Ù„Ù…ÙŠÙ†</a>
+        <a href="subjects" class="mobile-nav-link">ðŸ“š Ø§Ù„Ù…ÙˆØ§Ø¯ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©</a>
+        <a href="courses" class="mobile-nav-link">ðŸŽ¥ Ø§Ù„ÙƒÙˆØ±Ø³Ø§Øª</a>
+        <a href="exams" class="mobile-nav-link active">ðŸ“ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª</a>
+        <a href="play-study" class="mobile-nav-link play-study-nav-btn">ðŸŽ® Play & Study</a>
         <div class="mobile-menu-auth" id="mobileAuthGuest">
-            <a href="login" class="btn-outline" style="text-align:center;">تسجيل الدخول</a>
-            <a href="register" class="btn-fill" style="text-align:center;">سجل الآن</a>
+            <a href="login" class="btn-outline" style="text-align:center;">ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„</a>
+            <a href="register" class="btn-fill" style="text-align:center;">Ø³Ø¬Ù„ Ø§Ù„Ø¢Ù†</a>
         </div>
         <div class="mobile-menu-auth" id="mobileAuthUser" style="display:none;">
-            <a href="profile" class="mobile-nav-link">👤 البروفايل</a>
-            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">🚪 تسجيل خروج</button>
+            <a href="profile" class="mobile-nav-link">ðŸ‘¤ Ø§Ù„Ø¨Ø±ÙˆÙØ§ÙŠÙ„</a>
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none;border:none;cursor:pointer;width:100%;text-align:right;color:var(--text-dark);font-family:inherit;">ðŸšª ØªØ³Ø¬ÙŠÙ„ Ø®Ø±ÙˆØ¬</button>
         </div>
     </div>
     </header>
@@ -1135,12 +1135,12 @@
         <!-- Hero area -->
         <div class="welcome-hero">
             <div>
-                <h2 class="hero-title">📝 الامتحانات المدرسية المتاحة</h2>
-                <p class="hero-subtitle">تختبر فهمك وتمنحك تقييماً فورياً لأدائك الدراسي</p>
+                <h2 class="hero-title">ðŸ“ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ø§Ù„Ù…Ø¯Ø±Ø³ÙŠØ© Ø§Ù„Ù…ØªØ§Ø­Ø©</h2>
+                <p class="hero-subtitle">ØªØ®ØªØ¨Ø± ÙÙ‡Ù…Ùƒ ÙˆØªÙ…Ù†Ø­Ùƒ ØªÙ‚ÙŠÙŠÙ…Ø§Ù‹ ÙÙˆØ±ÙŠØ§Ù‹ Ù„Ø£Ø¯Ø§Ø¦Ùƒ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠ</p>
             </div>
             <div class="student-pill">
                 <i class="ti ti-school"></i>
-                <span id="student-name-display">جاري التحميل...</span>
+                <span id="student-name-display">Ø¬Ø§Ø±ÙŠ Ø§Ù„ØªØ­Ù…ÙŠÙ„...</span>
                 <span id="student-grade-display" style="color: var(--txt3);"></span>
             </div>
         </div>
@@ -1149,19 +1149,19 @@
         <div class="filter-section" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
             <div class="search-box" style="flex: 1; min-width: 240px;">
                 <i class="ti ti-search"></i>
-                <input type="text" class="search-input" id="searchExamInput" placeholder="ابحث عن امتحان باسم المعلم أو المادة..." oninput="filterExams()">
+                <input type="text" class="search-input" id="searchExamInput" placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ø§Ù…ØªØ­Ø§Ù† Ø¨Ø§Ø³Ù… Ø§Ù„Ù…Ø¹Ù„Ù… Ø£Ùˆ Ø§Ù„Ù…Ø§Ø¯Ø©..." oninput="filterExams()">
             </div>
             <select class="filter-select" id="gradeFilter" onchange="filterExams()" style="min-width: 170px;">
-                <option value="">كل الصفوف الدراسية</option>
-                <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
-                <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
-                <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
-                <option value="الصف الأول الإعدادي">الصف الأول الإعدادي</option>
-                <option value="الصف الثاني الإعدادي">الصف الثاني الإعدادي</option>
-                <option value="الصف الثالث الإعدادي">الصف الثالث الإعدادي</option>
+                <option value="">ÙƒÙ„ Ø§Ù„ØµÙÙˆÙ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©</option>
+                <option value="Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ</option>
+                <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ</option>
+                <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø«Ø§Ù†ÙˆÙŠ</option>
+                <option value="Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø£ÙˆÙ„ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ</option>
+                <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù†ÙŠ Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ</option>
+                <option value="Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ">Ø§Ù„ØµÙ Ø§Ù„Ø«Ø§Ù„Ø« Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯ÙŠ</option>
             </select>
             <select class="filter-select" id="teacherFilter" onchange="filterExams()" style="min-width: 160px;">
-                <option value="">كل المعلمين</option>
+                <option value="">ÙƒÙ„ Ø§Ù„Ù…Ø¹Ù„Ù…ÙŠÙ†</option>
             </select>
         </div>
 
@@ -1170,7 +1170,7 @@
         <!-- Exams list -->
         <div class="exam-grid" id="studentExamsGrid">
             <!-- Loading -->
-            <p style="text-align:center; grid-column: 1/-1; padding:40px; color:var(--txt3);">جاري تحميل الامتحانات المتاحة لصفك الدراسي...</p>
+            <p style="text-align:center; grid-column: 1/-1; padding:40px; color:var(--txt3);">Ø¬Ø§Ø±ÙŠ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© Ù„ØµÙÙƒ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠ...</p>
         </div>
     </div>
 
@@ -1178,8 +1178,8 @@
     <div class="quiz-overlay" id="quizOverlay">
         <header class="quiz-header">
             <div>
-                <h2 style="font-size: 1.25rem; font-weight:800;" id="quizTitle">اسم الامتحان</h2>
-                <p style="font-size: 0.8rem; color:var(--txt2);" id="quizTeacher">المعلم: -</p>
+                <h2 style="font-size: 1.25rem; font-weight:800;" id="quizTitle">Ø§Ø³Ù… Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†</h2>
+                <p style="font-size: 0.8rem; color:var(--txt2);" id="quizTeacher">Ø§Ù„Ù…Ø¹Ù„Ù…: -</p>
             </div>
             <div class="timer-badge" id="quizTimer">
                 <i class="ti ti-alarm"></i>
@@ -1187,23 +1187,23 @@
             </div>
         </header>
         <div class="quiz-workspace">
-            <aside class="quiz-sidebar" aria-label="أدوات الامتحان">
-                <div class="quiz-side-heading"><span><i class="ti ti-list-numbers"></i> الانتقال للأسئلة</span><span class="quiz-count-chip" id="quizAnsweredCount">0 مجاب</span></div>
+            <aside class="quiz-sidebar" aria-label="Ø£Ø¯ÙˆØ§Øª Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†">
+                <div class="quiz-side-heading"><span><i class="ti ti-list-numbers"></i> Ø§Ù„Ø§Ù†ØªÙ‚Ø§Ù„ Ù„Ù„Ø£Ø³Ø¦Ù„Ø©</span><span class="quiz-count-chip" id="quizAnsweredCount">0 Ù…Ø¬Ø§Ø¨</span></div>
                 <div class="question-nav-grid" id="questionNavGrid"></div>
                 <hr class="quiz-side-divider">
-                <label class="scratchpad-label" for="quizScratchpad"><i class="ti ti-pencil"></i> مسودة الطالب</label>
-                <p class="scratchpad-hint">اكتب ملاحظاتك وحساباتك هنا. المسودة خاصة بك ولا تُرسل ضمن الإجابة.</p>
-                <textarea id="quizScratchpad" class="quiz-scratchpad" placeholder="اكتب مسودتك هنا..." oninput="saveQuizScratchpad(this.value)"></textarea>
+                <label class="scratchpad-label" for="quizScratchpad"><i class="ti ti-pencil"></i> Ù…Ø³ÙˆØ¯Ø© Ø§Ù„Ø·Ø§Ù„Ø¨</label>
+                <p class="scratchpad-hint">Ø§ÙƒØªØ¨ Ù…Ù„Ø§Ø­Ø¸Ø§ØªÙƒ ÙˆØ­Ø³Ø§Ø¨Ø§ØªÙƒ Ù‡Ù†Ø§. Ø§Ù„Ù…Ø³ÙˆØ¯Ø© Ø®Ø§ØµØ© Ø¨Ùƒ ÙˆÙ„Ø§ ØªÙØ±Ø³Ù„ Ø¶Ù…Ù† Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø©.</p>
+                <textarea id="quizScratchpad" class="quiz-scratchpad" placeholder="Ø§ÙƒØªØ¨ Ù…Ø³ÙˆØ¯ØªÙƒ Ù‡Ù†Ø§..." oninput="saveQuizScratchpad(this.value)"></textarea>
             </aside>
             <main class="quiz-main-column">
                 <div class="quiz-content">
                     <div id="quizQuestionsContainer"></div>
                     <div class="quiz-actions">
                         <button class="btn" style="background:var(--green); color:#000;" onclick="submitExamAnswers()">
-                            <i class="ti ti-checkbox"></i> إنهاء وتقديم الامتحان
+                            <i class="ti ti-checkbox"></i> Ø¥Ù†Ù‡Ø§Ø¡ ÙˆØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†
                         </button>
                         <button class="btn secondary" onclick="confirmExitExam()">
-                            <i class="ti ti-arrow-right"></i> انسحاب من الامتحان
+                            <i class="ti ti-arrow-right"></i> Ø§Ù†Ø³Ø­Ø§Ø¨ Ù…Ù† Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†
                         </button>
                     </div>
                 </div>
@@ -1211,7 +1211,7 @@
         </div>
         <div class="quiz-progress-dock" aria-live="polite">
             <div class="quiz-progress-row">
-                <span><i class="ti ti-progress-check"></i> تقدّمك في الامتحان</span>
+                <span><i class="ti ti-progress-check"></i> ØªÙ‚Ø¯Ù‘Ù…Ùƒ ÙÙŠ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†</span>
                 <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quizProgressFill"></div></div>
                 <span class="quiz-progress-number" id="quizProgressText">0 / 0</span>
             </div>
@@ -1221,7 +1221,7 @@
     <!-- SUCCESS RESULTS BOARD VIEW -->
     <div class="container" id="resultsContainer" style="display:none;">
         <div class="results-box" id="resultsBox">
-            <h2 style="margin-bottom: 20px; font-weight: 800;">🎉 تم تقديم الامتحان بنجاح</h2>
+            <h2 style="margin-bottom: 20px; font-weight: 800;">ðŸŽ‰ ØªÙ… ØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¨Ù†Ø¬Ø§Ø­</h2>
             <div class="progress-circle-wrapper">
                 <svg class="svg-circle">
                     <circle class="circle-bg" cx="80" cy="80" r="70" />
@@ -1229,15 +1229,15 @@
                 </svg>
                 <div class="circle-value" id="percentageDisplay">0%</div>
             </div>
-            <div class="score-info" id="scoreDisplay">حصلت على 0 من 0</div>
-            <p class="results-desc" id="resultsFeedback">أداء رائع! تم حفظ النتيجة وتصحيحها تلقائياً.</p>
+            <div class="score-info" id="scoreDisplay">Ø­ØµÙ„Øª Ø¹Ù„Ù‰ 0 Ù…Ù† 0</div>
+            <p class="results-desc" id="resultsFeedback">Ø£Ø¯Ø§Ø¡ Ø±Ø§Ø¦Ø¹! ØªÙ… Ø­ÙØ¸ Ø§Ù„Ù†ØªÙŠØ¬Ø© ÙˆØªØµØ­ÙŠØ­Ù‡Ø§ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.</p>
             <div style="display:flex; gap:12px; justify-content:center;">
-                <button class="btn" onclick="location.reload()"><i class="ti ti-refresh"></i> الرجوع للرئيسية</button>
+                <button class="btn" onclick="location.reload()"><i class="ti ti-refresh"></i> Ø§Ù„Ø±Ø¬ÙˆØ¹ Ù„Ù„Ø±Ø¦ÙŠØ³ÙŠØ©</button>
             </div>
 
             <!-- Detailed feedback sheet -->
             <div class="corrected-list" id="correctedFeedbackList">
-                <h3 style="margin:30px 0 15px; border-bottom:1px solid var(--border); padding-bottom:8px;">📊 ورقة تصحيح الإجابات</h3>
+                <h3 style="margin:30px 0 15px; border-bottom:1px solid var(--border); padding-bottom:8px;">ðŸ“Š ÙˆØ±Ù‚Ø© ØªØµØ­ÙŠØ­ Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø§Øª</h3>
                 <div id="correctedQuestions"></div>
             </div>
         </div>
@@ -1246,7 +1246,7 @@
     <div id="toast-container"></div>
 
     <footer>
-        <p>© 2026 منصة EDGE Academy التعليمية. جميع الحقوق محفوظة.</p>
+        <p>Â© 2026 Ù…Ù†ØµØ© EDGE Academy Ø§Ù„ØªØ¹Ù„ÙŠÙ…ÙŠØ©. Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ‚ Ù…Ø­ÙÙˆØ¸Ø©.</p>
     </footer>
 
     <script>
@@ -1276,11 +1276,11 @@
                 _student = {};
             }
             _isAdmin = _student && (_student.role === 'admin' || _student.phone === '01556448880' || _student.phone === '01234567890' || _student.isAdmin === true);
-            const dispName = _student.firstName ? `${_student.firstName} ${_student.lastName || ''}` : (_student.name || 'طالب');
+            const dispName = _student.firstName ? `${_student.firstName} ${_student.lastName || ''}` : (_student.name || 'Ø·Ø§Ù„Ø¨');
             const nameEl = document.getElementById('student-name-display');
             if (nameEl) nameEl.textContent = dispName;
             const gradeEl = document.getElementById('student-grade-display');
-            if (gradeEl) gradeEl.textContent = _isAdmin ? '| مسؤول (وصول شامل)' : `| ${_student.grade || 'طالب'}`;
+            if (gradeEl) gradeEl.textContent = _isAdmin ? '| Ù…Ø³Ø¤ÙˆÙ„ (ÙˆØµÙˆÙ„ Ø´Ø§Ù…Ù„)' : `| ${_student.grade || 'Ø·Ø§Ù„Ø¨'}`;
         }
 
         // Toast helper
@@ -1302,7 +1302,7 @@
                     const teachers = await teachersRes.json();
                     const sel = document.getElementById('teacherFilter');
                     if (sel && Array.isArray(teachers)) {
-                        sel.innerHTML = '<option value="">كل المعلمين</option>';
+                        sel.innerHTML = '<option value="">ÙƒÙ„ Ø§Ù„Ù…Ø¹Ù„Ù…ÙŠÙ†</option>';
                         teachers.forEach(t => {
                             sel.innerHTML += `<option value="${t._id}">${t.name} - ${t.subjectAr || t.subject || ''}</option>`;
                         });
@@ -1335,7 +1335,7 @@
                                 noticeEl.innerHTML = `
                                     <div style="background:rgba(221,168,82,0.1); border:1px solid rgba(221,168,82,0.3); border-radius:10px; padding:12px 16px; font-size:13px; color:var(--accent); display:flex; align-items:center; gap:8px;">
                                         <i class="ti ti-info-circle" style="font-size:1.2rem;"></i>
-                                        <span>لا توجد امتحانات مخصصة لصف <b>${_student.grade}</b> حالياً. تم عرض جميع الامتحانات المتاحة لتتمكن من تصفحها واختيار ما يناسبك.</span>
+                                        <span>Ù„Ø§ ØªÙˆØ¬Ø¯ Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ù…Ø®ØµØµØ© Ù„ØµÙ <b>${_student.grade}</b> Ø­Ø§Ù„ÙŠØ§Ù‹. ØªÙ… Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© Ù„ØªØªÙ…ÙƒÙ† Ù…Ù† ØªØµÙØ­Ù‡Ø§ ÙˆØ§Ø®ØªÙŠØ§Ø± Ù…Ø§ ÙŠÙ†Ø§Ø³Ø¨Ùƒ.</span>
                                     </div>
                                 `;
                                 noticeEl.style.display = 'block';
@@ -1345,7 +1345,7 @@
 
                     filterExams();
 
-                    // إذا تم تمرير معرف الامتحان عبر الرابط لبدئه مباشرة من المحاضرة
+                    // Ø¥Ø°Ø§ ØªÙ… ØªÙ…Ø±ÙŠØ± Ù…Ø¹Ø±Ù Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¹Ø¨Ø± Ø§Ù„Ø±Ø§Ø¨Ø· Ù„Ø¨Ø¯Ø¦Ù‡ Ù…Ø¨Ø§Ø´Ø±Ø© Ù…Ù† Ø§Ù„Ù…Ø­Ø§Ø¶Ø±Ø©
                     const urlParams = new URLSearchParams(window.location.search);
                     const targetExamId = urlParams.get('examId');
                     if (targetExamId) {
@@ -1360,11 +1360,11 @@
                         }
                     }
                 } else {
-                    document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-alert-circle" style="font-size:2rem;display:block;margin-bottom:8px;"></i>تعذر تحميل الامتحانات، يرجى المحاولة لاحقاً.</p>`;
+                    document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-alert-circle" style="font-size:2rem;display:block;margin-bottom:8px;"></i>ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§ØªØŒ ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù„Ø§Ø­Ù‚Ø§Ù‹.</p>`;
                 }
             } catch (err) {
                 console.error(err);
-                document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-wifi-off" style="font-size:2rem;display:block;margin-bottom:8px;"></i>حدث خطأ في الاتصال بالخادم</p>`;
+                document.getElementById('studentExamsGrid').innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--red); padding:40px;"><i class="ti ti-wifi-off" style="font-size:2rem;display:block;margin-bottom:8px;"></i>Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù…</p>`;
             }
         }
 
@@ -1395,15 +1395,15 @@
             if (!grid) return;
             if (list.length === 0) {
                 const gradeMsg = activeGradeFilter 
-                    ? `لا توجد امتحانات مخصصة لـ (${activeGradeFilter}) حالياً.` 
-                    : `لا توجد امتحانات تطابق خيارات البحث الحالية.`;
+                    ? `Ù„Ø§ ØªÙˆØ¬Ø¯ Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ù…Ø®ØµØµØ© Ù„Ù€ (${activeGradeFilter}) Ø­Ø§Ù„ÙŠØ§Ù‹.` 
+                    : `Ù„Ø§ ØªÙˆØ¬Ø¯ Ø§Ù…ØªØ­Ø§Ù†Ø§Øª ØªØ·Ø§Ø¨Ù‚ Ø®ÙŠØ§Ø±Ø§Øª Ø§Ù„Ø¨Ø­Ø« Ø§Ù„Ø­Ø§Ù„ÙŠØ©.`;
                 grid.innerHTML = `
                     <div style="grid-column:1/-1; text-align:center; padding:50px 20px; color:var(--txt3);">
                         <i class="ti ti-clipboard-x" style="font-size:3rem; color:var(--accent); display:block; margin-bottom:12px;"></i>
                         <h3 style="color:var(--txt); margin-bottom:8px; font-weight:700;">${gradeMsg}</h3>
-                        <p style="font-size:14px; margin-bottom:16px;">يمكنك اختيار "كل الصفوف الدراسية" لتصفح كافة الامتحانات المتاحة على المنصة.</p>
+                        <p style="font-size:14px; margin-bottom:16px;">ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø®ØªÙŠØ§Ø± "ÙƒÙ„ Ø§Ù„ØµÙÙˆÙ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©" Ù„ØªØµÙØ­ ÙƒØ§ÙØ© Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© Ø¹Ù„Ù‰ Ø§Ù„Ù…Ù†ØµØ©.</p>
                         <button class="btn secondary" onclick="document.getElementById('gradeFilter').value=''; document.getElementById('searchExamInput').value=''; document.getElementById('teacherFilter').value=''; filterExams();" style="display:inline-flex; align-items:center; gap:6px;">
-                            <i class="ti ti-refresh"></i> عرض جميع الامتحانات
+                            <i class="ti ti-refresh"></i> Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†Ø§Øª
                         </button>
                     </div>
                 `;
@@ -1416,37 +1416,37 @@
                 // Check if student already did the exam
                 const hasDone = exam.results && Array.isArray(exam.results) && exam.results.find(r => r.studentId === stId);
                 const scoreHTML = hasDone 
-                    ? `<span style="font-size:12px; color:var(--green); font-weight:700;"><i class="ti ti-check"></i> تم إجراؤه: ${hasDone.score} من ${exam.totalMarks || hasDone.total || '-'} (${hasDone.percentage}%)</span>` 
-                    : `<span style="font-size:12px; color:var(--txt3);"><i class="ti ti-clock"></i> لم يتم إجراء الامتحان بعد</span>`;
+                    ? `<span style="font-size:12px; color:var(--green); font-weight:700;"><i class="ti ti-check"></i> ØªÙ… Ø¥Ø¬Ø±Ø§Ø¤Ù‡: ${hasDone.score} Ù…Ù† ${exam.totalMarks || hasDone.total || '-'} (${hasDone.percentage}%)</span>` 
+                    : `<span style="font-size:12px; color:var(--txt3);"><i class="ti ti-clock"></i> Ù„Ù… ÙŠØªÙ… Ø¥Ø¬Ø±Ø§Ø¡ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¨Ø¹Ø¯</span>`;
                 
-                const btnText = hasDone ? 'عرض النتيجة' : 'ابدأ الامتحان';
+                const btnText = hasDone ? 'Ø¹Ø±Ø¶ Ø§Ù„Ù†ØªÙŠØ¬Ø©' : 'Ø§Ø¨Ø¯Ø£ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†';
                 const btnAction = hasDone ? `viewExamResultDirect('${exam._id}')` : `startExam('${exam._id}')`;
                 const btnClass = hasDone ? 'btn secondary' : 'btn';
 
                 const qCount = (exam.questions && Array.isArray(exam.questions)) ? exam.questions.length : 0;
                 const gradesLabel = (exam.grades && Array.isArray(exam.grades) && exam.grades.length > 0)
-                    ? exam.grades.join(' · ')
-                    : 'لكل الصفوف الدراسية';
+                    ? exam.grades.join(' Â· ')
+                    : 'Ù„ÙƒÙ„ Ø§Ù„ØµÙÙˆÙ Ø§Ù„Ø¯Ø±Ø§Ø³ÙŠØ©';
 
                 return `
                     <div class="exam-card">
                         <div class="exam-card-header">
                             <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
-                                <span class="exam-card-subject">${exam.subject || 'مادة دراسية'}</span>
+                                <span class="exam-card-subject">${exam.subject || 'Ù…Ø§Ø¯Ø© Ø¯Ø±Ø§Ø³ÙŠØ©'}</span>
                                 <span class="exam-card-grade-badge"><i class="ti ti-school"></i> ${gradesLabel}</span>
                             </div>
-                            <h3 class="exam-card-title">${exam.title || 'امتحان بدون عنوان'}</h3>
-                            <p class="exam-card-desc">${exam.description || 'امتحان شامل لقياس مستوى الفهم واستيعاب الدروس'}</p>
+                            <h3 class="exam-card-title">${exam.title || 'Ø§Ù…ØªØ­Ø§Ù† Ø¨Ø¯ÙˆÙ† Ø¹Ù†ÙˆØ§Ù†'}</h3>
+                            <p class="exam-card-desc">${exam.description || 'Ø§Ù…ØªØ­Ø§Ù† Ø´Ø§Ù…Ù„ Ù„Ù‚ÙŠØ§Ø³ Ù…Ø³ØªÙˆÙ‰ Ø§Ù„ÙÙ‡Ù… ÙˆØ§Ø³ØªÙŠØ¹Ø§Ø¨ Ø§Ù„Ø¯Ø±ÙˆØ³'}</p>
                         </div>
                         <div>
                             <div class="exam-meta">
-                                <div class="exam-meta-item"><i class="ti ti-hourglass"></i> ${exam.duration || 30} دقيقة</div>
-                                <div class="exam-meta-item"><i class="ti ti-help"></i> ${qCount} أسئلة</div>
+                                <div class="exam-meta-item"><i class="ti ti-hourglass"></i> ${exam.duration || 30} Ø¯Ù‚ÙŠÙ‚Ø©</div>
+                                <div class="exam-meta-item"><i class="ti ti-help"></i> ${qCount} Ø£Ø³Ø¦Ù„Ø©</div>
                             </div>
                             <div class="exam-card-footer">
                                 <div class="teacher-info">
-                                    <div class="teacher-avatar">👨‍🏫</div>
-                                    <span class="teacher-name">${exam.teacherName || 'معلم المادة'}</span>
+                                    <div class="teacher-avatar">ðŸ‘¨â€ðŸ«</div>
+                                    <span class="teacher-name">${exam.teacherName || 'Ù…Ø¹Ù„Ù… Ø§Ù„Ù…Ø§Ø¯Ø©'}</span>
                                 </div>
                                 <button class="${btnClass}" onclick="${btnAction}">${btnText}</button>
                             </div>
@@ -1461,18 +1461,18 @@
 
         // Native System Exam Taking
         async function startExam(id) {
-            // التحقق أمنياً من وجود محاولة سابقة وحظر الدخول للمحاولة مجدداً
+            // Ø§Ù„ØªØ­Ù‚Ù‚ Ø£Ù…Ù†ÙŠØ§Ù‹ Ù…Ù† ÙˆØ¬ÙˆØ¯ Ù…Ø­Ø§ÙˆÙ„Ø© Ø³Ø§Ø¨Ù‚Ø© ÙˆØ­Ø¸Ø± Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø¬Ø¯Ø¯Ø§Ù‹
             const localExam = _exams.find(e => e._id === id);
             if (localExam && localExam.results && localExam.results.some(r => r.studentId === _student._id)) {
-                alert('⚠️ لقد أتممت هذا الامتحان بالفعل ولا يمكن إعادة دخوله!');
+                alert('âš ï¸ Ù„Ù‚Ø¯ Ø£ØªÙ…Ù…Øª Ù‡Ø°Ø§ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¨Ø§Ù„ÙØ¹Ù„ ÙˆÙ„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ø¹Ø§Ø¯Ø© Ø¯Ø®ÙˆÙ„Ù‡!');
                 return;
             }
 
-            toast('جاري تحضير الامتحان وتأمين الشاشة...', 'info');
+            toast('Ø¬Ø§Ø±ÙŠ ØªØ­Ø¶ÙŠØ± Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† ÙˆØªØ£Ù…ÙŠÙ† Ø§Ù„Ø´Ø§Ø´Ø©...', 'info');
             try {
                 const res = await fetch(`${API}/api/exams/${id}?studentId=${encodeURIComponent(_student._id)}&studentName=${encodeURIComponent(_student.firstName + ' ' + (_student.lastName || ''))}&studentPhone=${encodeURIComponent(_student.phone)}`);
                 const data = await res.json();
-                if (!data.success) { toast('فشل تحميل الأسئلة', 'error'); return; }
+                if (!data.success) { toast('ÙØ´Ù„ ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø£Ø³Ø¦Ù„Ø©', 'error'); return; }
 
                 _currentExam = data.exam;
                 _answers = Array(_currentExam.questions.length).fill('');
@@ -1483,7 +1483,7 @@
                 document.getElementById('quizOverlay').style.display = 'flex';
                 
                 document.getElementById('quizTitle').textContent = _currentExam.title;
-                document.getElementById('quizTeacher').textContent = `المعلم: ${_currentExam.teacherName}`;
+                document.getElementById('quizTeacher').textContent = `Ø§Ù„Ù…Ø¹Ù„Ù…: ${_currentExam.teacherName}`;
                 
                 // Build Questions HTML
                 const container = document.getElementById('quizQuestionsContainer');
@@ -1502,16 +1502,16 @@
                         answersHTML = `<div class="mcq-options-grid" style="grid-template-columns:1fr 1fr; gap:16px;">
                             <label class="mcq-option-label" id="lbl-q-${i}-o-true">
                                 <input type="radio" name="q-${i}" value="true" onchange="selectOption(${i}, 'true')">
-                                <span>صح ✓</span>
+                                <span>ØµØ­ âœ“</span>
                             </label>
                             <label class="mcq-option-label" id="lbl-q-${i}-o-false">
                                 <input type="radio" name="q-${i}" value="false" onchange="selectOption(${i}, 'false')">
-                                <span>خطأ ✗</span>
+                                <span>Ø®Ø·Ø£ âœ—</span>
                             </label>
                         </div>`;
                     } else { // essay
                         answersHTML = `
-                            <textarea class="essay-textarea" placeholder="اكتب إجابتك النموذجية بالتفصيل هنا..." oninput="recordEssay(${i}, this.value)"></textarea>
+                            <textarea class="essay-textarea" placeholder="Ø§ÙƒØªØ¨ Ø¥Ø¬Ø§Ø¨ØªÙƒ Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ÙŠØ© Ø¨Ø§Ù„ØªÙØµÙŠÙ„ Ù‡Ù†Ø§..." oninput="recordEssay(${i}, this.value)"></textarea>
                         `;
                     }
 
@@ -1536,11 +1536,11 @@
                 _secondsLeft = _currentExam.duration * 60;
                 startTimerCountdown();
 
-                // تفعيل الحماية والتقديم التلقائي فور مغادرة الصفحة
+                // ØªÙØ¹ÙŠÙ„ Ø§Ù„Ø­Ù…Ø§ÙŠØ© ÙˆØ§Ù„ØªÙ‚Ø¯ÙŠÙ… Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ ÙÙˆØ± Ù…ØºØ§Ø¯Ø±Ø© Ø§Ù„ØµÙØ­Ø©
                 initActiveExamSecurity();
 
             } catch (err) {
-                toast('خطأ في الاتصال بالخادم', 'error');
+                toast('Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù…', 'error');
             }
         }
 
@@ -1552,7 +1552,7 @@
             const nav = document.getElementById('questionNavGrid');
             if (!nav || !_currentExam) return;
             nav.innerHTML = _currentExam.questions.map((_, index) =>
-                `<button type="button" class="question-nav-btn" id="question-nav-${index}" onclick="goToQuestion(${index})" title="الانتقال إلى السؤال ${index + 1}">${index + 1}</button>`
+                `<button type="button" class="question-nav-btn" id="question-nav-${index}" onclick="goToQuestion(${index})" title="Ø§Ù„Ø§Ù†ØªÙ‚Ø§Ù„ Ø¥Ù„Ù‰ Ø§Ù„Ø³Ø¤Ø§Ù„ ${index + 1}">${index + 1}</button>`
             ).join('');
             setCurrentQuestion(0);
         }
@@ -1566,7 +1566,7 @@
             const count = document.getElementById('quizAnsweredCount');
             if (fill) fill.style.width = `${percentage}%`;
             if (text) text.textContent = `${answered} / ${total}`;
-            if (count) count.textContent = `${answered} مجاب`;
+            if (count) count.textContent = `${answered} Ù…Ø¬Ø§Ø¨`;
             _answers.forEach((answer, index) => {
                 const button = document.getElementById(`question-nav-${index}`);
                 if (button) button.classList.toggle('answered', isQuestionAnswered(answer));
@@ -1613,7 +1613,7 @@
             const overlay = document.createElement('div');
             overlay.id = 'exam-blackout-overlay';
             overlay.style.cssText = 'display:none;position:fixed;inset:0;z-index:999999;background:#000;opacity:0.97;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-size:1.4rem;font-weight:800;font-family:Cairo,sans-serif;text-align:center;gap:12px;';
-            overlay.innerHTML = '<div style="font-size:3rem;">🔒</div><div>تم اكتشاف محاولة لقطة الشاشة!</div><div style="font-size:0.9rem;opacity:0.7;margin-top:4px;">الامتحان مؤمَّن — لقطات الشاشة محظورة</div>';
+            overlay.innerHTML = '<div style="font-size:3rem;">ðŸ”’</div><div>ØªÙ… Ø§ÙƒØªØ´Ø§Ù Ù…Ø­Ø§ÙˆÙ„Ø© Ù„Ù‚Ø·Ø© Ø§Ù„Ø´Ø§Ø´Ø©!</div><div style="font-size:0.9rem;opacity:0.7;margin-top:4px;">Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ù…Ø¤Ù…ÙŽÙ‘Ù† â€” Ù„Ù‚Ø·Ø§Øª Ø§Ù„Ø´Ø§Ø´Ø© Ù…Ø­Ø¸ÙˆØ±Ø©</div>';
             document.body.appendChild(overlay);
             window._examBlackout = function(show) {
                 overlay.style.display = show ? 'flex' : 'none';
@@ -1621,23 +1621,23 @@
             };
         })();
 
-        // تفعيل نظام قفل وتقديم الامتحان التلقائي عند مغادرة الصفحة أو فقدان التركيز
+        // ØªÙØ¹ÙŠÙ„ Ù†Ø¸Ø§Ù… Ù‚ÙÙ„ ÙˆØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ Ø¹Ù†Ø¯ Ù…ØºØ§Ø¯Ø±Ø© Ø§Ù„ØµÙØ­Ø© Ø£Ùˆ ÙÙ‚Ø¯Ø§Ù† Ø§Ù„ØªØ±ÙƒÙŠØ²
         function initActiveExamSecurity() {
-            // 1. قفل الامتحان التلقائي عند تبديل التبويب (Tab Change)
+            // 1. Ù‚ÙÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ Ø¹Ù†Ø¯ ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„ØªØ¨ÙˆÙŠØ¨ (Tab Change)
             document.onvisibilitychange = function () {
                 if (document.hidden && _currentExam) {
-                    autoLockAndSubmitExam("محاولة مغادرة التبويب أو تبديل الصفحة");
+                    autoLockAndSubmitExam("Ù…Ø­Ø§ÙˆÙ„Ø© Ù…ØºØ§Ø¯Ø±Ø© Ø§Ù„ØªØ¨ÙˆÙŠØ¨ Ø£Ùˆ ØªØ¨Ø¯ÙŠÙ„ Ø§Ù„ØµÙØ­Ø©");
                 }
             };
 
-            // 2. قفل الامتحان عند الخروج من المتصفح أو فتح تطبيق آخر (Blur)
+            // 2. Ù‚ÙÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¹Ù†Ø¯ Ø§Ù„Ø®Ø±ÙˆØ¬ Ù…Ù† Ø§Ù„Ù…ØªØµÙØ­ Ø£Ùˆ ÙØªØ­ ØªØ·Ø¨ÙŠÙ‚ Ø¢Ø®Ø± (Blur)
             window.onblur = function () {
                 if (_currentExam) {
-                    autoLockAndSubmitExam("الخروج من الشاشة النشطة للامتحان (فقدان التركيز)");
+                    autoLockAndSubmitExam("Ø§Ù„Ø®Ø±ÙˆØ¬ Ù…Ù† Ø§Ù„Ø´Ø§Ø´Ø© Ø§Ù„Ù†Ø´Ø·Ø© Ù„Ù„Ø§Ù…ØªØ­Ø§Ù† (ÙÙ‚Ø¯Ø§Ù† Ø§Ù„ØªØ±ÙƒÙŠØ²)");
                 }
             };
 
-            // 3. منع الأزرار المشبوهة ولقطات الشاشة + تفعيل Blackout
+            // 3. Ù…Ù†Ø¹ Ø§Ù„Ø£Ø²Ø±Ø§Ø± Ø§Ù„Ù…Ø´Ø¨ÙˆÙ‡Ø© ÙˆÙ„Ù‚Ø·Ø§Øª Ø§Ù„Ø´Ø§Ø´Ø© + ØªÙØ¹ÙŠÙ„ Blackout
             document.onkeydown = function (e) {
                 const blocked =
                     e.key === 'F12' ||
@@ -1651,27 +1651,27 @@
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     if (_currentExam) window._examBlackout(true);
-                    // مسح الحافظة بعد أي ضغطة
+                    // Ù…Ø³Ø­ Ø§Ù„Ø­Ø§ÙØ¸Ø© Ø¨Ø¹Ø¯ Ø£ÙŠ Ø¶ØºØ·Ø©
                     if (navigator.clipboard && navigator.clipboard.writeText) {
                         navigator.clipboard.writeText('').catch(() => {});
                     }
-                    toast('⚠️ لقطات الشاشة وتصوير الامتحان محظوران!', 'error');
+                    toast('âš ï¸ Ù„Ù‚Ø·Ø§Øª Ø§Ù„Ø´Ø§Ø´Ø© ÙˆØªØµÙˆÙŠØ± Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ù…Ø­Ø¸ÙˆØ±Ø§Ù†!', 'error');
                     return false;
                 }
             };
 
-            // 4. منع النسخ واللصق أثناء الامتحان
+            // 4. Ù…Ù†Ø¹ Ø§Ù„Ù†Ø³Ø® ÙˆØ§Ù„Ù„ØµÙ‚ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†
             document.addEventListener('copy', _examPreventCopy, true);
             document.addEventListener('cut', _examPreventCopy, true);
 
-            // 5. منع Screen Capture API
+            // 5. Ù…Ù†Ø¹ Screen Capture API
             if (navigator.mediaDevices) {
                 const _origGetDisplay = navigator.mediaDevices.getDisplayMedia?.bind(navigator.mediaDevices);
                 Object.defineProperty(navigator.mediaDevices, 'getDisplayMedia', {
                     value: function() {
                         if (_currentExam) {
                             if (window._examBlackout) window._examBlackout(true);
-                            toast('⚠️ تصوير الشاشة محظور أثناء الامتحان!', 'error');
+                            toast('âš ï¸ ØªØµÙˆÙŠØ± Ø§Ù„Ø´Ø§Ø´Ø© Ù…Ø­Ø¸ÙˆØ± Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†!', 'error');
                             return Promise.reject(new Error('Screen capture is disabled during exam'));
                         }
                         return _origGetDisplay ? _origGetDisplay(...arguments) : Promise.reject(new Error('Not available'));
@@ -1690,18 +1690,18 @@
             }
         }
 
-        // إنهاء الامتحان فورياً وحفظ النتيجة عند المخالفة
+        // Ø¥Ù†Ù‡Ø§Ø¡ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† ÙÙˆØ±ÙŠØ§Ù‹ ÙˆØ­ÙØ¸ Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø¹Ù†Ø¯ Ø§Ù„Ù…Ø®Ø§Ù„ÙØ©
         async function autoLockAndSubmitExam(reason) {
             if (!_currentExam) return;
             
-            // إلغاء المراقبة لمنع التكرار اللانهائي
+            // Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ù…Ø±Ø§Ù‚Ø¨Ø© Ù„Ù…Ù†Ø¹ Ø§Ù„ØªÙƒØ±Ø§Ø± Ø§Ù„Ù„Ø§Ù†Ù‡Ø§Ø¦ÙŠ
             document.onvisibilitychange = null;
             window.onblur = null;
             document.onkeydown = null;
             document.removeEventListener('copy', _examPreventCopy, true);
             document.removeEventListener('cut', _examPreventCopy, true);
             
-            alert(`🔒 تم قفل الامتحان وتقديمه تلقائياً بسبب: ${reason}`);
+            alert(`ðŸ”’ ØªÙ… Ù‚ÙÙ„ Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† ÙˆØªÙ‚Ø¯ÙŠÙ…Ù‡ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ Ø¨Ø³Ø¨Ø¨: ${reason}`);
             await submitExamAnswers();
         }
 
@@ -1743,7 +1743,7 @@
                 
                 if (_secondsLeft <= 0) {
                     clearInterval(_examTimer);
-                    toast('انتهى وقت الامتحان! جاري تقديم إجاباتك تلقائياً...', 'success');
+                    toast('Ø§Ù†ØªÙ‡Ù‰ ÙˆÙ‚Øª Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†! Ø¬Ø§Ø±ÙŠ ØªÙ‚Ø¯ÙŠÙ… Ø¥Ø¬Ø§Ø¨Ø§ØªÙƒ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹...', 'success');
                     submitExamAnswers();
                     return;
                 }
@@ -1765,7 +1765,7 @@
             document.onkeydown = null;
             document.removeEventListener('copy', _examPreventCopy, true);
             document.removeEventListener('cut', _examPreventCopy, true);
-            toast('جاري تسجيل الإجابات وحساب النتيجة...', 'info');
+            toast('Ø¬Ø§Ø±ÙŠ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø§Øª ÙˆØ­Ø³Ø§Ø¨ Ø§Ù„Ù†ØªÙŠØ¬Ø©...', 'info');
 
             try {
                 const res = await fetch(`${API}/api/exams/${_currentExam._id}/submit`, {
@@ -1781,14 +1781,14 @@
                 const d = await res.json();
                 if (d.success) {
                     if (_scratchpadStorageKey) sessionStorage.removeItem(_scratchpadStorageKey);
-                    toast('تم تقديم الامتحان بنجاح!', 'success');
+                    toast('ØªÙ… ØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¨Ù†Ø¬Ø§Ø­!', 'success');
                     displayExamResult(d);
                 } else {
-                    toast('حدث خطأ: ' + d.message, 'error');
+                    toast('Ø­Ø¯Ø« Ø®Ø·Ø£: ' + d.message, 'error');
                     setTimeout(() => location.reload(), 3000);
                 }
             } catch (err) {
-                toast('حدث خطأ في الاتصال بالشبكة', 'error');
+                toast('Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø´Ø¨ÙƒØ©', 'error');
             }
         }
 
@@ -1796,7 +1796,7 @@
             document.getElementById('quizOverlay').style.display = 'none';
             document.getElementById('mainContainer').style.display = 'none';
             document.getElementById('resultsContainer').style.display = 'block';
-            document.getElementById('resultsBox').style.display = 'block'; // تعديل لإظهار صندوق النتائج وحل مشكلة التداخل في التنسيق
+            document.getElementById('resultsBox').style.display = 'block'; // ØªØ¹Ø¯ÙŠÙ„ Ù„Ø¥Ø¸Ù‡Ø§Ø± ØµÙ†Ø¯ÙˆÙ‚ Ø§Ù„Ù†ØªØ§Ø¦Ø¬ ÙˆØ­Ù„ Ù…Ø´ÙƒÙ„Ø© Ø§Ù„ØªØ¯Ø§Ø®Ù„ ÙÙŠ Ø§Ù„ØªÙ†Ø³ÙŠÙ‚
 
             // Circular progress fill
             const circle = document.getElementById('progressCircle');
@@ -1805,18 +1805,18 @@
             circle.style.strokeDashoffset = offset;
             
             document.getElementById('percentageDisplay').textContent = `${percentage}%`;
-            document.getElementById('scoreDisplay').textContent = `حصلت على ${data.score} درجة من ${data.totalMarks}`;
+            document.getElementById('scoreDisplay').textContent = `Ø­ØµÙ„Øª Ø¹Ù„Ù‰ ${data.score} Ø¯Ø±Ø¬Ø© Ù…Ù† ${data.totalMarks}`;
 
             if (percentage >= 50) {
                 circle.style.stroke = 'var(--green)';
                 document.getElementById('resultsFeedback').textContent = data.isGraded 
-                    ? 'ممتاز! لقد اجتزت الامتحان بنجاح.' 
-                    : 'رائع! لقد اجتزت الأسئلة الاختيارية بنجاح، وبانتظار تصحيح المشرف للأسئلة المقالية.';
+                    ? 'Ù…Ù…ØªØ§Ø²! Ù„Ù‚Ø¯ Ø§Ø¬ØªØ²Øª Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¨Ù†Ø¬Ø§Ø­.' 
+                    : 'Ø±Ø§Ø¦Ø¹! Ù„Ù‚Ø¯ Ø§Ø¬ØªØ²Øª Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø§Ø®ØªÙŠØ§Ø±ÙŠØ© Ø¨Ù†Ø¬Ø§Ø­ØŒ ÙˆØ¨Ø§Ù†ØªØ¸Ø§Ø± ØªØµØ­ÙŠØ­ Ø§Ù„Ù…Ø´Ø±Ù Ù„Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ù…Ù‚Ø§Ù„ÙŠØ©.';
             } else {
                 circle.style.stroke = 'var(--red)';
                 document.getElementById('resultsFeedback').textContent = data.isGraded
-                    ? 'حظاً أفضل في المرة القادمة، يرجى مراجعة المادة جيداً.'
-                    : 'لقد قدمت الامتحان بنجاح، بانتظار مراجعة المشرف للأسئلة المقالية لتحديث درجتك الكلية.';
+                    ? 'Ø­Ø¸Ø§Ù‹ Ø£ÙØ¶Ù„ ÙÙŠ Ø§Ù„Ù…Ø±Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©ØŒ ÙŠØ±Ø¬Ù‰ Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ù…Ø§Ø¯Ø© Ø¬ÙŠØ¯Ø§Ù‹.'
+                    : 'Ù„Ù‚Ø¯ Ù‚Ø¯Ù…Øª Ø§Ù„Ø§Ù…ØªØ­Ø§Ù† Ø¨Ù†Ø¬Ø§Ø­ØŒ Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ù…Ø´Ø±Ù Ù„Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ù…Ù‚Ø§Ù„ÙŠØ© Ù„ØªØ­Ø¯ÙŠØ« Ø¯Ø±Ø¬ØªÙƒ Ø§Ù„ÙƒÙ„ÙŠØ©.';
             }
 
             // Render feedback sheet
@@ -1826,28 +1826,28 @@
                 let borderStyle = '';
                 
                 if (q.isEssay) {
-                    statusHTML = `<span style="color:var(--gold); font-weight:700;">📝 سؤال مقالي (تحت مراجعة المعلم)</span>`;
+                    statusHTML = `<span style="color:var(--gold); font-weight:700;">ðŸ“ Ø³Ø¤Ø§Ù„ Ù…Ù‚Ø§Ù„ÙŠ (ØªØ­Øª Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ù…Ø¹Ù„Ù…)</span>`;
                     borderStyle = 'border-right: 4px solid var(--gold);';
                 } else if (q.isCorrect) {
-                    statusHTML = `<span style="color:var(--green); font-weight:700;">✓ إجابة صحيحة</span>`;
+                    statusHTML = `<span style="color:var(--green); font-weight:700;">âœ“ Ø¥Ø¬Ø§Ø¨Ø© ØµØ­ÙŠØ­Ø©</span>`;
                     borderStyle = 'border-right: 4px solid var(--green);';
                 } else {
-                    statusHTML = `<span style="color:var(--red); font-weight:700;">✗ إجابة خاطئة</span>`;
+                    statusHTML = `<span style="color:var(--red); font-weight:700;">âœ— Ø¥Ø¬Ø§Ø¨Ø© Ø®Ø§Ø·Ø¦Ø©</span>`;
                     borderStyle = 'border-right: 4px solid var(--red);';
                 }
 
                 return `
                     <div class="corrected-item" style="${borderStyle}">
                         <div class="corrected-item-header">
-                            <span>س${i+1}: ${escapeHtml(q.question)}</span>
+                            <span>Ø³${i+1}: ${escapeHtml(q.question)}</span>
                             ${statusHTML}
                         </div>
                         <div style="font-size:12px; color:var(--txt2); margin-top:5px;">
-                            <strong>إجابتك:</strong> ${escapeHtml(q.isEssay ? q.studentAnswer : (q.options[q.studentAnswer] || q.studentAnswer || 'لا توجد إجابة'))}
+                            <strong>Ø¥Ø¬Ø§Ø¨ØªÙƒ:</strong> ${escapeHtml(q.isEssay ? q.studentAnswer : (q.options[q.studentAnswer] || q.studentAnswer || 'Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¥Ø¬Ø§Ø¨Ø©'))}
                         </div>
                         ${!q.isEssay && !q.isCorrect ? `
                         <div style="font-size:12px; color:var(--green); margin-top:2px;">
-                            <strong>الإجابة الصحيحة:</strong> ${escapeHtml(q.options[q.correctAnswer] || q.correctAnswer)}
+                            <strong>Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø© Ø§Ù„ØµØ­ÙŠØ­Ø©:</strong> ${escapeHtml(q.options[q.correctAnswer] || q.correctAnswer)}
                         </div>
                         ` : ''}
                     </div>
@@ -1856,11 +1856,11 @@
         }
 
         async function viewExamResultDirect(examId) {
-            toast('جاري جلب النتيجة وتفريغ ورقة الإجابة...', 'info');
+            toast('Ø¬Ø§Ø±ÙŠ Ø¬Ù„Ø¨ Ø§Ù„Ù†ØªÙŠØ¬Ø© ÙˆØªÙØ±ÙŠØº ÙˆØ±Ù‚Ø© Ø§Ù„Ø¥Ø¬Ø§Ø¨Ø©...', 'info');
             try {
                 const res = await fetch(`${API}/api/exams/${examId}`);
                 const data = await res.json();
-                if (!data.success) { toast('فشل التحميل', 'error'); return; }
+                if (!data.success) { toast('ÙØ´Ù„ Ø§Ù„ØªØ­Ù…ÙŠÙ„', 'error'); return; }
 
                 const exam = data.exam;
                 const result = exam.results.find(r => r.studentId === _student._id);
@@ -1892,18 +1892,18 @@
                 });
 
             } catch (err) {
-                toast('حدث خطأ في الاتصال بالخادم', 'error');
+                toast('Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù…', 'error');
             }
         }
 
         function confirmExitExam() {
-            if (confirm('هل أنت متأكد من الانسحاب من الامتحان؟ سيتم حفظ إجاباتك الحالية وتقديمها.')) {
+            if (confirm('Ù‡Ù„ Ø£Ù†Øª Ù…ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø§Ù†Ø³Ø­Ø§Ø¨ Ù…Ù† Ø§Ù„Ø§Ù…ØªØ­Ø§Ù†ØŸ Ø³ÙŠØªÙ… Ø­ÙØ¸ Ø¥Ø¬Ø§Ø¨Ø§ØªÙƒ Ø§Ù„Ø­Ø§Ù„ÙŠØ© ÙˆØªÙ‚Ø¯ÙŠÙ…Ù‡Ø§.')) {
                 submitExamAnswers();
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // مشاركة نفس إعداد المظهر مع صفحات المنصة الأخرى.
+            // Ù…Ø´Ø§Ø±ÙƒØ© Ù†ÙØ³ Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù…Ø¸Ù‡Ø± Ù…Ø¹ ØµÙØ­Ø§Øª Ø§Ù„Ù…Ù†ØµØ© Ø§Ù„Ø£Ø®Ø±Ù‰.
             const savedTheme = localStorage.getItem('theme') || localStorage.getItem('examsTheme') || 'light';
             applyExamsTheme(savedTheme);
             updateExamNavbar();
@@ -1947,7 +1947,7 @@
             if (mobileUser) mobileUser.style.display = 'block';
             if (userArea) {
                 userArea.style.display = 'inline-flex';
-                const name = user.firstName || user.name || user.username || 'حسابي';
+                const name = user.firstName || user.name || user.username || 'Ø­Ø³Ø§Ø¨ÙŠ';
                 document.getElementById('examNavUserName').textContent = name;
             }
         }
@@ -1960,7 +1960,7 @@
             if (button) button.setAttribute('aria-expanded', String(menu.classList.contains('active')));
         }
 
-        // إغلاق قائمة الموبايل عند الضغط خارجها
+        // Ø¥ØºÙ„Ø§Ù‚ Ù‚Ø§Ø¦Ù…Ø© Ø§Ù„Ù…ÙˆØ¨Ø§ÙŠÙ„ Ø¹Ù†Ø¯ Ø§Ù„Ø¶ØºØ· Ø®Ø§Ø±Ø¬Ù‡Ø§
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.exams-hamburger') && !e.target.closest('#examsMobileMenu')) {
                 const menu = document.getElementById('examsMobileMenu');
@@ -1970,7 +1970,7 @@
             }
         });
     </script>
-    <!-- script.js يدير النافبار والمصادقة والثيم تلقائياً -->
+    <!-- script.js ÙŠØ¯ÙŠØ± Ø§Ù„Ù†Ø§ÙØ¨Ø§Ø± ÙˆØ§Ù„Ù…ØµØ§Ø¯Ù‚Ø© ÙˆØ§Ù„Ø«ÙŠÙ… ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ -->
     <script src="script.js?v=20261103-v3" defer></script>
     <script src="disable-inspect.js" defer></script>
 </body>
