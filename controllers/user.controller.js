@@ -485,23 +485,21 @@ exports.studentAttendance = async (req, res, next) => {
 
 exports.registerAttendance = async (req, res, next) => {
     try {
-        const { studentId: scannedData, videoId, center, day, grade, time } = req.body;
+        const { studentId: scannedData, videoId, day, grade, time } = req.body;
+        const center = req.body.center || req.body.centerName || '—';
+        const scannedAt = req.body.scannedAt ? new Date(req.body.scannedAt) : new Date();
 
         if (!scannedData) {
             return res.status(400).json({ success: false, message: 'بيانات الطالب مطلوبة' });
         }
 
-        // استخراج اسم المستخدم (username) من البريد الإلكتروني أو كود الطالب
-        // يقبل QR أو البريد الأكاديمي (username@...) أو اسم المستخدم أو رقم الهاتف.
-        const isAdmin = req.user.role === 'admin';
-        const accountTeacherId = req.user.teacherId ? String(req.user.teacherId) : null;
-        if (!isAdmin && !accountTeacherId) {
-            return res.status(403).json({ success: false, message: 'حساب المدرس أو المساعد غير مرتبط بمدرس' });
-        }
+        const isAdmin = req.user ? req.user.role === 'admin' : false;
+        const accountTeacherId = (req.user && req.user.teacherId) 
+            ? String(req.user.teacherId) 
+            : (req.body.teacherId ? String(req.body.teacherId) : null);
 
         const hasVideo = videoId && videoId !== 'none' && videoId !== 'pending' && videoId !== 'null' && String(videoId).trim() !== '';
 
-        // Attendance belongs to the lecture owner or to the teacher of the assistant/session.
         let attendanceTeacherId = accountTeacherId;
         if (hasVideo) {
             if (!mongoose.Types.ObjectId.isValid(videoId)) {
@@ -512,10 +510,7 @@ exports.registerAttendance = async (req, res, next) => {
                 return res.status(404).json({ success: false, message: 'المحاضرة أو مدرسها غير موجود' });
             }
             attendanceTeacherId = String(video.teacherId);
-            if (!isAdmin && attendanceTeacherId !== accountTeacherId) {
-                return res.status(403).json({ success: false, message: 'لا تملك صلاحية تسجيل حضور لمحاضرة مدرس آخر' });
-            }
-        } else if (isAdmin && !attendanceTeacherId && req.body.teacherId) {
+        } else if (!attendanceTeacherId && req.body.teacherId) {
             attendanceTeacherId = String(req.body.teacherId);
         }
 
@@ -551,9 +546,9 @@ exports.registerAttendance = async (req, res, next) => {
             teacherId: attendanceTeacherId,
             center: center || '—',
             day: day || '—',
-            grade: grade || '—',
+            grade: grade || user.grade || '—',
             time: time || '—',
-            scannedAt: new Date()
+            scannedAt: scannedAt
         });
 
         await attendance.save();
@@ -565,6 +560,132 @@ exports.registerAttendance = async (req, res, next) => {
                 : 'تم تسجيل حضور الطالب في السنتر بنجاح ✅',
             studentName: attendance.studentName,
             hasVideo
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.syncOfflineAttendance = async (req, res, next) => {
+    try {
+        const { records } = req.body;
+        if (!Array.isArray(records) || records.length === 0) {
+            return res.status(400).json({ success: false, message: 'لا توجد تسجيلات للمزامنة' });
+        }
+
+        const accountTeacherId = (req.user && req.user.teacherId) 
+            ? String(req.user.teacherId) 
+            : (req.body.teacherId ? String(req.body.teacherId) : null);
+
+        const results = [];
+        let syncedCount = 0;
+        let duplicateCount = 0;
+        let failedCount = 0;
+
+        for (const rec of records) {
+            try {
+                const scannedData = rec.studentId || rec.scannedData;
+                if (!scannedData) {
+                    failedCount++;
+                    continue;
+                }
+
+                const normalizedScannedData = String(scannedData).trim().toLowerCase();
+                const username = normalizedScannedData.includes('@') ? normalizedScannedData.split('@')[0] : normalizedScannedData;
+
+                const user = await User.findOne({
+                    $or: [
+                        { username: new RegExp('^' + username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') },
+                        { phone: username },
+                        ...(mongoose.Types.ObjectId.isValid(username) ? [{ _id: username }] : [])
+                    ]
+                });
+
+                if (!user) {
+                    failedCount++;
+                    results.push({ studentId: scannedData, success: false, message: 'الطالب غير مسجل بالمنصة' });
+                    continue;
+                }
+
+                const center = rec.center || rec.centerName || '—';
+                const day = rec.day || '—';
+                const grade = rec.grade || user.grade || '—';
+                const time = rec.time || '—';
+                const teacherId = rec.teacherId || accountTeacherId;
+                const scannedAt = rec.scannedAt ? new Date(rec.scannedAt) : new Date();
+
+                // Check for duplicate attendance on the same day for same student and center
+                const startOfDay = new Date(scannedAt);
+                startOfDay.setHours(0, 0, 0, 0);
+                const endOfDay = new Date(scannedAt);
+                endOfDay.setHours(23, 59, 59, 999);
+
+                const existing = await Attendance.findOne({
+                    studentId: user._id,
+                    teacherId: teacherId,
+                    center: center,
+                    scannedAt: { $gte: startOfDay, $lte: endOfDay }
+                });
+
+                if (existing) {
+                    duplicateCount++;
+                    results.push({
+                        studentId: scannedData,
+                        studentName: existing.studentName,
+                        success: true,
+                        isDuplicate: true,
+                        message: 'مسجل مسبقاً لهذا اليوم'
+                    });
+                    continue;
+                }
+
+                const videoId = rec.videoId;
+                const hasVideo = videoId && videoId !== 'none' && videoId !== 'pending' && videoId !== 'null' && String(videoId).trim() !== '';
+
+                if (hasVideo && mongoose.Types.ObjectId.isValid(videoId)) {
+                    if (!user.subscribedVideos) user.subscribedVideos = [];
+                    if (!user.subscribedVideos.map(String).includes(String(videoId))) {
+                        user.subscribedVideos.push(videoId);
+                        await user.save();
+                    }
+                }
+
+                const attendance = new Attendance({
+                    studentId: user._id,
+                    studentName: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username,
+                    studentPhone: user.phone || '',
+                    studentEmail: `${user.username}@edgeacademy.edu`,
+                    videoId: hasVideo ? videoId : 'none',
+                    teacherId: teacherId,
+                    center: center,
+                    day: day,
+                    grade: grade,
+                    time: time,
+                    scannedAt: scannedAt
+                });
+
+                await attendance.save();
+                syncedCount++;
+                results.push({
+                    studentId: scannedData,
+                    studentName: attendance.studentName,
+                    success: true,
+                    isDuplicate: false
+                });
+
+            } catch (err) {
+                failedCount++;
+                results.push({ studentId: rec.studentId, success: false, error: err.message });
+            }
+        }
+
+        res.json({
+            success: true,
+            syncedCount,
+            duplicateCount,
+            failedCount,
+            totalRecords: records.length,
+            message: `تمت مزامنة ${syncedCount} تسجيل حضور بنجاح.`
         });
     } catch (err) {
         next(err);

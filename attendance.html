@@ -535,6 +535,181 @@
                 height: 48px;
             }
         }
+
+        /* ════════════ OFFLINE & AUTO-SYNC UI STYLES ════════════ */
+        .network-status-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 14px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .network-status-banner.online {
+            background: rgba(0, 184, 148, 0.08);
+            border: 1px solid rgba(0, 184, 148, 0.25);
+        }
+
+        .network-status-banner.offline {
+            background: rgba(253, 203, 110, 0.12);
+            border: 1px solid rgba(253, 203, 110, 0.45);
+        }
+
+        .network-status-banner.syncing {
+            background: rgba(26, 107, 219, 0.12);
+            border: 1px solid rgba(26, 107, 219, 0.4);
+        }
+
+        .network-status-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .network-status-banner.online .status-indicator-dot {
+            background: #00b894;
+            box-shadow: 0 0 10px rgba(0, 184, 148, 0.8);
+            animation: pulseGreen 2s infinite ease-in-out;
+        }
+
+        .network-status-banner.offline .status-indicator-dot {
+            background: #e17055;
+            box-shadow: 0 0 10px rgba(225, 112, 85, 0.8);
+            animation: pulseOrange 1.5s infinite ease-in-out;
+        }
+
+        .network-status-banner.syncing .status-indicator-dot {
+            background: var(--primary);
+            box-shadow: 0 0 10px rgba(26, 107, 219, 0.8);
+            animation: pulseBlue 1s infinite ease-in-out;
+        }
+
+        @keyframes pulseGreen {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        @keyframes pulseOrange {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.25); opacity: 0.6; }
+        }
+
+        @keyframes pulseBlue {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.5; }
+        }
+
+        .status-texts {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .status-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-subtitle {
+            font-size: 0.82rem;
+            color: var(--gray);
+            line-height: 1.4;
+        }
+
+        .network-status-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .offline-queue-badge {
+            background: rgba(225, 112, 85, 0.15);
+            color: #d63031;
+            border: 1px solid rgba(225, 112, 85, 0.35);
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .offline-queue-badge.hidden, .btn-manual-sync.hidden {
+            display: none !important;
+        }
+
+        .btn-manual-sync {
+            background: linear-gradient(135deg, #1a6bdb 0%, #0984e3 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 8px 18px;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.3);
+        }
+
+        .btn-manual-sync:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.45);
+        }
+
+        .btn-manual-sync:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .sync-tag {
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .sync-tag.synced {
+            background: rgba(0, 184, 148, 0.12);
+            color: #00b894;
+            border: 1px solid rgba(0, 184, 148, 0.25);
+        }
+
+        .sync-tag.pending {
+            background: rgba(253, 203, 110, 0.15);
+            color: #e17055;
+            border: 1px solid rgba(253, 203, 110, 0.4);
+            animation: pulseOrange 2s infinite ease-in-out;
+        }
+
     </style>
 </head>
 <body class="attendance-page">
@@ -641,6 +816,25 @@
 
 <!-- Main Attendance Container -->
 <div class="attendance-page-container">
+    <!-- Offline & Network Status Banner with Auto/Manual Sync -->
+    <div id="networkStatusBanner" class="network-status-banner online">
+        <div class="network-status-left">
+            <span class="status-indicator-dot"></span>
+            <div class="status-texts">
+                <span class="status-title" id="networkStatusTitle">🟢 متصل بالإنترنت (وضع المزامنة المباشر)</span>
+                <span class="status-subtitle" id="networkStatusDesc">يتم تسجيل الحضور ورفعه تلقائياً للموقع فوراً. في حال انقطاع النت سيعمل النظام أوفلاين دون توقف!</span>
+            </div>
+        </div>
+        <div class="network-status-actions">
+            <div id="offlineQueueBadge" class="offline-queue-badge hidden">
+                <i class="ti ti-clock"></i> <span id="offlineQueueCount">0</span> بانتظار المزامنة
+            </div>
+            <button type="button" id="manualSyncBtn" onclick="triggerManualSync()" class="btn-manual-sync hidden" title="مزامنة التسجيلات المحفوظة مع الموقع الآن">
+                <i class="ti ti-refresh"></i> مزامنة الآن للموقع
+            </button>
+        </div>
+    </div>
+
 
     <!-- Setup Panel -->
     <div class="panel-card">
@@ -749,11 +943,12 @@
                         <th>الطالب</th>
                         <th>السنتر والمجموعة</th>
                         <th>توقيت التحضير</th>
+                        <th style="text-align: center;">حالة المزامنة</th>
                     </tr>
                 </thead>
                 <tbody id="logs-tbody">
                     <tr id="empty-row">
-                        <td colspan="4" style="text-align: center; color: var(--gray); padding: 32px 14px;">
+                        <td colspan="5" style="text-align: center; color: var(--gray); padding: 32px 14px;">
                             <i class="ti ti-scan" style="font-size: 2.2rem; display: block; margin-bottom: 8px; opacity: 0.4;"></i>
                             لم يتم مسح أي طالب بعد في هذه الجلسة.
                         </td>
@@ -784,6 +979,11 @@
     let _teacherSchedule = []; // مصفوفة لحفظ جدول الحصص الفعلي للمدرس
     let _allVideos = [];
     let _activeTeacherId = null;
+    let isSyncing = false;
+
+    const QUEUE_STORAGE_KEY = 'EDGE_OFFLINE_ATTENDANCE_QUEUE';
+    const SCHEDULE_CACHE_KEY = 'EDGE_OFFLINE_SCHEDULE_CACHE';
+    const VIDEOS_CACHE_KEY = 'EDGE_OFFLINE_VIDEOS_CACHE';
 
     const normalizeArabic = value => String(value || '')
         .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
@@ -792,8 +992,156 @@
         .replace(/[^ء-يa-z0-9\s]/g, ' ').split(' ')
         .filter(word => word.length >= 3 && !['مساعد', 'التعليمي', 'استاذ', 'الاستاذ'].includes(word));
 
+    // دوال إدارة قائمة الانتظار أوفلاين
+    function getOfflineQueue() {
+        try {
+            return JSON.parse(localStorage.getItem(QUEUE_STORAGE_KEY) || '[]');
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveOfflineQueue(queue) {
+        try {
+            localStorage.setItem(QUEUE_STORAGE_KEY, JSON.stringify(queue));
+        } catch (e) {
+            console.error('Failed to save offline queue:', e);
+        }
+    }
+
+    function addToOfflineQueue(record) {
+        const queue = getOfflineQueue();
+        // منع التكرار في طابور الأوفلاين لنفس الطالب والسنتر واليوم
+        const isDup = queue.some(r =>
+            String(r.studentId).trim().toLowerCase() === String(record.studentId).trim().toLowerCase() &&
+            r.centerName === record.centerName &&
+            r.day === record.day
+        );
+        if (isDup) {
+            return { success: false, duplicate: true, message: 'الطالب مسجل بالفعل في قائمة الانتظار الحالية!' };
+        }
+        queue.push(record);
+        saveOfflineQueue(queue);
+        updateNetworkStatusUI();
+        return { success: true };
+    }
+
+    // تحديث شريط حالة الاتصال والمزامنة في واجهة المستخدم
+    function updateNetworkStatusUI() {
+        const banner = document.getElementById('networkStatusBanner');
+        const title = document.getElementById('networkStatusTitle');
+        const desc = document.getElementById('networkStatusDesc');
+        const badge = document.getElementById('offlineQueueBadge');
+        const countSpan = document.getElementById('offlineQueueCount');
+        const syncBtn = document.getElementById('manualSyncBtn');
+
+        if (!banner) return;
+
+        const queue = getOfflineQueue();
+        const isOnline = navigator.onLine;
+
+        if (queue.length > 0) {
+            if (badge) {
+                badge.classList.remove('hidden');
+                countSpan.textContent = queue.length;
+            }
+            if (syncBtn) {
+                syncBtn.classList.remove('hidden');
+                syncBtn.disabled = !isOnline || isSyncing;
+            }
+        } else {
+            if (badge) badge.classList.add('hidden');
+            if (syncBtn) syncBtn.classList.add('hidden');
+        }
+
+        if (isSyncing) {
+            banner.className = 'network-status-banner syncing';
+            title.innerHTML = '<i class="ti ti-refresh" style="animation:spin 1s linear infinite;"></i> جاري المزامنة مع الموقع...';
+            desc.textContent = `جاري رفع وتحديث ${queue.length} تسجيل حضور إلى المنصة...`;
+        } else if (isOnline) {
+            banner.className = 'network-status-banner online';
+            title.innerHTML = '🟢 متصل بالإنترنت (وضع المزامنة المباشر)';
+            if (queue.length > 0) {
+                desc.textContent = `لديك ${queue.length} تسجيلات محفوظة تم تحضيرها دون نت، اضغط "مزامنة الآن" أو سيتم رفعها تلقائياً.`;
+            } else {
+                desc.textContent = 'يتم تسجيل الحضور ورفعه تلقائياً للموقع فوراً. في حال انقطاع النت سيعمل النظام أوفلاين دون توقف!';
+            }
+        } else {
+            banner.className = 'network-status-banner offline';
+            title.innerHTML = '🟡 وضع عدم الاتصال (أوفلاين بدون نت)';
+            desc.textContent = `الإنترنت غير متوفر حالياً. تم حفظ ${queue.length} تسجيل محلياً وسيتم رفعها تلقائياً فور توفر الاتصال!`;
+        }
+    }
+
+    // محرك المزامنة التلقائية واليدوية
+    async function syncOfflineAttendanceQueue() {
+        if (isSyncing || !navigator.onLine) return;
+        const queue = getOfflineQueue();
+        if (!queue || queue.length === 0) {
+            updateNetworkStatusUI();
+            return;
+        }
+
+        isSyncing = true;
+        updateNetworkStatusUI();
+
+        try {
+            const res = await fetch(`${API}/api/attendance/sync-offline`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ records: queue })
+            });
+
+            if (!res.ok) {
+                throw new Error(`Sync error: status ${res.status}`);
+            }
+
+            const data = await res.json();
+            if (data.success) {
+                saveOfflineQueue([]);
+                document.querySelectorAll('.sync-tag.pending').forEach(el => {
+                    el.className = 'sync-tag synced';
+                    el.innerHTML = '<i class="ti ti-cloud-check"></i> تم الرفع للموقع';
+                });
+                showAlert(`🚀 تمت مزامنة ورفع ${data.syncedCount || queue.length} تسجيل حضور للموقع بنجاح!`, 'green');
+            } else {
+                showAlert(`⚠️ تعذر اكتمال المزامنة: ${data.message}`, 'orange');
+            }
+        } catch (err) {
+            console.warn('Auto sync attempt failed:', err);
+        } finally {
+            isSyncing = false;
+            updateNetworkStatusUI();
+        }
+    }
+
+    function triggerManualSync() {
+        if (!navigator.onLine) {
+            showAlert('⚠️ لا يوجد اتصال بالإنترنت حالياً للمزامنة!', 'orange');
+            return;
+        }
+        syncOfflineAttendanceQueue();
+    }
+
     // تحميل جدول حصص المدرس والفيديوهات تلقائياً عند فتح الصفحة
     document.addEventListener('DOMContentLoaded', async () => {
+        updateNetworkStatusUI();
+
+        window.addEventListener('online', () => {
+            updateNetworkStatusUI();
+            syncOfflineAttendanceQueue();
+        });
+        window.addEventListener('offline', () => {
+            updateNetworkStatusUI();
+        });
+
+        // تحقق دوري للمزامنة كل 25 ثانية
+        setInterval(() => {
+            if (navigator.onLine && getOfflineQueue().length > 0 && !isSyncing) {
+                syncOfflineAttendanceQueue();
+            }
+        }, 25000);
+
         try {
             // 1. جلب بيانات المدرسين للعثور على جدول هذا المدرس
             const tRes = await fetch(`${API}/api/teachers`);
@@ -801,6 +1149,7 @@
             
             // إذا كان المستخدم مساعداً عاماً (teacherId=null) نعرض حصص كل المدرسين
             if (!currentUser.teacherId) {
+                _teacherSchedule = [];
                 teachers.forEach(teacher => {
                     if (teacher.schedule && teacher.schedule.length > 0) {
                         _teacherSchedule.push(...teacher.schedule.map(sch => ({ ...sch, teacherId: String(teacher._id) })));
@@ -836,15 +1185,39 @@
                 }
             }
 
+            // حفظ الجدول محلياً لدعم العمل أوفلاين في قاعات وسناتر السرداب
+            if (_teacherSchedule && _teacherSchedule.length > 0) {
+                localStorage.setItem(SCHEDULE_CACHE_KEY, JSON.stringify(_teacherSchedule));
+            }
+
             populateScheduleFilters();
 
             // 2. جلب الفيديوهات وتخزينها لفلترتها لاحقاً حسب الحصة المختارة
             const vRes = await fetch(`${API}/api/videos`);
             _allVideos = await vRes.json();
+            if (_allVideos && _allVideos.length > 0) {
+                localStorage.setItem(VIDEOS_CACHE_KEY, JSON.stringify(_allVideos));
+            }
+
+            // محاولة رفع أي حضور معلق سابقاً تلقائياً
+            if (navigator.onLine && getOfflineQueue().length > 0) {
+                setTimeout(syncOfflineAttendanceQueue, 1000);
+            }
 
         } catch (err) {
-            console.error('Error fetching schedule/videos:', err);
-            showAlert('حدث خطأ في تحميل بيانات الحصص من السيرفر', 'red');
+            console.warn('Error fetching online schedule/videos, loading from cache:', err);
+            const cachedSched = localStorage.getItem(SCHEDULE_CACHE_KEY);
+            if (cachedSched) {
+                try {
+                    _teacherSchedule = JSON.parse(cachedSched);
+                    populateScheduleFilters();
+                    showAlert('⚡ وضع أوفلاين: تم تحميل جدول الحصص من الذاكرة المؤقتة!', 'orange');
+                } catch(e) {}
+            }
+            const cachedVids = localStorage.getItem(VIDEOS_CACHE_KEY);
+            if (cachedVids) {
+                try { _allVideos = JSON.parse(cachedVids); } catch(e) {}
+            }
         }
     });
 
@@ -860,97 +1233,122 @@
         select.disabled = disabled;
     }
 
-    function selectedSchedule() {
-        const center = document.getElementById('setup-center').value;
-        const grade = document.getElementById('setup-grade').value;
-        const day = document.getElementById('setup-day').value;
-        const time = document.getElementById('setup-time').value;
-        if (!center || !grade || !day || !time) return null;
-        return _teacherSchedule.find(s => s.centerName === center && s.grade === grade && s.day === day && s.time === time);
-    }
-
-    function resetVideos(message) {
-        const videoSelect = document.getElementById('setup-video');
-        if (videoSelect) videoSelect.innerHTML = `<option value="">-- ${message} --</option>`;
-    }
-
     function populateScheduleFilters() {
         const centers = uniqueValues(_teacherSchedule, 'centerName');
-        fillSelect('setup-center', 'اختر السنتر', centers);
+        fillSelect('setup-center', 'اختر السنتر', centers, false);
         fillSelect('setup-grade', 'اختر الصف', [], true);
         fillSelect('setup-day', 'اختر اليوم', [], true);
         fillSelect('setup-time', 'اختر الساعة', [], true);
-        resetVideos('أكمل بيانات حصة السنتر أولاً');
-
-        const help = document.getElementById('schedule-help');
-        if (help) {
-            help.innerHTML = centers.length
-                ? '<i class="ti ti-info-circle"></i> اختر السنتر أولاً، ثم أكمل باقي بيانات المجموعة بالترتيب.'
-                : '<i class="ti ti-alert-triangle"></i> لا توجد مواعيد مرتبطة بهذا المدرس بعد. أضفها من صفحة تعديل المدرس.';
-        }
+        updateScheduleHelp();
+        populateVideoOptions();
     }
 
     function onCenterChange() {
         const center = document.getElementById('setup-center').value;
-        const filtered = _teacherSchedule.filter(s => s.centerName === center);
-        fillSelect('setup-grade', 'اختر الصف', uniqueValues(filtered, 'grade'), !center);
-        fillSelect('setup-day', 'اختر اليوم', [], true);
-        fillSelect('setup-time', 'اختر الساعة', [], true);
-        resetVideos('أكمل باقي بيانات حصة السنتر');
+        if (!center) {
+            fillSelect('setup-grade', 'اختر الصف', [], true);
+            fillSelect('setup-day', 'اختر اليوم', [], true);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
+        } else {
+            const filtered = _teacherSchedule.filter(s => s.centerName === center);
+            const grades = uniqueValues(filtered, 'grade');
+            fillSelect('setup-grade', 'اختر الصف', grades, false);
+            fillSelect('setup-day', 'اختر اليوم', [], true);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
+        }
+        updateScheduleHelp();
+        populateVideoOptions();
     }
 
     function onGradeChange() {
         const center = document.getElementById('setup-center').value;
         const grade = document.getElementById('setup-grade').value;
-        const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade);
-        fillSelect('setup-day', 'اختر اليوم', uniqueValues(filtered, 'day'), !grade);
-        fillSelect('setup-time', 'اختر الساعة', [], true);
-        resetVideos('اختر اليوم والساعة أولاً');
+        if (!grade) {
+            fillSelect('setup-day', 'اختر اليوم', [], true);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
+        } else {
+            const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade);
+            const days = uniqueValues(filtered, 'day');
+            fillSelect('setup-day', 'اختر اليوم', days, false);
+            fillSelect('setup-time', 'اختر الساعة', [], true);
+        }
+        updateScheduleHelp();
+        populateVideoOptions();
     }
 
     function onDayChange() {
         const center = document.getElementById('setup-center').value;
         const grade = document.getElementById('setup-grade').value;
         const day = document.getElementById('setup-day').value;
-        const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade && s.day === day);
-        fillSelect('setup-time', 'اختر الساعة', uniqueValues(filtered, 'time'), !day);
-        resetVideos('اختر الساعة لإظهار المحاضرات المطابقة');
+        if (!day) {
+            fillSelect('setup-time', 'اختر الساعة', [], true);
+        } else {
+            const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade && s.day === day);
+            const times = uniqueValues(filtered, 'time');
+            fillSelect('setup-time', 'اختر الساعة', times, false);
+        }
+        updateScheduleHelp();
+        populateVideoOptions();
     }
 
     function onTimeChange() {
+        updateScheduleHelp();
+        populateVideoOptions();
+    }
+
+    function updateScheduleHelp() {
+        const help = document.getElementById('schedule-help');
         const sched = selectedSchedule();
-        if (!sched) {
-            resetVideos('أكمل بيانات حصة السنتر أولاً');
-            return;
-        }
-
-        const matchedVideos = _allVideos.filter(v => {
-            const sameTeacher = String(v.teacherId) === String(sched.teacherId || _activeTeacherId || currentUser.teacherId);
-            const sameGrade = !sched.grade || v.grade === sched.grade;
-            return sameTeacher && sameGrade;
-        });
-
-        const videoSelect = document.getElementById('setup-video');
-        if (!videoSelect) return;
-        videoSelect.innerHTML = '<option value="">-- اختر المحاضرة التي ستُفتح للطلاب --</option>';
-
-        if (matchedVideos.length > 0) {
-            matchedVideos.forEach(v => {
-                const access = Number(v.price) > 0 ? `${v.price} جنيه` : 'بكود';
-                videoSelect.innerHTML += `<option value="${v._id}">🎬 ${v.title} — ${access}</option>`;
-            });
+        if (sched) {
+            help.className = 'help-pill complete';
+            help.innerHTML = `<i class="ti ti-check"></i> تم ضبط الحصة: <strong>${escapeHtml(sched.centerName)}</strong> - ${escapeHtml(sched.grade)} (${escapeHtml(sched.day)} ${escapeHtml(sched.time)})`;
         } else {
-            videoSelect.innerHTML = '<option value="">لا توجد محاضرات مقفلة لهذا المدرس والصف</option>';
+            help.className = 'help-pill';
+            help.innerHTML = '<i class="ti ti-info-circle"></i> اختر السنتر أولاً، ثم أكمل باقي بيانات المجموعة بالترتيب.';
         }
     }
 
-    function onAttendModeChange() {
-        const isVideo = document.getElementById('mode-video')?.checked;
-        const group = document.getElementById('video-select-group');
-        if (group) group.style.display = isVideo ? 'flex' : 'none';
+    function selectedSchedule() {
+        const center = document.getElementById('setup-center')?.value;
+        const grade = document.getElementById('setup-grade')?.value;
+        const day = document.getElementById('setup-day')?.value;
+        const time = document.getElementById('setup-time')?.value;
+        if (!center || !grade || !day || !time) return null;
+        return _teacherSchedule.find(s => s.centerName === center && s.grade === grade && s.day === day && s.time === time);
+    }
 
-        document.getElementById('label-mode-regular')?.classList.toggle('active', !isVideo);
-        document.getElementById('label-mode-video')?.classList.toggle('active', isVideo);
+    function onAttendModeChange() {
+        const isVideo = document.getElementById('mode-video').checked;
+        document.getElementById('label-mode-regular').classList.toggle('active', !isVideo);
+        document.getElementById('label-mode-video').classList.toggle('active', isVideo);
+        document.getElementById('video-select-group').style.display = isVideo ? 'block' : 'none';
+        populateVideoOptions();
+    }
+
+    function populateVideoOptions() {
+        const isVideo = document.getElementById('mode-video')?.checked;
+        const videoSelect = document.getElementById('setup-video');
+        if (!isVideo || !videoSelect) return;
+
+        const sched = selectedSchedule();
+        if (!sched) {
+            videoSelect.innerHTML = '<option value="">-- أكمل بيانات حصة السنتر أولاً --</option>';
+            return;
+        }
+
+        const filtered = _allVideos.filter(v => {
+            const gradeMatches = !v.grade || v.grade === sched.grade || (Array.isArray(v.grades) && v.grades.includes(sched.grade));
+            const teacherMatches = !_activeTeacherId || String(v.teacherId) === String(_activeTeacherId);
+            return gradeMatches && teacherMatches;
+        });
+
+        if (filtered.length === 0) {
+            videoSelect.innerHTML = '<option value="">-- لا توجد محاضرات مطابقة لهذا الصف بعد --</option>';
+            return;
+        }
+
+        videoSelect.innerHTML = '<option value="">-- اختر المحاضرة التي ستُفتح --</option>' +
+            filtered.map(v => `<option value="${v._id}">${escapeHtml(v.title)} (${escapeHtml(v.grade || 'عام')})</option>`).join('');
     }
 
     function getTargetVideoId() {
@@ -959,77 +1357,83 @@
         return document.getElementById('setup-video')?.value || '';
     }
 
-    // تشغيل / إيقاف جلسة مسح الحضور
+    // بدء / إنهاء جلسة التحضير
     function toggleSession() {
         const btn = document.getElementById('action-btn');
-        const isVideo = document.getElementById('mode-video')?.checked;
-        const videoId = getTargetVideoId();
-        const activeSched = selectedSchedule();
-
-        if (!activeSched) {
-            showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
-            return;
-        }
-
-        if (isVideo && !videoId) {
-            showAlert('⚠️ اختر المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
-            return;
-        }
+        const container = document.getElementById('qr-reader-container');
 
         if (!isSessionActive) {
+            const activeSched = selectedSchedule();
+            if (!activeSched) {
+                showAlert('⚠️ يرجى اختيار السنتر والصف واليوم والساعة أولاً!', 'orange');
+                return;
+            }
+
+            const isVideo = document.getElementById('mode-video')?.checked;
+            const videoId = getTargetVideoId();
+            if (isVideo && !videoId) {
+                showAlert('⚠️ يرجى اختيار المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
+                return;
+            }
+
             isSessionActive = true;
-            toggleInputs(true);
             btn.className = 'btn-action-stop';
-            btn.innerHTML = '<i class="ti ti-camera-off"></i> إنهاء الجلسة وإيقاف الكاميرا';
-            document.getElementById('qr-reader-container').style.display = 'block';
+            btn.innerHTML = '<i class="ti ti-player-stop"></i> إنهاء الجلسة وإيقاف الكاميرا';
+            container.style.display = 'block';
+
+            // تجميد القوائم أثناء الجلسة
+            ['setup-center', 'setup-grade', 'setup-day', 'setup-time', 'setup-video'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = true;
+            });
 
             startScanner();
+            showAlert('🎥 تم بدء جلسة التحضير بنجاح! وجاهز لمسح أكواد الطلاب.', 'green');
+
         } else {
             isSessionActive = false;
-            toggleInputs(false);
             btn.className = 'btn-action-start';
             btn.innerHTML = '<i class="ti ti-scan"></i> بدء جلسة التحضير وتشغيل الكاميرا';
-            document.getElementById('qr-reader-container').style.display = 'none';
+            container.style.display = 'none';
+
+            ['setup-center', 'setup-grade', 'setup-day', 'setup-time'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = false;
+            });
+            if (document.getElementById('mode-video')?.checked) {
+                const v = document.getElementById('setup-video');
+                if (v) v.disabled = false;
+            }
 
             stopScanner();
+            showAlert('🛑 تم إنهاء جلسة التحضير وإيقاف الكاميرا.', 'orange');
         }
-    }
-
-    function toggleInputs(disabled) {
-        ['setup-center', 'setup-grade', 'setup-day', 'setup-time'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.disabled = disabled;
-        });
-        const vidEl = document.getElementById('setup-video');
-        if (vidEl) vidEl.disabled = disabled;
     }
 
     function startScanner() {
-        if (!scannerInstance) {
-            scannerInstance = new Html5Qrcode("qr-reader");
-        }
-        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-        scannerInstance.start(
-            { facingMode: "environment" },
-            config,
-            onScanSuccess,
-            (errorMessage) => {}
-        ).catch(err => {
-            console.error("Camera Error:", err);
-            showAlert("فشل تشغيل الكاميرا. تأكد من إعطاء الصلاحية.", "red");
-            toggleSession();
+        scannerInstance = new Html5QrcodeScanner("qr-reader", {
+            fps: 15,
+            qrbox: { width: 280, height: 280 },
+            aspectRatio: 1.0,
+            showTorchButtonIfSupported: true,
+            rememberLastUsedCamera: true
         });
+
+        scannerInstance.render(
+            onScanSuccess,
+            (error) => {}
+        );
     }
 
     function stopScanner() {
-        if (scannerInstance && scannerInstance.isScanning) {
+        if (scannerInstance) {
             scannerInstance.stop().then(() => {
                 scannerInstance.clear();
             }).catch(err => console.error("Error stopping scanner:", err));
         }
     }
 
-    // إرسال كود الطالب المسحوب يدوياً
+    // إرسال كود الطالب المسحوب يدوياً (مع دعم أوفلاين كامل والمزامنة التلقائية)
     async function submitManualAttendance() {
         const studentIdInput = document.getElementById('manual-student-id');
         const studentId = studentIdInput.value.trim();
@@ -1053,26 +1457,54 @@
             return;
         }
 
-        // تشغيل مؤشر الانتظار على الزر
         const submitBtn = document.getElementById('manual-attendance-btn');
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite;"></i> جاري...';
 
+        const recordId = 'off_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        const record = {
+            id: recordId,
+            studentId: studentId,
+            videoId: videoId,
+            centerName: activeSched.centerName,
+            scheduleId: activeSched._id || null,
+            teacherId: activeSched.teacherId || _activeTeacherId || currentUser.teacherId,
+            grade: activeSched.grade,
+            day: activeSched.day,
+            time: activeSched.time,
+            scannedAt: new Date().toISOString()
+        };
+
+        // وضع الأوفلاين: حفظ فوري دون اتصال
+        if (!navigator.onLine) {
+            const addRes = addToOfflineQueue(record);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="ti ti-check"></i> تحضير يدوياً';
+            if (!addRes.success) {
+                playBeep(false);
+                showAlert(`⚠️ ${addRes.message}`, 'orange');
+                return;
+            }
+            playBeep(true);
+            showAlert('⚡ تم حفظ حضور الطالب محلياً (وضع أوفلاين)! سيتم الرفع فور توفر النت.', 'orange');
+            addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
+            studentIdInput.value = '';
+            studentIdInput.focus();
+            return;
+        }
+
+        // وضع الاتصال المباشر مع Fallback تلقائي للأوفلاين
         try {
-            const res = await fetch(`${API}/api/users/grant-attendance`, {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4500);
+
+            const res = await fetch(`${API}/api/attendance/scan`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    studentId: studentId,
-                    videoId: videoId,
-                    centerName: activeSched.centerName,
-                    scheduleId: activeSched._id || null,
-                    teacherId: activeSched.teacherId || _activeTeacherId || currentUser.teacherId,
-                    grade: activeSched.grade,
-                    day: activeSched.day,
-                    time: activeSched.time
-                })
+                body: JSON.stringify(record),
+                signal: controller.signal
             });
+            clearTimeout(timeoutId);
 
             const data = await res.json();
             submitBtn.disabled = false;
@@ -1081,7 +1513,7 @@
             if (data.success) {
                 playBeep(true);
                 showAlert(`✅ تم تسجيل حضور الطالب (${data.studentName}) بنجاح!`, 'green');
-                addLogToTable(data.studentName, activeSched.centerName);
+                addLogToTable(data.studentName, activeSched.centerName, 'synced', recordId);
                 studentIdInput.value = '';
                 studentIdInput.focus();
             } else {
@@ -1091,13 +1523,17 @@
         } catch (err) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="ti ti-check"></i> تحضير يدوياً';
-            playBeep(false);
-            showAlert('حدث خطأ في الاتصال بالسيرفر.', 'red');
+            const addRes = addToOfflineQueue(record);
+            playBeep(true);
+            showAlert('⚡ انقطع الاتصال! تم حفظ حضور الطالب محلياً بنجاح وسيتم رفعه تلقائياً فور توفر النت.', 'orange');
+            addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
+            studentIdInput.value = '';
+            studentIdInput.focus();
         }
     }
 
-    // عند مسح QR بنجاح
-    function onScanSuccess(studentId) {
+    // عند مسح QR بنجاح (مع دعم أوفلاين كامل والمزامنة التلقائية)
+    async function onScanSuccess(studentId) {
         if (!isSessionActive) return;
 
         scannerInstance.pause();
@@ -1106,49 +1542,81 @@
         const isVideo = document.getElementById('mode-video')?.checked;
         const videoId = getTargetVideoId();
 
-        fetch(`${API}/api/users/grant-attendance`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                studentId: studentId,
-                videoId: videoId,
-                centerName: activeSched.centerName,
-                scheduleId: activeSched._id || null,
-                teacherId: activeSched.teacherId || _activeTeacherId || currentUser.teacherId,
-                grade: activeSched.grade,
-                day: activeSched.day,
-                time: activeSched.time
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
+        const recordId = 'off_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        const record = {
+            id: recordId,
+            studentId: studentId,
+            videoId: videoId,
+            centerName: activeSched.centerName,
+            scheduleId: activeSched._id || null,
+            teacherId: activeSched.teacherId || _activeTeacherId || currentUser.teacherId,
+            grade: activeSched.grade,
+            day: activeSched.day,
+            time: activeSched.time,
+            scannedAt: new Date().toISOString()
+        };
+
+        if (!navigator.onLine) {
+            const addRes = addToOfflineQueue(record);
+            if (!addRes.success) {
+                playBeep(false);
+                showAlert(`⚠️ ${addRes.message}`, 'orange');
+            } else {
+                playBeep(true);
+                showAlert('⚡ تم حفظ حضور الطالب محلياً (وضع أوفلاين)!', 'orange');
+                addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
+            }
+            setTimeout(() => {
+                if (scannerInstance && isSessionActive) scannerInstance.resume();
+            }, 1800);
+            return;
+        }
+
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4500);
+
+            const res = await fetch(`${API}/api/attendance/scan`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(record),
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+
+            const data = await res.json();
             if (data.success) {
                 playBeep(true);
                 showAlert(`✅ تم تسجيل حضور الطالب (${data.studentName}) بنجاح!`, 'green');
-                addLogToTable(data.studentName, activeSched.centerName);
+                addLogToTable(data.studentName, activeSched.centerName, 'synced', recordId);
             } else {
                 playBeep(false);
                 showAlert(`❌ ${data.message}`, 'red');
             }
-        })
-        .catch(err => {
-            playBeep(false);
-            showAlert('حدث خطأ أثناء تسجيل الحضور.', 'red');
-        })
-        .finally(() => {
+        } catch (err) {
+            const addRes = addToOfflineQueue(record);
+            playBeep(true);
+            showAlert('⚡ انقطع الاتصال! تم حفظ حضور الطالب محلياً وسيتم رفعه تلقائياً.', 'orange');
+            addLogToTable(studentId, activeSched.centerName, 'pending', recordId);
+        } finally {
             setTimeout(() => {
                 if (scannerInstance && isSessionActive) scannerInstance.resume();
             }, 1800);
-        });
+        }
     }
 
-    function addLogToTable(name, center) {
+    function addLogToTable(name, center, syncStatus = 'synced', recordId = '') {
         const emptyRow = document.getElementById('empty-row');
         if (emptyRow) emptyRow.remove();
 
         const tbody = document.getElementById('logs-tbody');
         const now = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         attendedCount++;
+
+        const isSynced = syncStatus === 'synced';
+        const syncTagHtml = isSynced
+            ? '<span class="sync-tag synced"><i class="ti ti-cloud-check"></i> تم الرفع للموقع</span>'
+            : `<span class="sync-tag pending" id="tag-${recordId}"><i class="ti ti-clock"></i> في انتظار النت</span>`;
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -1161,6 +1629,7 @@
             </td>
             <td><span class="center-pill">${escapeHtml(center)}</span></td>
             <td><span class="time-pill"><i class="ti ti-check"></i> ${now}</span></td>
+            <td style="text-align:center;">${syncTagHtml}</td>
         `;
         tbody.insertBefore(tr, tbody.firstChild);
 
@@ -1172,7 +1641,6 @@
         return String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
     }
 
-    
     function goBack() {
         if (document.referrer && document.referrer.includes(window.location.host) && !document.referrer.includes('/attendance')) {
             window.history.back();

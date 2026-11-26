@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const teacherApplicationSchema = new mongoose.Schema({
     fullName: { type: String, required: true, trim: true, maxlength: 140 },
     subject: { type: String, required: true, trim: true },
+    applicantType: { type: String, enum: ['teacher', 'professor', 'company'], default: 'teacher' },
+    title: { type: String, default: '' },
+    organization: { type: String, default: '' },
+    specialty: { type: String, default: '' },
+    website: { type: String, default: '' },
     grades: [{ type: String, required: true }],
     phone: { type: String, required: true, trim: true },
     whatsapp: { type: String, required: true, trim: true },

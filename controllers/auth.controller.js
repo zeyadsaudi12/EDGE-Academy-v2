@@ -14,9 +14,26 @@ const sessionCookie = () => ({
 
 exports.register = async (req, res, next) => {
     try {
-        const { username, firstName, secondName, thirdName, lastName, birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password } = req.body;
+        const educationType = req.body.educationType === 'university' ? 'university' : 'school';
+        const { username, firstName, secondName, thirdName, lastName, birthDate, phone, nationalId, governorate, password, university, faculty, academicYear, major } = req.body;
+        let { parentPhone, grade, section, secondLanguage } = req.body;
 
-        if (!username || !firstName || !secondName || !thirdName || !lastName || !birthDate || !phone || !parentPhone || !nationalId || !governorate || !grade || !password) {
+        if (educationType === 'university') {
+            if (!faculty || !academicYear) {
+                return res.status(400).json({ success: false, message: 'الرجاء اختيار الكلية والفرقة الدراسية للطالب الجامعي' });
+            }
+            grade = academicYear;
+            parentPhone = parentPhone ? String(parentPhone).trim() : '';
+        } else {
+            if (!parentPhone) {
+                return res.status(400).json({ success: false, message: 'رقم هاتف ولي الأمر مطلوب لطلاب المدارس' });
+            }
+            if (!grade) {
+                return res.status(400).json({ success: false, message: 'الرجاء اختيار الصف الدراسي' });
+            }
+        }
+
+        if (!username || !firstName || !secondName || !thirdName || !lastName || !birthDate || !phone || !nationalId || !governorate || !password) {
             return res.status(400).json({ success: false, message: 'الرجاء ملء جميع الحقول المطلوبة' });
         }
 
@@ -48,7 +65,25 @@ exports.register = async (req, res, next) => {
         }
         const hashedPassword = await bcrypt.hash(String(password), 12);
         const newUser = new User({
-            username: normalizedUsername, firstName: nameParts[0], secondName: nameParts[1], thirdName: nameParts[2], lastName: nameParts[3], birthDate, phone, parentPhone, nationalId, governorate, grade, section, secondLanguage, password: hashedPassword,
+            username: normalizedUsername,
+            firstName: nameParts[0],
+            secondName: nameParts[1],
+            thirdName: nameParts[2],
+            lastName: nameParts[3],
+            birthDate,
+            phone,
+            parentPhone: parentPhone || '',
+            nationalId,
+            governorate,
+            grade,
+            educationType,
+            university: university || '',
+            faculty: faculty || '',
+            academicYear: academicYear || '',
+            major: major || '',
+            section: section || '',
+            secondLanguage: secondLanguage || '',
+            password: hashedPassword,
             devices: []
         });
 

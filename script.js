@@ -1223,101 +1223,103 @@ function previousStep() {
 }
 
 function validateStep(step) {
-
     const form = document.getElementById('registrationForm');
-
     const currentStepElement = form.querySelector(`.form-step[data-step="${step}"]`);
-
     const inputs = currentStepElement.querySelectorAll('input[required], select[required]');
 
-    if (step === 1) {
+    const eduRadio = form.querySelector('input[name="educationType"]:checked');
+    const isUniv = eduRadio && eduRadio.value === 'university';
 
+    if (step === 1) {
         if (!validateArabicNameFields(form)) return false;
 
-        const phone = form.querySelector('input[name="phone"]').value;
-
-        const parentPhone = form.querySelector('input[name="parentPhone"]').value;
-
+        const phone = form.querySelector('input[name="phone"]').value.trim();
+        const parentPhone = (form.querySelector('input[name="parentPhone"]')?.value || '').trim();
         const phoneRegex = /^01[0125]\d{8}$/;
 
         if (!phoneRegex.test(phone)) {
-
             alert('❌ رقم الهاتف غير صحيح. يجب أن يتكون من 11 رقماً ويبدأ بـ 010 أو 011 أو 012 أو 015');
-
             return false;
-
         }
 
-        if (!phoneRegex.test(parentPhone)) {
-
-            alert('❌ رقم هاتف ولي الأمر غير صحيح. يجب أن يتكون من 11 رقماً ويبدأ بـ 010 أو 011 أو 012 أو 015');
-
-            return false;
-
+        if (!isUniv) {
+            if (!phoneRegex.test(parentPhone)) {
+                alert('❌ رقم هاتف ولي الأمر غير صحيح. يجب أن يتكون من 11 رقماً ويبدأ بـ 010 أو 011 أو 012 أو 015');
+                return false;
+            }
+            if (phone === parentPhone) {
+                alert('❌ رقم هاتف الطالب لا يمكن أن يكون متطابقاً مع رقم هاتف ولي الأمر');
+                return false;
+            }
+        } else if (parentPhone) {
+            if (!phoneRegex.test(parentPhone)) {
+                alert('❌ رقم هاتف ولي الأمر غير صحيح (أو اتركه فارغاً للطلاب الجامعيين)');
+                return false;
+            }
         }
-
-        if (phone === parentPhone) {
-
-            alert('❌ رقم هاتف الطالب لا يمكن أن يكون متطابقاً مع رقم هاتف ولي الأمر');
-
-            return false;
-
-        }
-
     }
 
     if (step === 2) {
-
-        const gradeSelect = form.querySelector('select[name="grade"]');
-
-        if (!gradeSelect.value) {
-
-            alert('❌ لم يتم اختيار المرحلة الدراسية');
-
-            return false;
-
+        if (!isUniv) {
+            const gradeSelect = form.querySelector('select[name="grade"]');
+            if (!gradeSelect || !gradeSelect.value) {
+                alert('❌ الرجاء اختيار الصف الدراسي');
+                return false;
+            }
+        } else {
+            const university = form.querySelector('select[name="university"]')?.value;
+            const otherUniversity = form.querySelector('input[name="otherUniversity"]')?.value.trim();
+            const faculty = form.querySelector('select[name="faculty"]')?.value;
+            const otherFaculty = form.querySelector('input[name="otherFaculty"]')?.value.trim();
+            const academicYear = form.querySelector('select[name="academicYear"]')?.value;
+            if (!university) {
+                alert('❌ الرجاء اختيار الجامعة');
+                return false;
+            }
+            if (university === 'أخرى' && !otherUniversity) {
+                alert('❌ الرجاء كتابة اسم الجامعة');
+                form.querySelector('input[name="otherUniversity"]')?.focus();
+                return false;
+            }
+            if (!faculty) {
+                alert('❌ الرجاء اختيار الكلية');
+                return false;
+            }
+            if (faculty === 'أخرى' && !otherFaculty) {
+                alert('❌ الرجاء كتابة اسم الكلية');
+                form.querySelector('input[name="otherFaculty"]')?.focus();
+                return false;
+            }
+            if (!academicYear) {
+                alert('❌ الرجاء اختيار الفرقة الدراسية');
+                return false;
+            }
         }
-
     }
 
     for (let input of inputs) {
-
+        // Skip parentPhone if university
+        if (isUniv && input.name === 'parentPhone') continue;
         if (!input.value) {
-
-            alert(`❌ الرجاء ملء جميع الحقول المطلوبة`);
-
+            alert('❌ الرجاء ملء جميع الحقول المطلوبة');
             return false;
-
         }
-
     }
 
     if (step === 3) {
-
         const password = form.querySelector('input[name="password"]').value;
-
         const confirmPassword = form.querySelector('input[name="confirmPassword"]').value;
-
         if (password !== confirmPassword) {
-
             alert('❌ كلمة المرور وتأكيدها غير متطابقين');
-
             return false;
-
         }
-
         if (password.length < 6) {
-
             alert('❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل');
-
             return false;
-
         }
-
     }
 
     return true;
-
 }
 
 function validateArabicNameFields(form) {
@@ -1353,6 +1355,142 @@ function initArabicNameInputs() {
 // ==========================================
 // Teacher application (separate from student accounts)
 // ==========================================
+
+// ==========================================
+// University & Partner Dynamic Handlers
+// ==========================================
+function onEducationTypeChange(type) {
+    const isUniv = type === 'university';
+    const cardSchool = document.getElementById('eduCardSchool');
+    const cardUniv = document.getElementById('eduCardUniversity');
+    const schoolContainer = document.getElementById('schoolFieldsContainer');
+    const univContainer = document.getElementById('universityFieldsContainer');
+    const gradeSelect = document.getElementById('gradeSelect');
+    const facultySelect = document.getElementById('facultySelect');
+    const academicYearSelect = document.getElementById('academicYearSelect');
+    const parentPhoneInput = document.getElementById('parentPhoneInput');
+    const parentPhoneLabel = document.getElementById('parentPhoneLabel');
+    const parentPhoneHelp = document.getElementById('parentPhoneHelp');
+
+    if (cardSchool && cardUniv) {
+        cardSchool.classList.toggle('active', !isUniv);
+        cardUniv.classList.toggle('active', isUniv);
+    }
+    if (schoolContainer && univContainer) {
+        schoolContainer.style.display = isUniv ? 'none' : 'block';
+        univContainer.style.display = isUniv ? 'block' : 'none';
+    }
+    if (gradeSelect) gradeSelect.required = !isUniv;
+    const universitySelect = document.getElementById('universitySelect');
+    if (universitySelect) universitySelect.required = isUniv;
+    if (facultySelect) facultySelect.required = isUniv;
+    if (academicYearSelect) academicYearSelect.required = isUniv;
+
+    if (!isUniv) {
+        const otherUnivInput = document.getElementById('otherUniversityInput');
+        const otherFacInput = document.getElementById('otherFacultyInput');
+        if (otherUnivInput) otherUnivInput.required = false;
+        if (otherFacInput) otherFacInput.required = false;
+    } else {
+        updateOtherUnivFacultyRow();
+    }
+
+    if (parentPhoneInput && parentPhoneLabel) {
+        parentPhoneInput.required = !isUniv;
+        parentPhoneLabel.textContent = isUniv ? 'رقم هاتف ولي الأمر (اختياري للجامعيين)' : 'رقم هاتف ولي الأمر*';
+        if (parentPhoneHelp) parentPhoneHelp.style.display = isUniv ? 'block' : 'none';
+    }
+}
+
+function updateOtherUnivFacultyRow() {
+    const univVal = document.getElementById('universitySelect')?.value;
+    const facVal = document.getElementById('facultySelect')?.value;
+    const row = document.getElementById('otherUnivFacultyRow');
+    const otherUnivGroup = document.getElementById('otherUniversityGroup');
+    const otherFacGroup = document.getElementById('otherFacultyGroup');
+    const otherUnivInput = document.getElementById('otherUniversityInput');
+    const otherFacInput = document.getElementById('otherFacultyInput');
+
+    const showUniv = univVal === 'أخرى';
+    const showFac = facVal === 'أخرى';
+
+    if (otherUnivGroup) otherUnivGroup.style.display = showUniv ? 'block' : 'none';
+    if (otherFacGroup) otherFacGroup.style.display = showFac ? 'block' : 'none';
+    if (otherUnivInput) otherUnivInput.required = showUniv;
+    if (otherFacInput) otherFacInput.required = showFac;
+    if (row) row.style.display = (showUniv || showFac) ? '' : 'none';
+}
+
+function onUniversityChange(val) {
+    updateOtherUnivFacultyRow();
+    if (val === 'أخرى') document.getElementById('otherUniversityInput')?.focus();
+}
+
+function onFacultyChange(val) {
+    updateOtherUnivFacultyRow();
+    if (val === 'أخرى') document.getElementById('otherFacultyInput')?.focus();
+}
+
+function onApplicantTypeChange(type) {
+    const isTeacher = type === 'teacher';
+    const isProf = type === 'professor';
+    const isCompany = type === 'company';
+
+    ['chipProviderTeacher', 'chipProviderProfessor', 'chipProviderCompany'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active');
+    });
+
+    if (isTeacher) document.getElementById('chipProviderTeacher')?.classList.add('active');
+    if (isProf) document.getElementById('chipProviderProfessor')?.classList.add('active');
+    if (isCompany) document.getElementById('chipProviderCompany')?.classList.add('active');
+
+    const profGroup = document.getElementById('professorFieldsGroup');
+    const companyGroup = document.getElementById('companyFieldsGroup');
+    const teacherSubGroup = document.getElementById('teacherSubjectGroup');
+    const customSpecGroup = document.getElementById('customSpecialtyGroup');
+    const teacherGradeFieldset = document.getElementById('teacherGradeFieldset');
+    const higherGradeFieldset = document.getElementById('higherGradeFieldset');
+
+    const nameLabel = document.getElementById('applicantNameLabel');
+    const nameHelp = document.getElementById('applicantNameHelp');
+    const photoLabel = document.getElementById('applicantPhotoLabel');
+    const photoHelp = document.getElementById('applicantPhotoHelp');
+    const customSpecLabel = document.getElementById('customSpecialtyLabel');
+    const customSpecInput = document.getElementById('customSpecialtyInput');
+    const higherGradeLegend = document.getElementById('higherGradeLegend');
+
+    if (profGroup) profGroup.style.display = isProf ? 'block' : 'none';
+    if (companyGroup) companyGroup.style.display = isCompany ? 'block' : 'none';
+    if (teacherSubGroup) teacherSubGroup.style.display = isTeacher ? 'block' : 'none';
+    if (customSpecGroup) customSpecGroup.style.display = isTeacher ? 'none' : 'block';
+    if (teacherGradeFieldset) teacherGradeFieldset.style.display = isTeacher ? 'block' : 'none';
+    if (higherGradeFieldset) higherGradeFieldset.style.display = isTeacher ? 'none' : 'block';
+
+    if (isTeacher) {
+        if (nameLabel) nameLabel.textContent = 'الاسم الرباعي *';
+        if (nameHelp) nameHelp.textContent = 'يمكن كتابة الاسم بالعربية أو الإنجليزية.';
+        if (photoLabel) photoLabel.textContent = 'صورة شخصية واضحة *';
+        if (photoHelp) photoHelp.textContent = 'صورة حديثة وواضحة للوجه. تُرسل للإدارة فقط ولن تظهر تلقائياً.';
+    } else if (isProf) {
+        if (nameLabel) nameLabel.textContent = 'الاسم الأكاديمي (ثلاثي أو رباعي) *';
+        if (nameHelp) nameHelp.textContent = 'الاسم الأكاديمي كما يظهر لطلاب الجامعة.';
+        if (photoLabel) photoLabel.textContent = 'صورة شخصية أكاديمية *';
+        if (photoHelp) photoHelp.textContent = 'صورة رسمية لائقة لعضو هيئة التدريس.';
+        if (customSpecLabel) customSpecLabel.textContent = 'المقرر الجامعي أو التخصص الأكاديمي *';
+        if (customSpecInput) customSpecInput.placeholder = 'مثال: هياكل بيانات وخوارزميات، تشريح وباثولوجي، فيزياء جوامد...';
+        if (higherGradeLegend) higherGradeLegend.textContent = 'الفرق الدراسية المستهدفة *';
+    } else if (isCompany) {
+        if (nameLabel) nameLabel.textContent = 'اسم المسؤول / المفوض للشركة *';
+        if (nameHelp) nameHelp.textContent = 'اسم الشخص الممثل للشركة أو المركز التدريبي.';
+        if (photoLabel) photoLabel.textContent = 'شعار الشركة أو المركز (Logo) *';
+        if (photoHelp) photoHelp.textContent = 'ارفع لوجو الشركة بجودة واضحة (PNG/JPG).';
+        if (customSpecLabel) customSpecLabel.textContent = 'مجال وتخصص الكورسات والتدريب *';
+        if (customSpecInput) customSpecInput.placeholder = 'مثال: تطوير البرمجيات والذكاء الاصطناعي، لغات وترجمة، إدارة أعمال...';
+        if (higherGradeLegend) higherGradeLegend.textContent = 'المستويات المستهدفة للكورسات *';
+    }
+}
+
 function setRegistrationType(type, button) {
     const isTeacher = type === 'teacher';
     const studentForm = document.getElementById('registrationForm');
@@ -1366,7 +1504,7 @@ function setRegistrationType(type, button) {
     teacherForm.hidden = !isTeacher;
     if (progress) progress.hidden = isTeacher;
     if (steps) steps.hidden = isTeacher;
-    if (subtitle) subtitle.textContent = isTeacher ? 'طلب الانضمام كمدرس' : 'إنشاء حساب جديد';
+    if (subtitle) subtitle.textContent = isTeacher ? 'انضم كشريك تعليمي في المنصة' : 'إنشاء حساب جديد';
 
     document.querySelectorAll('.registration-type').forEach(item => {
         const active = item === button;
@@ -1386,9 +1524,38 @@ function showRegistrationMessage(message, icon = 'success') {
 async function handleTeacherApplication(event) {
     event.preventDefault();
     const form = event.currentTarget;
+    const applicantTypeRadio = form.querySelector('input[name="applicantType"]:checked');
+    const applicantType = applicantTypeRadio ? applicantTypeRadio.value : 'teacher';
+
+    const isTeacher = applicantType === 'teacher';
+    const isProf = applicantType === 'professor';
+    const isCompany = applicantType === 'company';
+
     const fullName = form.elements.fullName.value.trim().replace(/\s+/g, ' ');
-    const subject = form.elements.subject.value;
-    const grades = Array.from(form.querySelectorAll('input[name="teacherGrades"]:checked')).map(input => input.value);
+    let subject = '';
+    let organization = '';
+    let title = '';
+    let website = '';
+
+    let grades = [];
+    if (isTeacher) {
+        subject = form.elements.subject?.value || '';
+        grades = Array.from(form.querySelectorAll('#teacherGradeFieldset input[name="teacherGrades"]:checked')).map(input => input.value);
+    } else if (isProf) {
+        title = form.elements.profTitle?.value || 'دكتور';
+        organization = form.elements.profOrganization?.value.trim() || '';
+        subject = form.elements.customSpecialty?.value.trim() || '';
+        grades = Array.from(form.querySelectorAll('#higherGradeFieldset input[name="teacherGrades"]:checked')).map(input => input.value);
+        if (!grades.length) grades = ['جميع الفرق الدراسية'];
+    } else if (isCompany) {
+        title = 'شركة / أكاديمية';
+        organization = form.elements.companyName?.value.trim() || fullName;
+        website = form.elements.companyWebsite?.value.trim() || '';
+        subject = form.elements.customSpecialty?.value.trim() || '';
+        grades = Array.from(form.querySelectorAll('#higherGradeFieldset input[name="teacherGrades"]:checked')).map(input => input.value);
+        if (!grades.length) grades = ['مسارات مهنية', 'جميع المستويات'];
+    }
+
     const phone = form.elements.phone.value.trim();
     const whatsapp = form.elements.whatsapp.value.trim();
     const photo = form.elements.photo.files[0];
@@ -1396,12 +1563,25 @@ async function handleTeacherApplication(event) {
     const namePattern = /^[A-Za-z\u0621-\u063A\u0641-\u064A\u0670\u0649\s.'-]+$/u;
     const submitButton = form.querySelector('button[type="submit"]');
 
-    if (fullName.split(' ').filter(Boolean).length < 4 || !namePattern.test(fullName)) {
+    if (!namePattern.test(fullName)) {
+        showRegistrationMessage('اكتب الاسم بحروف عربية أو إنجليزية صحيحة.', 'error');
+        form.elements.fullName.focus();
+        return false;
+    }
+    if (isTeacher && fullName.split(' ').filter(Boolean).length < 4) {
         showRegistrationMessage('اكتب الاسم الرباعي بحروف عربية أو إنجليزية فقط.', 'error');
         form.elements.fullName.focus();
         return false;
     }
-    if (!subject || !grades.length) {
+    if (isProf && (!organization || !subject)) {
+        showRegistrationMessage('الرجاء كتابة اسم الجامعة والكلية والمقرر الجامعي.', 'error');
+        return false;
+    }
+    if (isCompany && (!organization || !subject)) {
+        showRegistrationMessage('الرجاء كتابة اسم الشركة أو الأكاديمية ومجال الكورسات.', 'error');
+        return false;
+    }
+    if (isTeacher && (!subject || !grades.length)) {
         showRegistrationMessage('اختر المادة الدراسية ومرحلة واحدة على الأقل.', 'error');
         return false;
     }
@@ -1410,7 +1590,7 @@ async function handleTeacherApplication(event) {
         return false;
     }
     if (!photo || !['image/jpeg', 'image/png', 'image/webp'].includes(photo.type)) {
-        showRegistrationMessage('ارفع صورة شخصية واضحة بصيغة JPG أو PNG أو WEBP.', 'error');
+        showRegistrationMessage('ارفع صورة أو شعار واضح بصيغة JPG أو PNG أو WEBP.', 'error');
         return false;
     }
     if (photo.size > 8 * 1024 * 1024) {
@@ -1425,12 +1605,17 @@ async function handleTeacherApplication(event) {
             submitButton.innerHTML = '<i class="ti ti-loader-2"></i> جارٍ إرسال الطلب...';
         }
         const formData = new FormData();
+        formData.append('applicantType', applicantType);
         formData.append('fullName', fullName);
         formData.append('subject', subject);
+        formData.append('organization', organization);
+        formData.append('title', title);
+        formData.append('website', website);
         grades.forEach(grade => formData.append('grades', grade));
         formData.append('phone', phone);
         formData.append('whatsapp', whatsapp);
         formData.append('photo', photo);
+
         const response = await fetch(`${API_URL}/api/teacher-applications`, {
             method: 'POST',
             body: formData
@@ -1453,85 +1638,78 @@ async function handleTeacherApplication(event) {
 }
 
 function handleRegister(event) {
-
     event.preventDefault();
-
     if (!validateStep(1) || !validateStep(2) || !validateStep(3)) return false;
 
     const form = event.target;
+    const eduRadio = form.querySelector('input[name="educationType"]:checked');
+    const educationType = eduRadio ? eduRadio.value : 'school';
+    const isUniv = educationType === 'university';
 
     const username = form.querySelector('input[name="username"]').value;
-
     const password = form.querySelector('input[name="password"]').value;
-
     const firstName = form.querySelector('input[name="firstName"]').value;
-
     const secondName = form.querySelector('input[name="secondName"]').value;
-
     const thirdName = form.querySelector('input[name="thirdName"]').value;
-
     const lastName = form.querySelector('input[name="lastName"]').value;
-
     const birthDate = form.querySelector('input[name="birthDate"]').value;
-
     const phone = form.querySelector('input[name="phone"]').value;
-
-    const parentPhone = form.querySelector('input[name="parentPhone"]').value;
-
+    const parentPhone = form.querySelector('input[name="parentPhone"]')?.value || '';
     const nationalId = form.querySelector('input[name="nationalId"]').value;
-
     const governorate = form.querySelector('select[name="governorate"]').value;
 
-    const grade = form.querySelector('select[name="grade"]').value;
+    let grade = '';
+    let section = '';
+    let secondLanguage = '';
+    let university = '';
+    let faculty = '';
+    let academicYear = '';
+    let major = '';
 
-    const section = form.querySelector('select[name="section"]').value;
+    if (isUniv) {
+        university = form.querySelector('select[name="university"]')?.value || '';
+        if (university === 'أخرى') {
+            university = form.querySelector('input[name="otherUniversity"]')?.value.trim() || 'أخرى';
+        }
+        faculty = form.querySelector('select[name="faculty"]')?.value || '';
+        if (faculty === 'أخرى') {
+            faculty = form.querySelector('input[name="otherFaculty"]')?.value.trim() || 'أخرى';
+        }
+        academicYear = form.querySelector('select[name="academicYear"]')?.value || '';
+        major = form.querySelector('input[name="major"]')?.value || '';
+        grade = academicYear || 'طالب جامعي';
+    } else {
+        grade = form.querySelector('select[name="grade"]')?.value || '';
+        section = form.querySelector('select[name="section"]')?.value || '';
+        secondLanguage = form.querySelector('select[name="secondLanguage"]')?.value || '';
+    }
 
-    const secondLanguage = form.querySelector('select[name="secondLanguage"]').value;
+    const payload = {
+        username, firstName, secondName, thirdName, lastName, birthDate, phone, parentPhone,
+        nationalId, governorate, grade, section, secondLanguage, password,
+        educationType, university, faculty, academicYear, major
+    };
 
     fetch(`${API_URL}/api/register`, {
-
         method: 'POST',
-
         headers: { 'Content-Type': 'application/json' },
-
-        body: JSON.stringify({
-
-            username, firstName, secondName, thirdName, lastName, birthDate, phone, parentPhone,
-
-            nationalId, governorate, grade, section, secondLanguage, password
-
-        })
-
+        body: JSON.stringify(payload)
     }).then(res => res.json())
-
         .then(data => {
-
             if (data.success) {
-
                 alert('✅ تم إنشاء الحساب بنجاح!');
-
                 localStorage.setItem('currentUser', JSON.stringify(data.user));
-
                 window.location.href = '/';
-
             } else {
-
                 alert('❌ خطأ: ' + data.message);
-
             }
-
         })
-
         .catch(err => {
-
             alert('❌ خطأ في الاتصال بقاعدة البيانات');
-
             console.error(err);
-
         });
 
     return false;
-
 }
 
 function updateSectionVisibility() {

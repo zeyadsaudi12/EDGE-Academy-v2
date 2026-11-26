@@ -40,18 +40,32 @@ async function generateAssistantPhone() {
     return phone;
 }
 
-function validApplication({ fullName, subject, grades, phone, whatsapp }) {
+function validApplication({ fullName, subject, grades, phone, whatsapp, applicantType, organization }) {
     const name = normalizeName(fullName);
     const nameParts = name.split(' ').filter(Boolean);
-    const selectedGrades = Array.isArray(grades) ? [...new Set(grades.map(String))] : [];
+    let selectedGrades = Array.isArray(grades) ? [...new Set(grades.map(String))] : [];
 
-    if (nameParts.length < 4 || !NAME_PATTERN.test(name)) {
+    if (!NAME_PATTERN.test(name)) {
+        return { error: 'اكتب الاسم بحروف عربية أو إنجليزية صحيحة.' };
+    }
+    if (applicantType === 'teacher' && nameParts.length < 4) {
         return { error: 'اكتب الاسم الرباعي بحروف عربية أو إنجليزية فقط.' };
     }
-    if (!ALLOWED_SUBJECTS.has(subject)) return { error: 'اختر مادة دراسية صحيحة.' };
-    if (!selectedGrades.length || selectedGrades.some(grade => !ALLOWED_GRADES.has(grade))) {
-        return { error: 'اختر مرحلة دراسية واحدة على الأقل.' };
+    if (applicantType === 'teacher') {
+        if (!ALLOWED_SUBJECTS.has(subject)) return { error: 'اختر مادة دراسية صحيحة.' };
+        if (!selectedGrades.length || selectedGrades.some(grade => !ALLOWED_GRADES.has(grade))) {
+            return { error: 'اختر مرحلة دراسية واحدة على الأقل.' };
+        }
+    } else if (applicantType === 'professor') {
+        if (!subject || subject.trim().length < 2) return { error: 'اكتب المادة أو المقرر الجامعي التابع لتخصصك.' };
+        if (!organization || organization.trim().length < 3) return { error: 'اكتب اسم الجامعة والكلية التابع لها.' };
+        if (!selectedGrades.length) selectedGrades = ['جميع الفرق الدراسية'];
+    } else if (applicantType === 'company') {
+        if (!organization && nameParts.length < 2) return { error: 'اكتب اسم الشركة أو الأكاديمية التدريبية.' };
+        if (!subject || subject.trim().length < 2) return { error: 'حدد مجال الكورسات والتدريب الخاص بالشركة.' };
+        if (!selectedGrades.length) selectedGrades = ['مسارات مهنية', 'جميع المستويات'];
     }
+
     if (!PHONE_PATTERN.test(phone) || !PHONE_PATTERN.test(whatsapp)) {
         return { error: 'رقم الهاتف ورقم واتساب يجب أن يكونا رقمين مصريين صحيحين.' };
     }
@@ -60,19 +74,24 @@ function validApplication({ fullName, subject, grades, phone, whatsapp }) {
 
 exports.createApplication = async (req, res, next) => {
     try {
+        const applicantType = ['teacher', 'professor', 'company'].includes(req.body.applicantType) ? req.body.applicantType : 'teacher';
         const fullName = normalizeName(req.body.fullName);
         const subject = String(req.body.subject || '').trim();
         const rawGrades = req.body.grades || req.body['grades[]'];
         const grades = Array.isArray(rawGrades) ? rawGrades : (rawGrades ? [rawGrades] : []);
         const phone = String(req.body.phone || '').trim();
         const whatsapp = String(req.body.whatsapp || '').trim();
-        const validation = validApplication({ fullName, subject, grades, phone, whatsapp });
+        const organization = String(req.body.organization || '').trim();
+        const title = String(req.body.title || '').trim();
+        const website = String(req.body.website || '').trim();
+
+        const validation = validApplication({ fullName, subject, grades, phone, whatsapp, applicantType, organization });
         if (validation.error) {
             await removeUploadedPhoto(req.file);
             return res.status(400).json({ success: false, message: validation.error });
         }
         if (!req.file || !String(req.file.mimetype || '').startsWith('image/')) {
-            return res.status(400).json({ success: false, message: 'ارفع صورة شخصية واضحة بصيغة JPG أو PNG أو WEBP.' });
+            return res.status(400).json({ success: false, message: 'ارفع صورة شخصية أو شعار الشركة بصيغة JPG أو PNG أو WEBP.' });
         }
         if (req.file.size > 8 * 1024 * 1024) {
             await removeUploadedPhoto(req.file);
@@ -90,6 +109,10 @@ exports.createApplication = async (req, res, next) => {
 
         await TeacherApplication.create({
             fullName: validation.name,
+            applicantType,
+            title,
+            organization,
+            website,
             subject,
             grades: validation.selectedGrades,
             phone,
@@ -148,7 +171,15 @@ exports.approveApplication = async (req, res, next) => {
             name: application.fullName,
             subjectAr: application.subject,
             grades: application.grades,
-            bio: 'مدرس جديد على منصة EDGE Academy',
+            providerType: application.applicantType || 'teacher',
+            title: application.title || (application.applicantType === 'professor' ? 'دكتور' : application.applicantType === 'company' ? 'أكاديمية / شركة' : 'أستاذ'),
+            organization: application.organization || '',
+            website: application.website || '',
+            bio: application.applicantType === 'company'
+                ? 'شريك تدريبي ومؤسسة تعليمية معتمدة على منصة EDGE Academy'
+                : application.applicantType === 'professor'
+                ? 'عضو هيئة تدريس جامعي على منصة EDGE Academy'
+                : 'مدرس جديد على منصة EDGE Academy',
             contactPhone: application.phone,
             whatsapp: application.whatsapp
         });

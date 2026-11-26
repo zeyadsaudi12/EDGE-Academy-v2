@@ -9,10 +9,15 @@ const userSchema = new mongoose.Schema({
     lastName: { type: String, required: true },
     birthDate: { type: Date, required: true },
     phone: { type: String, required: true, unique: true },
-    parentPhone: { type: String, required: true },
+    parentPhone: { type: String, default: '' },
     nationalId: { type: String, required: true, unique: true },
     governorate: { type: String, required: true },
     grade: { type: String, required: true },
+    educationType: { type: String, enum: ['school', 'university'], default: 'school' },
+    university: { type: String, default: '' },
+    faculty: { type: String, default: '' },
+    academicYear: { type: String, default: '' },
+    major: { type: String, default: '' },
     section: { type: String }, // Optional for prep school
     secondLanguage: { type: String }, // Optional for prep school
     password: { type: String, required: true, select: false },
