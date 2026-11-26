@@ -7045,6 +7045,15 @@ body.auth-body .masar-chatbot-btn {
 html, body {
     max-width: 100%;
     overflow-x: clip;
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+main, section, .auth-page, .auth-right, .auth-card, .form-panel {
+    min-width: 0;
 }
 
 img, video, iframe {
