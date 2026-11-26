@@ -4360,9 +4360,12 @@ body:not(.auth-body) {
 .auth-body.login-page {
     position: relative;
     isolation: isolate;
-    background: #1a2744;
+    background: #ffffff;
     min-height: 100vh;
     overflow-x: hidden;
+}
+.dark-mode.auth-body.login-page {
+    background: #0d1526;
 }
 
 .auth-body.login-page::before {
@@ -5599,9 +5602,12 @@ html[dir="ltr"] .dark-mode.auth-body .form-group select {
 .auth-body.register-page {
     position: relative;
     isolation: isolate;
-    background: #1a2744;
+    background: #ffffff;
     min-height: 100vh;
     overflow-x: hidden;
+}
+.dark-mode.auth-body.register-page {
+    background: #0d1526;
 }
 
 .auth-body.register-page::before {
@@ -6834,13 +6840,23 @@ body.auth-body .masar-chatbot-btn {
 
 
 
+
 /* ════════════════════════════════════════════════════════
-   EDGE Academy – Register & Login: Clean Responsive Layout
-   Desktop: 42/58 split | Tablet: single col | Mobile: form only
+   EDGE Academy – Register & Login: Definitive Responsive Layout
    ════════════════════════════════════════════════════════ */
 
-/* ── Desktop & Large Tablet (≥ 900px): Full split ── */
+/* ── Desktop (≥ 900px): Full 42/58 split ── */
 @media (min-width: 900px) {
+    /* Body uses white bg — the left panel provides the blue */
+    .auth-body.register-page,
+    .auth-body.login-page {
+        background: #ffffff !important;
+    }
+    .dark-mode.auth-body.register-page,
+    .dark-mode.auth-body.login-page {
+        background: #0d1526 !important;
+    }
+
     .auth-body.register-page .auth-page,
     .auth-body.login-page .auth-page {
         display: grid !important;
@@ -6848,13 +6864,14 @@ body.auth-body .masar-chatbot-btn {
         align-items: stretch !important;
         width: 100% !important;
         max-width: 100% !important;
+        height: calc(100dvh - 72px) !important;
         min-height: calc(100dvh - 72px) !important;
         margin: 0 !important;
         gap: 0 !important;
         padding: 0 !important;
     }
 
-    /* Left showcase: sticky, fills full height */
+    /* Left showcase: fills full left column, sticky */
     .auth-body.register-page .auth-left,
     .auth-body.login-page .auth-left {
         order: 1 !important;
@@ -6862,38 +6879,42 @@ body.auth-body .masar-chatbot-btn {
         flex-direction: column !important;
         justify-content: center !important;
         align-items: center !important;
-        position: sticky !important;
-        top: 72px !important;
         height: calc(100dvh - 72px) !important;
         min-height: calc(100dvh - 72px) !important;
         padding: 40px 32px !important;
         border-radius: 0 !important;
+        position: sticky !important;
+        top: 0 !important;
+        overflow: hidden !important;
     }
 
-    /* Right form: scrollable white panel */
+    /* Right form: white, scrollable */
     .auth-body.register-page .auth-right,
     .auth-body.login-page .auth-right {
         order: 2 !important;
         display: flex !important;
         flex-direction: column !important;
+        justify-content: center !important;
+        height: 100% !important;
+        min-height: calc(100dvh - 72px) !important;
         padding: 0 !important;
         background: #ffffff !important;
-        min-height: calc(100dvh - 72px) !important;
+        border: none !important;
         border-radius: 0 !important;
         box-shadow: none !important;
-        border: none !important;
         backdrop-filter: none !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
-
     .dark-mode.auth-body.register-page .auth-right,
     .dark-mode.auth-body.login-page .auth-right {
         background: #0f172a !important;
     }
 
-    /* Form card: centered, max-width, scrollable */
+    /* Form card: centered, max-width, no box */
     .auth-body.register-page .form-panel.auth-card,
     .auth-body.login-page .form-panel.auth-card {
-        flex: 1 !important;
+        flex: 1 0 auto !important;
         width: 100% !important;
         max-width: 580px !important;
         margin: 0 auto !important;
@@ -6907,10 +6928,26 @@ body.auth-body .masar-chatbot-btn {
         flex-direction: column !important;
         justify-content: center !important;
     }
+
+    /* Bastahalk showcase fills the left column */
+    .auth-body.register-page .bastahalk-showcase,
+    .auth-body.login-page .bastahalk-showcase {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: calc(100dvh - 72px) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
 }
 
-/* ── Medium Tablet (600px – 899px): Single col, center form ── */
+/* ── Tablet (600px–899px): Single col, light card ── */
 @media (min-width: 600px) and (max-width: 899px) {
+    .auth-body.register-page,
+    .auth-body.login-page {
+        background: var(--bg) !important;
+    }
+
     .auth-body.register-page .auth-page,
     .auth-body.login-page .auth-page {
         display: flex !important;
@@ -6918,10 +6955,10 @@ body.auth-body .masar-chatbot-btn {
         align-items: center !important;
         width: 100% !important;
         min-height: calc(100dvh - 72px) !important;
-        padding: 24px 16px 40px !important;
+        padding: 32px 16px 48px !important;
         margin: 0 !important;
         gap: 0 !important;
-        background: var(--bg) !important;
+        background: transparent !important;
     }
 
     .auth-body.register-page .auth-left,
@@ -6932,28 +6969,40 @@ body.auth-body .masar-chatbot-btn {
     .auth-body.register-page .auth-right,
     .auth-body.login-page .auth-right {
         width: 100% !important;
-        max-width: 600px !important;
+        max-width: 620px !important;
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         backdrop-filter: none !important;
+        border-radius: 0 !important;
     }
 
     .auth-body.register-page .form-panel.auth-card,
     .auth-body.login-page .form-panel.auth-card {
         width: 100% !important;
         max-width: 100% !important;
-        margin: 0 auto !important;
-        padding: 28px 24px !important;
+        margin: 0 !important;
+        padding: 28px 24px 36px !important;
         background: var(--surface) !important;
         border: 1px solid var(--border) !important;
         border-radius: 20px !important;
-        box-shadow: 0 8px 32px var(--shadow) !important;
+        box-shadow: 0 4px 24px var(--shadow) !important;
+        backdrop-filter: none !important;
+    }
+    .dark-mode .auth-body.register-page .form-panel.auth-card,
+    .dark-mode .auth-body.login-page .form-panel.auth-card {
+        background: #152038 !important;
+        border-color: rgba(61,142,240,0.15) !important;
     }
 }
 
-/* ── Mobile (< 600px): Full width, form only ── */
+/* ── Mobile (< 600px): Full screen, form only ── */
 @media (max-width: 599px) {
+    .auth-body.register-page,
+    .auth-body.login-page {
+        background: var(--surface) !important;
+    }
+
     .auth-body.register-page .auth-page,
     .auth-body.login-page .auth-page {
         display: flex !important;
@@ -6963,7 +7012,7 @@ body.auth-body .masar-chatbot-btn {
         padding: 0 !important;
         margin: 0 !important;
         gap: 0 !important;
-        background: var(--surface) !important;
+        background: transparent !important;
     }
 
     .auth-body.register-page .auth-left,
@@ -6975,8 +7024,10 @@ body.auth-body .masar-chatbot-btn {
     .auth-body.login-page .auth-right {
         flex: 1 !important;
         width: 100% !important;
+        min-height: 100dvh !important;
         background: transparent !important;
         border: none !important;
+        border-radius: 0 !important;
         box-shadow: none !important;
         backdrop-filter: none !important;
         padding: 0 !important;
@@ -6986,10 +7037,11 @@ body.auth-body .masar-chatbot-btn {
     .auth-body.login-page .form-panel.auth-card {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 20px 16px 32px !important;
+        padding: 24px 16px 36px !important;
         background: transparent !important;
         border: none !important;
         border-radius: 0 !important;
         box-shadow: none !important;
+        backdrop-filter: none !important;
     }
 }
