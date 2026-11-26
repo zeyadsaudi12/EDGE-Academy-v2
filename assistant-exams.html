@@ -13,6 +13,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
     <style>
         :root {
+            --bg: #f0f4ff;
+            --bg2: #ffffff;
+            --surface: #f1f5f9;
+            --surface2: #e2e8f0;
+            --border: rgba(26, 107, 219, 0.14);
+            --border2: rgba(26, 107, 219, 0.24);
+            --txt: #1a2744;
+            --txt2: #475569;
+            --txt3: #64748b;
+            --primary: #1a6bdb;
+            --primary-glow: rgba(26, 107, 219, 0.2);
+            --green: #059669;
+            --green-glow: rgba(5, 150, 105, 0.16);
+            --gold: #d97706;
+            --purple: #7b5ea7;
+            --red: #dc2626;
+            --red-glow: rgba(220, 38, 38, 0.16);
+        }
+
+        body.dark-mode {
             --bg: #0f1117;
             --bg2: #161b27;
             --surface: #1c2333;
@@ -30,6 +50,7 @@
             --purple: #7b5ea7;
             --red: #ff6b6b;
             --red-glow: rgba(255, 107, 107, 0.2);
+            background: radial-gradient(ellipse at top, #16203a 0%, #0f1117 75%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,7 +60,6 @@
             background: var(--bg);
             color: var(--txt);
             min-height: 100vh;
-            background: radial-gradient(ellipse at top, #16203a 0%, #0f1117 75%);
             display: flex;
             flex-direction: column;
         }
@@ -216,6 +236,7 @@
             border: 1px solid var(--border);
             border-radius: 18px;
             padding: 22px;
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
@@ -224,9 +245,13 @@
             overflow: hidden;
         }
         .exam-card:hover {
-            border-color: rgba(79, 142, 247, 0.4);
+            border-color: rgba(26, 107, 219, 0.4);
             transform: translateY(-3px);
-            box-shadow: 0 16px 36px rgba(0,0,0,0.35);
+            box-shadow: 0 12px 28px rgba(26, 107, 219, 0.12);
+        }
+        body.dark-mode .exam-card:hover {
+            border-color: rgba(79, 142, 247, 0.4);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
         }
 
         .exam-card-header {
