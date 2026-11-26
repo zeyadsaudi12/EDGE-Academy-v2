@@ -12,27 +12,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=20261126-v19">
     <style>
-        :root {
-            --bg: #0f1117;
-            --bg2: #161b27;
-            --surface: #1c2333;
-            --border: rgba(255,255,255,0.08);
-            --txt: #e8eaf0;
-            --txt2: #a0a8bc;
-            --txt3: #606880;
-            --primary: #4f8ef7;
-            --green: #2ca772;
-            --red: #e63946;
-            --gold: #dda852;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Cairo', sans-serif;
-            background: var(--bg);
-            color: var(--txt);
+            background: var(--bg, #f4f7fb);
+            color: var(--text-dark, #0f172a);
             min-height: 100vh;
         }
 
@@ -42,55 +27,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(ellipse at top, #1a2540 0%, #0f1117 70%);
+            padding: 20px;
+            background: radial-gradient(ellipse at top, #1a2540 0%, #0d1526 70%);
         }
 
         .login-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
+            background: #152038;
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 20px;
-            padding: 48px 40px;
+            padding: 40px 32px;
             width: 100%;
             max-width: 420px;
             text-align: center;
+            color: #f1f5f9;
         }
 
         .login-logo {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary), #7b5ea7);
+            width: 66px;
+            height: 66px;
+            background: linear-gradient(135deg, #1a6bdb, #3d8ef0);
             border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 20px;
+            font-size: 1.9rem;
+            margin: 0 auto 18px;
         }
 
-        .login-card h2 { font-size: 1.5rem; margin-bottom: 6px; }
-        .login-card p { color: var(--txt2); font-size: 0.9rem; margin-bottom: 30px; }
+        .login-card h2 { font-size: 1.45rem; margin-bottom: 6px; color: #fff; }
+        .login-card p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 26px; }
 
         .login-input {
             width: 100%;
-            padding: 14px 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
+            padding: 13px 15px;
+            background: #0f172a;
+            border: 1px solid rgba(148,163,184,0.22);
             border-radius: 12px;
-            color: var(--txt);
+            color: #f8fafc;
             font-family: 'Cairo', sans-serif;
-            font-size: 1rem;
-            margin-bottom: 14px;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
             outline: none;
             transition: border-color 0.2s;
             text-align: right;
         }
-        .login-input:focus { border-color: var(--primary); }
-        .login-input::placeholder { color: var(--txt3); }
+        .login-input:focus { border-color: #3d8ef0; }
+        .login-input::placeholder { color: #64748b; }
 
         .login-btn {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--primary), #7b5ea7);
+            padding: 13px;
+            background: linear-gradient(135deg, #1a6bdb, #3d8ef0);
             color: #fff;
             border: none;
             border-radius: 12px;
@@ -101,43 +88,26 @@
             transition: opacity 0.2s;
             margin-top: 6px;
         }
-        .login-btn:hover { opacity: 0.9; }
+        .login-btn:hover { opacity: 0.92; }
 
         .login-error {
-            background: rgba(230,57,70,0.12);
-            border: 1px solid rgba(230,57,70,0.3);
-            color: #ff6b6b;
-            padding: 10px 16px;
+            background: rgba(230,57,70,0.14);
+            border: 1px solid rgba(230,57,70,0.35);
+            color: #fca5a5;
+            padding: 10px 14px;
             border-radius: 10px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             margin-top: 12px;
             display: none;
         }
 
         /* ─── DASHBOARD ─── */
-        .topbar {
-            background: var(--bg2);
-            border-bottom: 1px solid var(--border);
-            padding: 18px 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .main {
+            padding: 28px 24px 60px;
+            max-width: 1220px;
+            margin: 0 auto;
+            width: 100%;
         }
-        .topbar h1 { font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
-        .topbar h1 i { color: var(--primary); }
-        .logout-btn {
-            background: rgba(230,57,70,0.1);
-            border: 1px solid rgba(230,57,70,0.25);
-            color: #ff6b6b;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex; align-items: center; gap: 6px;
-        }
-
-        .main { padding: 24px; max-width: 1100px; margin: 0 auto; }
 
         .toolbar {
             display: flex;
@@ -145,70 +115,145 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
-        .toolbar h2 { font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
-        .count-badge {
-            background: var(--primary);
-            color: #fff;
-            font-size: 11px;
+        .toolbar h2 {
+            font-size: 1.3rem;
             font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-dark, #0f172a);
+            margin: 0;
+        }
+        .count-badge {
+            background: linear-gradient(135deg, #1a6bdb, #3d8ef0);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .q-filter-tabs {
+            display: inline-flex;
+            background: var(--surface, #ffffff);
+            border: 1px solid var(--border, rgba(15,23,42,0.1));
+            border-radius: 12px;
+            padding: 4px;
+            gap: 4px;
+        }
+        body.dark-mode .q-filter-tabs {
+            background: #152038;
+            border-color: rgba(148,163,184,0.16);
+        }
+        .q-filter-tab {
+            border: none;
+            background: transparent;
+            color: var(--gray, #64748b);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .q-filter-tab.active {
+            background: #1a6bdb;
+            color: #ffffff;
         }
 
         .refresh-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--txt2);
+            background: var(--surface, #ffffff);
+            border: 1px solid var(--border, rgba(15,23,42,0.12));
+            color: var(--text-dark, #1e293b);
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
+            font-weight: 700;
             cursor: pointer;
-            display: flex; align-items: center; gap: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             transition: all 0.2s;
         }
-        .refresh-btn:hover { color: var(--txt); border-color: var(--primary); }
+        body.dark-mode .refresh-btn {
+            background: #152038;
+            border-color: rgba(148,163,184,0.2);
+            color: #e2e8f0;
+        }
+        .refresh-btn:hover { border-color: #1a6bdb; color: #1a6bdb; }
 
         /* Filter bar */
         .filter-bar {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             flex-wrap: wrap;
         }
         .filter-bar input {
             flex: 1;
-            min-width: 200px;
-            padding: 10px 14px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--txt);
+            min-width: 0;
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--surface, #ffffff);
+            border: 1px solid var(--border, rgba(15,23,42,0.12));
+            border-radius: 14px;
+            color: var(--text-dark, #0f172a);
             font-family: 'Cairo', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .filter-bar input:focus { border-color: var(--primary); }
-        .filter-bar input::placeholder { color: var(--txt3); }
+        body.dark-mode .filter-bar input {
+            background: #152038;
+            border-color: rgba(148,163,184,0.18);
+            color: #f1f5f9;
+        }
+        .filter-bar input:focus {
+            border-color: #1a6bdb;
+            box-shadow: 0 0 0 3px rgba(26,107,219,0.14);
+        }
+        .filter-bar input::placeholder { color: var(--gray, #64748b); }
 
         /* Cards grid */
         #questions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 16px;
+            gap: 18px;
         }
 
         .q-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            background: var(--surface, #ffffff);
+            border: 1px solid var(--border, rgba(15,23,42,0.1));
+            border-radius: 18px;
             padding: 20px;
-            transition: border-color 0.2s;
+            box-shadow: 0 4px 18px rgba(15,23,42,0.05);
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
         }
-        .q-card:hover { border-color: rgba(79,142,247,0.3); }
-        .q-card.resolved { opacity: 0.5; }
+        body.dark-mode .q-card {
+            background: #152038;
+            border-color: rgba(148,163,184,0.16);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+        }
+        .q-card:hover {
+            border-color: rgba(26,107,219,0.4);
+            transform: translateY(-2px);
+        }
+        .q-card.resolved {
+            border-color: rgba(34,197,94,0.35);
+        }
 
         .q-card-header {
             display: flex;
@@ -217,56 +262,94 @@
             margin-bottom: 14px;
         }
         .q-avatar {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), #7b5ea7);
+            background: linear-gradient(135deg, #1a6bdb, #3d8ef0);
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 1.05rem;
+            font-weight: 800;
             flex-shrink: 0;
         }
-        .q-name { font-weight: 700; font-size: 0.95rem; color: var(--txt); }
-        .q-phone { font-size: 0.8rem; color: var(--txt3); direction: ltr; }
-        .q-time { font-size: 0.75rem; color: var(--txt3); margin-right: auto; }
+        .q-name {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-dark, #0f172a);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        body.dark-mode .q-name { color: #f8fafc; }
+
+        .q-phone {
+            font-size: 0.84rem;
+            color: var(--gray, #64748b);
+            direction: ltr;
+            text-align: right;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        body.dark-mode .q-phone { color: #94a3b8; }
+
+        .q-time {
+            font-size: 0.76rem;
+            color: var(--gray, #64748b);
+            white-space: nowrap;
+            align-self: flex-start;
+        }
+        body.dark-mode .q-time { color: #94a3b8; }
 
         .q-video-tag {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            background: rgba(79,142,247,0.1);
-            color: var(--primary);
-            padding: 3px 10px;
-            border-radius: 6px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+            gap: 6px;
+            background: rgba(26,107,219,0.1);
+            color: #1a6bdb;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            align-self: flex-start;
+        }
+        body.dark-mode .q-video-tag {
+            background: rgba(61,142,240,0.16);
+            color: #60a5fa;
         }
 
         .q-text {
-            background: var(--surface);
-            border-radius: 10px;
-            padding: 12px 14px;
-            font-size: 0.9rem;
-            color: var(--txt);
-            line-height: 1.7;
-            margin-bottom: 14px;
+            background: var(--bg, #f4f7fb);
+            border: 1px solid var(--border, rgba(15,23,42,0.06));
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 0.94rem;
+            color: var(--text-dark, #1e293b);
+            line-height: 1.75;
+            margin-bottom: 16px;
             white-space: pre-wrap;
+            flex: 1;
+        }
+        body.dark-mode .q-text {
+            background: #0f172a;
+            border-color: rgba(148,163,184,0.12);
+            color: #e2e8f0;
         }
 
-        .q-actions { display: flex; gap: 8px; }
+        .q-actions { display: flex; gap: 10px; margin-top: auto; }
         .btn-wa {
             flex: 1;
-            background: rgba(44,167,114,0.12);
-            border: 1px solid rgba(44,167,114,0.3);
-            color: var(--green);
-            padding: 9px 14px;
-            border-radius: 9px;
+            background: rgba(22,163,74,0.12);
+            border: 1px solid rgba(22,163,74,0.35);
+            color: #16a34a;
+            padding: 10px 14px;
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.88rem;
+            font-weight: 800;
             cursor: pointer;
             text-decoration: none;
             display: flex;
@@ -275,80 +358,73 @@
             gap: 6px;
             transition: all 0.2s;
         }
-        .btn-wa:hover { background: rgba(44,167,114,0.22); }
+        body.dark-mode .btn-wa {
+            background: rgba(34,197,94,0.14);
+            border-color: rgba(34,197,94,0.35);
+            color: #4ade80;
+        }
+        .btn-wa:hover { background: rgba(34,197,94,0.24); }
+
         .btn-done {
-            background: rgba(221,168,82,0.1);
-            border: 1px solid rgba(221,168,82,0.25);
-            color: var(--gold);
-            padding: 9px 14px;
-            border-radius: 9px;
+            background: rgba(217,119,6,0.1);
+            border: 1px solid rgba(217,119,6,0.3);
+            color: #d97706;
+            padding: 10px 16px;
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.86rem;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 5px;
             transition: all 0.2s;
         }
-        .btn-done:hover { background: rgba(221,168,82,0.2); }
+        body.dark-mode .btn-done {
+            background: rgba(245,158,11,0.14);
+            border-color: rgba(245,158,11,0.35);
+            color: #fbbf24;
+        }
+        .btn-done:hover { background: rgba(245,158,11,0.24); }
 
-        .empty-state {
+        .empty-state, .spinner {
             text-align: center;
             padding: 60px 20px;
-            color: var(--txt3);
+            color: var(--gray, #64748b);
             grid-column: 1 / -1;
         }
         .empty-state i { font-size: 3rem; margin-bottom: 12px; display: block; }
 
-        .spinner {
-            text-align: center;
-            padding: 60px;
-            color: var(--txt3);
-            grid-column: 1 / -1;
-        }
-
         /* Resolved badge */
         .badge-done {
-            background: rgba(44,167,114,0.12);
-            color: var(--green);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
+            background: rgba(34,197,94,0.14);
+            color: #16a34a;
+            padding: 2px 9px;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 800;
+        }
+        body.dark-mode .badge-done { color: #4ade80; }
+
+        @media (max-width: 900px) {
+            #questions-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
         }
 
         @media (max-width: 650px) {
-            .topbar {
-                padding: 12px 14px;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .topbar h1 {
-                font-size: 1.05rem;
-            }
-            .topbar > div {
-                flex-wrap: wrap;
-                gap: 6px;
-                width: 100%;
-                justify-content: flex-start;
-            }
-            .topbar a, .topbar button {
-                padding: 6px 11px;
-                font-size: 0.78rem;
-            }
-            .main { padding: 12px 10px 40px; }
+            .main { padding: 16px 14px 48px; }
             .toolbar {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 10px;
             }
-            .toolbar h2 {
-                font-size: 1.1rem;
-            }
+            .toolbar h2 { font-size: 1.15rem; }
+            .toolbar-actions { justify-content: space-between; }
             .q-card {
-                padding: 14px;
-                border-radius: 12px;
+                padding: 16px;
+                border-radius: 14px;
             }
             #questions-grid { grid-template-columns: 1fr; gap: 12px; }
             .q-actions {
@@ -361,7 +437,6 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="style.css?v=20261126-v19">
 </head>
 <body>
 
@@ -480,13 +555,20 @@
     <div class="main">
         <div class="toolbar">
             <h2>
-                <i class="ti ti-inbox" style="color:var(--primary);"></i>
+                <i class="ti ti-inbox" style="color:var(--primary, #1a6bdb);"></i>
                 الأسئلة الواردة
                 <span class="count-badge" id="qCount">0</span>
             </h2>
-            <button class="refresh-btn" onclick="loadQuestions()">
-                <i class="ti ti-refresh"></i> تحديث
-            </button>
+            <div class="toolbar-actions">
+                <div class="q-filter-tabs" role="tablist" aria-label="تصفية الأسئلة">
+                    <button type="button" class="q-filter-tab active" onclick="setStatusFilter('all', this)">الكل</button>
+                    <button type="button" class="q-filter-tab" onclick="setStatusFilter('pending', this)">بانتظار الرد</button>
+                    <button type="button" class="q-filter-tab" onclick="setStatusFilter('resolved', this)">تم الرد</button>
+                </div>
+                <button class="refresh-btn" onclick="loadQuestions()">
+                    <i class="ti ti-refresh"></i> تحديث
+                </button>
+            </div>
         </div>
 
         <div class="filter-bar">
@@ -512,6 +594,21 @@
 
     let allQuestions = [];
     let resolvedIds = JSON.parse(localStorage.getItem('resolvedQuestions') || '[]');
+    let currentStatusFilter = 'all';
+
+    function setStatusFilter(filter, btn) {
+        currentStatusFilter = filter;
+        document.querySelectorAll('.q-filter-tab').forEach(b => b.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+        renderGrid();
+    }
+
+    function formatQuestionDate(raw) {
+        if (!raw) return '';
+        const d = new Date(raw);
+        if (Number.isNaN(d.getTime())) return escapeHtml(raw);
+        return d.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
 
     // ══════════════ AUTH ══════════════
     // Accept: (1) DB-authenticated teacher in localStorage, OR (2) static session login
@@ -619,6 +716,11 @@
     function renderGrid() {
         const query = document.getElementById('searchInput').value.trim().toLowerCase();
         let list = allQuestions;
+        if (currentStatusFilter === 'pending') {
+            list = list.filter(q => !resolvedIds.includes(q._id));
+        } else if (currentStatusFilter === 'resolved') {
+            list = list.filter(q => resolvedIds.includes(q._id));
+        }
         if (query) {
             list = list.filter(q =>
                 (q.studentName || '').toLowerCase().includes(query) ||
@@ -640,6 +742,7 @@
             const isResolved = resolvedIds.includes(q._id);
             const waText = encodeURIComponent(`أهلاً ${q.studentName}، بخصوص سؤالك عن محاضرة (${q.videoTitle}):\n"${q.question}"\n\nالرد:\n`);
             const waLink = `https://wa.me/2${encodeURIComponent(q.studentPhone || '')}?text=${waText}`;
+            const formattedDate = formatQuestionDate(q.createdAt);
 
             return `
             <div class="q-card ${isResolved ? 'resolved' : ''}" id="card-${q._id}">
@@ -649,7 +752,7 @@
                         <div class="q-name">${escapeHtml(q.studentName || 'طالب مجهول')} ${isResolved ? '<span class="badge-done">✔ تم الرد</span>' : ''}</div>
                         <div class="q-phone">${escapeHtml(q.studentPhone || '—')}</div>
                     </div>
-                    <div class="q-time">${q.createdAt || ''}</div>
+                    <div class="q-time">${formattedDate}</div>
                 </div>
                 <div class="q-video-tag"><i class="ti ti-video"></i> ${escapeHtml(q.videoTitle || '—')}</div>
                 <div class="q-text">${escapeHtml(q.question)}</div>
