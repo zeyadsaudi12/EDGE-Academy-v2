@@ -573,11 +573,14 @@
 
     function showDash() {
         const { currentUser } = checkAuth();
-        if (currentUser && currentUser.firstName) {
-            document.getElementById('assistantNameDisplay').textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
+        const nameEl = document.getElementById('assistantNameDisplay');
+        if (nameEl && currentUser && currentUser.firstName) {
+            nameEl.textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
         }
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('dashPage').style.display = 'block';
+        const loginPage = document.getElementById('loginPage');
+        const dashPage = document.getElementById('dashPage');
+        if (loginPage) loginPage.style.display = 'none';
+        if (dashPage) dashPage.style.display = 'block';
         loadQuestions();
     }
 
