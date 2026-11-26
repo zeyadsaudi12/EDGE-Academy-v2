@@ -6,795 +6,1221 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="apple-touch-icon" href="imges/edge-square.jpg">
 
- <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة المساعد - تسجيل الحضور</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>بوابة المساعد — تسجيل الحضور | EDGE Academy</title>
+    
+    <!-- Platform Official Stylesheet -->
+    <link rel="stylesheet" href="style.css?v=20261031-v19">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    
     <script src="https://unpkg.com/html5-qrcode" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;900&display=swap');
-
-        :root {
-            --bg: #0f1117;
-            --bg2: #1a1d27;
-            --bg3: #22263a;
-            --accent: #dda852;
-            --primary: #4f8ef7;
-            --green: #06d6a0;
-            --red: #ff6b6b;
-            --txt: #e8eaf0;
-            --txt2: #9ba3c0;
-            --border: rgba(255, 255, 255, 0.07);
-            --border2: rgba(255, 255, 255, 0.13);
-        }
-
-        body.light-theme {
-            --bg: #f3f7fc;
-            --bg2: #ffffff;
-            --bg3: #edf2f8;
-            --accent: #b7791f;
-            --primary: #2563eb;
-            --green: #059669;
-            --red: #dc2626;
-            --txt: #162033;
-            --txt2: #52627a;
-            --border: rgba(22, 32, 51, 0.11);
-            --border2: rgba(22, 32, 51, 0.18);
-        }
-
-        body {
-             
-            font-family: 'Cairo', sans-serif;
-            background: var(--bg);
-            color: var(--txt);
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-
-        .container {
+        /* ═══════════════════════════════════════════════
+           ATTENDANCE PORTAL STYLING (MATCHING EDGE ACADEMY)
+        ═══════════════════════════════════════════════ */
+        
+        .attendance-page-container {
             width: 100%;
-            max-width: 540px;
+            max-width: 660px;
+            margin: 0 auto;
+            padding: 20px 16px 60px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            padding: 16px;
+            gap: 20px;
             box-sizing: border-box;
         }
 
-        .header-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .header-card h2 {
-            margin: 0 0 4px;
-            color: var(--accent);
-            font-size: 1.4rem;
-        }
-
-        .header-card p {
-            margin: 0;
-            color: var(--txt2);
-            font-size: 0.85rem;
-        }
-
+        /* ─── Modern Setup Panel ─── */
         .panel-card {
-            background: var(--bg2);
+            background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s ease;
         }
 
+        .dark-mode .panel-card {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-hero-head {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), #00b894);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+            box-shadow: 0 6px 20px rgba(26, 107, 219, 0.28);
+        }
+
+        .card-hero-head h2 {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin: 0 0 4px;
+            line-height: 1.2;
+        }
+
+        .card-hero-head p {
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Form elements */
         .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-field > label {
+            font-size: 0.88rem;
+            color: var(--text-dark);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-field > label i {
+            color: var(--primary);
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .schedule-choice {
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
 
-        .form-field label {
+        .schedule-choice label {
+            color: var(--gray);
             font-size: 0.8rem;
-            color: var(--txt2);
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .form-field select {
-            background: var(--bg3);
-            border: 1px solid var(--border2);
-            border-radius: 10px;
+        select.form-control, .form-field select {
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: 12px;
             padding: 11px 14px;
-            color: var(--txt);
+            color: var(--text-dark);
             font-family: inherit;
             font-size: 0.9rem;
+            font-weight: 700;
             outline: none;
-            box-sizing: border-box;
             width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .form-field select:disabled {
+        select.form-control:focus, .form-field select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 107, 219, 0.15);
+        }
+
+        select.form-control:disabled, .form-field select:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            background: var(--surface-alt);
         }
-        .form-field select option { background: var(--bg2); color: var(--txt); }
 
+        .help-pill {
+            background: rgba(26, 107, 219, 0.08);
+            color: var(--primary);
+            border: 1px dashed rgba(26, 107, 219, 0.25);
+            border-radius: 10px;
+            padding: 9px 14px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Mode Selector Cards */
+        .mode-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 2px;
+        }
+
+        .mode-card {
+            background: var(--surface-alt);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .mode-card input[type="radio"] {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .mode-card.active, .mode-card:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(26, 107, 219, 0.09);
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.12);
+        }
+
+        .mode-card-title {
+            font-size: 0.88rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mode-card-sub {
+            font-size: 0.74rem;
+            color: var(--gray);
+            font-weight: 600;
+            display: block;
+            margin-top: 3px;
+            line-height: 1.4;
+        }
+
+        /* Manual Input Group */
+        .manual-box {
+            border-top: 1px solid var(--border);
+            padding-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .manual-input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .manual-input-row input {
+            flex: 1;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            color: var(--text-dark);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .manual-input-row input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 107, 219, 0.15);
+        }
+
+        .btn-manual-submit {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0 22px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(26, 107, 219, 0.25);
+        }
+
+        .btn-manual-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(26, 107, 219, 0.35);
+        }
+
+        .btn-manual-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* QR Reader */
         #qr-reader-container {
             display: none;
             width: 100%;
-            border-radius: 14px;
+            border-radius: 18px;
             overflow: hidden;
-            border: 2px dashed var(--accent);
+            border: 2px solid var(--primary);
             background: #000;
+            box-shadow: 0 10px 30px rgba(26, 107, 219, 0.25);
         }
 
-        .btn {
+        /* Action Buttons */
+        .btn-action-start {
             width: 100%;
-            padding: 12px;
+            height: 52px;
             border: none;
-            border-radius: 10px;
+            border-radius: 14px;
             font-family: inherit;
-            font-size: 0.95rem;
-            font-weight: 700;
+            font-size: 1rem;
+            font-weight: 800;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             transition: all 0.2s;
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(26, 107, 219, 0.35);
         }
 
-        .btn-start {
-            background: var(--accent);
-            color: #13201c;
+        .btn-action-start:hover {
+            background: linear-gradient(135deg, var(--primary-dark), #1d4ed8);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 28px rgba(26, 107, 219, 0.45);
         }
 
-        .btn-stop {
-            background: rgba(230, 57, 70, 0.15);
-            color: var(--red);
-            border: 1px solid var(--red);
-        }
-
-        .logs-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-        }
-
-        .logs-card h3 {
-            margin: 0 0 12px;
+        .btn-action-stop {
+            width: 100%;
+            height: 52px;
+            border-radius: 14px;
+            font-family: inherit;
             font-size: 1rem;
-            color: var(--accent);
-            display: flex;
-            justify-content: space-between;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+            background: rgba(220, 38, 38, 0.12);
+            color: #dc2626;
+            border: 2px solid rgba(220, 38, 38, 0.4);
+            box-shadow: none;
+        }
+
+        .btn-action-stop:hover {
+            background: #dc2626;
+            color: #fff;
+        }
+
+        /* ─── Modern Logs Card ─── */
+        .logs-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .logs-card {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .logs-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .logs-header h3 {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
         }
 
         .logs-count {
-            background: var(--green);
-            color: #13201c;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.78rem;
+            background: rgba(0, 184, 148, 0.12);
+            color: #00b894;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.88rem;
             font-weight: 800;
+            border: 1px solid rgba(0, 184, 148, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .logs-table-wrapper {
-            max-height: 250px;
+            max-height: 300px;
             overflow-y: auto;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 14px;
         }
 
-        table {
+        table.logs-table {
             width: 100%;
             border-collapse: collapse;
             text-align: right;
+            font-size: 0.88rem;
+        }
+
+        table.logs-table thead th {
+            background: var(--surface-alt);
+            padding: 12px 14px;
+            color: var(--gray);
+            font-weight: 800;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        table.logs-table tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+
+        table.logs-table tbody tr:hover {
+            background: rgba(26, 107, 219, 0.04);
+        }
+
+        .attendee-name {
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .attendee-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: rgba(26, 107, 219, 0.12);
+            color: var(--primary);
             font-size: 0.85rem;
+            font-weight: 900;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
         }
 
-        th {
-            background: var(--bg3);
-            padding: 10px;
-            color: var(--txt2);
+        .center-pill {
+            background: var(--surface-alt);
+            color: var(--gray);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             font-weight: 700;
+            border: 1px solid var(--border);
         }
 
-        td {
-            padding: 10px;
-            border-top: 1px solid var(--border);
-            color: var(--txt);
+        .time-pill {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #00b894;
+            background: rgba(0, 184, 148, 0.12);
+            padding: 3px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
+        /* Toast Alert */
         #alert-box {
             position: fixed;
-            top: 20px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 10000;
-            background: var(--bg2);
-            border: 1px solid var(--accent);
-            border-radius: 12px;
-            padding: 12px 24px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 100000;
+            background: var(--surface);
+            border: 2px solid var(--primary);
+            color: var(--text-dark);
+            border-radius: 16px;
+            padding: 14px 26px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
             display: none;
-            animation: slideDown 0.3s ease;
+            animation: slideDown 0.25s ease;
         }
 
         @keyframes slideDown {
             from { transform: translate(-50%, -20px); opacity: 0; }
             to { transform: translate(-50%, 0); opacity: 1; }
         }
-        /* ─── TOPBAR ─── */
-        .topbar {
-            width: 100%;
-            box-sizing: border-box;
-            background: var(--bg2);
-            border-bottom: 1px solid var(--border2);
-            padding: 18px 28px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .topbar h1 { font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
-        .topbar h1 i { color: var(--primary); }
-        .logout-btn {
-            background: rgba(230,57,70,0.1);
-            border: 1px solid rgba(230,57,70,0.25);
-            color: #ff6b6b;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        .logout-btn:hover { background: rgba(230,57,70,0.18); }
-        .theme-btn {
-            background: rgba(79,142,247,0.1); border: 1px solid rgba(79,142,247,0.3);
-            color: var(--primary); padding: 8px 12px; border-radius: 8px; font-family: inherit;
-            font-size: 0.82rem; font-weight: 700; cursor: pointer;
-        }
-        .schedule-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-        .schedule-choice { display:flex; flex-direction:column; gap:6px; }
-        .schedule-choice label { color:var(--txt2); font-size:0.78rem; font-weight:700; }
-        @media (max-width:480px) { .schedule-grid { grid-template-columns:1fr; } }
 
+        /* ─── MOBILE RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .attendance-page-container {
+                padding: 14px 12px 50px;
+                gap: 14px;
+            }
+
+            .panel-card, .logs-card {
+                padding: 16px 14px;
+                border-radius: 16px;
+            }
+
+            .card-hero-head h2 {
+                font-size: 1.1rem;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .mode-cards-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .manual-input-row {
+                flex-direction: column;
+            }
+
+            .btn-manual-submit {
+                height: 44px;
+                justify-content: center;
+            }
+
+            .btn-action-start, .btn-action-stop {
+                font-size: 0.95rem;
+                height: 48px;
+            }
+        }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body>
+<body class="attendance-page">
 
-<!-- ════════════ TOPBAR ════════════ -->
-<div class="topbar">
-    <h1><i class="ti ti-scan"></i> بوابة الحضور</h1>
-    <div style="display:flex;align-items:center;gap:10px;">
-        <span id="teacher-name-lbl" style="color:var(--txt2);font-size:0.85rem;">جاري التحميل...</span>
-        <a href="assistant-hub" style="background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.25);color:var(--primary);padding:8px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;display:flex;align-items:center;gap:5px;">
-            <i class="ti ti-home"></i> الرئيسية
-        </a>
-        <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()"><i class="ti ti-sun"></i> وضع فاتح</button>
-        <button class="logout-btn" onclick="doLogout()">
-            <i class="ti ti-logout"></i> خروج
-        </button>
-    </div>
-</div>
-
-    <div id="alert-box"></div>
-
-    <div class="container">
-
-       <!-- Setup Panel -->
-        <div class="panel-card">
-            
-            <div class="form-field" style="margin-bottom: 12px;">
-                <label>بيانات حصة السنتر *</label>
-                <div class="schedule-grid">
-                    <div class="schedule-choice"><label for="setup-center">السنتر</label><select id="setup-center" onchange="onCenterChange()"><option value="">-- اختر السنتر --</option></select></div>
-                    <div class="schedule-choice"><label for="setup-grade">الصف</label><select id="setup-grade" onchange="onGradeChange()" disabled><option value="">-- اختر الصف --</option></select></div>
-                    <div class="schedule-choice"><label for="setup-day">اليوم</label><select id="setup-day" onchange="onDayChange()" disabled><option value="">-- اختر اليوم --</option></select></div>
-                    <div class="schedule-choice"><label for="setup-time">الساعة</label><select id="setup-time" onchange="onTimeChange()" disabled><option value="">-- اختر الساعة --</option></select></div>
-                </div>
-                <small id="schedule-help" style="margin-top:8px;color:var(--txt2);display:block;">اختر السنتر أولاً، ثم أكمل باقي البيانات بالترتيب.</small>
-            </div>
-
-            <div class="form-field" style="margin-bottom: 12px;">
-                <label>نوع جلسة التحضير *</label>
-                <div style="display:flex; gap:10px; margin-top:4px; flex-wrap:wrap;">
-                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.88rem; font-weight:700; background:var(--bg3); padding:8px 14px; border-radius:10px; border:1px solid var(--border2);">
-                        <input type="radio" name="attendMode" value="regular" id="mode-regular" checked onchange="onAttendModeChange()">
-                        <span><i class="ti ti-user-check"></i> تحضير سنتر عادي (بدون ربط بمحاضرة)</span>
-                    </label>
-                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:0.88rem; font-weight:700; background:var(--bg3); padding:8px 14px; border-radius:10px; border:1px solid var(--border2);">
-                        <input type="radio" name="attendMode" value="video" id="mode-video" onchange="onAttendModeChange()">
-                        <span><i class="ti ti-video"></i> تحضير مع تفعيل محاضرة أونلاين</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-field" id="video-select-group" style="margin-bottom: 15px; display:none;">
-                <label>المحاضرة الأونلاين المراد تفعيلها لهم *</label>
-                <select id="setup-video">
-                    <option value="">-- أكمل بيانات حصة السنتر أولاً --</option>
-                </select>
-            </div>
-
-            <!-- حقل كتابة الكود يدوياً كخيار بديل وسريع للمساعد (مفتوح دائماً للعمل السلس) -->
-            <div class="form-field" style="margin-bottom: 15px; border-top: 1px solid var(--border); padding-top: 15px;">
-                <label>أو كتابة معرف الطالب يدوياً (البريد الأكاديمي)</label>
-                <div style="display: flex; gap: 8px; margin-top: 6px;">
-                    <input type="text" id="manual-student-id" placeholder="اكتب بريد الطالب (مثال: ahmed) هنا..." style="flex: 1;">
-                    <button type="button" id="manual-attendance-btn" onclick="submitManualAttendance()" style="
-                        width: auto; padding: 0 20px; background: var(--accent); color: #13201c; border: none; 
-                        border-radius: 10px; font-weight: 700; font-family: inherit; cursor: pointer; transition: opacity 0.2s;
-                    ">تحضير يدوياً</button>
-                </div>
-            </div>
-
-            <!-- الكاميرا والمسح -->
-            <div id="qr-reader-container">
-                <div id="qr-reader" style="width: 100%;"></div>
-            </div>
-
-            <button id="action-btn" onclick="toggleSession()" class="btn btn-start">
-                <i class="ti ti-scan"></i> بدء جلسة التحضير وتشغيل الكاميرا
+<!-- ════════════ OFFICIAL PLATFORM NAVBAR ════════════ -->
+<header>
+    <div class="header-inner">
+        <!-- اليمين: زر رجوع وشعار المنصة المتغير تلقائياً مع الثيم وزر اللغة -->
+        <div class="header-right">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
+                <i class="ti ti-arrow-right"></i>
+                <span>رجوع</span>
+            </button>
+            <a href="assistant-hub" class="header-brand" aria-label="EDGE Academy">
+                <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
+                <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
+            </a>
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+                <span>EN</span>
+                <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
             </button>
         </div>
-        <!-- Live logs -->
-        <div class="logs-card">
-            <h3>الطلاب الحاضرين اليوم <span class="logs-count" id="live-count">0</span></h3>
-            <div class="logs-table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>الطالب</th>
-                            <th>السنتر</th>
-                            <th>التوقيت</th>
-                        </tr>
-                    </thead>
-                    <tbody id="logs-tbody">
-                        <tr id="empty-row">
-                            <td colspan="3" style="text-align: center; color: var(--txt2); padding: 20px;">لم يتم مسح أي طالب بعد.</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+        <!-- المنتصف: روابط التنقل الأساسية للمساعد -->
+        <div class="header-center">
+            <a href="assistant-dashboard" class="nav-link-item ">📊 متابعة الطلاب</a>
+            <a href="attendance" class="nav-link-item active" style="color:var(--primary); font-weight:800;">📲 بوابة الحضور</a>
+            <a href="assistant" class="nav-link-item ">💬 أسئلة الطلاب</a>
+            <a href="assistant-exams" class="nav-link-item ">📝 إدارة الامتحانات</a>
+            <a href="assistant-hub" class="nav-link-item ">🎓 بوابة المساعد</a>
+        </div>
+
+        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
+        <div class="header-left">
+            <nav class="header-actions" id="authActions" style="display:none;"></nav>
+
+            <!-- قائمة المستخدم عند تسجيل الدخول -->
+            <div class="user-dropdown-container" id="userDropdownArea">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <span id="navUserName">مساعد المعلم</span>
+                    <div class="user-icon-circle">👤</div>
+                </button>
+                <div class="user-dropdown-menu" id="userMenu">
+                    <a href="assistant-dashboard" class="menu-item">
+                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> لوحة المتابعة
+                    </a>
+                    <a href="attendance" class="menu-item">
+                        <i class="ti ti-scan" style="margin-left:6px;"></i> بوابة الحضور السريع
+                    </a>
+                    <a href="assistant" class="menu-item">
+                        <i class="ti ti-messages" style="margin-left:6px;"></i> أسئلة الطلاب
+                    </a>
+                    <a href="assistant-exams" class="menu-item">
+                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> إدارة الامتحانات
+                    </a>
+                    <a href="assistant-hub" class="menu-item">
+                        <i class="ti ti-home" style="margin-left:6px;"></i> بوابة المساعد الرئيسية
+                    </a>
+                    <hr>
+                    <button onclick="handleLogout()" class="menu-item logout-btn" style="width:100%; text-align:right; border:none; background:none; cursor:pointer;">
+                        🚪 تسجيل خروج
+                    </button>
+                </div>
+            </div>
+
+            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) المعتمد بالمنصة -->
+            <div class="theme-capsule" aria-label="تبديل المظهر">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
+            </div>
+
+            <!-- زر الهامبرغر للموبايل -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة المعتمدة بالمنصة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="javascript:void(0)" onclick="goBack()" class="mobile-nav-link" style="color:var(--primary); font-weight:900; background:rgba(26,107,219,0.1); border-radius:12px; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+            <i class="ti ti-arrow-right"></i> ↩️ رجوع للصفحة السابقة
+        </a>
+        <a href="assistant-dashboard" class="mobile-nav-link ">📊 لوحة متابعة الطلاب</a>
+        <a href="attendance" class="mobile-nav-link active">📲 بوابة الحضور السريع</a>
+        <a href="assistant" class="mobile-nav-link ">💬 أسئلة الطلاب</a>
+        <a href="assistant-exams" class="mobile-nav-link ">📝 إدارة الامتحانات</a>
+        <a href="assistant-hub" class="mobile-nav-link ">🎓 بوابة المساعد</a>
+        <div class="mobile-menu-auth" style="border-top:1px solid var(--border); padding-top:10px; margin-top:8px;">
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none; border:none; cursor:pointer; width:100%; text-align:right; color:#e74c3c; font-family:inherit; font-weight:800; display:flex; align-items:center; gap:8px;">
+                🚪 تسجيل خروج
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Alert Notification -->
+<div id="alert-box"></div>
+
+<!-- Main Attendance Container -->
+<div class="attendance-page-container">
+
+    <!-- Setup Panel -->
+    <div class="panel-card">
+        <div class="card-hero-head">
+            <div class="hero-icon-box"><i class="ti ti-scan"></i></div>
+            <div>
+                <h2>جلسة حضور السنتر الذكية</h2>
+                <p>اختر السنتر والمجموعة لبدء التحضير التلقائي بالكاميرا أو إدخال كود الطالب</p>
             </div>
         </div>
 
+        <div class="form-field">
+            <label><i class="ti ti-building-community"></i> بيانات حصة السنتر والمجموعة *</label>
+            <div class="schedule-grid">
+                <div class="schedule-choice">
+                    <label for="setup-center"><i class="ti ti-building"></i> السنتر</label>
+                    <select id="setup-center" class="form-control" onchange="onCenterChange()">
+                        <option value="">-- اختر السنتر --</option>
+                    </select>
+                </div>
+                <div class="schedule-choice">
+                    <label for="setup-grade"><i class="ti ti-school"></i> الصف الدراسي</label>
+                    <select id="setup-grade" class="form-control" onchange="onGradeChange()" disabled>
+                        <option value="">-- اختر الصف --</option>
+                    </select>
+                </div>
+                <div class="schedule-choice">
+                    <label for="setup-day"><i class="ti ti-calendar"></i> اليوم</label>
+                    <select id="setup-day" class="form-control" onchange="onDayChange()" disabled>
+                        <option value="">-- اختر اليوم --</option>
+                    </select>
+                </div>
+                <div class="schedule-choice">
+                    <label for="setup-time"><i class="ti ti-clock"></i> الساعة / المجموعة</label>
+                    <select id="setup-time" class="form-control" onchange="onTimeChange()" disabled>
+                        <option value="">-- اختر الساعة --</option>
+                    </select>
+                </div>
+            </div>
+            <small id="schedule-help" class="help-pill">
+                <i class="ti ti-info-circle"></i> اختر السنتر أولاً، ثم أكمل باقي بيانات المجموعة بالترتيب.
+            </small>
+        </div>
+
+        <div class="form-field">
+            <label><i class="ti ti-adjustments-horizontal"></i> نوع جلسة التحضير *</label>
+            <div class="mode-cards-grid">
+                <label class="mode-card active" id="label-mode-regular">
+                    <input type="radio" name="attendMode" value="regular" id="mode-regular" checked onchange="onAttendModeChange()">
+                    <div>
+                        <span class="mode-card-title"><i class="ti ti-user-check" style="color:#00b894;"></i> تحضير سنتر عادي</span>
+                        <span class="mode-card-sub">تسجيل الحضور بالسنتر فقط بدون ربط بفيديو</span>
+                    </div>
+                </label>
+                <label class="mode-card" id="label-mode-video">
+                    <input type="radio" name="attendMode" value="video" id="mode-video" onchange="onAttendModeChange()">
+                    <div>
+                        <span class="mode-card-title"><i class="ti ti-video" style="color:var(--primary);"></i> تحضير مع محاضرة أونلاين</span>
+                        <span class="mode-card-sub">فتح المحاضرة في حساب الطالب فور تحضيره</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-field" id="video-select-group" style="display:none;">
+            <label><i class="ti ti-player-play"></i> المحاضرة الأونلاين المراد تفعيلها للطلاب *</label>
+            <select id="setup-video" class="form-control">
+                <option value="">-- أكمل بيانات حصة السنتر أولاً --</option>
+            </select>
+        </div>
+
+        <!-- حقل كتابة الكود يدوياً كخيار بديل وسريع للمساعد -->
+        <div class="manual-box">
+            <label style="font-size:0.86rem; font-weight:800; color:var(--text-dark); display:flex; align-items:center; gap:6px;">
+                <i class="ti ti-keyboard" style="color:var(--primary);"></i> أو التحضير السريع بكتابة بريد / كود الطالب يدوياً
+            </label>
+            <div class="manual-input-row">
+                <input type="text" id="manual-student-id" placeholder="اكتب بريد الطالب (مثال: ahmed) أو رقمه..." onkeydown="if(event.key==='Enter') submitManualAttendance()">
+                <button type="button" id="manual-attendance-btn" onclick="submitManualAttendance()" class="btn-manual-submit">
+                    <i class="ti ti-check"></i> تحضير يدوياً
+                </button>
+            </div>
+        </div>
+
+        <!-- الكاميرا والمسح -->
+        <div id="qr-reader-container">
+            <div id="qr-reader" style="width: 100%;"></div>
+        </div>
+
+        <button id="action-btn" onclick="toggleSession()" class="btn-action-start">
+            <i class="ti ti-scan"></i> بدء جلسة التحضير وتشغيل الكاميرا
+        </button>
     </div>
 
-    <script>
-        // ===== الحاجز الأمني لبوابة الحضور السنتر =====
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (!currentUser || (currentUser.role !== 'assistant' && currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
-            alert('🚫 غير مصرح بالدخول: هذه البوابة مخصصة للمعلمين والمساعدين المعتمدين فقط.');
-            window.location.href = 'login';
-        }
+    <!-- Live logs -->
+    <div class="logs-card">
+        <div class="logs-header">
+            <h3><i class="ti ti-users-group" style="color:var(--primary);"></i> الطلاب الحاضرين اليوم</h3>
+            <span class="logs-count" id="live-count"><i class="ti ti-check"></i> 0</span>
+        </div>
+        <div class="logs-table-wrapper">
+            <table class="logs-table">
+                <thead>
+                    <tr>
+                        <th style="width: 45px; text-align: center;">#</th>
+                        <th>الطالب</th>
+                        <th>السنتر والمجموعة</th>
+                        <th>توقيت التحضير</th>
+                    </tr>
+                </thead>
+                <tbody id="logs-tbody">
+                    <tr id="empty-row">
+                        <td colspan="4" style="text-align: center; color: var(--gray); padding: 32px 14px;">
+                            <i class="ti ti-scan" style="font-size: 2.2rem; display: block; margin-bottom: 8px; opacity: 0.4;"></i>
+                            لم يتم مسح أي طالب بعد في هذه الجلسة.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
+</div>
 
-        function applyTheme(theme) {
-            const light = theme === 'light';
-            document.body.classList.toggle('light-theme', light);
-            const btn = document.getElementById('theme-toggle');
-            if (btn) btn.innerHTML = light ? '<i class="ti ti-moon"></i> وضع داكن' : '<i class="ti ti-sun"></i> وضع فاتح';
-        }
-        function toggleTheme() {
-            const next = document.body.classList.contains('light-theme') ? 'dark' : 'light';
-            localStorage.setItem('attendance_theme', next);
-            applyTheme(next);
-        }
-        applyTheme(localStorage.getItem('attendance_theme') || 'dark');
+<!-- Core platform script for Navbar, Theme, and Authentication -->
+<script src="script.js"></script>
 
-        let isSessionActive = false;
-        let scannerInstance = null;
-        let attendedCount = 0;
-        let _teacherSchedule = []; // مصفوفة لحفظ جدول الحصص الفعلي للمدرس
-        let _allVideos = [];
-        let _activeTeacherId = null;
+<script>
+    // ===== الحاجز الأمني لبوابة الحضور السنتر =====
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser || (currentUser.role !== 'assistant' && currentUser.role !== 'teacher' && currentUser.role !== 'admin')) {
+        alert('🚫 غير مصرح بالدخول: هذه البوابة مخصصة للمعلمين والمساعدين المعتمدين فقط.');
+        window.location.href = 'login';
+    }
 
-        const normalizeArabic = value => String(value || '')
-            .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
+    const API = window.location.origin + (window.location.pathname.includes('/masar') ? '/masar' : '');
 
-        // مطابقة حساب المساعد الذي تُنشئه الإدارة (مثال: "مساعد/ وائل لاشين التعليمي")
-        // بسجل المدرس حتى لو تغيّر معرف المدرس لاحقاً.
-        const meaningfulNameWords = value => normalizeArabic(value)
-            .replace(/[^ء-يa-z0-9\s]/g, ' ').split(' ')
-            .filter(word => word.length >= 3 && !['مساعد', 'التعليمي', 'استاذ', 'الاستاذ'].includes(word));
+    let isSessionActive = false;
+    let scannerInstance = null;
+    let attendedCount = 0;
+    let _teacherSchedule = []; // مصفوفة لحفظ جدول الحصص الفعلي للمدرس
+    let _allVideos = [];
+    let _activeTeacherId = null;
 
-        document.getElementById('teacher-name-lbl').textContent = currentUser.firstName + ' ' + (currentUser.lastName || '');
+    const normalizeArabic = value => String(value || '')
+        .replace(/[أإآ]/g, 'ا').replace(/ى/g, 'ي').replace(/\s+/g, ' ').trim().toLowerCase();
 
-        // تحميل جدول حصص المدرس والفيديوهات تلقائياً عند فتح الصفحة
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                // 1. جلب بيانات المدرسين للعثور على جدول هذا المدرس
-                const tRes = await fetch(`${API}/api/teachers`);
-                const teachers = await tRes.json();
-                
-                // إذا كان المستخدم مساعداً عاماً (teacherId=null) نعرض حصص كل المدرسين
-                if (!currentUser.teacherId) {
-                    teachers.forEach(teacher => {
-                        if (teacher.schedule && teacher.schedule.length > 0) {
-                            _teacherSchedule.push(...teacher.schedule.map(sch => ({ ...sch, teacherId: String(teacher._id) })));
-                        }
+    const meaningfulNameWords = value => normalizeArabic(value)
+        .replace(/[^ء-يa-z0-9\s]/g, ' ').split(' ')
+        .filter(word => word.length >= 3 && !['مساعد', 'التعليمي', 'استاذ', 'الاستاذ'].includes(word));
+
+    // تحميل جدول حصص المدرس والفيديوهات تلقائياً عند فتح الصفحة
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            // 1. جلب بيانات المدرسين للعثور على جدول هذا المدرس
+            const tRes = await fetch(`${API}/api/teachers`);
+            const teachers = await tRes.json();
+            
+            // إذا كان المستخدم مساعداً عاماً (teacherId=null) نعرض حصص كل المدرسين
+            if (!currentUser.teacherId) {
+                teachers.forEach(teacher => {
+                    if (teacher.schedule && teacher.schedule.length > 0) {
+                        _teacherSchedule.push(...teacher.schedule.map(sch => ({ ...sch, teacherId: String(teacher._id) })));
+                    }
+                });
+                window._isGeneralAssistant = true;
+            } else {
+                let activeTeacher = teachers.find(t => String(t._id) === String(currentUser.teacherId));
+                const teacherNameHint = currentUser.teacherNameHint ||
+                    (currentUser.phone === '050068792049' ? 'وائل لاشين' : '');
+                if (!activeTeacher && teacherNameHint) {
+                    const hint = normalizeArabic(teacherNameHint);
+                    activeTeacher = teachers.find(t => {
+                        const teacherName = normalizeArabic(t.name);
+                        return teacherName.includes(hint) || hint.includes(teacherName);
                     });
-                    window._isGeneralAssistant = true;
-                } else {
-                    let activeTeacher = teachers.find(t => String(t._id) === String(currentUser.teacherId));
-                    // دعم حساب المساعد القديم المرتبط بالاسم عند اختلاف المعرف المخزن.
-                    // يصلح جلسات المساعد القديمة المخزنة في المتصفح قبل تحديث معرف المدرس.
-                    const teacherNameHint = currentUser.teacherNameHint ||
-                        (currentUser.phone === '050068792049' ? 'وائل لاشين' : '');
-                    if (!activeTeacher && teacherNameHint) {
-                        const hint = normalizeArabic(teacherNameHint);
-                        activeTeacher = teachers.find(t => {
-                            const teacherName = normalizeArabic(t.name);
-                            return teacherName.includes(hint) || hint.includes(teacherName);
-                        });
-                    }
-                    if (!activeTeacher) {
-                        const assistantWords = meaningfulNameWords(`${currentUser.firstName || ''} ${currentUser.lastName || ''}`);
-                        activeTeacher = teachers.find(teacher => {
-                            const teacherWords = meaningfulNameWords(teacher.name);
-                            return teacherWords.filter(word => assistantWords.includes(word)).length >= 2;
-                        });
-                    }
-                    if (activeTeacher && activeTeacher.schedule && activeTeacher.schedule.length > 0) {
-                        _activeTeacherId = String(activeTeacher._id);
-                        _teacherSchedule = activeTeacher.schedule.map(sch => ({ ...sch, teacherId: _activeTeacherId }));
-                        // تحديث الجلسة مرة واحدة حتى تعتمد الزيارات التالية على المعرف الصحيح مباشرة.
-                        if (String(currentUser.teacherId) !== _activeTeacherId) {
-                            currentUser.teacherId = _activeTeacherId;
-                            currentUser.teacherNameHint = teacherNameHint || activeTeacher.name;
-                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        }
+                }
+                if (!activeTeacher) {
+                    const assistantWords = meaningfulNameWords(`${currentUser.firstName || ''} ${currentUser.lastName || ''}`);
+                    activeTeacher = teachers.find(teacher => {
+                        const teacherWords = meaningfulNameWords(teacher.name);
+                        return teacherWords.filter(word => assistantWords.includes(word)).length >= 2;
+                    });
+                }
+                if (activeTeacher && activeTeacher.schedule && activeTeacher.schedule.length > 0) {
+                    _activeTeacherId = String(activeTeacher._id);
+                    _teacherSchedule = activeTeacher.schedule.map(sch => ({ ...sch, teacherId: _activeTeacherId }));
+                    if (String(currentUser.teacherId) !== _activeTeacherId) {
+                        currentUser.teacherId = _activeTeacherId;
+                        currentUser.teacherNameHint = teacherNameHint || activeTeacher.name;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
                     }
                 }
-
-                populateScheduleFilters();
-
-                // 2. جلب الفيديوهات وتخزينها لفلترتها لاحقاً حسب الحصة المختارة
-                const vRes = await fetch(`${API}/api/videos`);
-                _allVideos = await vRes.json();
-
-            } catch (err) {
-                alert('❌ خطأ في الاتصال بالمنصة لتعبئة جدول الحصص والفيديوهات.');
             }
+
+            populateScheduleFilters();
+
+            // 2. جلب الفيديوهات وتخزينها لفلترتها لاحقاً حسب الحصة المختارة
+            const vRes = await fetch(`${API}/api/videos`);
+            _allVideos = await vRes.json();
+
+        } catch (err) {
+            console.error('Error fetching schedule/videos:', err);
+            showAlert('حدث خطأ في تحميل بيانات الحصص من السيرفر', 'red');
+        }
+    });
+
+    function uniqueValues(rows, key) {
+        return [...new Set(rows.map(item => item[key]).filter(Boolean))];
+    }
+
+    function fillSelect(id, placeholder, values, disabled = false) {
+        const select = document.getElementById(id);
+        if (!select) return;
+        select.innerHTML = `<option value="">-- ${placeholder} --</option>` +
+            values.map(val => `<option value="${val}">${val}</option>`).join('');
+        select.disabled = disabled;
+    }
+
+    function selectedSchedule() {
+        const center = document.getElementById('setup-center').value;
+        const grade = document.getElementById('setup-grade').value;
+        const day = document.getElementById('setup-day').value;
+        const time = document.getElementById('setup-time').value;
+        if (!center || !grade || !day || !time) return null;
+        return _teacherSchedule.find(s => s.centerName === center && s.grade === grade && s.day === day && s.time === time);
+    }
+
+    function resetVideos(message) {
+        const videoSelect = document.getElementById('setup-video');
+        if (videoSelect) videoSelect.innerHTML = `<option value="">-- ${message} --</option>`;
+    }
+
+    function populateScheduleFilters() {
+        const centers = uniqueValues(_teacherSchedule, 'centerName');
+        fillSelect('setup-center', 'اختر السنتر', centers);
+        fillSelect('setup-grade', 'اختر الصف', [], true);
+        fillSelect('setup-day', 'اختر اليوم', [], true);
+        fillSelect('setup-time', 'اختر الساعة', [], true);
+        resetVideos('أكمل بيانات حصة السنتر أولاً');
+
+        const help = document.getElementById('schedule-help');
+        if (help) {
+            help.innerHTML = centers.length
+                ? '<i class="ti ti-info-circle"></i> اختر السنتر أولاً، ثم أكمل باقي بيانات المجموعة بالترتيب.'
+                : '<i class="ti ti-alert-triangle"></i> لا توجد مواعيد مرتبطة بهذا المدرس بعد. أضفها من صفحة تعديل المدرس.';
+        }
+    }
+
+    function onCenterChange() {
+        const center = document.getElementById('setup-center').value;
+        const filtered = _teacherSchedule.filter(s => s.centerName === center);
+        fillSelect('setup-grade', 'اختر الصف', uniqueValues(filtered, 'grade'), !center);
+        fillSelect('setup-day', 'اختر اليوم', [], true);
+        fillSelect('setup-time', 'اختر الساعة', [], true);
+        resetVideos('أكمل باقي بيانات حصة السنتر');
+    }
+
+    function onGradeChange() {
+        const center = document.getElementById('setup-center').value;
+        const grade = document.getElementById('setup-grade').value;
+        const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade);
+        fillSelect('setup-day', 'اختر اليوم', uniqueValues(filtered, 'day'), !grade);
+        fillSelect('setup-time', 'اختر الساعة', [], true);
+        resetVideos('اختر اليوم والساعة أولاً');
+    }
+
+    function onDayChange() {
+        const center = document.getElementById('setup-center').value;
+        const grade = document.getElementById('setup-grade').value;
+        const day = document.getElementById('setup-day').value;
+        const filtered = _teacherSchedule.filter(s => s.centerName === center && s.grade === grade && s.day === day);
+        fillSelect('setup-time', 'اختر الساعة', uniqueValues(filtered, 'time'), !day);
+        resetVideos('اختر الساعة لإظهار المحاضرات المطابقة');
+    }
+
+    function onTimeChange() {
+        const sched = selectedSchedule();
+        if (!sched) {
+            resetVideos('أكمل بيانات حصة السنتر أولاً');
+            return;
+        }
+
+        const matchedVideos = _allVideos.filter(v => {
+            const sameTeacher = String(v.teacherId) === String(sched.teacherId || _activeTeacherId || currentUser.teacherId);
+            const sameGrade = !sched.grade || v.grade === sched.grade;
+            return sameTeacher && sameGrade;
         });
 
-        function uniqueValues(rows, key) {
-            return [...new Set(rows.map(row => String(row[key] || '').trim()).filter(Boolean))];
-        }
-        function fillSelect(id, placeholder, values, disabled = false) {
-            const select = document.getElementById(id);
-            select.innerHTML = `<option value="">${placeholder}</option>`;
-            values.forEach(value => select.innerHTML += `<option value="${value}">${value}</option>`);
-            select.disabled = disabled || values.length === 0;
-        }
-        function selectedSchedule() {
-            const center = document.getElementById('setup-center').value;
-            const grade = document.getElementById('setup-grade').value;
-            const day = document.getElementById('setup-day').value;
-            const time = document.getElementById('setup-time').value;
-            return _teacherSchedule.find(s => String(s.center || '').trim() === center && String(s.grade || '').trim() === grade && String(s.day || '').trim() === day && String(s.time || '').trim() === time) || null;
-        }
-        function resetVideos(message) {
-            const videoSelect = document.getElementById('setup-video');
-            videoSelect.innerHTML = `<option value="">${message}</option>`;
-        }
-        function populateScheduleFilters() {
-            const centers = uniqueValues(_teacherSchedule, 'center');
-            fillSelect('setup-center', centers.length ? '-- اختر السنتر --' : '-- لا توجد سناتر مسجلة لهذا المساعد --', centers, false);
-            fillSelect('setup-grade', '-- اختر الصف --', [], true);
-            fillSelect('setup-day', '-- اختر اليوم --', [], true);
-            fillSelect('setup-time', '-- اختر الساعة --', [], true);
-            resetVideos('-- أكمل بيانات حصة السنتر أولاً --');
-            const help = document.getElementById('schedule-help');
-            if (help) help.textContent = centers.length ? 'اختر السنتر أولاً، ثم أكمل باقي البيانات بالترتيب.' : 'لا توجد مواعيد مرتبطة بهذا المدرس بعد. أضفها من صفحة تعديل المدرّس.';
-        }
-        function onCenterChange() {
-            const center = document.getElementById('setup-center').value;
-            const rows = _teacherSchedule.filter(s => String(s.center || '').trim() === center);
-            fillSelect('setup-grade', '-- اختر الصف --', uniqueValues(rows, 'grade'), !center);
-            fillSelect('setup-day', '-- اختر اليوم --', [], true);
-            fillSelect('setup-time', '-- اختر الساعة --', [], true);
-            resetVideos('-- اختر الصف ثم اليوم والساعة --');
-        }
-        function onGradeChange() {
-            const center = document.getElementById('setup-center').value;
-            const grade = document.getElementById('setup-grade').value;
-            const rows = _teacherSchedule.filter(s => String(s.center || '').trim() === center && String(s.grade || '').trim() === grade);
-            fillSelect('setup-day', '-- اختر اليوم --', uniqueValues(rows, 'day'), !grade);
-            fillSelect('setup-time', '-- اختر الساعة --', [], true);
-            resetVideos('-- اختر اليوم والساعة --');
-        }
-        function onDayChange() {
-            const center = document.getElementById('setup-center').value;
-            const grade = document.getElementById('setup-grade').value;
-            const day = document.getElementById('setup-day').value;
-            const rows = _teacherSchedule.filter(s => String(s.center || '').trim() === center && String(s.grade || '').trim() === grade && String(s.day || '').trim() === day);
-            fillSelect('setup-time', '-- اختر الساعة --', uniqueValues(rows, 'time'), !day);
-            resetVideos('-- اختر الساعة أولاً --');
-        }
-        function onTimeChange() {
-            const activeSched = selectedSchedule();
-            if (!activeSched) { resetVideos('-- بيانات الحصة غير مكتملة --'); return; }
-            const scheduleTeacherId = String(activeSched.teacherId || _activeTeacherId || currentUser.teacherId || '');
+        const videoSelect = document.getElementById('setup-video');
+        if (!videoSelect) return;
+        videoSelect.innerHTML = '<option value="">-- اختر المحاضرة التي ستُفتح للطلاب --</option>';
 
-            // المحاضرات ذات السعر null متاحة للجميع؛ هنا نعرض فقط المقفلة بكود/سعر.
-            const matchedVideos = _allVideos.filter(v => 
-                String(v.teacherId || '') === scheduleTeacherId &&
-                v.price !== null && v.price !== undefined &&
-                (!Array.isArray(v.grades) || v.grades.length === 0 || v.grades.includes(activeSched.grade))
-            );
+        if (matchedVideos.length > 0) {
+            matchedVideos.forEach(v => {
+                const access = Number(v.price) > 0 ? `${v.price} جنيه` : 'بكود';
+                videoSelect.innerHTML += `<option value="${v._id}">🎬 ${v.title} — ${access}</option>`;
+            });
+        } else {
+            videoSelect.innerHTML = '<option value="">لا توجد محاضرات مقفلة لهذا المدرس والصف</option>';
+        }
+    }
 
-            const videoSelect = document.getElementById('setup-video');
-            videoSelect.innerHTML = '<option value="">-- اختر المحاضرة المقفلة --</option>';
+    function onAttendModeChange() {
+        const isVideo = document.getElementById('mode-video')?.checked;
+        const group = document.getElementById('video-select-group');
+        if (group) group.style.display = isVideo ? 'flex' : 'none';
 
-            if (matchedVideos.length > 0) {
-                matchedVideos.forEach(v => {
-                    const access = Number(v.price) > 0 ? `${v.price} جنيه` : 'بكود';
-                    videoSelect.innerHTML += `<option value="${v._id}">🎬 ${v.title} — ${access}</option>`;
-                });
-            } else {
-                videoSelect.innerHTML = '<option value="">لا توجد محاضرات مقفلة لهذا المدرس والصف</option>';
-            }
+        document.getElementById('label-mode-regular')?.classList.toggle('active', !isVideo);
+        document.getElementById('label-mode-video')?.classList.toggle('active', isVideo);
+    }
+
+    function getTargetVideoId() {
+        const isVideo = document.getElementById('mode-video')?.checked;
+        if (!isVideo) return 'none';
+        return document.getElementById('setup-video')?.value || '';
+    }
+
+    // تشغيل / إيقاف جلسة مسح الحضور
+    function toggleSession() {
+        const btn = document.getElementById('action-btn');
+        const isVideo = document.getElementById('mode-video')?.checked;
+        const videoId = getTargetVideoId();
+        const activeSched = selectedSchedule();
+
+        if (!activeSched) {
+            showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
+            return;
         }
 
-        function onAttendModeChange() {
-            const isVideo = document.getElementById('mode-video')?.checked;
-            const group = document.getElementById('video-select-group');
-            if (group) group.style.display = isVideo ? 'flex' : 'none';
+        if (isVideo && !videoId) {
+            showAlert('⚠️ اختر المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
+            return;
         }
 
-        function getTargetVideoId() {
-            const isVideo = document.getElementById('mode-video')?.checked;
-            if (!isVideo) return 'none';
-            return document.getElementById('setup-video')?.value || '';
+        if (!isSessionActive) {
+            isSessionActive = true;
+            toggleInputs(true);
+            btn.className = 'btn-action-stop';
+            btn.innerHTML = '<i class="ti ti-camera-off"></i> إنهاء الجلسة وإيقاف الكاميرا';
+            document.getElementById('qr-reader-container').style.display = 'block';
+
+            startScanner();
+        } else {
+            isSessionActive = false;
+            toggleInputs(false);
+            btn.className = 'btn-action-start';
+            btn.innerHTML = '<i class="ti ti-scan"></i> بدء جلسة التحضير وتشغيل الكاميرا';
+            document.getElementById('qr-reader-container').style.display = 'none';
+
+            stopScanner();
         }
+    }
 
-        // تشغيل / إيقاف جلسة مسح الحضور
-        function toggleSession() {
-            const btn = document.getElementById('action-btn');
-            const isVideo = document.getElementById('mode-video')?.checked;
-            const videoId = getTargetVideoId();
-            const activeSched = selectedSchedule();
+    function toggleInputs(disabled) {
+        ['setup-center', 'setup-grade', 'setup-day', 'setup-time'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.disabled = disabled;
+        });
+        const vidEl = document.getElementById('setup-video');
+        if (vidEl) vidEl.disabled = disabled;
+    }
 
-            if (!activeSched) {
-                showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
-                return;
-            }
-
-            if (isVideo && !videoId) {
-                showAlert('⚠️ اختر المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
-                return;
-            }
-
-
-            if (!isSessionActive) {
-                isSessionActive = true;
-                toggleInputs(true);
-                btn.className = 'btn btn-stop';
-                btn.innerHTML = '<i class="ti ti-camera-off"></i> إنهاء الجلسة وإيقاف الكاميرا';
-                document.getElementById('qr-reader-container').style.display = 'block';
-
-                startScanner();
-            } else {
-                isSessionActive = false;
-                toggleInputs(false);
-                btn.className = 'btn btn-start';
-                btn.innerHTML = '<i class="ti ti-scan"></i> بدء جلسة التحضير وتشغيل الكاميرا';
-                document.getElementById('qr-reader-container').style.display = 'none';
-
-                stopScanner();
-            }
-        }
-
-       // تفعيل وإلغاء تفعيل الحقول لضمان عدم حدوث أخطاء بشرية قبل بدء الجلسة
-        function toggleInputs(disabled) {
-            ['setup-center', 'setup-grade', 'setup-day', 'setup-time'].forEach(id => document.getElementById(id).disabled = disabled);
-            document.getElementById('setup-video').disabled = disabled;
-        }
-
-        function startScanner() {
+    function startScanner() {
+        if (!scannerInstance) {
             scannerInstance = new Html5Qrcode("qr-reader");
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        }
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        scannerInstance.start(
+            { facingMode: "environment" },
+            config,
+            onScanSuccess,
+            (errorMessage) => {}
+        ).catch(err => {
+            console.error("Camera Error:", err);
+            showAlert("فشل تشغيل الكاميرا. تأكد من إعطاء الصلاحية.", "red");
+            toggleSession();
+        });
+    }
 
-            scannerInstance.start(
-                { facingMode: "environment" },
-                config,
-                onScanSuccess
-            ).catch(() => {
-                showAlert('⚠️ تعذر فتح الكاميرا، يرجى إعطاء صلاحية الكاميرا للموقع.', 'red');
-                toggleSession();
-            });
+    function stopScanner() {
+        if (scannerInstance && scannerInstance.isScanning) {
+            scannerInstance.stop().then(() => {
+                scannerInstance.clear();
+            }).catch(err => console.error("Error stopping scanner:", err));
+        }
+    }
+
+    // إرسال كود الطالب المسحوب يدوياً
+    async function submitManualAttendance() {
+        const studentIdInput = document.getElementById('manual-student-id');
+        const studentId = studentIdInput.value.trim();
+        const activeSched = selectedSchedule();
+        const isVideo = document.getElementById('mode-video')?.checked;
+        const videoId = getTargetVideoId();
+
+        if (!activeSched) {
+            showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
+            return;
         }
 
-        function stopScanner() {
-            if (scannerInstance) {
-                scannerInstance.stop().catch(() => {});
-            }
+        if (isVideo && !videoId) {
+            showAlert('⚠️ اختر المحاضرة التي ستُفتح للطلاب أولاً!', 'orange');
+            return;
         }
 
-        // دالة التحضير اليدوي عبر كتابة بريد الطالب أو اسم حسابه (username)
-        function submitManualAttendance() {
-            const studentIdInput = document.getElementById('manual-student-id');
-            let studentEmail = studentIdInput.value.trim().toLowerCase();
-            const videoVal = getTargetVideoId();
-            const isVideo = document.getElementById('mode-video')?.checked;
-            const activeSched = selectedSchedule();
+        if (!studentId) {
+            showAlert('⚠️ يرجى كتابة بريد أو كود الطالب أولاً!', 'orange');
+            studentIdInput.focus();
+            return;
+        }
 
-            if (!activeSched) {
-                showAlert('⚠️ اختر السنتر والصف واليوم والساعة أولاً!', 'orange');
-                return;
-            }
-            if (isVideo && !videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
-            if (!studentEmail) {
-                showAlert('⚠️ يرجى إدخال بريد الطالب أولاً!', 'orange');
-                return;
-            }
-            
-            // ميزة تسهيلية: إذا كتب المساعد الاسم فقط (مثال: ahmed) نقوم تلقائياً بإضافة امتداد البريد
-            if (!studentEmail.includes('@')) {
-                studentEmail = studentEmail + '@edgeacademy.edu';
-            }
+        // تشغيل مؤشر الانتظار على الزر
+        const submitBtn = document.getElementById('manual-attendance-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="ti ti-loader" style="animation:spin 1s linear infinite;"></i> جاري...';
 
-            const payload = {
-                studentId: studentEmail,
-                videoId: videoVal,
-                center: activeSched.center,
-                day: activeSched.day,
-                grade: activeSched.grade,
-                time: activeSched.time
-            };
-
-            studentIdInput.disabled = true;
-            document.getElementById('manual-attendance-btn').disabled = true;
-
-            fetch(`${API}/api/attendance/scan`, {
+        try {
+            const res = await fetch(`${API}/api/users/grant-attendance`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(r => r.json())
-            .then(d => {
-                studentIdInput.disabled = false;
-                document.getElementById('manual-attendance-btn').disabled = false;
-
-                if (d.success) {
-                    playBeep(true);
-                    showAlert(`✅ تم تحضير الطالب: ${d.studentName}`, 'green');
-                    addLogToTable(d.studentName, activeSched.center);
-                    studentIdInput.value = ''; // تفريغ الحقل
-                    studentIdInput.focus();
-                } else {
-                    playBeep(false);
-                    showAlert(`❌ خطأ: ${d.message}`, 'red');
-                }
-            })
-            .catch(() => {
-                studentIdInput.disabled = false;
-                document.getElementById('manual-attendance-btn').disabled = false;
-                playBeep(false);
-                showAlert('❌ خطأ في الاتصال بالسيرفر الرئيسي', 'red');
+                body: JSON.stringify({
+                    studentId: studentId,
+                    videoId: videoId,
+                    centerName: activeSched.centerName,
+                    scheduleId: activeSched._id || null,
+                    teacherId: activeSched.teacherId || _activeTeacherId || currentUser.teacherId,
+                    grade: activeSched.grade,
+                    day: activeSched.day,
+                    time: activeSched.time
+                })
             });
+
+            const data = await res.json();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="ti ti-check"></i> تحضير يدوياً';
+
+            if (data.success) {
+                playBeep(true);
+                showAlert(`✅ تم تسجيل حضور الطالب (${data.studentName}) بنجاح!`, 'green');
+                addLogToTable(data.studentName, activeSched.centerName);
+                studentIdInput.value = '';
+                studentIdInput.focus();
+            } else {
+                playBeep(false);
+                showAlert(`❌ ${data.message}`, 'red');
+            }
+        } catch (err) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="ti ti-check"></i> تحضير يدوياً';
+            playBeep(false);
+            showAlert('حدث خطأ في الاتصال بالسيرفر.', 'red');
         }
+    }
 
-        function onScanSuccess(studentId) {
-            if (scannerInstance) scannerInstance.pause();
+    // عند مسح QR بنجاح
+    function onScanSuccess(studentId) {
+        if (!isSessionActive) return;
 
-            const activeSched = selectedSchedule();
-            if (!activeSched) { showAlert('⚠️ أكمل بيانات حصة السنتر أولاً!', 'orange'); return; }
-            const videoVal = getTargetVideoId();
-            const isVideo = document.getElementById('mode-video')?.checked;
-            if (isVideo && !videoVal) { showAlert('⚠️ اختر المحاضرة المقفلة أولاً!', 'orange'); return; }
+        scannerInstance.pause();
 
-            const payload = {
-                studentId: studentId.trim(),
-                videoId: videoVal,
-                center: activeSched.center,
-                day: activeSched.day,
+        const activeSched = selectedSchedule();
+        const isVideo = document.getElementById('mode-video')?.checked;
+        const videoId = getTargetVideoId();
+
+        fetch(`${API}/api/users/grant-attendance`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                studentId: studentId,
+                videoId: videoId,
+                centerName: activeSched.centerName,
+                scheduleId: activeSched._id || null,
+                teacherId: activeSched.teacherId || _activeTeacherId || currentUser.teacherId,
                 grade: activeSched.grade,
+                day: activeSched.day,
                 time: activeSched.time
-            };
-
-            fetch(`${API}/api/attendance/scan`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
             })
-            .then(r => r.json())
-            .then(d => {
-                if (d.success) {
-                    playBeep(true);
-                    showAlert(`✅ تم تحضير الطالب: ${d.studentName}`, 'green');
-                    addLogToTable(d.studentName, activeSched.center);
-                } else {
-                    playBeep(false);
-                    showAlert(`❌ خطأ: ${d.message}`, 'red');
-                }
-
-                setTimeout(() => {
-                    if (scannerInstance && isSessionActive) scannerInstance.resume();
-                }, 2000);
-            })
-            .catch(() => {
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                playBeep(true);
+                showAlert(`✅ تم تسجيل حضور الطالب (${data.studentName}) بنجاح!`, 'green');
+                addLogToTable(data.studentName, activeSched.centerName);
+            } else {
                 playBeep(false);
-                showAlert('❌ خطأ في الاتصال بالسيرفر الرئيسي', 'red');
-                setTimeout(() => {
-                    if (scannerInstance && isSessionActive) scannerInstance.resume();
-                }, 2000);
-            });
-        }
-
-        function addLogToTable(name, center) {
-            const emptyRow = document.getElementById('empty-row');
-            if (emptyRow) emptyRow.remove();
-
-            const tbody = document.getElementById('logs-tbody');
-            const now = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="font-weight:700; color:var(--accent);">${name}</td>
-                <td>${center}</td>
-                <td>${now}</td>
-            `;
-            tbody.insertBefore(tr, tbody.firstChild);
-
-            attendedCount++;
-            document.getElementById('live-count').textContent = attendedCount;
-        }
-
-        function playBeep(isSuccess) {
-            try {
-                const context = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = context.createOscillator();
-                osc.type = "sine";
-                osc.frequency.value = isSuccess ? 900 : 300;
-                osc.connect(context.destination);
-                osc.start();
-                setTimeout(() => osc.stop(), isSuccess ? 150 : 400);
-            } catch (e) {}
-        }
-
-        function showAlert(msg, color) {
-            const box = document.getElementById('alert-box');
-            box.style.display = 'block';
-            box.style.borderColor = color === 'green' ? 'var(--green)' : color === 'red' ? 'var(--red)' : 'var(--accent)';
-            box.style.color = color === 'green' ? 'var(--green)' : color === 'red' ? 'var(--red)' : 'var(--accent)';
-            box.textContent = msg;
-
+                showAlert(`❌ ${data.message}`, 'red');
+            }
+        })
+        .catch(err => {
+            playBeep(false);
+            showAlert('حدث خطأ أثناء تسجيل الحضور.', 'red');
+        })
+        .finally(() => {
             setTimeout(() => {
-                box.style.display = 'none';
-            }, 3000);
-        }
+                if (scannerInstance && isSessionActive) scannerInstance.resume();
+            }, 1800);
+        });
+    }
 
-        function doLogout() {
-            localStorage.removeItem('currentUser');
-            window.location.href = 'login';
-        }
-    </script>
+    function addLogToTable(name, center) {
+        const emptyRow = document.getElementById('empty-row');
+        if (emptyRow) emptyRow.remove();
+
+        const tbody = document.getElementById('logs-tbody');
+        const now = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        attendedCount++;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="text-align:center; font-family:'Outfit'; font-weight:800; color:var(--gray);">${attendedCount}</td>
+            <td>
+                <div class="attendee-name">
+                    <div class="attendee-avatar">${escapeHtml(name.charAt(0))}</div>
+                    <span>${escapeHtml(name)}</span>
+                </div>
+            </td>
+            <td><span class="center-pill">${escapeHtml(center)}</span></td>
+            <td><span class="time-pill"><i class="ti ti-check"></i> ${now}</span></td>
+        `;
+        tbody.insertBefore(tr, tbody.firstChild);
+
+        const countBadge = document.getElementById('live-count');
+        if (countBadge) countBadge.innerHTML = `<i class="ti ti-check"></i> ${attendedCount}`;
+    }
+
+    function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+    }
+
     
+    function goBack() {
+        if (document.referrer && document.referrer.includes(window.location.host) && !document.referrer.includes('/attendance')) {
+            window.history.back();
+        } else if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (user.role === 'teacher') {
+                window.location.href = 'teacher-dashboard';
+            } else {
+                window.location.href = 'assistant-hub';
+            }
+        }
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
+        localStorage.removeItem('assistantLoggedIn');
+        sessionStorage.clear();
+        window.location.href = 'login';
+    }
+
+    function playBeep(isSuccess) {
+        try {
+            const context = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = context.createOscillator();
+            osc.type = isSuccess ? 'sine' : 'square';
+            osc.frequency.setValueAtTime(isSuccess ? 800 : 200, context.currentTime);
+            osc.connect(context.destination);
+            osc.start();
+            setTimeout(() => osc.stop(), isSuccess ? 150 : 400);
+        } catch (e) {}
+    }
+
+    function showAlert(msg, color) {
+        const box = document.getElementById('alert-box');
+        if (!box) return;
+        box.style.display = 'block';
+        box.style.borderColor = color === 'green' ? '#00b894' : color === 'red' ? '#e74c3c' : 'var(--primary)';
+        box.style.color = color === 'green' ? '#00b894' : color === 'red' ? '#e74c3c' : 'var(--primary)';
+        box.textContent = msg;
+
+        setTimeout(() => {
+            box.style.display = 'none';
+        }, 3200);
+    }
+</script>
+
 </body>
 </html>

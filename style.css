@@ -185,6 +185,50 @@ body:not(.auth-body) {
 }
 
 /* ═══ الجانب الأيمن (الشعار وزر اللغة) ═══ */
+
+/* ═══ زر الرجوع بالهيدر ═══ */
+.nav-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface-alt, rgba(26, 107, 219, 0.08));
+    border: 1.5px solid var(--border, rgba(0, 0, 0, 0.08));
+    color: var(--text-dark, #1e293b);
+    padding: 7px 14px;
+    border-radius: 50px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.dark-mode .nav-back-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: #f1f5f9;
+}
+
+.nav-back-btn:hover {
+    background: var(--primary, #1a6bdb);
+    color: #ffffff !important;
+    border-color: var(--primary, #1a6bdb);
+    transform: translateX(2px);
+    box-shadow: 0 4px 12px rgba(26, 107, 219, 0.25);
+}
+
+.nav-back-btn i {
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.nav-back-btn:hover i {
+    transform: translateX(2px);
+}
+
 .header-right {
     display: inline-flex;
     align-items: center;

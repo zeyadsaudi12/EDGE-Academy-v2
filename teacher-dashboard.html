@@ -1276,7 +1276,11 @@
             <!-- Right: Logo -->
             <!-- اليمين: شعار المنصة وزر تبديل اللغة بجانبه -->
         <div class="header-right">
-            <a href="/" class="header-brand" aria-label="EDGE Academy الرئيسية">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
+                <i class="ti ti-arrow-right"></i>
+                <span>رجوع</span>
+            </button>
+            <a href="teacher-dashboard" class="header-brand" aria-label="EDGE Academy">
                 <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
                 <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
             </a>
@@ -1293,11 +1297,10 @@
 
             <!-- Center: Navigation -->
             <nav class="header-center">
-                <a href="/" class="nav-link-item">الرئيسية</a>
-                <a href="teachers" class="nav-link-item">المعلمين</a>
-                <a href="subjects" class="nav-link-item">المواد الدراسية</a>
-                <a href="courses" class="nav-link-item">الكورسات</a>
-                <a href="exams" class="nav-link-item">الامتحانات</a>
+                <a href="teacher-dashboard" class="nav-link-item active" style="color:var(--dash-primary); font-weight:800;">📊 لوحة المعلم</a>
+                <a href="assistant-dashboard" class="nav-link-item">👥 متابعة الطلاب والسناتر</a>
+                <a href="attendance" class="nav-link-item">📲 بوابة التحضير</a>
+                <a href="assistant" class="nav-link-item">💬 أسئلة الطلاب</a>
             </nav>
 
             <!-- Left: Actions & Themes -->
@@ -2648,7 +2651,18 @@
         }
 
         // ════ TABS NAVIGATION ════
-        function activateTab(tabId, btn) {
+        
+    function goBack() {
+        if (document.referrer && document.referrer.includes(window.location.host) && !document.referrer.includes('/teacher-dashboard')) {
+            window.history.back();
+        } else if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '/';
+        }
+    }
+
+    function activateTab(tabId, btn) {
             document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
             document.querySelectorAll('.tab-content-area').forEach(t => t.classList.remove('active'));
 

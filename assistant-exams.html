@@ -744,28 +744,105 @@
             .results-toolbar { width: 100%; justify-content: space-between; }
         }
     </style>
+    <link rel="stylesheet" href="style.css?v=20261031-v19">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<!-- TOPBAR -->
-<header class="topbar">
-    <div class="topbar-right">
-        <a href="assistant-hub" class="back-hub-btn">
-            <i class="ti ti-arrow-right"></i> البوابة
-        </a>
-        <div class="topbar-title">
-            <i class="ti ti-clipboard-check"></i>
-            <span>إدارة الامتحانات وتصحيح المقالي</span>
+<!-- ════════════ OFFICIAL PLATFORM NAVBAR ════════════ -->
+<header>
+    <div class="header-inner">
+        <!-- اليمين: زر رجوع وشعار المنصة المتغير تلقائياً مع الثيم وزر اللغة -->
+        <div class="header-right">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
+                <i class="ti ti-arrow-right"></i>
+                <span>رجوع</span>
+            </button>
+            <a href="assistant-hub" class="header-brand" aria-label="EDGE Academy">
+                <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
+                <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
+            </a>
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+                <span>EN</span>
+                <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- المنتصف: روابط التنقل الأساسية للمساعد -->
+        <div class="header-center">
+            <a href="assistant-dashboard" class="nav-link-item ">📊 متابعة الطلاب</a>
+            <a href="attendance" class="nav-link-item ">📲 بوابة الحضور</a>
+            <a href="assistant" class="nav-link-item ">💬 أسئلة الطلاب</a>
+            <a href="assistant-exams" class="nav-link-item active" style="color:var(--primary); font-weight:800;">📝 إدارة الامتحانات</a>
+            <a href="assistant-hub" class="nav-link-item ">🎓 بوابة المساعد</a>
+        </div>
+
+        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
+        <div class="header-left">
+            <nav class="header-actions" id="authActions" style="display:none;"></nav>
+
+            <!-- قائمة المستخدم عند تسجيل الدخول -->
+            <div class="user-dropdown-container" id="userDropdownArea">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <span id="navUserName">مساعد المعلم</span>
+                    <div class="user-icon-circle">👤</div>
+                </button>
+                <div class="user-dropdown-menu" id="userMenu">
+                    <a href="assistant-dashboard" class="menu-item">
+                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> لوحة المتابعة
+                    </a>
+                    <a href="attendance" class="menu-item">
+                        <i class="ti ti-scan" style="margin-left:6px;"></i> بوابة الحضور السريع
+                    </a>
+                    <a href="assistant" class="menu-item">
+                        <i class="ti ti-messages" style="margin-left:6px;"></i> أسئلة الطلاب
+                    </a>
+                    <a href="assistant-exams" class="menu-item">
+                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> إدارة الامتحانات
+                    </a>
+                    <a href="assistant-hub" class="menu-item">
+                        <i class="ti ti-home" style="margin-left:6px;"></i> بوابة المساعد الرئيسية
+                    </a>
+                    <hr>
+                    <button onclick="handleLogout()" class="menu-item logout-btn" style="width:100%; text-align:right; border:none; background:none; cursor:pointer;">
+                        🚪 تسجيل خروج
+                    </button>
+                </div>
+            </div>
+
+            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) المعتمد بالمنصة -->
+            <div class="theme-capsule" aria-label="تبديل المظهر">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
+            </div>
+
+            <!-- زر الهامبرغر للموبايل -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </div>
-    <div class="topbar-left">
-        <div class="user-tag">
-            <i class="ti ti-user-check"></i>
-            <span id="userName">المساعد</span>
+
+    <!-- قائمة الموبايل المنسدلة المعتمدة بالمنصة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="javascript:void(0)" onclick="goBack()" class="mobile-nav-link" style="color:var(--primary); font-weight:900; background:rgba(26,107,219,0.1); border-radius:12px; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+            <i class="ti ti-arrow-right"></i> ↩️ رجوع للصفحة السابقة
+        </a>
+        <a href="assistant-dashboard" class="mobile-nav-link ">📊 لوحة متابعة الطلاب</a>
+        <a href="attendance" class="mobile-nav-link ">📲 بوابة الحضور السريع</a>
+        <a href="assistant" class="mobile-nav-link ">💬 أسئلة الطلاب</a>
+        <a href="assistant-exams" class="mobile-nav-link active">📝 إدارة الامتحانات</a>
+        <a href="assistant-hub" class="mobile-nav-link ">🎓 بوابة المساعد</a>
+        <div class="mobile-menu-auth" style="border-top:1px solid var(--border); padding-top:10px; margin-top:8px;">
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none; border:none; cursor:pointer; width:100%; text-align:right; color:#e74c3c; font-family:inherit; font-weight:800; display:flex; align-items:center; gap:8px;">
+                🚪 تسجيل خروج
+            </button>
         </div>
-        <button class="logout-btn" onclick="doLogout()">
-            <i class="ti ti-logout"></i> خروج
-        </button>
     </div>
 </header>
 
@@ -936,6 +1013,21 @@
     if (currentUser) {
         const fullName = (currentUser.firstName || '') + ' ' + (currentUser.lastName || '') || currentUser.name || 'المساعد';
         nameEl.textContent = fullName.trim();
+    }
+
+    
+    function goBack() {
+        if (document.referrer && document.referrer.includes(window.location.host) && !document.referrer.endsWith('/assistant-exams')) {
+            window.history.back();
+        } else if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = 'assistant-hub';
+        }
+    }
+
+    function handleLogout() {
+        doLogout();
     }
 
     function doLogout() {
@@ -1437,5 +1529,6 @@
     loadExams();
 </script>
 
+<script src="script.js"></script>
 </body>
 </html>

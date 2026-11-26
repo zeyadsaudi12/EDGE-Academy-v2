@@ -89,7 +89,14 @@
         }
         .logout-btn:hover { background: rgba(230,57,70,0.15); }
         @media (max-width: 520px) { 
-            .cards-grid { grid-template-columns: 1fr; }
+            .hub-wrap { padding: 16px 12px 30px; }
+            .hub-header { margin-bottom: 22px; }
+            .hub-logo { width: 62px; height: 62px; font-size: 1.8rem; margin-bottom: 12px; }
+            .hub-header h1 { font-size: 1.35rem; }
+            .hub-header p { font-size: 0.85rem; }
+            .user-chip { font-size: 0.8rem; padding: 5px 12px; }
+            .cards-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+            .hub-card { padding: 18px 16px; border-radius: 16px; }
             .hub-card.exams-full { flex-direction: column; text-align: center; }
             .hub-card.exams-full .card-arrow { display: none; }
         }

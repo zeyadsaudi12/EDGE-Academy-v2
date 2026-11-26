@@ -689,31 +689,557 @@
             background: var(--bg);
             border-radius: 0 0 20px 20px;
         }
+
+        /* ════ MOBILE RESPONSIVE STYLES ════ */
+        .mobile-table-hint {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--primary);
+            background: var(--primary-light);
+            border: 1px dashed rgba(26, 107, 219, 0.3);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 900px) {
+            header.topbar {
+                padding: 12px 16px;
+                gap: 12px;
+            }
+            .filter-toolbar {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header.topbar {
+                padding: 10px 14px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .brand-area {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 10px;
+            }
+            .brand-logo {
+                width: 38px;
+                height: 38px;
+                border-radius: 10px;
+            }
+            .brand-title {
+                font-size: 1.05rem;
+            }
+            .brand-sub {
+                font-size: 0.74rem;
+            }
+            .header-actions {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                overflow-x: auto;
+                padding-bottom: 4px;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .header-actions::-webkit-scrollbar {
+                display: none;
+            }
+            .nav-chip, .theme-btn, .btn-logout {
+                padding: 6px 12px;
+                font-size: 0.78rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .dash-container {
+                padding: 14px 12px 50px;
+                gap: 14px;
+            }
+
+            .teacher-hero-card {
+                padding: 16px 14px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 12px;
+            }
+            .teacher-hero-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+            .teacher-avatar-big {
+                width: 58px;
+                height: 58px;
+                font-size: 1.45rem;
+                border-radius: 14px;
+            }
+            .teacher-hero-text h1 {
+                font-size: 1.22rem;
+            }
+            .teacher-hero-text p {
+                font-size: 0.82rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .metric-card {
+                padding: 12px 14px;
+                border-radius: 12px;
+            }
+            .metric-content h4 {
+                font-size: 0.74rem;
+                margin-bottom: 3px;
+            }
+            .metric-content .num {
+                font-size: 1.4rem;
+            }
+            .metric-icon-wrap {
+                width: 38px;
+                height: 38px;
+                font-size: 1.15rem;
+                border-radius: 10px;
+            }
+
+            .roster-card {
+                padding: 14px 12px;
+                border-radius: 14px;
+                gap: 14px;
+            }
+            .roster-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                padding-bottom: 10px;
+            }
+            .roster-title h2 {
+                font-size: 1.08rem;
+            }
+            .roster-title p {
+                font-size: 0.78rem;
+            }
+
+            .filter-toolbar {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .search-box input {
+                padding: 10px 38px 10px 12px;
+                font-size: 0.85rem;
+                border-radius: 10px;
+                height: 42px;
+            }
+            .search-box i {
+                right: 12px;
+                font-size: 1rem;
+            }
+            .filter-select {
+                padding: 9px 12px;
+                font-size: 0.85rem;
+                border-radius: 10px;
+                height: 42px;
+            }
+
+            .mobile-table-hint {
+                display: flex;
+            }
+
+            table.student-table thead th, 
+            table.student-table tbody td {
+                padding: 9px 10px;
+                font-size: 0.8rem;
+            }
+            .student-cell {
+                gap: 8px;
+            }
+            .student-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.82rem;
+                border-radius: 8px;
+            }
+            .student-code-badge {
+                font-size: 0.68rem;
+                padding: 2px 6px;
+            }
+            .pill-badge {
+                padding: 2px 7px;
+                font-size: 0.72rem;
+            }
+            .btn-view-record {
+                padding: 6px 10px;
+                font-size: 0.76rem;
+                gap: 4px;
+            }
+            .btn-wa-icon {
+                padding: 5px 8px;
+                font-size: 0.75rem;
+            }
+
+            /* Modal Mobile */
+            .modal-overlay {
+                padding: 8px;
+            }
+            .modal-card {
+                border-radius: 16px;
+                max-height: 96vh;
+                width: 100%;
+            }
+            .modal-header {
+                padding: 12px 14px;
+                gap: 10px;
+            }
+            .modal-header-info {
+                gap: 10px;
+            }
+            .modal-avatar-big {
+                width: 44px;
+                height: 44px;
+                font-size: 1.15rem;
+                border-radius: 12px;
+            }
+            #modalStudentName {
+                font-size: 1.05rem !important;
+            }
+            #modalStudentCode {
+                font-size: 0.72rem !important;
+            }
+            .btn-close-modal {
+                width: 32px;
+                height: 32px;
+                font-size: 1.1rem;
+            }
+            .modal-body {
+                padding: 14px 12px;
+                gap: 14px;
+            }
+            .modal-stats-strip {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .modal-stat-box {
+                padding: 10px 8px;
+                border-radius: 10px;
+            }
+            .modal-stat-box .title {
+                font-size: 0.7rem;
+            }
+            .modal-stat-box .value {
+                font-size: 1.15rem;
+            }
+            .modal-tabs-nav {
+                gap: 4px;
+                overflow-x: auto;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .modal-tabs-nav::-webkit-scrollbar {
+                display: none;
+            }
+            .modal-tab-btn {
+                padding: 6px 11px;
+                font-size: 0.8rem;
+                white-space: nowrap;
+                border-radius: 8px;
+            }
+            .modal-footer {
+                padding: 12px 14px;
+                flex-direction: column-reverse;
+                align-items: stretch;
+                gap: 8px;
+                border-radius: 0 0 16px 16px;
+            }
+            .modal-footer button, .modal-footer a {
+                width: 100%;
+                justify-content: center;
+                padding: 9px 14px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    
+        /* Hide hamburger button in assistant dashboard ("مفيش شرط فالجنب") */
+        .hamburger-btn {
+            display: none !important;
+        }
+
+        /* ═══ Mandatory Scope Selector Card (الصف - السنتر - المجموعة) ═══ */
+        .scope-selector-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 4px;
+        }
+
+        .scope-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .scope-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(26, 107, 219, 0.15), rgba(0, 184, 148, 0.1));
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .scope-header h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .scope-header p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .scope-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .scope-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .scope-field label {
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .scope-field label i {
+            color: var(--primary);
+        }
+
+        .scope-select {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg);
+            border: 1.5px solid var(--border2);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .scope-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 107, 219, 0.12);
+        }
+
+        .scope-select:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .dark-mode .scope-select:disabled {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* ═══ Selection Prompt State ═══ */
+        .selection-prompt-card {
+            background: var(--card);
+            border: 2px dashed var(--border2);
+            border-radius: var(--radius-lg);
+            padding: 60px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .prompt-icon-box {
+            width: 68px;
+            height: 68px;
+            border-radius: 20px;
+            background: rgba(26, 107, 219, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+            animation: pulseIcon 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        .selection-prompt-card h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .selection-prompt-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .scope-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .scope-selector-card {
+                padding: 16px;
+            }
+            .selection-prompt-card {
+                padding: 40px 16px;
+            }
+        }
+
     </style>
+    <link rel="stylesheet" href="style.css?v=20261031-v19">
 </head>
 <body>
 
-    <!-- Topbar -->
-    <header class="topbar">
-        <div class="brand-area">
-            <img src="imges/edge-square.jpg" alt="EDGE Academy" class="brand-logo">
-            <div>
-                <div class="brand-title">EDGE Academy</div>
-                <div class="brand-sub"><i class="ti ti-layout-dashboard"></i> لوحة المساعد الذكية ومتابعة الطلاب</div>
-            </div>
+    <!-- ════════════ OFFICIAL PLATFORM NAVBAR ════════════ -->
+<header>
+    <div class="header-inner">
+        <!-- اليمين: زر رجوع وشعار المنصة المتغير تلقائياً مع الثيم وزر اللغة -->
+        <div class="header-right">
+            <button type="button" class="nav-back-btn" onclick="goBack()" title="رجوع للصفحة السابقة">
+                <i class="ti ti-arrow-right"></i>
+                <span>رجوع</span>
+            </button>
+            <a href="assistant-hub" class="header-brand" aria-label="EDGE Academy">
+                <img src="imges/logo-light-mode.png" alt="EDGE Academy" class="logo-img logo-light">
+                <img src="imges/logo-dark-mode.png" alt="EDGE Academy" class="logo-img logo-dark">
+            </a>
+            <!-- زر تبديل اللغة بجانب اللوجو -->
+            <button type="button" class="language-switcher" aria-label="تبديل اللغة" title="Switch Language">
+                <span>EN</span>
+                <svg class="lang-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+            </button>
         </div>
 
-        <div class="header-actions">
-            <a href="attendance" class="nav-chip"><i class="ti ti-scan"></i> بوابة الحضور السريع</a>
-            <a href="assistant-exams" class="nav-chip"><i class="ti ti-clipboard-check"></i> الامتحانات</a>
-            <a href="assistant-hub" class="nav-chip"><i class="ti ti-home"></i> الرئيسية</a>
-            <button type="button" class="theme-btn" onclick="toggleTheme()" id="themeToggleBtn">
-                <i class="ti ti-moon" id="themeIcon"></i>
-                <span id="themeText">وضع ليلي</span>
-            </button>
-            <button type="button" class="btn-logout" onclick="logout()"><i class="ti ti-logout"></i> خروج</button>
+        <!-- المنتصف: روابط التنقل الأساسية للمساعد -->
+        <div class="header-center">
+            <a href="assistant-dashboard" class="nav-link-item active" style="color:var(--primary); font-weight:800;">📊 متابعة الطلاب</a>
+            <a href="attendance" class="nav-link-item ">📲 بوابة الحضور</a>
+            <a href="assistant" class="nav-link-item ">💬 أسئلة الطلاب</a>
+            <a href="assistant-exams" class="nav-link-item ">📝 إدارة الامتحانات</a>
+            <a href="assistant-hub" class="nav-link-item ">🎓 بوابة المساعد</a>
         </div>
-    </header>
+
+        <!-- اليسار: أزرار المستخدم ومحول الأوضاع -->
+        <div class="header-left">
+            <nav class="header-actions" id="authActions" style="display:none;"></nav>
+
+            <!-- قائمة المستخدم عند تسجيل الدخول -->
+            <div class="user-dropdown-container" id="userDropdownArea">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <span id="navUserName">مساعد المعلم</span>
+                    <div class="user-icon-circle">👤</div>
+                </button>
+                <div class="user-dropdown-menu" id="userMenu">
+                    <a href="assistant-dashboard" class="menu-item">
+                        <i class="ti ti-layout-dashboard" style="margin-left:6px;"></i> لوحة المتابعة
+                    </a>
+                    <a href="attendance" class="menu-item">
+                        <i class="ti ti-scan" style="margin-left:6px;"></i> بوابة الحضور السريع
+                    </a>
+                    <a href="assistant" class="menu-item">
+                        <i class="ti ti-messages" style="margin-left:6px;"></i> أسئلة الطلاب
+                    </a>
+                    <a href="assistant-exams" class="menu-item">
+                        <i class="ti ti-clipboard-check" style="margin-left:6px;"></i> إدارة الامتحانات
+                    </a>
+                    <a href="assistant-hub" class="menu-item">
+                        <i class="ti ti-home" style="margin-left:6px;"></i> بوابة المساعد الرئيسية
+                    </a>
+                    <hr>
+                    <button onclick="handleLogout()" class="menu-item logout-btn" style="width:100%; text-align:right; border:none; background:none; cursor:pointer;">
+                        🚪 تسجيل خروج
+                    </button>
+                </div>
+            </div>
+
+            <!-- محول الأوضاع بتصميم كبسولة أنيقة (النهار / الليل) المعتمد بالمنصة -->
+            <div class="theme-capsule" aria-label="تبديل المظهر">
+                <button class="icon-btn theme-switcher" data-theme="light" aria-label="وضع النهار" title="وضع النهار">☀</button>
+                <button class="icon-btn theme-switcher" data-theme="dark" aria-label="وضع الظلام" title="وضع الظلام">🌙</button>
+            </div>
+
+            <!-- زر الهامبرغر للموبايل -->
+            <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="القائمة">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- قائمة الموبايل المنسدلة المعتمدة بالمنصة -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <a href="javascript:void(0)" onclick="goBack()" class="mobile-nav-link" style="color:var(--primary); font-weight:900; background:rgba(26,107,219,0.1); border-radius:12px; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+            <i class="ti ti-arrow-right"></i> ↩️ رجوع للصفحة السابقة
+        </a>
+        <a href="assistant-dashboard" class="mobile-nav-link active">📊 لوحة متابعة الطلاب</a>
+        <a href="attendance" class="mobile-nav-link ">📲 بوابة الحضور السريع</a>
+        <a href="assistant" class="mobile-nav-link ">💬 أسئلة الطلاب</a>
+        <a href="assistant-exams" class="mobile-nav-link ">📝 إدارة الامتحانات</a>
+        <a href="assistant-hub" class="mobile-nav-link ">🎓 بوابة المساعد</a>
+        <div class="mobile-menu-auth" style="border-top:1px solid var(--border); padding-top:10px; margin-top:8px;">
+            <button onclick="handleLogout()" class="mobile-nav-link" style="background:none; border:none; cursor:pointer; width:100%; text-align:right; color:#e74c3c; font-family:inherit; font-weight:800; display:flex; align-items:center; gap:8px;">
+                🚪 تسجيل خروج
+            </button>
+        </div>
+    </div>
+</header>
 
     <div class="dash-container">
 
@@ -735,15 +1261,48 @@
                         <p id="teacherSubject">لوحة متابعة طلاب المادة والسناتر والامتحانات والمشاهدات</p>
                     </div>
                 </div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                    <a href="attendance" class="btn-view-record" style="text-decoration:none; padding:10px 18px; font-size:0.9rem;">
-                        <i class="ti ti-scan"></i> بدء جلسة تحضير سنتر
-                    </a>
+            </div>
+
+            <!-- ═══ Mandatory Scope Selector (الصف - السنتر - المجموعة) ═══ -->
+            <div class="scope-selector-card">
+                <div class="scope-header">
+                    <div class="scope-icon"><i class="ti ti-filter"></i></div>
+                    <div>
+                        <h3>تحديد مجموعة الطلاب والسنتر</h3>
+                        <p>حدد الصف الدراسي والسنتر والمجموعة لإظهار بيانات وكشف الطلاب الخاص بهم</p>
+                    </div>
+                </div>
+                <div class="scope-grid">
+                    <div class="scope-field">
+                        <label for="selectGrade"><i class="ti ti-school"></i> 1. الصف الدراسي *</label>
+                        <select id="selectGrade" class="scope-select" onchange="onScopeGradeChange()">
+                            <option value="">-- اختر الصف الدراسي --</option>
+                        </select>
+                    </div>
+                    <div class="scope-field">
+                        <label for="selectCenter"><i class="ti ti-building"></i> 2. السنتر *</label>
+                        <select id="selectCenter" class="scope-select" onchange="onScopeCenterChange()" disabled>
+                            <option value="">-- اختر السنتر --</option>
+                        </select>
+                    </div>
+                    <div class="scope-field">
+                        <label for="selectGroup"><i class="ti ti-users-group"></i> 3. المجموعة (الميعاد) *</label>
+                        <select id="selectGroup" class="scope-select" onchange="onScopeGroupChange()" disabled>
+                            <option value="">-- اختر المجموعة --</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
+            <!-- Prompt banner shown when selections are not yet completed -->
+            <div id="selectionPromptArea" class="selection-prompt-card">
+                <div class="prompt-icon-box"><i class="ti ti-hand-click"></i></div>
+                <h3>يرجى اختيار الصف الدراسي والسنتر والمجموعة أولاً</h3>
+                <p>لن يتم عرض أي بيانات أو سجلات للطلاب إلا بعد تحديد الخيارات الثلاثة بالأعلى</p>
+            </div>
+
             <!-- Metrics Strip -->
-            <div class="metrics-grid">
+            <div class="metrics-grid" id="metricsGrid" style="display:none;">
                 <div class="metric-card metric-total">
                     <div class="metric-content">
                         <h4>إجمالي طلاب المدرس</h4>
@@ -778,7 +1337,7 @@
             </div>
 
             <!-- Students Roster Card -->
-            <div class="roster-card">
+            <div class="roster-card" id="rosterCard" style="display:none;">
                 <div class="roster-header">
                     <div class="roster-title">
                         <h2><i class="ti ti-user-check" style="color:var(--primary);"></i> كشف طلاب المدرس وسجلات المتابعة</h2>
@@ -796,9 +1355,7 @@
                         <input type="text" id="searchInput" placeholder="ابحث باسم الطالب، الهاتف، رقم ولي الأمر..." oninput="applyFilters()">
                     </div>
 
-                    <select id="gradeFilter" class="filter-select" onchange="applyFilters()">
-                        <option value="ALL">جميع الصفوف الدراسية</option>
-                    </select>
+                    
 
                     <select id="statusFilter" class="filter-select" onchange="applyFilters()">
                         <option value="ALL">جميع حالات التفاعل</option>
@@ -814,6 +1371,9 @@
                 </div>
 
                 <!-- Table -->
+                <div class="mobile-table-hint">
+                    <i class="ti ti-arrows-left-right"></i> اسحب الجدول يميناً ويساراً أو اضغط على اسم الطالب لعرض السجل
+                </div>
                 <div class="table-responsive">
                     <table class="student-table">
                         <thead>
@@ -980,7 +1540,18 @@
             window.location.href = 'login';
         }
 
-        function toggleTheme() {
+        
+    function goBack() {
+        if (document.referrer && document.referrer.includes(window.location.host) && !document.referrer.includes('/assistant-dashboard')) {
+            window.history.back();
+        } else if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = 'assistant-hub';
+        }
+    }
+
+    function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
             localStorage.setItem('assistant_theme', isDark ? 'dark' : 'light');
@@ -996,7 +1567,12 @@
             if (txt) txt.textContent = 'وضع نهاري';
         }
 
-        function logout() {
+        
+function handleLogout() {
+    logout();
+}
+
+function logout() {
             localStorage.removeItem('currentUser');
             sessionStorage.removeItem('assistantLoggedIn');
             window.location.href = 'login';
@@ -1156,6 +1732,8 @@
                         });
                     }
                     studentMap.get(sid).attendCount += 1;
+                    if (!studentMap.get(sid).attendances) studentMap.get(sid).attendances = [];
+                    studentMap.get(sid).attendances.push(a);
                 }
             });
 
@@ -1181,40 +1759,218 @@
 
             allStudentsList = Array.from(studentMap.values());
 
-            // Populate Grades Filter Dropdown
-            const gradesSet = new Set(allStudentsList.map(s => s.grade).filter(g => g && g !== '—'));
-            const gradeFilter = document.getElementById('gradeFilter');
-            gradesSet.forEach(g => {
-                gradeFilter.innerHTML += `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`;
+            initScopeSelector(d);
+        }
+
+        
+        let allScheduleItems = [];
+        let selectedScope = {
+            grade: '',
+            center: '',
+            group: ''
+        };
+
+        function initScopeSelector(d) {
+            const teacher = d.teacher || {};
+            const attendances = d.attendances || [];
+            allScheduleItems = [];
+
+            // 1. From teacher.schedule
+            if (Array.isArray(teacher.schedule) && teacher.schedule.length > 0) {
+                teacher.schedule.forEach(s => {
+                    const grade = (s.grade || '').trim();
+                    const center = (s.center || s.centerName || '').trim();
+                    const day = (s.day || '').trim();
+                    const time = (s.time || '').trim();
+                    if (grade && center) {
+                        const groupLabel = `${day} - ${time}`.replace(/^[-\s]+|[-\s]+$/g, '') || 'المجموعة الأساسية';
+                        allScheduleItems.push({ grade, center, day, time, groupLabel });
+                    }
+                });
+            }
+
+            // 2. From attendances
+            attendances.forEach(a => {
+                const center = (a.center || a.centerName || '').trim();
+                const grade = (a.grade || '').trim();
+                const day = (a.day || '').trim();
+                const time = (a.time || '').trim();
+                if (grade && center) {
+                    const groupLabel = `${day} - ${time}`.replace(/^[-\s]+|[-\s]+$/g, '') || 'المجموعة الأساسية';
+                    const exists = allScheduleItems.some(s => s.grade === grade && s.center === center && s.groupLabel === groupLabel);
+                    if (!exists) {
+                        allScheduleItems.push({ grade, center, day, time, groupLabel });
+                    }
+                }
             });
+
+            // 3. Fallback from teacher.grades
+            (teacher.grades || []).forEach(g => {
+                const gTrim = g.trim();
+                const exists = allScheduleItems.some(s => s.grade === gTrim);
+                if (!exists) {
+                    allScheduleItems.push({ grade: gTrim, center: 'السنتر الرئيسي', day: 'السبت', time: '04:00 م', groupLabel: 'السبت - 04:00 م' });
+                    allScheduleItems.push({ grade: gTrim, center: 'السنتر الرئيسي', day: 'الأحد', time: '06:00 م', groupLabel: 'الأحد - 06:00 م' });
+                }
+            });
+
+            // 4. Fallback from allStudentsList
+            allStudentsList.forEach(st => {
+                if (st.grade && st.grade !== '—') {
+                    const exists = allScheduleItems.some(s => s.grade === st.grade);
+                    if (!exists) {
+                        allScheduleItems.push({ grade: st.grade, center: 'السنتر الرئيسي', day: 'السبت', time: '04:00 م', groupLabel: 'السبت - 04:00 م' });
+                    }
+                }
+            });
+
+            // Populate Grade select
+            const gradeSelect = document.getElementById('selectGrade');
+            const uniqueGrades = Array.from(new Set(allScheduleItems.map(s => s.grade).filter(Boolean)));
+            gradeSelect.innerHTML = '<option value="">-- اختر الصف الدراسي --</option>' + 
+                uniqueGrades.map(g => `<option value="${escapeHtml(g)}">${escapeHtml(g)}</option>`).join('');
+
+            // Reset Center and Group
+            document.getElementById('selectCenter').innerHTML = '<option value="">-- اختر السنتر --</option>';
+            document.getElementById('selectCenter').disabled = true;
+            document.getElementById('selectGroup').innerHTML = '<option value="">-- اختر المجموعة --</option>';
+            document.getElementById('selectGroup').disabled = true;
+
+            // Ensure data hidden and prompt displayed
+            hideDataAndShowPrompt('يرجى اختيار الصف الدراسي والسنتر والمجموعة أولاً');
+        }
+
+        function onScopeGradeChange() {
+            const gradeVal = document.getElementById('selectGrade').value;
+            selectedScope.grade = gradeVal;
+            selectedScope.center = '';
+            selectedScope.group = '';
+
+            const centerSelect = document.getElementById('selectCenter');
+            const groupSelect = document.getElementById('selectGroup');
+
+            if (!gradeVal) {
+                centerSelect.innerHTML = '<option value="">-- اختر السنتر --</option>';
+                centerSelect.disabled = true;
+                groupSelect.innerHTML = '<option value="">-- اختر المجموعة --</option>';
+                groupSelect.disabled = true;
+                hideDataAndShowPrompt('يرجى اختيار الصف الدراسي والسنتر والمجموعة أولاً');
+                return;
+            }
+
+            const availableCenters = Array.from(new Set(
+                allScheduleItems.filter(s => s.grade === gradeVal).map(s => s.center).filter(Boolean)
+            ));
+
+            centerSelect.innerHTML = '<option value="">-- اختر السنتر --</option>' + 
+                availableCenters.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+            centerSelect.disabled = false;
+
+            groupSelect.innerHTML = '<option value="">-- اختر المجموعة --</option>';
+            groupSelect.disabled = true;
+
+            hideDataAndShowPrompt('اختر السنتر والمجموعة التابعة لهذا الصف');
+        }
+
+        function onScopeCenterChange() {
+            const centerVal = document.getElementById('selectCenter').value;
+            selectedScope.center = centerVal;
+            selectedScope.group = '';
+
+            const groupSelect = document.getElementById('selectGroup');
+
+            if (!centerVal) {
+                groupSelect.innerHTML = '<option value="">-- اختر المجموعة --</option>';
+                groupSelect.disabled = true;
+                hideDataAndShowPrompt('اختر السنتر والمجموعة التابعة لهذا الصف');
+                return;
+            }
+
+            const availableGroups = Array.from(new Set(
+                allScheduleItems.filter(s => s.grade === selectedScope.grade && s.center === centerVal).map(s => s.groupLabel).filter(Boolean)
+            ));
+
+            groupSelect.innerHTML = '<option value="">-- اختر المجموعة --</option>' + 
+                availableGroups.map(grp => `<option value="${escapeHtml(grp)}">${escapeHtml(grp)}</option>`).join('');
+            groupSelect.disabled = false;
+
+            hideDataAndShowPrompt('اختر المجموعة لإظهار كشف وبيانات الطلاب');
+        }
+
+        function onScopeGroupChange() {
+            const groupVal = document.getElementById('selectGroup').value;
+            selectedScope.group = groupVal;
+
+            if (!groupVal) {
+                hideDataAndShowPrompt('اختر المجموعة لإظهار كشف وبيانات الطلاب');
+                return;
+            }
+
+            // ALL THREE SELECTED!
+            document.getElementById('selectionPromptArea').style.display = 'none';
+            document.getElementById('metricsGrid').style.display = 'grid';
+            document.getElementById('rosterCard').style.display = 'block';
 
             applyFilters();
         }
 
+        function hideDataAndShowPrompt(msg) {
+            const mg = document.getElementById('metricsGrid');
+            const rc = document.getElementById('rosterCard');
+            const prompt = document.getElementById('selectionPromptArea');
+            if (mg) mg.style.display = 'none';
+            if (rc) rc.style.display = 'none';
+            if (prompt) {
+                prompt.style.display = 'flex';
+                if (msg) prompt.querySelector('p').textContent = msg;
+            }
+        }
+
         function applyFilters() {
+            if (!selectedScope.grade || !selectedScope.center || !selectedScope.group) {
+                return;
+            }
+
             const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-            const selectedGrade = document.getElementById('gradeFilter')?.value || 'ALL';
             const selectedStatus = document.getElementById('statusFilter')?.value || 'ALL';
             const selectedAttend = document.getElementById('attendFilter')?.value || 'ALL';
 
             const filtered = allStudentsList.filter(s => {
+                // Grade match
+                const matchGrade = s.grade === selectedScope.grade || (!s.grade && selectedScope.grade === 'عام');
+                if (!matchGrade) return false;
+
+                // Search query
                 const matchQ = !query || 
                     s.name.toLowerCase().includes(query) || 
                     s.phone.includes(query) || 
                     s.parentPhone.includes(query) || 
                     s.id.toLowerCase().includes(query);
+                if (!matchQ) return false;
 
-                const matchGrade = selectedGrade === 'ALL' || s.grade === selectedGrade;
-                const matchStatus = selectedStatus === 'ALL' || 
-                    (selectedStatus === 'active' && s.status === 'مفعل') || 
-                    (selectedStatus === 'inactive' && s.status !== 'مفعل');
-
+                // Attend status filter
                 const matchAttend = selectedAttend === 'ALL' || 
                     (selectedAttend === 'attended' && s.attendCount > 0) || 
                     (selectedAttend === 'not_attended' && s.attendCount === 0);
+                if (!matchAttend) return false;
 
-                return matchQ && matchGrade && matchStatus && matchAttend;
+                // Active status filter
+                const matchStatus = selectedStatus === 'ALL' || 
+                    (selectedStatus === 'active' && s.status === 'مفعل') || 
+                    (selectedStatus === 'inactive' && s.status !== 'مفعل');
+                if (!matchStatus) return false;
+
+                return true;
             });
+
+            // Update group-specific metrics
+            document.getElementById('metricTotalStudents').textContent = filtered.length;
+            const groupAttends = filtered.reduce((acc, s) => acc + (s.attendCount || 0), 0);
+            document.getElementById('metricAttendances').textContent = groupAttends;
+            const groupExams = filtered.reduce((acc, s) => acc + (s.examsDone || 0), 0);
+            document.getElementById('metricExamsDone').textContent = groupExams;
+            const groupViews = filtered.reduce((acc, s) => acc + (s.viewsCount || 0), 0);
+            document.getElementById('metricVideoViews').textContent = groupViews;
 
             document.getElementById('displayedStudentsCount').textContent = filtered.length;
             renderStudentsTable(filtered);
@@ -1448,5 +2204,6 @@
             document.getElementById('studentModalOverlay').classList.remove('active');
         }
     </script>
+<script src="script.js"></script>
 </body>
 </html>
