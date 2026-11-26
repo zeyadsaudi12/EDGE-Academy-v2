@@ -7045,3 +7045,113 @@ body.auth-body .masar-chatbot-btn {
         backdrop-filter: none !important;
     }
 }
+
+/* ══ EDGE Academy – Platform-Wide Mobile & iPad Responsive Compatibility ══ */
+html, body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+img, video, iframe {
+    max-width: 100%;
+}
+
+/* ── iPad & Tablet (768px – 1050px) ── */
+@media (max-width: 1050px) {
+    .header-inner {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .teachers-page .teachers-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+    .courses-library-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 20px !important;
+    }
+    .courses-library-grid .course-card,
+    .courses-library-grid .course-card-featured {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        flex: none !important;
+    }
+    .watch-layout-container {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .royal-wrapper {
+        grid-template-columns: 1fr !important;
+        padding: 20px 4% !important;
+        gap: 20px !important;
+    }
+    .royal-sidebar {
+        position: static !important;
+        top: auto !important;
+    }
+}
+
+/* ── Mobile (≤ 767px) ── */
+@media (max-width: 767px) {
+    .courses-library-grid .course-card,
+    .courses-library-grid .course-card-featured {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        flex: none !important;
+    }
+    .home-page .teachers-section .teachers-carousel-wrap {
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .watch-layout-container {
+        padding-inline: 12px !important;
+        gap: 16px !important;
+    }
+    .video-details-box {
+        padding: 16px !important;
+    }
+}
+
+/* ── Small Mobile (≤ 599px) ── */
+@media (max-width: 599px) {
+    .teachers-page .teachers-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    .courses-library-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        padding-inline: 14px !important;
+    }
+    .hero-banner {
+        height: auto !important;
+        min-height: 260px !important;
+        padding: 28px 18px !important;
+        border-radius: 22px !important;
+    }
+    .section-title {
+        font-size: clamp(1.35rem, 5.5vw, 1.8rem) !important;
+    }
+}
+
+/* ── Extra Small Mobile (≤ 480px) ── */
+@media (max-width: 480px) {
+    body:not(.auth-body) > header .header-inner {
+        padding: 6px 10px !important;
+        gap: 6px !important;
+    }
+    body:not(.auth-body) > header .header-brand .logo-img {
+        max-width: 96px !important;
+        height: 28px !important;
+    }
+    .language-switcher {
+        padding: 0 8px !important;
+        font-size: 0.78rem !important;
+        min-height: 30px !important;
+    }
+}
