@@ -33,20 +33,47 @@ body.dark-mode.auth-body.login-page {
 }
 
 body.auth-body > header {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    width: 100% !important;
-    flex-shrink: 0 !important;
-    z-index: 10 !important;
-    background: var(--header-inner, rgba(255,255,255,0.92)) !important;
-    backdrop-filter: blur(14px) !important;
-    border-bottom: 1px solid var(--border) !important;
-    box-sizing: border-box !important;
+    display: none !important;
 }
-body.dark-mode.auth-body > header {
-    background: var(--header-inner, rgba(13,21,38,0.92)) !important;
+
+.auth-back-home-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+}
+
+.auth-back-home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 1px solid rgba(26, 107, 219, 0.16);
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    color: #1e293b;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.auth-back-home-btn:hover {
+    border-color: #1a6bdb;
+    color: #1a6bdb;
+    transform: translateY(-1px);
+}
+
+body.dark-mode .auth-back-home-btn {
+    background: rgba(30, 41, 59, 0.85);
+    border-color: rgba(148, 163, 184, 0.22);
+    color: #e2e8f0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .auth-back-home-btn:hover {
+    border-color: #3d8ef0;
+    color: #60a5fa;
 }
 
 body.auth-body .form-panel.auth-card *,
@@ -76,7 +103,7 @@ body.auth-body .form-panel.auth-card *::after {
         align-items: stretch !important;
         width: 100% !important;
         max-width: 100% !important;
-        min-height: calc(100dvh - 76px) !important;
+        min-height: 100dvh !important;
         margin: 0 !important;
         padding: 0 !important;
         gap: 0 !important;
@@ -93,8 +120,8 @@ body.auth-body .form-panel.auth-card *::after {
         align-items: center !important;
         position: sticky !important;
         top: 0 !important;
-        height: calc(100dvh - 76px) !important;
-        min-height: 100% !important;
+        height: 100dvh !important;
+        min-height: 100dvh !important;
         padding: 36px 28px !important;
         border-radius: 0 !important;
         overflow: hidden !important;
@@ -274,14 +301,63 @@ body.auth-body .form-panel.auth-card *::after {
     body.auth-body.register-page .form-panel.auth-card,
     body.auth-body.login-page .form-panel.auth-card {
         width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 20px 16px 36px !important;
+        max-width: 430px !important;
+        margin: 0 auto !important;
+        padding: 16px 18px 28px !important;
         background: transparent !important;
         border: none !important;
         border-radius: 0 !important;
         box-shadow: none !important;
         backdrop-filter: none !important;
+    }
+
+    body.auth-body .auth-brand {
+        justify-content: center !important;
+        margin-bottom: 6px !important;
+    }
+
+    body.auth-body .auth-brand-logo {
+        max-height: 32px !important;
+    }
+
+    body.auth-body .form-subtitle {
+        font-size: 1.2rem !important;
+        text-align: center !important;
+        margin-bottom: 10px !important;
+    }
+
+    body.auth-body .form-note {
+        font-size: 0.84rem !important;
+        text-align: center !important;
+        margin-bottom: 16px !important;
+    }
+
+    body.auth-body .form-group {
+        margin-bottom: 8px !important;
+    }
+
+    body.auth-body .form-group label {
+        font-size: 0.8rem !important;
+        margin-bottom: 3px !important;
+    }
+
+    body.auth-body .form-group input,
+    body.auth-body .form-group select {
+        padding: 9px 12px !important;
+        min-height: 40px !important;
+        font-size: 0.88rem !important;
+        border-radius: 11px !important;
+    }
+
+    body.auth-body .btn-fill.auth-submit {
+        min-height: 42px !important;
+        font-size: 0.92rem !important;
+        border-radius: 12px !important;
+    }
+
+    body.auth-body .steps-indicator {
+        margin-bottom: 12px !important;
+        gap: 6px !important;
     }
 
     body.auth-body .form-row {
@@ -358,6 +434,9 @@ body.auth-body .form-panel.auth-card *::after {
     <main class="auth-page auth-register-page">
         <section class="auth-right">
             <div class="form-panel auth-card">
+                <div class="auth-back-home-row">
+                    <a href="/" class="auth-back-home-btn">← الرجوع للرئيسية</a>
+                </div>
                 <div class="register-progress" aria-live="polite">
                     <div class="register-progress-meta"><span id="register-step-title">الخطوة الأولى</span><strong
                             id="register-progress-value">33%</strong></div>
