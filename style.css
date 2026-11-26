@@ -6982,17 +6982,12 @@ body.auth-body .masar-chatbot-btn {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 28px 24px 36px !important;
-        background: var(--surface) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 20px !important;
-        box-shadow: 0 4px 24px var(--shadow) !important;
+        padding: 24px 20px 36px !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
         backdrop-filter: none !important;
-    }
-    .dark-mode .auth-body.register-page .form-panel.auth-card,
-    .dark-mode .auth-body.login-page .form-panel.auth-card {
-        background: #152038 !important;
-        border-color: rgba(61,142,240,0.15) !important;
     }
 }
 

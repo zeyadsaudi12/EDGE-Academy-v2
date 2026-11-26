@@ -160,16 +160,16 @@ body.auth-body .form-panel.auth-card *::after {
 }
 
 /* ══════════════════════════════════════════
-   TABLET  600–899px : Single col, card
+   TABLET  600–899px : Single col, no card/box
    ══════════════════════════════════════════ */
 @media (min-width: 600px) and (max-width: 899px) {
     body.auth-body.register-page,
     body.auth-body.login-page {
-        background: #f0f4ff !important;
+        background: #ffffff !important;
     }
     body.dark-mode.auth-body.register-page,
     body.dark-mode.auth-body.login-page {
-        background: #0d1526 !important;
+        background: #0f172a !important;
     }
 
     body.auth-body.register-page main.auth-page,
@@ -196,7 +196,7 @@ body.auth-body .form-panel.auth-card *::after {
     body.auth-body.register-page section.auth-right,
     body.auth-body.login-page section.auth-right {
         width: 100% !important;
-        max-width: 600px !important;
+        max-width: 560px !important;
         height: auto !important;
         min-height: auto !important;
         padding: 0 !important;
@@ -213,18 +213,12 @@ body.auth-body .form-panel.auth-card *::after {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 28px 24px 36px !important;
-        background: #ffffff !important;
-        border: 1px solid rgba(26,107,219,0.14) !important;
-        border-radius: 20px !important;
-        box-shadow: 0 8px 32px rgba(26,107,219,0.08) !important;
+        padding: 24px 20px 36px !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
         backdrop-filter: none !important;
-    }
-    body.dark-mode.auth-body.register-page .form-panel.auth-card,
-    body.dark-mode.auth-body.login-page .form-panel.auth-card {
-        background: #152038 !important;
-        border-color: rgba(61,142,240,0.18) !important;
-        box-shadow: 0 12px 36px rgba(0,0,0,0.35) !important;
     }
 }
 
